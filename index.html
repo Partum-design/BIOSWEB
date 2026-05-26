@@ -68,6 +68,14 @@
         body { overflow-x: hidden; background-color: #f8fafc; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        main p:not(.no-justify):not([class*="uppercase"]):not([class*="tracking-"]),
+        footer p:not(.no-justify):not([class*="uppercase"]):not([class*="tracking-"]) {
+            text-align: justify;
+            text-wrap: pretty;
+        }
+        .text-center p:not(.no-justify):not([class*="uppercase"]):not([class*="tracking-"]) {
+            text-align-last: center;
+        }
 
         @keyframes gradientFlow {
             0%, 100% { background-position: 0% 50%; }
@@ -94,46 +102,51 @@
             box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
         }
 
-        /* 3D Bento Card Hover Effects (The "Chingón" touch) */
+        /* Service card hover effects */
         .bento-card {
             transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
             position: relative;
             overflow: hidden;
             transform-style: preserve-3d;
             isolation: isolate;
+            will-change: transform, box-shadow;
         }
         .bento-card:hover {
-            transform: translateY(-10px) scale(1.02);
-            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.3);
-            border-color: var(--theme-color-2);
+            transform: translateY(-8px) scale(1.015);
+            box-shadow: 0 24px 55px -22px rgba(37, 99, 235, 0.35);
+            border-color: rgba(59, 130, 246, 0.55);
         }
         .bento-card::before {
             content: ''; position: absolute; inset: 0;
-            background: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 100%);
+            background: linear-gradient(180deg, rgba(255,255,255,0.16) 0%, rgba(255,255,255,0.02) 55%, rgba(255,255,255,0) 100%);
             opacity: 0; transition: opacity 0.5s ease; pointer-events: none;
         }
         .bento-card:hover::before { opacity: 1; }
         .bento-card::after {
             content: '';
             position: absolute;
-            inset: -1px;
-            background: radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(59,130,246,0.22), transparent 42%);
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 42%;
+            background:
+                radial-gradient(circle at 18% 112%, rgba(59,130,246,0.55) 0%, rgba(59,130,246,0.18) 22%, transparent 48%),
+                radial-gradient(circle at 52% 118%, rgba(14,165,233,0.42) 0%, rgba(14,165,233,0.16) 20%, transparent 46%),
+                radial-gradient(circle at 84% 110%, rgba(37,99,235,0.52) 0%, rgba(37,99,235,0.14) 22%, transparent 48%),
+                linear-gradient(180deg, rgba(2,132,199,0) 0%, rgba(2,132,199,0.12) 100%);
             opacity: 0;
-            transition: opacity 0.4s ease;
+            transform: translateY(14px);
+            transition: opacity 0.42s ease, transform 0.42s ease;
             pointer-events: none;
             z-index: 0;
+            mix-blend-mode: screen;
         }
-        .bento-card:hover::after { opacity: 1; }
-
-        .bento-card .content-overlay {
-            position: absolute; inset: 0;
-            background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(15px);
-            padding: 2rem; transform: translateY(101%);
-            transition: transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
-            display: flex; flex-direction: column; justify-content: center; z-index: 10;
+        .bento-card:hover::after { opacity: 1; transform: translateY(0); }
+        .bento-card-dark {
+            background:
+                radial-gradient(circle at top right, rgba(59,130,246,0.34), transparent 28%),
+                linear-gradient(180deg, #0A1C2E 0%, #091829 100%);
         }
-        .bento-card:hover .content-overlay { transform: translateY(0); }
-        .bento-card-dark .content-overlay { background: rgba(10, 28, 46, 0.98); color: white; border-top: 4px solid var(--theme-color-2); }
 
         .service-chip.active {
             color: white;
@@ -142,18 +155,326 @@
             box-shadow: 0 16px 35px -18px var(--theme-color-2);
         }
 
+        .service-search {
+            background:
+                linear-gradient(180deg, rgba(255,255,255,0.96), rgba(248,250,252,0.92));
+            box-shadow: 0 18px 45px -25px rgba(10,28,46,0.24);
+        }
+
+        .service-empty {
+            background:
+                radial-gradient(circle at top right, rgba(59,130,246,0.16), transparent 34%),
+                linear-gradient(180deg, rgba(255,255,255,0.96), rgba(247,250,252,0.92));
+        }
+
+        .mesh-accent {
+            position: absolute;
+            border-radius: 9999px;
+            filter: blur(90px);
+            opacity: 0.35;
+            pointer-events: none;
+            mix-blend-mode: screen;
+        }
+
         .service-orbit {
             background:
-                radial-gradient(circle at 20% 20%, rgba(255,255,255,0.34), transparent 22%),
-                linear-gradient(135deg, rgba(255,255,255,0.16), rgba(255,255,255,0.03));
+                radial-gradient(circle at 50% 35%, rgba(125,211,252,0.18), transparent 34%),
+                linear-gradient(135deg, rgba(255,255,255,0.18), rgba(255,255,255,0.04));
         }
 
         .service-scan {
             animation: scanLine 4s ease-in-out infinite;
         }
 
+        .service-three-canvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.95;
+        }
+
+        .service-orbit::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(circle at 50% 45%, transparent 0 38%, rgba(125,211,252,0.16) 38.4% 38.8%, transparent 39.2%),
+                radial-gradient(circle at 50% 45%, transparent 0 57%, rgba(59,130,246,0.13) 57.4% 57.8%, transparent 58.2%),
+                linear-gradient(180deg, rgba(255,255,255,0.1), transparent 45%);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .service-feature-stat {
+            background: rgba(7,24,39,0.58);
+            border: 1px solid rgba(255,255,255,0.14);
+            backdrop-filter: blur(14px);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.12), 0 16px 36px rgba(0,0,0,0.18);
+        }
+
+        .section-ambient-canvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            opacity: 0.58;
+            mix-blend-mode: multiply;
+        }
+
+        .interactive-depth {
+            --tilt-card-x: 0deg;
+            --tilt-card-y: 0deg;
+            --depth-glow-x: 50%;
+            --depth-glow-y: 50%;
+            transform: perspective(1100px) rotateX(var(--tilt-card-x)) rotateY(var(--tilt-card-y)) translate3d(0,0,0);
+            transition: transform 0.22s ease, box-shadow 0.32s ease, border-color 0.32s ease;
+        }
+
+        .interactive-depth::before {
+            background:
+                radial-gradient(circle at var(--depth-glow-x) var(--depth-glow-y), rgba(125,211,252,0.24), transparent 30%),
+                linear-gradient(180deg, rgba(255,255,255,0.16), rgba(255,255,255,0.02) 55%, rgba(255,255,255,0));
+        }
+
+        .premium-surface {
+            isolation: isolate;
+            transform-style: preserve-3d;
+            will-change: transform;
+        }
+
+        .magnetic-action {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .magnetic-action::after {
+            content: '';
+            position: absolute;
+            inset: auto -20% -60% -20%;
+            height: 80%;
+            background: radial-gradient(circle at center, rgba(125,211,252,0.38), transparent 58%);
+            opacity: 0;
+            transform: translateY(20%);
+            transition: opacity 0.35s ease, transform 0.35s ease;
+            pointer-events: none;
+        }
+
+        .magnetic-action:hover::after {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
         .offer-badge {
             animation: pulseGlow 2.4s ease-in-out infinite;
+        }
+
+        .hero-particles {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        #inicio {
+            --hero-x: 50%;
+            --hero-y: 50%;
+            --tilt-x: 0deg;
+            --tilt-y: 0deg;
+            --shift-x: 0px;
+            --shift-y: 0px;
+        }
+
+        .hero-stage {
+            background:
+                radial-gradient(circle at 50% 42%, rgba(56,189,248,0.12), transparent 34%),
+                linear-gradient(90deg, rgba(10,28,46,0.9) 0%, rgba(10,28,46,0.78) 52%, rgba(10,28,46,0.32) 100%);
+        }
+
+        .hero-reactive-light {
+            background:
+                radial-gradient(circle at var(--hero-x) var(--hero-y), rgba(125,211,252,0.2), rgba(59,130,246,0.08) 16%, transparent 34%);
+            opacity: 0.72;
+            mix-blend-mode: screen;
+            transition: opacity 0.3s ease;
+        }
+
+        .hero-reactive-panel {
+            transform: translate3d(var(--shift-x), var(--shift-y), 0);
+            transition: transform 0.16s ease-out;
+        }
+
+        .hero-kicker-line {
+            background: linear-gradient(90deg, transparent, rgba(125,211,252,0.9), rgba(59,130,246,0.9), transparent);
+            box-shadow: 0 0 30px rgba(96,165,250,0.38);
+        }
+
+        .hero-word-glow {
+            text-shadow: 0 18px 60px rgba(2,12,27,0.5), 0 0 34px rgba(96,165,250,0.18);
+        }
+
+        .hero-proof-pills span {
+            display: inline-flex;
+            align-items: center;
+            min-height: 38px;
+            padding: 0 16px;
+            border: 1px solid rgba(255,255,255,0.16);
+            border-radius: 999px;
+            background: rgba(255,255,255,0.075);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.14), 0 16px 40px rgba(0,0,0,0.14);
+            backdrop-filter: blur(14px);
+        }
+
+        .hero-signal {
+            position: relative;
+        }
+
+        .hero-signal::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: -18px;
+            width: 220px;
+            height: 2px;
+            transform: translateX(-50%);
+            background: linear-gradient(90deg, transparent, rgba(125,211,252,0.92), rgba(59,130,246,0.9), transparent);
+            box-shadow: 0 0 26px rgba(56,189,248,0.48);
+            animation: signalBreath 3.8s ease-in-out infinite;
+        }
+
+        @keyframes signalBreath {
+            0%, 100% { opacity: 0.42; transform: translateX(-50%) scaleX(0.72); }
+            50% { opacity: 1; transform: translateX(-50%) scaleX(1); }
+        }
+
+        .tech-three-panel {
+            background:
+                linear-gradient(145deg, rgba(8, 26, 43, 0.86), rgba(13, 47, 78, 0.58)),
+                radial-gradient(circle at 50% 30%, rgba(125,211,252,0.16), transparent 36%);
+            box-shadow:
+                inset 0 1px 0 rgba(255,255,255,0.2),
+                0 40px 120px -55px rgba(56,189,248,0.82);
+        }
+
+        .tech-three-panel::before {
+            content: '';
+            position: absolute;
+            inset: 1px;
+            border-radius: inherit;
+            background:
+                radial-gradient(circle at var(--tech-x, 50%) var(--tech-y, 42%), rgba(125,211,252,0.24), transparent 30%),
+                linear-gradient(180deg, rgba(255,255,255,0.11), transparent 45%);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .tech-three-panel::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+            background-size: 52px 52px;
+            mask-image: radial-gradient(circle at 50% 48%, black, transparent 72%);
+            opacity: 0.55;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .tech-three-canvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.98;
+        }
+
+        .tech-metric-card {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.16);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.16), 0 20px 60px rgba(0,0,0,0.16);
+            backdrop-filter: blur(16px);
+        }
+
+        @media (max-width: 767px), (prefers-reduced-motion: reduce) {
+            .interactive-depth {
+                transform: none !important;
+            }
+            .section-ambient-canvas {
+                opacity: 0.28;
+            }
+            .tech-three-canvas {
+                opacity: 0.55;
+            }
+            .service-three-canvas {
+                opacity: 0.58;
+            }
+            .bento-card:hover {
+                transform: translateY(-4px);
+            }
+        }
+
+        @media (max-width: 767px) {
+            main p:not(.no-justify):not([class*="uppercase"]):not([class*="tracking-"]),
+            footer p:not(.no-justify):not([class*="uppercase"]):not([class*="tracking-"]) {
+                hyphens: auto;
+                line-height: 1.65;
+            }
+            .hero-signal::after {
+                width: 150px;
+                bottom: -14px;
+            }
+            .hero-proof-pills span {
+                min-height: 34px;
+                padding: 0 12px;
+                font-size: 10px;
+            }
+            .service-orbit {
+                min-height: 280px;
+            }
+            .tech-three-panel {
+                border-radius: 2rem !important;
+                min-height: 580px;
+            }
+            .tech-metric-card,
+            .service-feature-stat {
+                border-radius: 1rem;
+            }
+        }
+
+        @keyframes heroFloat {
+            0%, 100% { transform: translate3d(0,0,0) scale(1); }
+            50% { transform: translate3d(0,-16px,0) scale(1.03); }
+        }
+
+        .hero-badge {
+            background: rgba(255,255,255,0.14);
+            backdrop-filter: blur(14px);
+            border: 1px solid rgba(255,255,255,0.24);
+        }
+
+        @keyframes modalEnter {
+            0% { opacity: 0; transform: translateY(30px) scale(0.84) rotateX(10deg); }
+            60% { opacity: 1; transform: translateY(-4px) scale(1.015) rotateX(0deg); }
+            100% { opacity: 1; transform: translateY(0) scale(1) rotateX(0deg); }
+        }
+
+        @keyframes modalGlowMove {
+            0%, 100% { transform: translate3d(0,0,0) scale(1); }
+            50% { transform: translate3d(14px,-16px,0) scale(1.08); }
+        }
+
+        .modal-overlay.active .modal-content {
+            animation: modalEnter 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .modal-overlay.active .offer-badge {
+            animation: modalGlowMove 4.5s ease-in-out infinite, pulseGlow 2.4s ease-in-out infinite;
         }
 
         /* Floating Tags (image_2 style) */
@@ -170,6 +491,24 @@
         .modal-overlay.active { opacity: 1; visibility: visible; }
         .modal-content { transform: scale(0.9) translateY(20px); transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); }
         .modal-overlay.active .modal-content { transform: scale(1) translateY(0); }
+
+        /* Mobile Off Canvas */
+        .mobile-drawer {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.28s ease, visibility 0.28s ease;
+        }
+        .mobile-drawer.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .mobile-drawer-panel {
+            transform: translateX(105%);
+            transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .mobile-drawer.active .mobile-drawer-panel {
+            transform: translateX(0);
+        }
     </style>
 </head>
 <body class="font-inter text-gray-800">
@@ -243,7 +582,7 @@
                 <button class="hidden lg:flex bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white text-sm font-bold py-2.5 px-6 rounded-full transition items-center gap-2 shadow-lg shadow-blue-500/25">
                     <i data-lucide="calendar-check" class="w-4 h-4"></i> Agendar Cita
                 </button>
-                <button class="lg:hidden text-white p-2 hover:bg-white/10 rounded-lg"><i data-lucide="menu" class="w-7 h-7"></i></button>
+                <button id="mobile-menu-button" class="lg:hidden text-white p-2 hover:bg-white/10 rounded-lg" aria-label="Abrir menú móvil" onclick="openMobileDrawer()"><i data-lucide="menu" class="w-7 h-7"></i></button>
             </div>
         </div>
         
@@ -269,43 +608,92 @@
         </div>
     </header>
 
+    <div id="mobile-drawer" class="mobile-drawer fixed inset-0 z-[9998] lg:hidden">
+        <div class="absolute inset-0 bg-[#06111d]/70 backdrop-blur-sm" onclick="closeMobileDrawer()"></div>
+        <aside class="mobile-drawer-panel absolute right-0 top-0 h-full w-[min(88vw,24rem)] bg-white shadow-[0_24px_80px_-30px_rgba(0,0,0,0.6)] flex flex-col overflow-hidden">
+            <div class="bg-[#0A1C2E] text-white p-5 flex items-center justify-between">
+                <div>
+                    <p class="text-[10px] uppercase tracking-[0.35em] text-blue-200 font-black mb-1">BIOS</p>
+                    <p class="font-outfit text-2xl font-black leading-none">Menú</p>
+                </div>
+                <button class="w-11 h-11 rounded-2xl bg-white/10 hover:bg-white/20 transition flex items-center justify-center" aria-label="Cerrar menú móvil" onclick="closeMobileDrawer()">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+            </div>
+            <div class="p-5 overflow-y-auto flex-1">
+                <div class="grid gap-3 mb-6">
+                    <a href="#servicios" class="mobile-drawer-link rounded-2xl border border-gray-200 px-4 py-4 font-black text-[#0A1C2E] flex items-center justify-between hover:border-blue-300 hover:bg-blue-50 transition">
+                        Servicios <i data-lucide="arrow-right" class="w-5 h-5 text-blue-500"></i>
+                    </a>
+                    <a href="#inicio" class="mobile-drawer-link rounded-2xl border border-gray-200 px-4 py-4 font-black text-[#0A1C2E] flex items-center justify-between hover:border-blue-300 hover:bg-blue-50 transition">
+                        Inicio <i data-lucide="arrow-right" class="w-5 h-5 text-blue-500"></i>
+                    </a>
+                    <a href="#vision" class="mobile-drawer-link rounded-2xl border border-gray-200 px-4 py-4 font-black text-[#0A1C2E] flex items-center justify-between hover:border-blue-300 hover:bg-blue-50 transition">
+                        Conócenos <i data-lucide="arrow-right" class="w-5 h-5 text-blue-500"></i>
+                    </a>
+                    <a href="#unidades" class="mobile-drawer-link rounded-2xl border border-gray-200 px-4 py-4 font-black text-[#0A1C2E] flex items-center justify-between hover:border-blue-300 hover:bg-blue-50 transition">
+                        Ubica tu clínica <i data-lucide="arrow-right" class="w-5 h-5 text-blue-500"></i>
+                    </a>
+                </div>
+
+                <div class="rounded-[2rem] bg-[#0A1C2E] text-white p-5 mb-4 relative overflow-hidden">
+                    <div class="absolute inset-0 opacity-80">
+                        <div class="absolute -right-10 -top-10 w-40 h-40 rounded-full blur-3xl bg-blue-500/40"></div>
+                        <div class="absolute -left-8 bottom-0 w-36 h-36 rounded-full blur-3xl bg-cyan-400/25"></div>
+                    </div>
+                    <div class="relative z-10">
+                        <p class="text-[10px] uppercase tracking-[0.35em] text-blue-200 font-black mb-2">Informes</p>
+                        <p class="font-outfit text-2xl font-black leading-tight mb-3">Pide ayuda por WhatsApp</p>
+                        <a href="https://wa.me/5211234567890?text=Hola%20BIOS,%20quiero%20informes%20desde%20el%20menú%20móvil" target="_blank" class="inline-flex items-center gap-2 px-4 py-3 rounded-2xl bg-[#25D366] text-white font-black shadow-lg shadow-green-500/20">
+                            <i data-lucide="message-circle" class="w-4 h-4"></i> 521 123 456 7890
+                        </a>
+                    </div>
+                </div>
+
+                <div class="rounded-[2rem] border border-gray-200 p-5 bg-gray-50">
+                    <p class="text-[10px] uppercase tracking-[0.35em] text-gray-400 font-black mb-3">Accesos rápidos</p>
+                    <div class="grid gap-2 text-sm font-bold text-[#0A1C2E]">
+                        <a href="#" class="rounded-xl px-3 py-3 bg-white border border-gray-200">Portal Pacientes</a>
+                        <a href="#" class="rounded-xl px-3 py-3 bg-white border border-gray-200">Empresas B2B</a>
+                        <a href="#" class="rounded-xl px-3 py-3 bg-white border border-gray-200">Médicos</a>
+                    </div>
+                </div>
+            </div>
+        </aside>
+    </div>
+
     <main>
         <!-- ==========================================
              HIGH-IMPACT HERO (Interactive & Cinematic)
              ========================================== -->
-        <section id="inicio" class="relative w-full h-[85vh] min-h-[700px] flex items-center overflow-hidden">
+        <section id="inicio" class="relative w-full min-h-[760px] flex items-center overflow-hidden py-16">
             <div class="absolute inset-0 z-0">
                 <video autoplay muted loop playsinline class="w-full h-full object-cover transform scale-105">
                     <source src="vids/4881334_Science_Microscope_3840x2160.mp4" type="video/mp4">
                     <source src="file:///C:/Users/lloop/OneDrive/Documentos/BIOS/vids/4881334_Science_Microscope_3840x2160.mp4" type="video/mp4">
                 </video>
-                <div class="absolute inset-0 bg-gradient-to-r from-[#0A1C2E] via-[#0A1C2E]/80 to-[#0A1C2E]/30"></div>
+                <div class="absolute inset-0 hero-stage"></div>
+                <div class="absolute inset-0 bg-gradient-to-r from-[#0A1C2E]/94 via-[#0A1C2E]/80 to-[#0A1C2E]/24"></div>
             </div>
 
-            <!-- Floating Interactive Tags (Style from image_2) -->
-            <div class="absolute top-1/4 right-[10%] lg:right-[20%] floating-tag rounded-full px-6 py-3 flex items-center gap-3 animate-float z-20 hidden md:flex" data-aos="fade-left" data-aos-delay="400">
-                <div class="w-3 h-3 bg-green-400 rounded-full shadow-[0_0_15px_#4ade80]"></div>
-                <span class="text-white font-bold text-sm tracking-wide">Precisión del 99.9%</span>
-            </div>
-            
-            <div class="absolute bottom-1/4 right-[5%] lg:right-[15%] floating-tag rounded-full px-6 py-3 flex items-center gap-3 animate-float-delayed z-20 hidden md:flex" data-aos="fade-left" data-aos-delay="600">
-                <i data-lucide="clock" class="w-4 h-4 text-cyan-300"></i>
-                <span class="text-white font-bold text-sm tracking-wide">Resultados en Tiempo Real</span>
-            </div>
+            <canvas id="hero-particles" class="hero-particles z-[1]"></canvas>
+            <div class="hero-reactive-light absolute inset-0 z-[2] pointer-events-none"></div>
 
             <div class="relative z-10 max-w-[96rem] mx-auto px-4 sm:px-6 lg:px-8 w-full" data-aos="fade-up" data-aos-duration="1000">
-                <div class="max-w-3xl">
-                    <span class="px-5 py-2 rounded-full bg-blue-500/20 border border-blue-400/30 text-blue-300 text-sm font-bold tracking-widest uppercase mb-6 inline-block backdrop-blur-md shadow-lg">
+                <div class="hero-reactive-panel relative max-w-6xl mx-auto text-center px-2 py-12 md:py-16">
+                    <span class="inline-flex items-center gap-3 text-blue-100 text-sm font-black tracking-widest uppercase mb-7">
+                        <span class="w-10 h-px hero-kicker-line"></span>
                         Laboratorios BIOS
+                        <span class="w-10 h-px hero-kicker-line"></span>
                     </span>
-                    <h1 class="font-outfit text-6xl md:text-8xl font-black text-white leading-[1.05] mb-6 drop-shadow-2xl">
-                        Un mundo de <br/> 
-                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-blue-400 to-blue-600" style="background-size: 200%; animation: gradientFlow 5s ease infinite;">servicios a tu alcance!!</span>
+                    <h1 class="hero-signal font-outfit text-5xl md:text-[5.4rem] lg:text-[6.6rem] font-black text-white leading-[0.92] mb-10 drop-shadow-2xl hero-word-glow">
+                        Diagnóstico claro.<br/>
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-200 via-blue-400 to-blue-600" style="background-size: 200%; animation: gradientFlow 5s ease infinite;">Decisiones a tiempo.</span>
                     </h1>
-                    <p class="text-xl md:text-2xl text-gray-300 mb-10 leading-relaxed font-light max-w-2xl text-shadow">
-                        Proveyendo servicios de análisis clínicos, gabinete e imagenología de alta calidad para diagnosticar con resultados confiables y oportunos.
+                    <p class="text-xl md:text-2xl text-gray-200 mb-10 leading-relaxed font-light max-w-3xl mx-auto">
+                        Análisis clínicos, gabinete e imagenología con resultados confiables y atención precisa.
                     </p>
-                    <div class="flex flex-col sm:flex-row gap-5">
+                    <div class="flex flex-col sm:flex-row gap-5 justify-center">
                         <a href="#servicios" class="px-8 py-4 bg-white text-[#0A1C2E] hover:bg-gray-50 rounded-2xl font-black shadow-[0_20px_40px_-15px_rgba(255,255,255,0.3)] flex items-center justify-center gap-2 text-lg transition-all hover:-translate-y-1">
                             <i data-lucide="microscope" class="w-5 h-5"></i> Explorar Catálogo
                         </a>
@@ -313,22 +701,28 @@
                             <i data-lucide="map" class="w-5 h-5"></i> Ubica tu Clínica
                         </a>
                     </div>
+                    <div class="hero-proof-pills mt-10 flex flex-wrap justify-center gap-3 text-white/85 text-xs font-black uppercase tracking-[0.18em]">
+                        <span>Precisión</span>
+                        <span>Rapidez</span>
+                        <span>Confianza</span>
+                    </div>
                 </div>
             </div>
             
-            <!-- Mouse scroll indicator -->
             <div class="absolute bottom-10 left-1/2 -translate-x-1/2 text-white/50 flex flex-col items-center gap-2 animate-bounce z-20">
                 <i data-lucide="mouse" class="w-6 h-6"></i>
             </div>
         </section>
 
         <!-- ==========================================
-             EXTRA TOUCH: 3D BENTO SERVICES MODULE
+             SERVICES MODULE
              ========================================== -->
         <section id="servicios" class="py-32 bg-gray-50 relative overflow-hidden">
-            <!-- Decorative background elements -->
-            <div class="absolute top-0 right-0 w-[800px] h-[800px] bg-gradient-to-br from-blue-100/40 to-cyan-50/40 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 pointer-events-none"></div>
-            <div class="absolute bottom-0 left-0 w-[600px] h-[600px] bg-gradient-to-tr from-indigo-100/40 to-blue-50/40 rounded-full blur-3xl translate-y-1/3 -translate-x-1/4 pointer-events-none"></div>
+            <canvas id="services-ambient-canvas" class="section-ambient-canvas"></canvas>
+            <!-- Strategic mesh accents only -->
+            <div class="mesh-accent top-8 right-6 w-[320px] h-[320px]" style="background: radial-gradient(circle, rgba(59,130,246,0.40) 0%, rgba(59,130,246,0.10) 42%, transparent 70%);"></div>
+            <div class="mesh-accent left-10 top-[38%] w-[240px] h-[240px]" style="background: radial-gradient(circle, rgba(16,185,129,0.35) 0%, rgba(16,185,129,0.10) 40%, transparent 70%);"></div>
+            <div class="mesh-accent right-[20%] bottom-8 w-[280px] h-[280px]" style="background: radial-gradient(circle, rgba(14,165,233,0.28) 0%, rgba(14,165,233,0.08) 38%, transparent 72%);"></div>
 
             <div class="max-w-[96rem] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                 <div class="text-center mb-20" data-aos="fade-up">
@@ -340,7 +734,7 @@
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-10 items-stretch">
-                    <div class="lg:col-span-7 bg-[#0A1C2E] rounded-[2rem] p-7 md:p-9 relative overflow-hidden shadow-2xl" data-aos="fade-right">
+                    <div class="interactive-depth premium-surface lg:col-span-7 bg-[#0A1C2E] rounded-[2rem] p-7 md:p-9 relative overflow-hidden shadow-2xl" data-aos="fade-right">
                         <div class="absolute inset-0 opacity-80">
                             <div class="absolute -right-16 -top-16 w-72 h-72 rounded-full blur-3xl" style="background: var(--theme-color-2);"></div>
                             <div class="absolute left-10 bottom-0 w-64 h-64 rounded-full blur-3xl bg-cyan-500/30"></div>
@@ -351,30 +745,29 @@
                                     <i data-lucide="sparkles" class="w-4 h-4"></i> Paquetes destacados
                                 </span>
                                 <h3 class="font-outfit text-4xl md:text-5xl font-black text-white leading-tight mb-4">Elige por objetivo, no por lista interminable.</h3>
-                                <p class="text-blue-100/90 text-lg leading-relaxed">Filtra preventivos, imagen y perfiles clinicos para encontrar mas rapido lo que necesitas y agendar en un clic.</p>
+                                <p class="text-blue-100/90 text-lg leading-relaxed">Filtra preventivos, imagen y perfiles clínicos para encontrar más rápido lo que necesitas y agendar en un clic.</p>
                             </div>
-                            <div class="service-orbit rounded-[2rem] border border-white/15 p-5 min-h-[250px] relative overflow-hidden">
+                            <div id="service-feature-visual" class="interactive-depth premium-surface service-orbit rounded-[2rem] border border-white/15 p-5 min-h-[290px] relative overflow-hidden">
+                                <canvas id="service-feature-canvas" class="service-three-canvas"></canvas>
                                 <div class="service-scan absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-cyan-300/35 to-transparent"></div>
-                                <div class="absolute inset-8 rounded-full border border-white/10"></div>
-                                <div class="absolute inset-14 rounded-full border border-white/10"></div>
-                                <div class="relative z-10 h-full flex flex-col justify-between">
+                                <div class="relative z-10 h-full min-h-[250px] flex flex-col justify-between">
                                     <div class="flex justify-between items-center text-white/80 text-xs font-bold uppercase tracking-widest">
-                                        <span>BIOS scan</span>
-                                        <span>Live</span>
+                                        <span>Preventivos</span>
+                                        <span>Disponible</span>
                                     </div>
-                                    <div class="mx-auto w-24 h-24 rounded-[2rem] bg-white text-[#0A1C2E] flex items-center justify-center shadow-2xl rotate-3">
-                                        <i data-lucide="microscope" class="w-12 h-12"></i>
+                                    <div class="mx-auto w-24 h-24 rounded-[2rem] bg-white/95 text-[#0A1C2E] flex items-center justify-center shadow-[0_24px_60px_-24px_rgba(125,211,252,0.9)] rotate-3">
+                                        <i data-lucide="clipboard-check" class="w-12 h-12"></i>
                                     </div>
                                     <div class="grid grid-cols-3 gap-3">
-                                        <div class="rounded-2xl bg-white/10 border border-white/10 p-3 text-center">
+                                        <div class="service-feature-stat rounded-2xl p-3 text-center">
                                             <p class="text-2xl font-black text-white">6</p>
                                             <p class="text-[10px] text-blue-100 font-bold uppercase">paquetes</p>
                                         </div>
-                                        <div class="rounded-2xl bg-white/10 border border-white/10 p-3 text-center">
+                                        <div class="service-feature-stat rounded-2xl p-3 text-center">
                                             <p class="text-2xl font-black text-white">12h</p>
                                             <p class="text-[10px] text-blue-100 font-bold uppercase">desde</p>
                                         </div>
-                                        <div class="rounded-2xl bg-white/10 border border-white/10 p-3 text-center">
+                                        <div class="service-feature-stat rounded-2xl p-3 text-center">
                                             <p class="text-2xl font-black text-white">$400</p>
                                             <p class="text-[10px] text-blue-100 font-bold uppercase">desde</p>
                                         </div>
@@ -384,15 +777,30 @@
                         </div>
                     </div>
 
-                    <div class="lg:col-span-5 bg-white rounded-[2rem] p-6 md:p-8 border border-gray-100 shadow-xl" data-aos="fade-left">
-                        <div class="flex items-center justify-between gap-4 mb-6">
+                    <div class="interactive-depth premium-surface lg:col-span-5 bg-white rounded-[2rem] p-6 md:p-8 border border-gray-100 shadow-xl service-search" data-aos="fade-left">
+                        <div class="flex items-center justify-between gap-4 mb-5">
                             <div>
-                                <p class="text-xs uppercase tracking-widest text-gray-400 font-black mb-1">Busqueda rapida</p>
-                                <h3 class="font-outfit text-3xl font-black text-[#0A1C2E]">Servicios por categoria</h3>
+                                <p class="text-xs uppercase tracking-widest text-gray-400 font-black mb-1">Búsqueda rápida</p>
+                                <h3 class="font-outfit text-3xl font-black text-[#0A1C2E]">Servicios por categoría</h3>
                             </div>
                             <div class="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center">
                                 <i data-lucide="sliders-horizontal" class="w-6 h-6"></i>
                             </div>
+                        </div>
+                        <label class="block mb-5">
+                            <span class="sr-only">Buscar tu servicio</span>
+                            <div class="relative">
+                                <i data-lucide="search" class="w-5 h-5 text-gray-400 absolute left-4 top-1/2 -translate-y-1/2"></i>
+                                <input id="service-search" type="search" placeholder="Busca tu propio servicio..." class="w-full pl-12 pr-4 py-4 rounded-2xl border border-gray-200 bg-white/90 text-[#0A1C2E] font-medium outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition">
+                            </div>
+                        </label>
+                        <div class="flex flex-wrap items-center gap-3 mb-5">
+                            <a href="https://wa.me/5211234567890?text=Hola%20BIOS,%20quiero%20informes%20sobre%20un%20servicio" target="_blank" class="magnetic-action inline-flex items-center gap-2 px-4 py-3 rounded-2xl bg-[#25D366] text-white font-black text-sm shadow-lg shadow-green-500/20 hover:-translate-y-0.5 transition">
+                                <i data-lucide="message-circle" class="w-4 h-4"></i> WhatsApp informes
+                            </a>
+                            <a href="https://wa.me/5211234567890?text=Hola%20BIOS,%20me%20ayudan%20a%20buscar%20un%20servicio" target="_blank" class="text-sm font-bold text-gray-600 hover:text-blue-600 transition">
+                                521 123 456 7890
+                            </a>
                         </div>
                         <div id="service-filters" class="flex flex-wrap gap-3">
                             <button class="service-chip active px-5 py-3 rounded-2xl border border-gray-200 bg-white text-[#0A1C2E] font-black text-sm transition-all hover:-translate-y-1" data-filter="Todos" onclick="filterServices('Todos', this)">Todos</button>
@@ -404,9 +812,21 @@
                     </div>
                 </div>
 
-                <!-- 3D Bento Grid Layout -->
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 auto-rows-[300px] gap-6" id="bento-container">
+                <!-- Services Grid Layout -->
+                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 items-stretch" id="bento-container">
                     <!-- Script injects cards here -->
+                </div>
+                <div id="services-empty" class="hidden mt-6 rounded-[2rem] p-8 border border-gray-200 service-empty shadow-xl">
+                    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+                        <div class="max-w-2xl">
+                            <p class="text-xs uppercase tracking-widest text-blue-500 font-black mb-3">No encontramos coincidencias</p>
+                            <h3 class="font-outfit text-3xl font-black text-[#0A1C2E] mb-3">Escríbenos por WhatsApp y te ayudamos a elegir el estudio correcto.</h3>
+                            <p class="text-gray-600 text-lg leading-relaxed">A veces el nombre cambia un poco, así que te acompañamos a encontrar el servicio exacto y resolver dudas de preparación, precios y entrega.</p>
+                        </div>
+                        <a href="https://wa.me/5211234567890?text=Hola%20BIOS,%20necesito%20informes%20sobre%20un%20servicio%20y%20no%20lo%20encontré%20en%20la%20web" target="_blank" class="inline-flex items-center justify-center gap-3 px-6 py-4 rounded-2xl bg-[#25D366] text-white font-black shadow-lg shadow-green-500/20 hover:-translate-y-0.5 transition">
+                            <i data-lucide="message-circle-more" class="w-5 h-5"></i> Pedir informes
+                        </a>
+                    </div>
                 </div>
             </div>
         </section>
@@ -414,29 +834,52 @@
         <!-- ==========================================
              ALIVE MESH GRADIENT "TECNOLOGÍA BIOS" (Refined)
              ========================================== -->
-        <section class="relative py-40 overflow-hidden bg-[#0A1C2E]">
+        <section id="tecnologia-bios" class="relative py-28 md:py-36 overflow-hidden bg-[#071827]">
             <!-- Dynamic Mesh Gradient Background -->
-            <div class="absolute inset-0 z-0 mix-blend-screen pointer-events-none" style="opacity: 0.85;">
-                <div class="absolute w-[70vw] h-[70vw] rounded-full mix-blend-screen filter blur-[120px] animate-blob top-0 left-[-15vw]" style="background: var(--theme-color-1);"></div>
-                <div class="absolute w-[60vw] h-[60vw] rounded-full mix-blend-screen filter blur-[100px] animate-blob animation-delay-2000 bottom-[-10vw] right-[-10vw]" style="background: var(--theme-color-2);"></div>
-                <div class="absolute w-[50vw] h-[50vw] bg-emerald-500 rounded-full mix-blend-screen filter blur-[140px] animate-blob animation-delay-4000 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-50"></div>
+            <div class="absolute inset-0 z-0 pointer-events-none bg-[#071827]">
+                <div class="absolute w-[38rem] h-[38rem] rounded-full filter blur-[130px] top-[-14rem] left-[-10rem] bg-blue-500/20"></div>
+                <div class="absolute w-[34rem] h-[34rem] rounded-full filter blur-[120px] bottom-[-16rem] right-[-4rem] bg-cyan-400/16"></div>
             </div>
 
             <div class="relative z-10 max-w-[96rem] mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="glass-panel border border-white/20 rounded-[3rem] p-12 md:p-24 text-center shadow-2xl relative overflow-hidden" data-aos="zoom-in" data-aos-duration="1000">
-                    <!-- Internal glass shine -->
-                    <div class="absolute top-0 left-0 w-full h-1/2 bg-gradient-to-b from-white/10 to-transparent pointer-events-none"></div>
-                    
-                    <div class="w-24 h-24 mx-auto bg-gradient-to-br from-white to-blue-50 rounded-3xl flex items-center justify-center mb-10 shadow-2xl shadow-blue-500/20 rotate-3 transform transition hover:rotate-6">
-                        <i data-lucide="cpu" class="w-12 h-12 text-[#0A1C2E]"></i>
+                <div class="tech-three-panel interactive-depth premium-surface relative min-h-[560px] md:min-h-[620px] rounded-[3rem] border border-white/20 overflow-hidden px-6 py-14 md:px-14 md:py-20 text-center" data-aos="zoom-in" data-aos-duration="1000">
+                    <canvas id="tech-three-canvas" class="tech-three-canvas"></canvas>
+                    <div class="absolute inset-0 z-[3] bg-[radial-gradient(circle_at_center,rgba(7,24,39,0.12)_0%,rgba(7,24,39,0.5)_76%)] pointer-events-none"></div>
+
+                    <div class="relative z-10 max-w-5xl mx-auto">
+                        <div class="w-20 h-20 md:w-24 md:h-24 mx-auto bg-white/95 rounded-[1.7rem] flex items-center justify-center mb-9 shadow-[0_28px_70px_-24px_rgba(125,211,252,0.95)] rotate-3 transition hover:rotate-6">
+                            <i data-lucide="cpu" class="w-10 h-10 md:w-12 md:h-12 text-[#071827]"></i>
+                        </div>
+                        <span class="inline-flex items-center gap-3 text-cyan-100 text-xs md:text-sm font-black tracking-[0.32em] uppercase mb-6">
+                            <span class="w-8 md:w-12 h-px bg-cyan-300/80"></span>
+                            Laboratorio de alta precisión
+                            <span class="w-8 md:w-12 h-px bg-cyan-300/80"></span>
+                        </span>
+                        <h2 class="font-outfit text-5xl md:text-7xl lg:text-8xl font-black text-white leading-[0.94] tracking-tight mb-8 drop-shadow-[0_20px_60px_rgba(0,0,0,0.6)]">
+                            Diagnóstico<br>
+                            <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-100 via-blue-300 to-blue-500">con confianza</span>
+                        </h2>
+                        <p class="text-xl md:text-3xl text-white/90 font-light max-w-5xl mx-auto leading-relaxed mb-10 drop-shadow-[0_10px_35px_rgba(0,0,0,0.55)]">
+                            Estudios clínicos, gabinete e imagenología con atención clara, procesos ágiles y resultados confiables.
+                        </p>
+                        <div class="grid sm:grid-cols-3 gap-3 max-w-4xl mx-auto mb-10">
+                            <div class="tech-metric-card rounded-2xl px-5 py-4">
+                                <p class="text-3xl font-black text-white leading-none">24h</p>
+                                <p class="text-[11px] uppercase tracking-[0.22em] text-cyan-100 font-black mt-2">Entrega ágil</p>
+                            </div>
+                            <div class="tech-metric-card rounded-2xl px-5 py-4">
+                                <p class="text-3xl font-black text-white leading-none">Alta</p>
+                                <p class="text-[11px] uppercase tracking-[0.22em] text-cyan-100 font-black mt-2">Confianza</p>
+                            </div>
+                            <div class="tech-metric-card rounded-2xl px-5 py-4">
+                                <p class="text-3xl font-black text-white leading-none">Cerca</p>
+                                <p class="text-[11px] uppercase tracking-[0.22em] text-cyan-100 font-black mt-2">Atención</p>
+                            </div>
+                        </div>
+                        <a href="#vision" class="magnetic-action inline-flex items-center justify-center gap-3 px-10 py-5 bg-white text-[#0A1C2E] hover:bg-cyan-50 rounded-2xl font-black shadow-[0_24px_60px_-24px_rgba(255,255,255,0.8)] text-lg transition-all hover:-translate-y-1">
+                            Conoce el Laboratorio <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                        </a>
                     </div>
-                    <h2 class="font-outfit text-5xl md:text-7xl font-black text-white mb-8 tracking-tight drop-shadow-lg">Ecosistema Tecnológico</h2>
-                    <p class="text-xl md:text-3xl text-blue-100 font-light max-w-5xl mx-auto leading-relaxed mb-12 drop-shadow-md">
-                        En BIOS procesamos miles de datos mediante plataformas de última generación. Automatización, precisión y rapidez en cada resultado clínico.
-                    </p>
-                    <button class="px-10 py-5 bg-white text-[#0A1C2E] hover:bg-gray-50 rounded-2xl font-black shadow-[0_20px_40px_-10px_rgba(255,255,255,0.4)] flex items-center justify-center gap-3 text-xl mx-auto transition-all hover:scale-105">
-                        Conoce el Laboratorio <i data-lucide="arrow-right" class="w-6 h-6"></i>
-                    </button>
                 </div>
             </div>
         </section>
@@ -449,7 +892,7 @@
                 
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-24">
                     <!-- Visión -->
-                    <div class="bg-gray-50 rounded-[3rem] p-12 shadow-lg border border-gray-100 relative overflow-hidden group transition-all hover:shadow-2xl" data-aos="fade-right">
+                    <div class="interactive-depth premium-surface bg-gray-50 rounded-[3rem] p-12 shadow-lg border border-gray-100 relative overflow-hidden group transition-all hover:shadow-2xl" data-aos="fade-right">
                         <div class="absolute -right-20 -top-20 w-64 h-64 bg-blue-100 rounded-full blur-3xl group-hover:bg-blue-200 transition-colors duration-700"></div>
                         <h3 class="font-outfit text-5xl md:text-6xl font-black text-[#0A1C2E] mb-8 relative z-10 flex items-center gap-4">
                             <i data-lucide="eye" class="w-14 h-14 text-blue-500"></i> VISIÓN
@@ -460,7 +903,7 @@
                     </div>
 
                     <!-- Misión -->
-                    <div class="bg-[#0A1C2E] rounded-[3rem] p-12 shadow-2xl relative overflow-hidden group transition-all hover:shadow-[0_30px_60px_-15px_rgba(10,28,46,0.6)]" data-aos="fade-left" data-aos-delay="200">
+                    <div class="interactive-depth premium-surface bg-[#0A1C2E] rounded-[3rem] p-12 shadow-2xl relative overflow-hidden group transition-all hover:shadow-[0_30px_60px_-15px_rgba(10,28,46,0.6)]" data-aos="fade-left" data-aos-delay="200">
                         <div class="absolute -left-20 -bottom-20 w-64 h-64 bg-blue-900 rounded-full blur-3xl group-hover:bg-blue-800 transition-colors duration-700"></div>
                         <h3 class="font-outfit text-5xl md:text-6xl font-black text-white mb-8 relative z-10 flex items-center gap-4">
                             <i data-lucide="target" class="w-14 h-14 text-cyan-400"></i> MISIÓN
@@ -484,7 +927,7 @@
                         <span class="px-6 py-3 bg-white border border-gray-200 shadow-sm rounded-xl text-[#0A1C2E] font-bold text-sm hover:border-blue-500 hover:text-blue-600 hover:shadow-md transition cursor-default">Ecocardiograma</span>
                         <span class="px-6 py-3 bg-white border border-gray-200 shadow-sm rounded-xl text-[#0A1C2E] font-bold text-sm hover:border-blue-500 hover:text-blue-600 hover:shadow-md transition cursor-default">Endoscopía / Colonoscopía</span>
                         <span class="px-6 py-3 bg-white border border-gray-200 shadow-sm rounded-xl text-[#0A1C2E] font-bold text-sm hover:border-blue-500 hover:text-blue-600 hover:shadow-md transition cursor-default">Espirometría</span>
-                        <span class="px-6 py-3 bg-white border border-gray-200 shadow-sm rounded-xl text-[#0A1C2E] font-bold text-sm hover:border-blue-500 hover:text-blue-600 hover:shadow-md transition cursor-default">Densitometría Osea</span>
+                        <span class="px-6 py-3 bg-white border border-gray-200 shadow-sm rounded-xl text-[#0A1C2E] font-bold text-sm hover:border-blue-500 hover:text-blue-600 hover:shadow-md transition cursor-default">Densitometría Ósea</span>
                         <span class="px-6 py-3 bg-white border border-gray-200 shadow-sm rounded-xl text-[#0A1C2E] font-bold text-sm hover:border-blue-500 hover:text-blue-600 hover:shadow-md transition cursor-default">Mastografía</span>
                         <span class="px-6 py-3 bg-white border border-gray-200 shadow-sm rounded-xl text-[#0A1C2E] font-bold text-sm hover:border-blue-500 hover:text-blue-600 hover:shadow-md transition cursor-default">Holter / Mapa</span>
                         <span class="px-6 py-3 bg-white border border-gray-200 shadow-sm rounded-xl text-[#0A1C2E] font-bold text-sm hover:border-blue-500 hover:text-blue-600 hover:shadow-md transition cursor-default">Pruebas Ginecológicas</span>
@@ -507,7 +950,7 @@
 
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 h-[800px] lg:h-[750px]">
                     <!-- Interactive Map -->
-                    <div class="lg:col-span-8 bg-white rounded-[2.5rem] p-4 shadow-xl relative h-full" data-aos="fade-right">
+                    <div class="interactive-depth premium-surface lg:col-span-8 bg-white rounded-[2.5rem] p-4 shadow-xl relative h-full" data-aos="fade-right">
                         <div id="map" class="w-full h-full rounded-[2rem]"></div>
                     </div>
 
@@ -665,6 +1108,583 @@
             easing: 'ease-out-cubic',
         });
 
+        (function initHeroParticles() {
+            const canvas = document.getElementById('hero-particles');
+            const heroSection = document.getElementById('inicio');
+            if (!canvas || !heroSection) return;
+
+            const ctx = canvas.getContext('2d');
+            let rafId = null;
+            let particles = [];
+            let width = 0;
+            let height = 0;
+            const pointer = { x: 0.55, y: 0.45, active: false };
+            const isMobile = () => window.innerWidth < 768;
+
+            function resize() {
+                const rect = heroSection.getBoundingClientRect();
+                width = canvas.width = Math.round(rect.width * window.devicePixelRatio);
+                height = canvas.height = Math.round(rect.height * window.devicePixelRatio);
+                canvas.style.width = `${rect.width}px`;
+                canvas.style.height = `${rect.height}px`;
+                const count = isMobile() ? 8 : 14;
+                particles = Array.from({ length: count }, () => {
+                    const originLeft = Math.random() < 0.55;
+                    const baseX = originLeft
+                        ? (0.04 + Math.random() * 0.48) * width
+                        : (0.42 + Math.random() * 0.54) * width;
+                    const baseY = (0.05 + Math.random() * 0.9) * height;
+                    const drift = 0.15 + Math.random() * 0.65;
+                    return {
+                        x: baseX,
+                        y: baseY,
+                        r: 0.7 + Math.random() * 1.0,
+                        vx: (Math.random() - 0.5) * drift * 0.5,
+                        vy: (Math.random() - 0.5) * drift * 0.42,
+                        phase: Math.random() * Math.PI * 2,
+                        hue: 205 + Math.random() * 20,
+                        glow: 0.07 + Math.random() * 0.12,
+                    };
+                });
+            }
+
+            function draw() {
+                const w = canvas.width;
+                const h = canvas.height;
+                ctx.clearRect(0, 0, w, h);
+
+                ctx.save();
+                ctx.globalCompositeOperation = 'lighter';
+
+                for (let i = 0; i < particles.length; i++) {
+                    const p = particles[i];
+                    p.phase += 0.006 + (i % 3) * 0.001;
+                    p.x += p.vx + Math.sin(p.phase * 0.7) * 0.05 * window.devicePixelRatio;
+                    p.y += p.vy + Math.cos(p.phase * 0.6) * 0.04 * window.devicePixelRatio;
+
+                    if (pointer.active) {
+                        const targetX = pointer.x * w;
+                        const targetY = pointer.y * h;
+                        const dx = targetX - p.x;
+                        const dy = targetY - p.y;
+                        const dist = Math.max(Math.sqrt(dx * dx + dy * dy), 1);
+                        const pull = Math.min(0.12, 520 / (dist * dist));
+                        p.x += dx * pull;
+                        p.y += dy * pull;
+                    }
+
+                    if (p.x < -40) p.x = w + 40;
+                    if (p.x > w + 40) p.x = -40;
+                    if (p.y < -40) p.y = h + 40;
+                    if (p.y > h + 40) p.y = -40;
+
+                    const radius = p.r * window.devicePixelRatio;
+                    const hue = p.hue;
+                    const gradient = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, radius * 5);
+                    gradient.addColorStop(0, `hsla(${hue}, 95%, 72%, ${p.glow})`);
+                    gradient.addColorStop(0.3, `hsla(${hue}, 95%, 65%, ${p.glow * 0.5})`);
+                    gradient.addColorStop(1, 'rgba(255,255,255,0)');
+                    ctx.fillStyle = gradient;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, radius * 4.2, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+
+                ctx.restore();
+                rafId = requestAnimationFrame(draw);
+            }
+
+            resize();
+            draw();
+            heroSection.addEventListener('pointermove', (event) => {
+                const rect = heroSection.getBoundingClientRect();
+                const x = (event.clientX - rect.left) / rect.width;
+                const y = (event.clientY - rect.top) / rect.height;
+                pointer.x = Math.max(0, Math.min(1, x));
+                pointer.y = Math.max(0, Math.min(1, y));
+                pointer.active = true;
+
+                const tiltY = (pointer.x - 0.5) * 5;
+                const tiltX = (0.5 - pointer.y) * 4;
+                heroSection.style.setProperty('--hero-x', `${pointer.x * 100}%`);
+                heroSection.style.setProperty('--hero-y', `${pointer.y * 100}%`);
+                heroSection.style.setProperty('--tilt-x', `${tiltX.toFixed(2)}deg`);
+                heroSection.style.setProperty('--tilt-y', `${tiltY.toFixed(2)}deg`);
+                heroSection.style.setProperty('--shift-x', `${((pointer.x - 0.5) * 7).toFixed(2)}px`);
+                heroSection.style.setProperty('--shift-y', `${((pointer.y - 0.5) * 6).toFixed(2)}px`);
+            }, { passive: true });
+
+            heroSection.addEventListener('pointerleave', () => {
+                pointer.active = false;
+                heroSection.style.setProperty('--hero-x', '50%');
+                heroSection.style.setProperty('--hero-y', '50%');
+                heroSection.style.setProperty('--tilt-x', '0deg');
+                heroSection.style.setProperty('--tilt-y', '0deg');
+                heroSection.style.setProperty('--shift-x', '0px');
+                heroSection.style.setProperty('--shift-y', '0px');
+            }, { passive: true });
+
+            window.addEventListener('resize', resize, { passive: true });
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden) {
+                    cancelAnimationFrame(rafId);
+                } else {
+                    draw();
+                }
+            });
+        })();
+
+        function enhanceDepthCards(root = document) {
+            const canAnimate = window.matchMedia('(min-width: 768px)').matches && !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            root.querySelectorAll('.interactive-depth').forEach(card => {
+                if (card.dataset.depthReady === 'true') return;
+                card.dataset.depthReady = 'true';
+                if (!canAnimate) return;
+
+                card.addEventListener('pointermove', (event) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = (event.clientX - rect.left) / rect.width;
+                    const y = (event.clientY - rect.top) / rect.height;
+                    const tiltY = (x - 0.5) * 7;
+                    const tiltX = (0.5 - y) * 5;
+                    card.style.setProperty('--tilt-card-x', `${tiltX.toFixed(2)}deg`);
+                    card.style.setProperty('--tilt-card-y', `${tiltY.toFixed(2)}deg`);
+                    card.style.setProperty('--depth-glow-x', `${(x * 100).toFixed(2)}%`);
+                    card.style.setProperty('--depth-glow-y', `${(y * 100).toFixed(2)}%`);
+                }, { passive: true });
+
+                card.addEventListener('pointerleave', () => {
+                    card.style.setProperty('--tilt-card-x', '0deg');
+                    card.style.setProperty('--tilt-card-y', '0deg');
+                    card.style.setProperty('--depth-glow-x', '50%');
+                    card.style.setProperty('--depth-glow-y', '50%');
+                }, { passive: true });
+            });
+        }
+
+        (function initServicesAmbient() {
+            const canvas = document.getElementById('services-ambient-canvas');
+            const section = document.getElementById('servicios');
+            if (!canvas || !section) return;
+
+            const ctx = canvas.getContext('2d');
+            const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            let width = 0;
+            let height = 0;
+            let points = [];
+            let rafId = null;
+            let running = false;
+
+            function resizeAmbient() {
+                const rect = section.getBoundingClientRect();
+                const ratio = Math.min(window.devicePixelRatio, 1.5);
+                width = canvas.width = Math.round(rect.width * ratio);
+                height = canvas.height = Math.round(rect.height * ratio);
+                canvas.style.width = `${rect.width}px`;
+                canvas.style.height = `${rect.height}px`;
+                const count = window.innerWidth < 768 ? 18 : 34;
+                points = Array.from({ length: count }, () => ({
+                    x: Math.random() * width,
+                    y: Math.random() * height,
+                    vx: (Math.random() - 0.5) * (reduced ? 0.12 : 0.28),
+                    vy: (Math.random() - 0.5) * (reduced ? 0.12 : 0.28),
+                    r: 1.2 + Math.random() * 2.1
+                }));
+            }
+
+            function drawAmbient() {
+                if (!running) return;
+                ctx.clearRect(0, 0, width, height);
+                ctx.save();
+                ctx.globalCompositeOperation = 'multiply';
+
+                for (let i = 0; i < points.length; i++) {
+                    const point = points[i];
+                    point.x += point.vx;
+                    point.y += point.vy;
+                    if (point.x < -20) point.x = width + 20;
+                    if (point.x > width + 20) point.x = -20;
+                    if (point.y < -20) point.y = height + 20;
+                    if (point.y > height + 20) point.y = -20;
+
+                    ctx.beginPath();
+                    ctx.fillStyle = 'rgba(37, 99, 235, 0.14)';
+                    ctx.arc(point.x, point.y, point.r, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    for (let j = i + 1; j < points.length; j++) {
+                        const other = points[j];
+                        const dx = point.x - other.x;
+                        const dy = point.y - other.y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+                        if (dist < 160) {
+                            ctx.strokeStyle = `rgba(14, 165, 233, ${0.08 * (1 - dist / 160)})`;
+                            ctx.lineWidth = 1;
+                            ctx.beginPath();
+                            ctx.moveTo(point.x, point.y);
+                            ctx.lineTo(other.x, other.y);
+                            ctx.stroke();
+                        }
+                    }
+                }
+                ctx.restore();
+                rafId = requestAnimationFrame(drawAmbient);
+            }
+
+            function startAmbient() {
+                if (running) return;
+                running = true;
+                drawAmbient();
+            }
+
+            function stopAmbient() {
+                running = false;
+                cancelAnimationFrame(rafId);
+            }
+
+            resizeAmbient();
+            window.addEventListener('resize', resizeAmbient, { passive: true });
+            if ('IntersectionObserver' in window) {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => entry.isIntersecting ? startAmbient() : stopAmbient());
+                }, { threshold: 0.08 });
+                observer.observe(section);
+            } else {
+                startAmbient();
+            }
+        })();
+
+        (function initServiceFeatureVisual() {
+            const canvas = document.getElementById('service-feature-canvas');
+            const panel = document.getElementById('service-feature-visual');
+            if (!canvas || !panel) return;
+
+            const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            const pointer = { x: 0, y: 0 };
+            let started = false;
+
+            function startVisual() {
+                if (started) return;
+                started = true;
+
+                import('https://unpkg.com/three@0.164.1/build/three.module.js')
+                    .then((THREE) => {
+                        const scene = new THREE.Scene();
+                        const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 100);
+                        camera.position.set(0, 0, 7);
+
+                        const renderer = new THREE.WebGLRenderer({
+                            canvas,
+                            alpha: true,
+                            antialias: true,
+                            powerPreference: 'high-performance'
+                        });
+                        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.75));
+
+                        const group = new THREE.Group();
+                        scene.add(group);
+
+                        const glassMaterial = new THREE.MeshPhysicalMaterial({
+                            color: 0x7dd3fc,
+                            metalness: 0.28,
+                            roughness: 0.18,
+                            transmission: 0.15,
+                            transparent: true,
+                            opacity: 0.42,
+                            emissive: 0x0ea5e9,
+                            emissiveIntensity: 0.12
+                        });
+                        const sphere = new THREE.Mesh(new THREE.SphereGeometry(1.1, 48, 48), glassMaterial);
+                        group.add(sphere);
+
+                        const ringMaterial = new THREE.MeshBasicMaterial({
+                            color: 0xbfdbfe,
+                            transparent: true,
+                            opacity: 0.46
+                        });
+                        const rings = [];
+                        [1.55, 2.05, 2.55].forEach((radius, index) => {
+                            const ring = new THREE.Mesh(new THREE.TorusGeometry(radius, 0.012, 10, 180), ringMaterial.clone());
+                            ring.rotation.x = Math.PI / 2 + index * 0.36;
+                            ring.rotation.y = index * 0.56;
+                            ring.material.opacity = 0.18 + index * 0.1;
+                            rings.push(ring);
+                            group.add(ring);
+                        });
+
+                        const pointCount = window.innerWidth < 768 ? 45 : 90;
+                        const positions = new Float32Array(pointCount * 3);
+                        for (let i = 0; i < pointCount; i++) {
+                            const angle = i * 0.72;
+                            const radius = 1.35 + Math.random() * 1.45;
+                            positions[i * 3] = Math.cos(angle) * radius;
+                            positions[i * 3 + 1] = (Math.random() - 0.5) * 2.8;
+                            positions[i * 3 + 2] = Math.sin(angle) * radius;
+                        }
+                        const pointGeometry = new THREE.BufferGeometry();
+                        pointGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+                        const points = new THREE.Points(pointGeometry, new THREE.PointsMaterial({
+                            color: 0x93c5fd,
+                            size: 0.045,
+                            transparent: true,
+                            opacity: 0.82,
+                            blending: THREE.AdditiveBlending,
+                            depthWrite: false
+                        }));
+                        group.add(points);
+
+                        scene.add(new THREE.AmbientLight(0xffffff, 1.2));
+                        const light = new THREE.PointLight(0x7dd3fc, 14, 14);
+                        light.position.set(-2.4, 2.2, 4);
+                        scene.add(light);
+                        const lightTwo = new THREE.PointLight(0x2563eb, 10, 14);
+                        lightTwo.position.set(2, -1.8, 4);
+                        scene.add(lightTwo);
+
+                        function resize() {
+                            const rect = panel.getBoundingClientRect();
+                            renderer.setSize(rect.width, rect.height, false);
+                            camera.aspect = rect.width / rect.height;
+                            camera.updateProjectionMatrix();
+                        }
+
+                        panel.addEventListener('pointermove', (event) => {
+                            const rect = panel.getBoundingClientRect();
+                            pointer.x = ((event.clientX - rect.left) / rect.width - 0.5) * 2;
+                            pointer.y = ((event.clientY - rect.top) / rect.height - 0.5) * 2;
+                        }, { passive: true });
+
+                        panel.addEventListener('pointerleave', () => {
+                            pointer.x = 0;
+                            pointer.y = 0;
+                        }, { passive: true });
+
+                        resize();
+                        window.addEventListener('resize', resize, { passive: true });
+
+                        let frame = 0;
+                        function animate() {
+                            frame += prefersReducedMotion ? 0.003 : 0.01;
+                            group.rotation.y += (pointer.x * 0.22 - group.rotation.y) * 0.04;
+                            group.rotation.x += (-pointer.y * 0.16 - group.rotation.x) * 0.04;
+                            sphere.rotation.y += prefersReducedMotion ? 0.0015 : 0.006;
+                            sphere.rotation.x += prefersReducedMotion ? 0.001 : 0.003;
+                            points.rotation.y = frame * 0.65;
+                            points.rotation.x = Math.sin(frame * 0.7) * 0.16;
+                            rings.forEach((ring, index) => {
+                                ring.rotation.z += 0.003 + index * 0.001;
+                                ring.scale.setScalar(1 + Math.sin(frame * 1.8 + index) * 0.025);
+                            });
+                            renderer.render(scene, camera);
+                            requestAnimationFrame(animate);
+                        }
+                        animate();
+                    })
+                    .catch(() => {
+                        canvas.style.display = 'none';
+                    });
+            }
+
+            if ('IntersectionObserver' in window) {
+                const observer = new IntersectionObserver((entries) => {
+                    if (entries.some(entry => entry.isIntersecting)) {
+                        startVisual();
+                        observer.disconnect();
+                    }
+                }, { rootMargin: '180px 0px' });
+                observer.observe(panel);
+            } else {
+                startVisual();
+            }
+        })();
+
+        (function initTechThree() {
+            const canvas = document.getElementById('tech-three-canvas');
+            const panel = document.querySelector('.tech-three-panel');
+            if (!canvas || !panel) return;
+
+            const pointer = { x: 0, y: 0 };
+            const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            let techStarted = false;
+
+            function startTechScene() {
+                if (techStarted) return;
+                techStarted = true;
+            import('https://unpkg.com/three@0.164.1/build/three.module.js')
+                .then((THREE) => {
+                    const scene = new THREE.Scene();
+                    const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 100);
+                    camera.position.set(0, 0, 8);
+
+                    const renderer = new THREE.WebGLRenderer({
+                        canvas,
+                        alpha: true,
+                        antialias: true,
+                        powerPreference: 'high-performance'
+                    });
+                    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+                    const group = new THREE.Group();
+                    scene.add(group);
+
+                    const coreGeometry = new THREE.IcosahedronGeometry(1.22, 3);
+                    const coreMaterial = new THREE.MeshStandardMaterial({
+                        color: 0x7dd3fc,
+                        roughness: 0.28,
+                        metalness: 0.72,
+                        transparent: true,
+                        opacity: 0.86,
+                        emissive: 0x155e75,
+                        emissiveIntensity: 0.28,
+                        wireframe: true
+                    });
+                    const core = new THREE.Mesh(coreGeometry, coreMaterial);
+                    group.add(core);
+
+                    const glowGeometry = new THREE.TorusGeometry(2.0, 0.012, 12, 180);
+                    const glowMaterial = new THREE.MeshBasicMaterial({
+                        color: 0x38bdf8,
+                        transparent: true,
+                        opacity: 0.55
+                    });
+                    const rings = [];
+                    for (let i = 0; i < 3; i++) {
+                        const ring = new THREE.Mesh(glowGeometry, glowMaterial.clone());
+                        ring.rotation.x = Math.PI / 2 + i * 0.72;
+                        ring.rotation.y = i * 0.54;
+                        ring.material.opacity = 0.2 + i * 0.12;
+                        rings.push(ring);
+                        group.add(ring);
+                    }
+
+                    const particleCount = window.innerWidth < 768 ? 150 : 260;
+                    const positions = new Float32Array(particleCount * 3);
+                    const colors = new Float32Array(particleCount * 3);
+                    const colorA = new THREE.Color(0x7dd3fc);
+                    const colorB = new THREE.Color(0x2563eb);
+                    for (let i = 0; i < particleCount; i++) {
+                        const t = i / particleCount;
+                        const angle = t * Math.PI * 10;
+                        const radius = 2.0 + Math.sin(t * Math.PI * 6) * 0.52 + Math.random() * 0.3;
+                        positions[i * 3] = Math.cos(angle) * radius;
+                        positions[i * 3 + 1] = (t - 0.5) * 4.2 + (Math.random() - 0.5) * 0.22;
+                        positions[i * 3 + 2] = Math.sin(angle) * radius + (Math.random() - 0.5) * 0.35;
+                        const mixed = colorA.clone().lerp(colorB, Math.random() * 0.75);
+                        colors[i * 3] = mixed.r;
+                        colors[i * 3 + 1] = mixed.g;
+                        colors[i * 3 + 2] = mixed.b;
+                    }
+                    const particleGeometry = new THREE.BufferGeometry();
+                    particleGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+                    particleGeometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+                    const particleMaterial = new THREE.PointsMaterial({
+                        size: 0.045,
+                        vertexColors: true,
+                        transparent: true,
+                        opacity: 0.92,
+                        blending: THREE.AdditiveBlending,
+                        depthWrite: false
+                    });
+                    const particleCloud = new THREE.Points(particleGeometry, particleMaterial);
+                    group.add(particleCloud);
+
+                    const ambient = new THREE.AmbientLight(0xffffff, 1.7);
+                    scene.add(ambient);
+                    const blueLight = new THREE.PointLight(0x38bdf8, 22, 18);
+                    blueLight.position.set(-3.2, 2.5, 4);
+                    scene.add(blueLight);
+                    const whiteLight = new THREE.PointLight(0xffffff, 12, 16);
+                    whiteLight.position.set(3, -2, 5);
+                    scene.add(whiteLight);
+
+                    function resizeTechScene() {
+                        const rect = panel.getBoundingClientRect();
+                        renderer.setSize(rect.width, rect.height, false);
+                        camera.aspect = rect.width / rect.height;
+                        camera.updateProjectionMatrix();
+                    }
+
+                    panel.addEventListener('pointermove', (event) => {
+                        const rect = panel.getBoundingClientRect();
+                        pointer.x = ((event.clientX - rect.left) / rect.width - 0.5) * 2;
+                        pointer.y = ((event.clientY - rect.top) / rect.height - 0.5) * 2;
+                        panel.style.setProperty('--tech-x', `${((event.clientX - rect.left) / rect.width) * 100}%`);
+                        panel.style.setProperty('--tech-y', `${((event.clientY - rect.top) / rect.height) * 100}%`);
+                    }, { passive: true });
+
+                    panel.addEventListener('pointerleave', () => {
+                        pointer.x = 0;
+                        pointer.y = 0;
+                        panel.style.setProperty('--tech-x', '50%');
+                        panel.style.setProperty('--tech-y', '42%');
+                    }, { passive: true });
+
+                    resizeTechScene();
+                    window.addEventListener('resize', resizeTechScene, { passive: true });
+
+                    let frame = 0;
+                    function animateTechScene() {
+                        frame += prefersReducedMotion ? 0.002 : 0.008;
+                        group.rotation.y += ((pointer.x * 0.3) - group.rotation.y) * 0.035;
+                        group.rotation.x += ((-pointer.y * 0.18) - group.rotation.x) * 0.035;
+                        group.position.x += (pointer.x * 0.18 - group.position.x) * 0.035;
+                        group.position.y += (-pointer.y * 0.12 - group.position.y) * 0.035;
+                        core.rotation.x += prefersReducedMotion ? 0.001 : 0.004;
+                        core.rotation.y += prefersReducedMotion ? 0.0015 : 0.006;
+                        particleCloud.rotation.y = frame * 0.9;
+                        particleCloud.rotation.x = Math.sin(frame * 0.6) * 0.12;
+                        rings.forEach((ring, index) => {
+                            ring.rotation.z += (0.0028 + index * 0.0012);
+                            ring.scale.setScalar(1 + Math.sin(frame * 1.5 + index) * 0.035);
+                        });
+                        renderer.render(scene, camera);
+                        requestAnimationFrame(animateTechScene);
+                    }
+                    animateTechScene();
+                })
+                .catch(() => {
+                    canvas.style.display = 'none';
+                    panel.style.background = 'linear-gradient(145deg, rgba(8,26,43,0.92), rgba(13,47,78,0.68)), radial-gradient(circle at 50% 35%, rgba(125,211,252,0.24), transparent 40%)';
+                });
+            }
+
+            if ('IntersectionObserver' in window) {
+                const observer = new IntersectionObserver((entries) => {
+                    if (entries.some(entry => entry.isIntersecting)) {
+                        startTechScene();
+                        observer.disconnect();
+                    }
+                }, { rootMargin: '220px 0px' });
+                observer.observe(panel);
+            } else {
+                startTechScene();
+            }
+        })();
+
+        const mobileDrawer = document.getElementById('mobile-drawer');
+        window.openMobileDrawer = function() {
+            mobileDrawer.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        };
+        window.closeMobileDrawer = function() {
+            mobileDrawer.classList.remove('active');
+            document.body.style.overflow = '';
+        };
+
+        document.querySelectorAll('.mobile-drawer-link').forEach(link => {
+            link.addEventListener('click', () => {
+                closeMobileDrawer();
+            });
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') closeMobileDrawer();
+        });
+
+        window.addEventListener('resize', () => {
+            if (window.innerWidth >= 1024) closeMobileDrawer();
+        });
+
         /* =================================================================
            0. DYNAMIC THEME SWITCHER
            ================================================================= */
@@ -682,7 +1702,7 @@
         };
 
         /* =================================================================
-           1. 3D BENTO SERVICES BLOCKS DATA (EXTRA TOUCH)
+           1. SERVICES BLOCKS DATA
            ================================================================= */
         const servicesData = [
             { name: "CHECK UP COMPLETO", price: "930.00", desc: "Evaluación integral de tu salud general. Incluye biometría hemática, química sanguínea extensa y perfil lipídico.", prep: "Ayuno 8 horas", time: "12 horas", size: "lg", delay: 100, category: "Preventivo", icon: "heart-pulse", tag: "Más vendido" },
@@ -694,55 +1714,75 @@
         ];
 
         const bentoContainer = document.getElementById('bento-container');
+        const serviceEmpty = document.getElementById('services-empty');
+        const serviceSearch = document.getElementById('service-search');
+        let currentServiceFilter = 'Todos';
+        let currentServiceSearch = '';
 
-        function renderServices(filter = 'Todos') {
-            const visibleServices = filter === 'Todos' ? servicesData : servicesData.filter(s => s.category === filter);
+        function renderServices(filter = currentServiceFilter, search = currentServiceSearch) {
+            currentServiceFilter = filter;
+            currentServiceSearch = search;
+            const normalizedSearch = search.trim().toLowerCase();
+            const visibleServices = servicesData.filter(s => {
+                const matchesFilter = filter === 'Todos' || s.category === filter;
+                const haystack = `${s.name} ${s.desc} ${s.category} ${s.tag}`.toLowerCase();
+                const matchesSearch = !normalizedSearch || haystack.includes(normalizedSearch);
+                return matchesFilter && matchesSearch;
+            });
+
+            if (serviceEmpty) {
+                serviceEmpty.classList.toggle('hidden', visibleServices.length !== 0);
+            }
+
+            if (!visibleServices.length) {
+                bentoContainer.innerHTML = '';
+                lucide.createIcons({root: document.getElementById('servicios')});
+                if (window.AOS) AOS.refreshHard();
+                return;
+            }
+
             bentoContainer.innerHTML = visibleServices.map(s => {
-            let colSpan = s.size === 'lg' ? 'lg:col-span-2 lg:row-span-2 bento-card-dark bg-[#0A1C2E] text-white shadow-2xl' 
-                        : s.size === 'wide' ? 'lg:col-span-2 bg-white border border-gray-100 shadow-xl' 
-                        : 'bg-white border border-gray-100 shadow-xl';
-            
-            let titleColor = s.size === 'lg' ? 'text-white' : 'text-[#0A1C2E]';
-            let priceColor = s.size === 'lg' ? 'text-blue-400' : 'text-blue-600';
-            let iconBg = s.size === 'lg' ? 'bg-blue-900/50' : 'bg-blue-50';
+            const featured = s.size === 'lg';
+            const cardShell = featured
+                ? 'bento-card-dark text-white shadow-2xl border border-white/10'
+                : 'bg-white border border-gray-100 shadow-xl';
+            const titleColor = featured ? 'text-white' : 'text-[#0A1C2E]';
+            const textColor = featured ? 'text-white/80' : 'text-gray-500';
+            const priceColor = featured ? 'text-blue-300' : 'text-blue-600';
+            const iconBg = featured ? 'bg-white/10 text-white border border-white/10' : 'bg-blue-50 text-blue-600';
+            const chipBg = featured ? 'bg-white/10 text-white/90 border border-white/10' : 'bg-gray-50 text-gray-700 border border-gray-100';
 
             return `
-                <div class="bento-card rounded-[2.5rem] p-8 flex flex-col justify-between cursor-pointer ${colSpan}" data-aos="fade-up" data-aos-delay="${s.delay}">
-                    <div class="absolute top-6 right-6 z-10 px-3 py-1.5 rounded-full ${s.size === 'lg' ? 'bg-white/10 text-blue-100 border-white/10' : 'bg-blue-50 text-blue-700 border-blue-100'} border text-[11px] font-black uppercase tracking-widest">${s.tag}</div>
-                    <div class="relative z-10">
-                        <div class="w-14 h-14 rounded-2xl ${iconBg} flex items-center justify-center mb-6 shadow-inner">
-                            <i data-lucide="${s.icon}" class="w-7 h-7 ${s.size === 'lg' ? 'text-blue-300' : 'text-blue-600'}"></i>
+                <div class="bento-card interactive-depth premium-surface ${cardShell} rounded-[2rem] p-6 md:p-7 flex flex-col justify-between min-h-[320px]" data-aos="fade-up" data-aos-delay="${s.delay}">
+                    <div class="flex items-start justify-between gap-4">
+                        <div class="w-14 h-14 rounded-2xl ${iconBg} flex items-center justify-center shrink-0 shadow-sm">
+                            <i data-lucide="${s.icon}" class="w-7 h-7"></i>
                         </div>
-                        <h3 class="font-outfit font-black text-3xl ${titleColor} mb-4 leading-tight tracking-tight">${s.name}</h3>
-                        <p class="${s.size === 'lg' ? 'text-gray-300' : 'text-gray-500'} text-base font-medium leading-relaxed">${s.desc}</p>
+                        <div class="px-3 py-1.5 rounded-full ${featured ? 'bg-white/10 text-white/90 border border-white/10' : 'bg-blue-50 text-blue-700 border border-blue-100'} text-[11px] font-black uppercase tracking-[0.22em]">${s.tag}</div>
                     </div>
-                    <div class="mt-8 flex justify-between items-end relative z-10">
+                    <div class="mt-5">
+                        <p class="text-[11px] uppercase tracking-[0.28em] font-black ${featured ? 'text-blue-200' : 'text-gray-400'} mb-3">${s.category}</p>
+                        <h3 class="font-outfit font-black text-3xl md:text-[2rem] ${titleColor} leading-[1.02] tracking-tight">${s.name}</h3>
+                    </div>
+                    <p class="${textColor} text-base leading-relaxed mt-4 max-w-[34ch]">${s.desc}</p>
+                    <div class="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div class="${chipBg} rounded-2xl px-4 py-3">
+                            <p class="text-[11px] uppercase tracking-[0.22em] font-black ${featured ? 'text-white/60' : 'text-gray-400'} mb-1">Prep</p>
+                            <p class="text-sm font-extrabold ${featured ? 'text-white' : 'text-[#0A1C2E]'}">${s.prep}</p>
+                        </div>
+                        <div class="${chipBg} rounded-2xl px-4 py-3">
+                            <p class="text-[11px] uppercase tracking-[0.22em] font-black ${featured ? 'text-white/60' : 'text-gray-400'} mb-1">Entrega</p>
+                            <p class="text-sm font-extrabold ${featured ? 'text-white' : 'text-[#0A1C2E]'}">${s.time}</p>
+                        </div>
+                    </div>
+                    <div class="mt-6 flex items-center justify-between gap-4">
                         <div>
-                            <p class="text-xs uppercase tracking-widest ${s.size === 'lg' ? 'text-blue-200' : 'text-gray-400'} font-black mb-1">${s.category}</p>
-                            <span class="font-black text-4xl ${priceColor}">$${s.price}</span>
+                            <p class="text-[11px] uppercase tracking-[0.24em] font-black ${featured ? 'text-blue-200' : 'text-gray-400'} mb-1">Desde</p>
+                            <p class="font-black text-4xl ${priceColor}">$${s.price}</p>
                         </div>
-                        <span class="w-12 h-12 rounded-2xl ${s.size === 'lg' ? 'bg-white/10 text-white' : 'bg-gray-100 text-gray-800'} flex items-center justify-center transition-colors shadow-sm"><i data-lucide="arrow-up-right" class="w-6 h-6"></i></span>
-                    </div>
-
-                    <!-- Ficha Técnica Overlay -->
-                    <div class="content-overlay rounded-[2.5rem]">
-                        <div class="flex justify-between items-start mb-6">
-                            <h4 class="font-outfit font-black text-2xl leading-tight pr-4">${s.name}</h4>
-                            <div class="shrink-0 w-10 h-10 rounded-full bg-red-50 text-red-500 flex items-center justify-center shadow-inner cursor-pointer hover:bg-red-100 transition"><i data-lucide="x" class="w-5 h-5"></i></div>
-                        </div>
-                        <div class="space-y-4 mb-8">
-                            <div class="bg-gray-50/50 p-4 rounded-2xl border border-gray-100 shadow-sm backdrop-blur">
-                                <p class="text-xs text-gray-500 uppercase font-bold tracking-widest mb-1.5 flex items-center"><i data-lucide="coffee" class="w-3.5 h-3.5 mr-2 text-blue-500"></i> Preparación</p>
-                                <p class="text-base font-bold">${s.prep}</p>
-                            </div>
-                            <div class="bg-gray-50/50 p-4 rounded-2xl border border-gray-100 shadow-sm backdrop-blur">
-                                <p class="text-xs text-gray-500 uppercase font-bold tracking-widest mb-1.5 flex items-center"><i data-lucide="clock" class="w-3.5 h-3.5 mr-2 text-blue-500"></i> Entrega</p>
-                                <p class="text-base font-bold">${s.time}</p>
-                            </div>
-                        </div>
-                        <button class="w-full py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl font-black text-lg shadow-[0_10px_20px_rgba(37,99,235,0.3)] transition-transform hover:scale-[1.02]">
-                            Agendar por $${s.price}
-                        </button>
+                        <a href="https://wa.me/5211234567890?text=Hola%20BIOS,%20quiero%20informes%20sobre%20${encodeURIComponent(s.name)}" target="_blank" class="magnetic-action inline-flex items-center gap-2 px-4 py-3 rounded-2xl ${featured ? 'bg-white text-[#0A1C2E]' : 'bg-[#0A1C2E] text-white'} font-black text-sm shadow-lg transition hover:-translate-y-0.5">
+                            <i data-lucide="message-circle" class="w-4 h-4"></i> Informes
+                        </a>
                     </div>
                 </div>
             `;
@@ -756,6 +1796,7 @@
                     card.style.setProperty('--mouse-y', `${event.clientY - rect.top}px`);
                 });
             });
+            enhanceDepthCards();
             if (window.AOS) AOS.refreshHard();
         }
 
@@ -764,7 +1805,7 @@
         window.filterServices = function(filter, activeButton) {
             document.querySelectorAll('.service-chip').forEach(item => item.classList.remove('active'));
             if (activeButton) activeButton.classList.add('active');
-            renderServices(filter);
+            renderServices(filter, currentServiceSearch);
         };
 
         document.querySelectorAll('.service-chip').forEach(chip => {
@@ -772,6 +1813,12 @@
                 window.filterServices(chip.dataset.filter, chip);
             });
         });
+
+        if (serviceSearch) {
+            serviceSearch.addEventListener('input', (event) => {
+                renderServices(currentServiceFilter, event.target.value);
+            });
+        }
 
         /* =================================================================
            2. VERBATIM UNITS LOCATOR
@@ -790,7 +1837,7 @@
 
         const unitsList = document.getElementById('units-list');
         unitsList.innerHTML = unitsData.map((u, i) => `
-            <div class="bg-white border border-gray-100 p-6 rounded-[2rem] cursor-pointer hover:bg-blue-50 hover:border-blue-300 transition-all shadow-sm hover:shadow-md group" onclick="focusUnit(${i})">
+            <div class="interactive-depth premium-surface bg-white border border-gray-100 p-6 rounded-[2rem] cursor-pointer hover:bg-blue-50 hover:border-blue-300 transition-all shadow-sm hover:shadow-md group" onclick="focusUnit(${i})">
                 <h4 class="font-outfit font-black text-xl text-[#0A1C2E] mb-2 group-hover:text-blue-700">${u.name}</h4>
                 <p class="text-sm text-gray-500 font-medium leading-relaxed mb-4">${u.address}</p>
                 <div class="flex flex-wrap gap-2">
@@ -799,6 +1846,7 @@
             </div>
         `).join('');
         lucide.createIcons({root: unitsList});
+        enhanceDepthCards(unitsList);
 
         unitsData.forEach((u, i) => {
             const marker = L.marker([u.lat, u.lng]).addTo(map);
