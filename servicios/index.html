@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Servicios BIOS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="../assets/multipage.css">
+</head>
+<body>
+    <div class="page-shell">
+        <header class="site-header">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+                <a href="../" class="flex items-center gap-3">
+                    <img src="../logos/P2.png" alt="BIOS" class="h-14 brightness-0 invert" onerror="this.src='https://placehold.co/150x54/0A1C2E/FFFFFF?text=BIOS'">
+                </a>
+                <nav class="hidden lg:flex items-center gap-6">
+                    <a class="nav-link" href="../">Inicio</a>
+                    <a class="nav-link active" href="../servicios/">Servicios</a>
+                    <a class="nav-link" href="../seguimiento/">Seguimiento</a>
+                    <a class="nav-link" href="../sucursales/">Sucursales</a>
+                    <a class="nav-link" href="../conocenos/">Conócenos</a>
+                    <a class="nav-link" href="../unete/">Únete</a>
+                </nav>
+                <a href="https://wa.me/5211234567890?text=Hola%20BIOS,%20quiero%20cotizar%20un%20estudio" class="primary-button hidden sm:inline-flex" target="_blank">
+                    <i data-lucide="message-circle" class="w-5 h-5"></i> Cotizar
+                </a>
+                <button class="secondary-button lg:hidden" onclick="toggleDrawer(true)" aria-label="Abrir menú">
+                    <i data-lucide="menu" class="w-5 h-5"></i>
+                </button>
+            </div>
+        </header>
+
+        <div id="drawer" class="drawer fixed inset-0 z-50 lg:hidden">
+            <div class="absolute inset-0 bg-slate-950/50" onclick="toggleDrawer(false)"></div>
+            <aside class="drawer-panel absolute right-0 top-0 h-full w-[min(86vw,360px)] bg-white p-5 shadow-2xl">
+                <div class="flex items-center justify-between mb-6">
+                    <strong class="brand-type text-2xl text-[#0A1C2E]">BIOS</strong>
+                    <button class="secondary-button !min-h-10 !p-2" onclick="toggleDrawer(false)" aria-label="Cerrar menú"><i data-lucide="x" class="w-5 h-5"></i></button>
+                </div>
+                <div class="grid gap-2 font-black text-[#0A1C2E]">
+                    <a href="../" class="p-3 border rounded-lg">Inicio</a>
+                    <a href="../servicios/" class="p-3 border rounded-lg bg-blue-50">Servicios</a>
+                    <a href="../seguimiento/" class="p-3 border rounded-lg">Seguimiento</a>
+                    <a href="../sucursales/" class="p-3 border rounded-lg">Sucursales</a>
+                    <a href="../conocenos/" class="p-3 border rounded-lg">Conócenos</a>
+                    <a href="../unete/" class="p-3 border rounded-lg">Únete</a>
+                </div>
+            </aside>
+        </div>
+
+        <main class="page-enter">
+            <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-14">
+                <div class="grid lg:grid-cols-[0.85fr_1.15fr] gap-6 items-stretch">
+                    <div class="dark-panel p-6 lg:p-8">
+                        <span class="section-kicker !bg-white/10 !border-white/15 !text-cyan-100 mb-5"><i data-lucide="microscope" class="w-4 h-4"></i> Catálogo BIOS</span>
+                        <h1 class="brand-type mobile-tight text-5xl lg:text-6xl font-black leading-none mb-5">Estudios y paquetes</h1>
+                        <p class="text-blue-100 text-lg leading-relaxed mb-6">Busca por objetivo, categoría o preparación. Esta página ya funciona como catálogo visual sin servidor.</p>
+                        <div class="grid sm:grid-cols-3 gap-3">
+                            <div class="metric p-4"><p class="text-3xl font-black" id="total-services">0</p><p class="text-xs uppercase font-black text-cyan-100">visibles</p></div>
+                            <div class="metric p-4"><p class="text-3xl font-black">6</p><p class="text-xs uppercase font-black text-cyan-100">categorías</p></div>
+                            <div class="metric p-4"><p class="text-3xl font-black">WA</p><p class="text-xs uppercase font-black text-cyan-100">cotización</p></div>
+                        </div>
+                    </div>
+
+                    <div class="panel p-5 lg:p-6">
+                        <div class="grid md:grid-cols-[1fr_auto] gap-3 mb-5">
+                            <div class="relative">
+                                <i data-lucide="search" class="w-5 h-5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
+                                <input id="service-search" class="field pl-10" type="search" placeholder="Buscar: check up, tiroides, mastografía...">
+                            </div>
+                            <select id="sort-services" class="field md:w-52">
+                                <option value="featured">Orden recomendado</option>
+                                <option value="price-asc">Menor precio</option>
+                                <option value="time">Entrega rápida</option>
+                            </select>
+                        </div>
+                        <div id="category-tabs" class="flex flex-wrap gap-2 mb-6"></div>
+                        <div id="service-grid" class="grid md:grid-cols-2 xl:grid-cols-3 gap-4"></div>
+                        <div id="empty-state" class="hidden panel p-6 text-center mt-4">
+                            <i data-lucide="search-x" class="w-9 h-9 mx-auto text-slate-400 mb-3"></i>
+                            <p class="font-black text-[#0A1C2E]">No encontramos ese estudio.</p>
+                            <p class="text-slate-500 text-sm mt-1">Pide apoyo por WhatsApp y lo ubicamos contigo.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        const services = [
+            { name: 'Check Up Completo', category: 'Preventivo', price: 930, time: 12, prep: 'Ayuno de 8 horas', icon: 'heart-pulse', tag: 'Más vendido' },
+            { name: 'Perfil Tiroideo 3', category: 'Hormonal', price: 1400, time: 6, prep: 'Sin ayuno', icon: 'activity', tag: 'Alta demanda' },
+            { name: 'Perfil Hormonal Completo', category: 'Hormonal', price: 1200, time: 24, prep: 'Ayuno sugerido', icon: 'dna', tag: 'Especializado' },
+            { name: 'Campaña Ginecológica / Urológica', category: 'Especialidad', price: 650, time: 48, prep: 'Preparación especial', icon: 'shield-check', tag: 'Preventivo' },
+            { name: 'Check Up Masculino', category: 'Preventivo', price: 1090, time: 24, prep: 'Ayuno especial', icon: 'badge-check', tag: 'Recomendado' },
+            { name: 'Mastografía', category: 'Imagen', price: 400, time: 1, prep: 'Sin desodorante', icon: 'scan-line', tag: 'Imagen' },
+            { name: 'Electrocardiograma', category: 'Gabinete', price: 320, time: 1, prep: 'Ropa cómoda', icon: 'waveform', tag: 'Rápido' },
+            { name: 'Ultrasonido General', category: 'Imagen', price: 520, time: 2, prep: 'Depende del estudio', icon: 'scan', tag: 'Disponible' },
+            { name: 'Química Sanguínea', category: 'Laboratorio', price: 280, time: 8, prep: 'Ayuno recomendado', icon: 'test-tube', tag: 'Básico' }
+        ];
+        const categories = ['Todos', ...new Set(services.map(item => item.category))];
+        let activeCategory = 'Todos';
+
+        function money(value) {
+            return value.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' });
+        }
+
+        function renderTabs() {
+            document.getElementById('category-tabs').innerHTML = categories.map(category => `
+                <button class="chip ${category === activeCategory ? 'active' : ''}" onclick="setCategory('${category}')">${category}</button>
+            `).join('');
+        }
+
+        function filteredServices() {
+            const query = document.getElementById('service-search').value.trim().toLowerCase();
+            const sort = document.getElementById('sort-services').value;
+            const list = services.filter(item => {
+                const matchesCategory = activeCategory === 'Todos' || item.category === activeCategory;
+                const matchesQuery = !query || `${item.name} ${item.category} ${item.prep} ${item.tag}`.toLowerCase().includes(query);
+                return matchesCategory && matchesQuery;
+            });
+            if (sort === 'price-asc') list.sort((a, b) => a.price - b.price);
+            if (sort === 'time') list.sort((a, b) => a.time - b.time);
+            return list;
+        }
+
+        function renderServices() {
+            const list = filteredServices();
+            document.getElementById('total-services').textContent = list.length;
+            document.getElementById('empty-state').classList.toggle('hidden', list.length !== 0);
+            document.getElementById('service-grid').innerHTML = list.map(item => `
+                <article class="panel p-5 hover:border-blue-300 transition">
+                    <div class="flex items-start justify-between gap-3 mb-5">
+                        <div class="w-11 h-11 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center"><i data-lucide="${item.icon}" class="w-6 h-6"></i></div>
+                        <span class="text-[10px] uppercase tracking-[0.18em] font-black text-blue-600 bg-blue-50 border border-blue-100 rounded-full px-3 py-1">${item.tag}</span>
+                    </div>
+                    <p class="text-xs uppercase tracking-[0.18em] font-black text-slate-400 mb-2">${item.category}</p>
+                    <h2 class="brand-type text-2xl font-black text-[#0A1C2E] leading-tight mb-4">${item.name}</h2>
+                    <div class="grid grid-cols-2 gap-2 text-sm mb-5">
+                        <div class="bg-slate-50 border border-slate-200 rounded-lg p-3"><p class="font-black text-slate-400 text-xs uppercase">Prep</p><p class="font-bold">${item.prep}</p></div>
+                        <div class="bg-slate-50 border border-slate-200 rounded-lg p-3"><p class="font-black text-slate-400 text-xs uppercase">Entrega</p><p class="font-bold">${item.time} h aprox.</p></div>
+                    </div>
+                    <div class="flex items-center justify-between gap-3">
+                        <strong class="brand-type text-3xl text-blue-600">${money(item.price)}</strong>
+                        <a class="primary-button !min-h-10" target="_blank" href="https://wa.me/5211234567890?text=Hola%20BIOS,%20quiero%20cotizar%20${encodeURIComponent(item.name)}"><i data-lucide="message-circle" class="w-4 h-4"></i></a>
+                    </div>
+                </article>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        function setCategory(category) {
+            activeCategory = category;
+            renderTabs();
+            renderServices();
+        }
+
+        function toggleDrawer(open) {
+            document.getElementById('drawer').classList.toggle('open', open);
+        }
+
+        document.getElementById('service-search').addEventListener('input', renderServices);
+        document.getElementById('sort-services').addEventListener('change', renderServices);
+        renderTabs();
+        renderServices();
+        lucide.createIcons();
+    </script>
+</body>
+</html>

@@ -1,0 +1,206 @@
+:root {
+    --bios-navy: #0a1c2e;
+    --bios-blue: #2563eb;
+    --bios-cyan: #06b6d4;
+    --bios-green: #10b981;
+    --bios-ink: #172033;
+    --bios-line: #dbe4f0;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: #f6f8fb;
+    color: var(--bios-ink);
+    font-family: Inter, sans-serif;
+}
+
+.brand-type {
+    font-family: Outfit, sans-serif;
+    letter-spacing: 0;
+}
+
+.page-shell {
+    min-height: 100vh;
+    background:
+        linear-gradient(180deg, rgba(255,255,255,0.94), rgba(246,248,251,0.96)),
+        radial-gradient(circle at 82% 12%, rgba(6,182,212,0.16), transparent 34%),
+        radial-gradient(circle at 8% 24%, rgba(16,185,129,0.12), transparent 30%);
+}
+
+.site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(10, 28, 46, 0.96);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+}
+
+.nav-link {
+    color: rgba(255,255,255,0.78);
+    font-size: 0.875rem;
+    font-weight: 800;
+    transition: color 180ms ease, background 180ms ease;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    color: white;
+}
+
+.nav-pill {
+    border: 1px solid rgba(255,255,255,0.16);
+    background: rgba(255,255,255,0.08);
+}
+
+.section-kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border: 1px solid var(--bios-line);
+    border-radius: 999px;
+    background: white;
+    color: var(--bios-blue);
+    font-size: 0.7rem;
+    font-weight: 900;
+    letter-spacing: 0.18em;
+    padding: 0.55rem 0.8rem;
+    text-transform: uppercase;
+}
+
+.panel {
+    background: rgba(255,255,255,0.92);
+    border: 1px solid var(--bios-line);
+    border-radius: 8px;
+    box-shadow: 0 18px 48px -34px rgba(15, 23, 42, 0.45);
+}
+
+.dark-panel {
+    color: white;
+    background:
+        linear-gradient(135deg, rgba(10,28,46,0.98), rgba(15,47,74,0.98)),
+        linear-gradient(90deg, rgba(6,182,212,0.18), transparent);
+    border: 1px solid rgba(255,255,255,0.14);
+    border-radius: 8px;
+    box-shadow: 0 22px 60px -34px rgba(10, 28, 46, 0.75);
+}
+
+.metric {
+    border: 1px solid rgba(255,255,255,0.16);
+    border-radius: 8px;
+    background: rgba(255,255,255,0.1);
+}
+
+.chip {
+    border: 1px solid var(--bios-line);
+    border-radius: 999px;
+    background: white;
+    color: #475569;
+    font-size: 0.75rem;
+    font-weight: 900;
+    padding: 0.65rem 0.85rem;
+    transition: background 180ms ease, color 180ms ease, border-color 180ms ease;
+}
+
+.chip.active,
+.chip:hover {
+    border-color: var(--bios-blue);
+    background: var(--bios-blue);
+    color: white;
+}
+
+.primary-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: 8px;
+    background: var(--bios-navy);
+    color: white;
+    font-weight: 900;
+    min-height: 46px;
+    padding: 0.8rem 1rem;
+    transition: transform 180ms ease, background 180ms ease;
+}
+
+.primary-button:hover {
+    background: #102f4a;
+    transform: translateY(-1px);
+}
+
+.secondary-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border: 1px solid var(--bios-line);
+    border-radius: 8px;
+    background: white;
+    color: var(--bios-navy);
+    font-weight: 900;
+    min-height: 46px;
+    padding: 0.8rem 1rem;
+}
+
+.field {
+    width: 100%;
+    border: 1px solid var(--bios-line);
+    border-radius: 8px;
+    background: white;
+    color: var(--bios-ink);
+    outline: none;
+    min-height: 46px;
+    padding: 0.75rem 0.9rem;
+    transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.field:focus {
+    border-color: var(--bios-blue);
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.12);
+}
+
+.page-enter {
+    animation: pageEnter 520ms ease both;
+}
+
+@keyframes pageEnter {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.drawer {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 180ms ease, visibility 180ms ease;
+}
+
+.drawer.open {
+    opacity: 1;
+    visibility: visible;
+}
+
+.drawer-panel {
+    transform: translateX(100%);
+    transition: transform 220ms ease;
+}
+
+.drawer.open .drawer-panel {
+    transform: translateX(0);
+}
+
+@media (max-width: 767px) {
+    .mobile-tight {
+        font-size: clamp(2rem, 11vw, 3rem);
+        line-height: 1;
+    }
+}

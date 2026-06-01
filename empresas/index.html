@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Empresas BIOS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800;900&family=Outfit:wght@700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="../assets/multipage.css">
+</head>
+<body>
+    <div class="page-shell">
+        <header class="site-header">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+                <a href="../"><img src="../logos/P2.png" alt="BIOS" class="h-14 brightness-0 invert"></a>
+                <nav class="hidden lg:flex items-center gap-6">
+                    <a class="nav-link" href="../">Inicio</a>
+                    <a class="nav-link" href="../servicios/">Servicios</a>
+                    <a class="nav-link active" href="../empresas/">Empresas</a>
+                    <a class="nav-link" href="../sucursales/">Sucursales</a>
+                    <a class="nav-link" href="../unete/">Únete</a>
+                </nav>
+                <a href="https://wa.me/5211234567890?text=Hola%20BIOS,%20quiero%20informes%20para%20empresa" class="primary-button" target="_blank"><i data-lucide="message-circle" class="w-5 h-5"></i> Contacto</a>
+            </div>
+        </header>
+        <main class="page-enter max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-14">
+            <section class="dark-panel p-6 lg:p-8 mb-6">
+                <span class="section-kicker !bg-white/10 !border-white/15 !text-cyan-100 mb-5"><i data-lucide="building-2" class="w-4 h-4"></i> Empresas B2B</span>
+                <h1 class="brand-type mobile-tight text-5xl lg:text-6xl font-black leading-none mb-4">Programas para empresas</h1>
+                <p class="text-blue-100 text-lg">Campañas de salud, facturación, control de colaboradores y seguimiento operativo.</p>
+            </section>
+            <section class="grid md:grid-cols-3 gap-4">
+                <article class="panel p-6"><i data-lucide="users" class="w-8 h-8 text-blue-600 mb-4"></i><h2 class="brand-type text-2xl font-black text-[#0A1C2E]">Campañas</h2><p class="text-slate-500 mt-2">Paquetes preventivos por equipo o sucursal.</p></article>
+                <article class="panel p-6"><i data-lucide="file-check" class="w-8 h-8 text-blue-600 mb-4"></i><h2 class="brand-type text-2xl font-black text-[#0A1C2E]">Facturación</h2><p class="text-slate-500 mt-2">Flujo visual para RFC y razón social.</p></article>
+                <article class="panel p-6"><i data-lucide="bar-chart-3" class="w-8 h-8 text-blue-600 mb-4"></i><h2 class="brand-type text-2xl font-black text-[#0A1C2E]">Panel empresa</h2><p class="text-slate-500 mt-2">Resumen de estudios y entregas.</p></article>
+            </section>
+        </main>
+    </div>
+    <script>lucide.createIcons();</script>
+</body>
+</html>

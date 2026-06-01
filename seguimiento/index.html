@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seguimiento BIOS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="../assets/multipage.css">
+</head>
+<body>
+    <div class="page-shell">
+        <header class="site-header">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+                <a href="../"><img src="../logos/P2.png" alt="BIOS" class="h-14 brightness-0 invert" onerror="this.src='https://placehold.co/150x54/0A1C2E/FFFFFF?text=BIOS'"></a>
+                <nav class="hidden lg:flex items-center gap-6">
+                    <a class="nav-link" href="../">Inicio</a>
+                    <a class="nav-link" href="../servicios/">Servicios</a>
+                    <a class="nav-link active" href="../seguimiento/">Seguimiento</a>
+                    <a class="nav-link" href="../sucursales/">Sucursales</a>
+                    <a class="nav-link" href="../conocenos/">Conócenos</a>
+                    <a class="nav-link" href="../unete/">Únete</a>
+                </nav>
+                <a href="../servicios/" class="primary-button hidden sm:inline-flex"><i data-lucide="search" class="w-5 h-5"></i> Buscar estudio</a>
+                <button class="secondary-button lg:hidden" onclick="toggleDrawer(true)" aria-label="Abrir menú"><i data-lucide="menu" class="w-5 h-5"></i></button>
+            </div>
+        </header>
+
+        <div id="drawer" class="drawer fixed inset-0 z-50 lg:hidden">
+            <div class="absolute inset-0 bg-slate-950/50" onclick="toggleDrawer(false)"></div>
+            <aside class="drawer-panel absolute right-0 top-0 h-full w-[min(86vw,360px)] bg-white p-5 shadow-2xl">
+                <div class="flex items-center justify-between mb-6">
+                    <strong class="brand-type text-2xl text-[#0A1C2E]">BIOS</strong>
+                    <button class="secondary-button !min-h-10 !p-2" onclick="toggleDrawer(false)" aria-label="Cerrar menú"><i data-lucide="x" class="w-5 h-5"></i></button>
+                </div>
+                <div class="grid gap-2 font-black text-[#0A1C2E]">
+                    <a href="../" class="p-3 border rounded-lg">Inicio</a>
+                    <a href="../servicios/" class="p-3 border rounded-lg">Servicios</a>
+                    <a href="../seguimiento/" class="p-3 border rounded-lg bg-blue-50">Seguimiento</a>
+                    <a href="../sucursales/" class="p-3 border rounded-lg">Sucursales</a>
+                    <a href="../conocenos/" class="p-3 border rounded-lg">Conócenos</a>
+                    <a href="../unete/" class="p-3 border rounded-lg">Únete</a>
+                </div>
+            </aside>
+        </div>
+
+        <main class="page-enter">
+            <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-14">
+                <div class="grid lg:grid-cols-[420px_1fr] gap-6 items-start">
+                    <aside class="dark-panel p-6 lg:p-8">
+                        <span class="section-kicker !bg-white/10 !border-white/15 !text-cyan-100 mb-5"><i data-lucide="timer" class="w-4 h-4"></i> Tracker BIOS</span>
+                        <h1 class="brand-type mobile-tight text-5xl font-black leading-none mb-5">Rastrea tus estudios</h1>
+                        <form id="tracker-form" class="grid gap-3 mb-5">
+                            <input id="folio-input" class="field" type="text" placeholder="BIOS-2026-014">
+                            <button class="primary-button !bg-white !text-[#0A1C2E]" type="submit"><i data-lucide="scan-search" class="w-5 h-5"></i> Buscar folio</button>
+                        </form>
+                        <div class="flex flex-wrap gap-2 mb-6">
+                            <button class="chip !bg-white/10 !border-white/15 !text-white" onclick="loadFolio('BIOS-2026-014')">BIOS-2026-014</button>
+                            <button class="chip !bg-white/10 !border-white/15 !text-white" onclick="loadFolio('BIOS-2026-021')">BIOS-2026-021</button>
+                            <button class="chip !bg-white/10 !border-white/15 !text-white" onclick="loadFolio('BIOS-2026-033')">BIOS-2026-033</button>
+                        </div>
+                        <div class="metric p-5">
+                            <p class="text-xs uppercase tracking-[0.18em] font-black text-cyan-100 mb-2">Tiempo restante</p>
+                            <p id="countdown" class="brand-type text-5xl font-black leading-none">--:--:--</p>
+                            <p id="folio-note" class="text-blue-100 text-sm mt-3">Listo para consultar.</p>
+                        </div>
+                    </aside>
+
+                    <div class="grid gap-5">
+                        <div class="panel p-5 lg:p-6">
+                            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-5">
+                                <div>
+                                    <p class="text-xs uppercase tracking-[0.18em] font-black text-slate-400">Folio activo</p>
+                                    <h2 id="active-folio" class="brand-type text-3xl font-black text-[#0A1C2E]">BIOS-2026-014</h2>
+                                </div>
+                                <div class="grid grid-cols-2 gap-3 min-w-[260px]">
+                                    <div class="bg-slate-50 border border-slate-200 rounded-lg p-3"><p class="text-xs uppercase font-black text-slate-400">Sucursal</p><p id="branch" class="font-black">Plaza Cantú</p></div>
+                                    <div class="bg-slate-50 border border-slate-200 rounded-lg p-3"><p class="text-xs uppercase font-black text-slate-400">Paciente</p><p id="patient" class="font-black">María L.</p></div>
+                                </div>
+                            </div>
+                            <div class="h-4 bg-slate-100 rounded-full overflow-hidden mb-4">
+                                <div id="progress-bar" class="h-full bg-gradient-to-r from-emerald-500 via-cyan-500 to-blue-600 rounded-full transition-all duration-500" style="width: 10%;"></div>
+                            </div>
+                            <div class="flex items-center justify-between gap-3">
+                                <p id="stage-name" class="font-black text-blue-700">Recepción</p>
+                                <p id="progress-text" class="font-black text-[#0A1C2E]">10%</p>
+                            </div>
+                        </div>
+
+                        <div id="stage-grid" class="grid sm:grid-cols-2 xl:grid-cols-4 gap-4"></div>
+
+                        <div class="grid lg:grid-cols-2 gap-5">
+                            <div class="panel p-5">
+                                <h3 class="brand-type text-2xl font-black text-[#0A1C2E] mb-3">Detalle operativo</h3>
+                                <div id="detail-list" class="grid gap-2"></div>
+                            </div>
+                            <div class="panel p-5">
+                                <h3 class="brand-type text-2xl font-black text-[#0A1C2E] mb-3">Acciones</h3>
+                                <div class="grid gap-3">
+                                    <a class="primary-button" target="_blank" href="https://wa.me/5211234567890?text=Hola%20BIOS,%20quiero%20ayuda%20con%20mi%20folio"><i data-lucide="message-circle" class="w-5 h-5"></i> Ayuda por WhatsApp</a>
+                                    <a class="secondary-button" href="../sucursales/"><i data-lucide="map-pin" class="w-5 h-5"></i> Ver sucursales</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        const stages = [
+            { name: 'Recepción', icon: 'package-check', text: 'Tu folio fue registrado.' },
+            { name: 'Análisis', icon: 'flask-conical', text: 'La muestra está en proceso.' },
+            { name: 'Validación', icon: 'badge-check', text: 'Revisión final de calidad.' },
+            { name: 'Listo', icon: 'circle-check', text: 'Resultado liberado.' }
+        ];
+        const records = {
+            'BIOS-2026-014': { branch: 'Plaza Cantú', patient: 'María L.', total: 720, readyAt: Date.now() + 37000000 },
+            'BIOS-2026-021': { branch: 'Tultepec (Nueva)', patient: 'Carlos R.', total: 300, readyAt: Date.now() + 9800000 },
+            'BIOS-2026-033': { branch: 'La Joya', patient: 'Fernanda P.', total: 180, readyAt: Date.now() + 1100000 }
+        };
+        let active = 'BIOS-2026-014';
+
+        function format(ms) {
+            const seconds = Math.max(0, Math.floor(ms / 1000));
+            const h = String(Math.floor(seconds / 3600)).padStart(2, '0');
+            const m = String(Math.floor((seconds % 3600) / 60)).padStart(2, '0');
+            const s = String(seconds % 60).padStart(2, '0');
+            return `${h}:${m}:${s}`;
+        }
+
+        function state(record) {
+            const remaining = Math.max(0, record.readyAt - Date.now());
+            const totalMs = record.total * 60 * 1000;
+            const progress = Math.min(100, Math.round((1 - remaining / totalMs) * 100));
+            const stage = remaining === 0 ? 3 : progress >= 78 ? 2 : progress >= 40 ? 1 : 0;
+            return { remaining, progress: Math.max(8, progress), stage };
+        }
+
+        function render() {
+            const record = records[active];
+            const current = state(record);
+            document.getElementById('active-folio').textContent = active;
+            document.getElementById('branch').textContent = record.branch;
+            document.getElementById('patient').textContent = record.patient;
+            document.getElementById('countdown').textContent = format(current.remaining);
+            document.getElementById('stage-name').textContent = stages[current.stage].name;
+            document.getElementById('progress-text').textContent = `${current.progress}%`;
+            document.getElementById('progress-bar').style.width = `${current.progress}%`;
+            document.getElementById('folio-note').textContent = stages[current.stage].text;
+            document.getElementById('stage-grid').innerHTML = stages.map((item, index) => `
+                <article class="panel p-5 ${index <= current.stage ? '!border-blue-300' : ''}">
+                    <div class="w-11 h-11 rounded-lg ${index <= current.stage ? 'bg-blue-600 text-white' : 'bg-slate-100 text-slate-400'} flex items-center justify-center mb-4"><i data-lucide="${item.icon}" class="w-6 h-6"></i></div>
+                    <p class="brand-type text-xl font-black text-[#0A1C2E]">${item.name}</p>
+                    <p class="text-sm text-slate-500 mt-1">${item.text}</p>
+                </article>
+            `).join('');
+            document.getElementById('detail-list').innerHTML = [
+                ['Estado', stages[current.stage].name],
+                ['Sucursal', record.branch],
+                ['Entrega estimada', current.remaining ? format(current.remaining) : 'Disponible'],
+                ['Canal', 'Portal y WhatsApp']
+            ].map(([label, value]) => `<div class="flex justify-between gap-4 border border-slate-200 rounded-lg p-3"><span class="text-slate-500 font-bold">${label}</span><strong>${value}</strong></div>`).join('');
+            lucide.createIcons();
+        }
+
+        function loadFolio(folio) {
+            active = records[folio] ? folio : 'BIOS-2026-014';
+            document.getElementById('folio-input').value = active;
+            render();
+        }
+
+        function toggleDrawer(open) {
+            document.getElementById('drawer').classList.toggle('open', open);
+        }
+
+        document.getElementById('tracker-form').addEventListener('submit', event => {
+            event.preventDefault();
+            loadFolio(document.getElementById('folio-input').value.trim().toUpperCase());
+        });
+        loadFolio(active);
+        setInterval(render, 1000);
+    </script>
+</body>
+</html>

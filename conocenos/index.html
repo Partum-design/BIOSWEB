@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conócenos BIOS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="../assets/multipage.css">
+</head>
+<body>
+    <div class="page-shell">
+        <header class="site-header">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+                <a href="../"><img src="../logos/P2.png" alt="BIOS" class="h-14 brightness-0 invert" onerror="this.src='https://placehold.co/150x54/0A1C2E/FFFFFF?text=BIOS'"></a>
+                <nav class="hidden lg:flex items-center gap-6">
+                    <a class="nav-link" href="../">Inicio</a>
+                    <a class="nav-link" href="../servicios/">Servicios</a>
+                    <a class="nav-link" href="../seguimiento/">Seguimiento</a>
+                    <a class="nav-link" href="../sucursales/">Sucursales</a>
+                    <a class="nav-link active" href="../conocenos/">Conócenos</a>
+                    <a class="nav-link" href="../unete/">Únete</a>
+                </nav>
+                <a href="../sucursales/" class="primary-button hidden sm:inline-flex"><i data-lucide="map-pin" class="w-5 h-5"></i> Sucursales</a>
+                <button class="secondary-button lg:hidden" onclick="toggleDrawer(true)" aria-label="Abrir menú"><i data-lucide="menu" class="w-5 h-5"></i></button>
+            </div>
+        </header>
+
+        <div id="drawer" class="drawer fixed inset-0 z-50 lg:hidden">
+            <div class="absolute inset-0 bg-slate-950/50" onclick="toggleDrawer(false)"></div>
+            <aside class="drawer-panel absolute right-0 top-0 h-full w-[min(86vw,360px)] bg-white p-5 shadow-2xl">
+                <div class="flex items-center justify-between mb-6">
+                    <strong class="brand-type text-2xl text-[#0A1C2E]">BIOS</strong>
+                    <button class="secondary-button !min-h-10 !p-2" onclick="toggleDrawer(false)" aria-label="Cerrar menú"><i data-lucide="x" class="w-5 h-5"></i></button>
+                </div>
+                <div class="grid gap-2 font-black text-[#0A1C2E]">
+                    <a href="../" class="p-3 border rounded-lg">Inicio</a>
+                    <a href="../servicios/" class="p-3 border rounded-lg">Servicios</a>
+                    <a href="../seguimiento/" class="p-3 border rounded-lg">Seguimiento</a>
+                    <a href="../sucursales/" class="p-3 border rounded-lg">Sucursales</a>
+                    <a href="../conocenos/" class="p-3 border rounded-lg bg-blue-50">Conócenos</a>
+                    <a href="../unete/" class="p-3 border rounded-lg">Únete</a>
+                </div>
+            </aside>
+        </div>
+
+        <main class="page-enter">
+            <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-14">
+                <div class="dark-panel p-6 lg:p-8 mb-6">
+                    <span class="section-kicker !bg-white/10 !border-white/15 !text-cyan-100 mb-5"><i data-lucide="building-2" class="w-4 h-4"></i> Laboratorios BIOS</span>
+                    <div class="grid lg:grid-cols-[0.85fr_1.15fr] gap-6 items-end">
+                        <h1 class="brand-type mobile-tight text-5xl lg:text-7xl font-black leading-none">Diagnóstico con confianza</h1>
+                        <p class="text-blue-100 text-lg leading-relaxed">Somos un laboratorio médico diagnóstico enfocado en análisis clínicos, gabinete e imagenología con atención clara, tecnología y procesos confiables.</p>
+                    </div>
+                </div>
+
+                <div class="grid lg:grid-cols-2 gap-5 mb-6">
+                    <article class="panel p-6">
+                        <i data-lucide="eye" class="w-9 h-9 text-blue-600 mb-4"></i>
+                        <h2 class="brand-type text-4xl font-black text-[#0A1C2E] mb-4">Visión</h2>
+                        <p class="text-slate-600 leading-relaxed text-lg">Ser el mejor laboratorio clínico de primera elección en México con personal de alta calidad humana y técnica comprometido con la excelencia en el servicio, utilizando eficientemente tecnología de vanguardia.</p>
+                    </article>
+                    <article class="panel p-6">
+                        <i data-lucide="target" class="w-9 h-9 text-emerald-600 mb-4"></i>
+                        <h2 class="brand-type text-4xl font-black text-[#0A1C2E] mb-4">Misión</h2>
+                        <p class="text-slate-600 leading-relaxed text-lg">Proveer servicios de análisis clínicos, gabinete e imagenología de alta calidad para ayudar a prevenir y diagnosticar enfermedades con resultados confiables y oportunos.</p>
+                    </article>
+                </div>
+
+                <div class="grid lg:grid-cols-[420px_1fr] gap-5">
+                    <aside class="panel p-6">
+                        <h2 class="brand-type text-3xl font-black text-[#0A1C2E] mb-4">Valores visibles</h2>
+                        <div class="grid gap-3">
+                            <div class="border rounded-lg p-4"><p class="font-black">Precisión</p><p class="text-sm text-slate-500">Procesos claros para resultados confiables.</p></div>
+                            <div class="border rounded-lg p-4"><p class="font-black">Trato humano</p><p class="text-sm text-slate-500">Acompañamiento simple para pacientes y médicos.</p></div>
+                            <div class="border rounded-lg p-4"><p class="font-black">Tecnología</p><p class="text-sm text-slate-500">Herramientas actualizadas para diagnóstico.</p></div>
+                        </div>
+                    </aside>
+                    <div class="panel p-6">
+                        <h2 class="brand-type text-3xl font-black text-[#0A1C2E] mb-4">Áreas de especialidad</h2>
+                        <div id="specialties" class="flex flex-wrap gap-2"></div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        const specialties = [
+            'Análisis Clínicos', 'Microbiología', 'Audiometría', 'Electrocardiograma',
+            'Electroencefalograma', 'Ecocardiograma', 'Endoscopía', 'Colonoscopía',
+            'Espirometría', 'Densitometría Ósea', 'Mastografía', 'Holter / Mapa',
+            'Pruebas Ginecológicas', 'Tomografía', 'Rayos X', 'Ultrasonidos'
+        ];
+        document.getElementById('specialties').innerHTML = specialties.map(item => `<span class="chip">${item}</span>`).join('');
+
+        function toggleDrawer(open) {
+            document.getElementById('drawer').classList.toggle('open', open);
+        }
+
+        lucide.createIcons();
+    </script>
+</body>
+</html>

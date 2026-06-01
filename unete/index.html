@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Únete a BIOS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="../assets/multipage.css">
+</head>
+<body>
+    <div class="page-shell">
+        <header class="site-header">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+                <a href="../"><img src="../logos/P2.png" alt="BIOS" class="h-14 brightness-0 invert" onerror="this.src='https://placehold.co/150x54/0A1C2E/FFFFFF?text=BIOS'"></a>
+                <nav class="hidden lg:flex items-center gap-6">
+                    <a class="nav-link" href="../">Inicio</a>
+                    <a class="nav-link" href="../servicios/">Servicios</a>
+                    <a class="nav-link" href="../seguimiento/">Seguimiento</a>
+                    <a class="nav-link" href="../sucursales/">Sucursales</a>
+                    <a class="nav-link" href="../conocenos/">Conócenos</a>
+                    <a class="nav-link active" href="../unete/">Únete</a>
+                </nav>
+                <a href="https://wa.me/5211234567890?text=Hola%20BIOS,%20quiero%20información%20de%20vacantes" class="primary-button hidden sm:inline-flex" target="_blank"><i data-lucide="message-circle" class="w-5 h-5"></i> Talento</a>
+                <button class="secondary-button lg:hidden" onclick="toggleDrawer(true)" aria-label="Abrir menú"><i data-lucide="menu" class="w-5 h-5"></i></button>
+            </div>
+        </header>
+
+        <div id="drawer" class="drawer fixed inset-0 z-50 lg:hidden">
+            <div class="absolute inset-0 bg-slate-950/50" onclick="toggleDrawer(false)"></div>
+            <aside class="drawer-panel absolute right-0 top-0 h-full w-[min(86vw,360px)] bg-white p-5 shadow-2xl">
+                <div class="flex items-center justify-between mb-6">
+                    <strong class="brand-type text-2xl text-[#0A1C2E]">BIOS</strong>
+                    <button class="secondary-button !min-h-10 !p-2" onclick="toggleDrawer(false)" aria-label="Cerrar menú"><i data-lucide="x" class="w-5 h-5"></i></button>
+                </div>
+                <div class="grid gap-2 font-black text-[#0A1C2E]">
+                    <a href="../" class="p-3 border rounded-lg">Inicio</a>
+                    <a href="../servicios/" class="p-3 border rounded-lg">Servicios</a>
+                    <a href="../seguimiento/" class="p-3 border rounded-lg">Seguimiento</a>
+                    <a href="../sucursales/" class="p-3 border rounded-lg">Sucursales</a>
+                    <a href="../conocenos/" class="p-3 border rounded-lg">Conócenos</a>
+                    <a href="../unete/" class="p-3 border rounded-lg bg-blue-50">Únete</a>
+                </div>
+            </aside>
+        </div>
+
+        <main class="page-enter">
+            <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-14">
+                <div class="grid lg:grid-cols-[1fr_420px] gap-6 items-start">
+                    <div class="grid gap-5">
+                        <div class="dark-panel p-6 lg:p-8">
+                            <span class="section-kicker !bg-white/10 !border-white/15 !text-cyan-100 mb-5"><i data-lucide="briefcase" class="w-4 h-4"></i> Talento BIOS</span>
+                            <h1 class="brand-type mobile-tight text-5xl lg:text-6xl font-black leading-none mb-5">Únete a nosotros</h1>
+                            <p class="text-blue-100 text-lg leading-relaxed">Vacantes operativas y clínicas para personas que quieren trabajar con trato humano, orden y tecnología.</p>
+                        </div>
+                        <div class="grid md:grid-cols-3 gap-4" id="job-list"></div>
+                        <div class="panel p-5">
+                            <h2 class="brand-type text-3xl font-black text-[#0A1C2E] mb-4">Ruta de contratación</h2>
+                            <div class="grid md:grid-cols-4 gap-3">
+                                <div class="border rounded-lg p-4"><i data-lucide="send" class="w-6 h-6 text-blue-600 mb-3"></i><p class="font-black">Postulación</p></div>
+                                <div class="border rounded-lg p-4"><i data-lucide="phone" class="w-6 h-6 text-blue-600 mb-3"></i><p class="font-black">Contacto</p></div>
+                                <div class="border rounded-lg p-4"><i data-lucide="users" class="w-6 h-6 text-blue-600 mb-3"></i><p class="font-black">Entrevista</p></div>
+                                <div class="border rounded-lg p-4"><i data-lucide="badge-check" class="w-6 h-6 text-blue-600 mb-3"></i><p class="font-black">Ingreso</p></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <aside class="panel p-5 lg:p-6">
+                        <h2 class="brand-type text-3xl font-black text-[#0A1C2E] mb-2">Déjanos tu perfil</h2>
+                        <p class="text-slate-500 mb-5">Este formulario es visual por ahora; listo para conectarse a backend cuando toque.</p>
+                        <form id="talent-form" class="grid gap-3">
+                            <input id="name" class="field" type="text" placeholder="Nombre completo">
+                            <input id="phone" class="field" type="tel" placeholder="WhatsApp">
+                            <select id="role" class="field">
+                                <option>Recepción de sucursal</option>
+                                <option>Toma de muestra</option>
+                                <option>Apoyo administrativo</option>
+                                <option>Soporte clínico</option>
+                            </select>
+                            <select id="branch" class="field">
+                                <option>Plaza Cantú</option>
+                                <option>La Joya</option>
+                                <option>Las Haciendas</option>
+                                <option>Tultepec (Nueva)</option>
+                            </select>
+                            <textarea id="message" class="field min-h-28" placeholder="Cuéntanos tu experiencia"></textarea>
+                            <button class="primary-button" type="submit"><i data-lucide="send" class="w-5 h-5"></i> Enviar interés</button>
+                            <p id="form-status" class="text-sm font-bold text-slate-500 min-h-6"></p>
+                        </form>
+                    </aside>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        const jobs = [
+            { title: 'Recepción de sucursal', tag: 'Activo', icon: 'concierge-bell', text: 'Atención a pacientes, agenda y seguimiento.' },
+            { title: 'Toma de muestra', tag: 'Clínico', icon: 'syringe', text: 'Apoyo en laboratorio y trato directo al paciente.' },
+            { title: 'Apoyo administrativo', tag: 'Tiempo completo', icon: 'clipboard-list', text: 'Control documental, archivo y operación.' }
+        ];
+        document.getElementById('job-list').innerHTML = jobs.map(job => `
+            <article class="panel p-5">
+                <div class="w-11 h-11 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center mb-4"><i data-lucide="${job.icon}" class="w-6 h-6"></i></div>
+                <span class="text-[10px] uppercase tracking-[0.18em] font-black text-emerald-700 bg-emerald-50 border border-emerald-100 rounded-full px-3 py-1">${job.tag}</span>
+                <h2 class="brand-type text-2xl font-black text-[#0A1C2E] mt-4 mb-2">${job.title}</h2>
+                <p class="text-slate-500">${job.text}</p>
+            </article>
+        `).join('');
+
+        document.getElementById('talent-form').addEventListener('submit', event => {
+            event.preventDefault();
+            const name = document.getElementById('name').value.trim() || 'Tu perfil';
+            const role = document.getElementById('role').value;
+            const branch = document.getElementById('branch').value;
+            document.getElementById('form-status').textContent = `${name} quedó registrado visualmente para ${role} en ${branch}.`;
+            document.getElementById('form-status').className = 'text-sm font-bold text-emerald-600 min-h-6';
+            event.target.reset();
+        });
+
+        function toggleDrawer(open) {
+            document.getElementById('drawer').classList.toggle('open', open);
+        }
+
+        lucide.createIcons();
+    </script>
+</body>
+</html>

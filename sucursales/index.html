@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sucursales BIOS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="../assets/multipage.css">
+    <style>
+        #map { min-height: 620px; border-radius: 8px; z-index: 1; }
+        @media (max-width: 767px) { #map { min-height: 420px; } }
+    </style>
+</head>
+<body>
+    <div class="page-shell">
+        <header class="site-header">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+                <a href="../"><img src="../logos/P2.png" alt="BIOS" class="h-14 brightness-0 invert" onerror="this.src='https://placehold.co/150x54/0A1C2E/FFFFFF?text=BIOS'"></a>
+                <nav class="hidden lg:flex items-center gap-6">
+                    <a class="nav-link" href="../">Inicio</a>
+                    <a class="nav-link" href="../servicios/">Servicios</a>
+                    <a class="nav-link" href="../seguimiento/">Seguimiento</a>
+                    <a class="nav-link active" href="../sucursales/">Sucursales</a>
+                    <a class="nav-link" href="../conocenos/">Conócenos</a>
+                    <a class="nav-link" href="../unete/">Únete</a>
+                </nav>
+                <a href="https://wa.me/5211234567890?text=Hola%20BIOS,%20quiero%20ubicar%20una%20sucursal" class="primary-button hidden sm:inline-flex" target="_blank"><i data-lucide="message-circle" class="w-5 h-5"></i> Ayuda</a>
+                <button class="secondary-button lg:hidden" onclick="toggleDrawer(true)" aria-label="Abrir menú"><i data-lucide="menu" class="w-5 h-5"></i></button>
+            </div>
+        </header>
+
+        <div id="drawer" class="drawer fixed inset-0 z-50 lg:hidden">
+            <div class="absolute inset-0 bg-slate-950/50" onclick="toggleDrawer(false)"></div>
+            <aside class="drawer-panel absolute right-0 top-0 h-full w-[min(86vw,360px)] bg-white p-5 shadow-2xl">
+                <div class="flex items-center justify-between mb-6">
+                    <strong class="brand-type text-2xl text-[#0A1C2E]">BIOS</strong>
+                    <button class="secondary-button !min-h-10 !p-2" onclick="toggleDrawer(false)" aria-label="Cerrar menú"><i data-lucide="x" class="w-5 h-5"></i></button>
+                </div>
+                <div class="grid gap-2 font-black text-[#0A1C2E]">
+                    <a href="../" class="p-3 border rounded-lg">Inicio</a>
+                    <a href="../servicios/" class="p-3 border rounded-lg">Servicios</a>
+                    <a href="../seguimiento/" class="p-3 border rounded-lg">Seguimiento</a>
+                    <a href="../sucursales/" class="p-3 border rounded-lg bg-blue-50">Sucursales</a>
+                    <a href="../conocenos/" class="p-3 border rounded-lg">Conócenos</a>
+                    <a href="../unete/" class="p-3 border rounded-lg">Únete</a>
+                </div>
+            </aside>
+        </div>
+
+        <main class="page-enter">
+            <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-14">
+                <div class="grid lg:grid-cols-[1fr_420px] gap-6">
+                    <div class="panel p-4">
+                        <div id="map"></div>
+                    </div>
+                    <aside class="grid gap-4 content-start">
+                        <div class="dark-panel p-6">
+                            <span class="section-kicker !bg-white/10 !border-white/15 !text-cyan-100 mb-5"><i data-lucide="map-pin" class="w-4 h-4"></i> Sucursales</span>
+                            <h1 class="brand-type mobile-tight text-5xl font-black leading-none mb-4">Mapa BIOS</h1>
+                            <p class="text-blue-100 leading-relaxed">Selecciona una sucursal para centrar el mapa. Tultepec aparece marcada como nueva.</p>
+                        </div>
+                        <div id="branch-list" class="grid gap-3"></div>
+                    </aside>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        const branches = [
+            { name: 'Unidad Plaza Cantú', badge: 'Principal', address: 'Av. Dr. Jiménez Cantú S/N, Plaza Cantú Centro Urbano, Cuautitlán Izcalli.', phones: ['55-1113-2754', '55-5871-9069'], lat: 19.6450, lng: -99.2150 },
+            { name: 'Unidad Plaza La Joya', badge: 'Alta afluencia', address: 'Carr. Cuautitlán-Melchor Ocampo esq. Libramiento La Joya.', phones: ['55-5872-9277'], lat: 19.6710, lng: -99.1820 },
+            { name: 'Unidad Plaza Las Haciendas', badge: 'Cerca de ti', address: 'Av. Huehuetoca S/N, esq. Jiménez Cantú Local D-40.', phones: ['55-5817-3401'], lat: 19.6500, lng: -99.2100 },
+            { name: 'Unidad Tepalcapa', badge: 'Express', address: 'Av. Hidalgo #140, locales 14, 15 y 16, Granjas de Guadalupe.', phones: ['55-2602-0764'], lat: 19.6300, lng: -99.2300 },
+            { name: 'Unidad Tepojaco', badge: 'Especialidad', address: 'Av. San Sebastián S/N casi esq. San Martín Caballero.', phones: ['55-5391-8066'], lat: 19.6900, lng: -99.2500 },
+            { name: 'Unidad Tultepec', badge: 'Nueva', isNew: true, address: 'Av. Joaquín Montenegro S/N, esq. Av. 2 de Marzo, Tultepec.', phones: ['55-9413-2041'], lat: 19.6850, lng: -99.1280 }
+        ];
+        const map = L.map('map', { scrollWheelZoom: false }).setView([19.66, -99.20], 12);
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', { attribution: '&copy; CARTO' }).addTo(map);
+        const markers = [];
+
+        function focusBranch(index) {
+            const branch = branches[index];
+            map.flyTo([branch.lat, branch.lng], 15, { duration: 1.1 });
+            markers[index].openPopup();
+        }
+
+        document.getElementById('branch-list').innerHTML = branches.map((branch, index) => `
+            <button class="panel p-4 text-left hover:border-blue-300 transition" onclick="focusBranch(${index})">
+                <div class="flex items-start justify-between gap-3 mb-2">
+                    <h2 class="brand-type text-xl font-black text-[#0A1C2E]">${branch.name}</h2>
+                    <span class="${branch.isNew ? 'bg-emerald-100 text-emerald-700 border-emerald-200' : 'bg-blue-50 text-blue-700 border-blue-100'} border rounded-full px-3 py-1 text-[10px] uppercase tracking-[0.18em] font-black">${branch.badge}</span>
+                </div>
+                <p class="text-sm text-slate-500 mb-3">${branch.address}</p>
+                <div class="flex flex-wrap gap-2">${branch.phones.map(phone => `<span class="text-xs font-black bg-slate-50 border border-slate-200 rounded-full px-3 py-1">${phone}</span>`).join('')}</div>
+            </button>
+        `).join('');
+
+        branches.forEach((branch, index) => {
+            const marker = L.marker([branch.lat, branch.lng]).addTo(map);
+            marker.bindPopup(`<strong>${branch.name}</strong><br>${branch.address}<br><b>${branch.badge}</b>`);
+            markers.push(marker);
+        });
+
+        function toggleDrawer(open) {
+            document.getElementById('drawer').classList.toggle('open', open);
+        }
+
+        lucide.createIcons();
+    </script>
+</body>
+</html>
