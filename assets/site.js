@@ -35,6 +35,13 @@
         { name: 'Tultepec', label: 'Nueva', address: 'Av. Joaquín Montenegro', phone: '55-9413-2041', isNew: true },
     ];
 
+    const logoThemes = [
+        { logo: 'P1', label: 'Medical Emerald', color1: '#059669', color2: '#10b981', desc: 'Verde clínico' },
+        { logo: 'P2', label: 'Clinical Blue', color1: '#1e3a8a', color2: '#3b82f6', desc: 'Azul BIOS' },
+        { logo: 'P3', label: 'High-Tech Cyan', color1: '#0891b2', color2: '#06b6d4', desc: 'Cian tecnológico' },
+        { logo: 'P4', label: 'BIOS Premium', color1: '#4f46e5', color2: '#22d3ee', desc: 'Premium digital' },
+    ];
+
     function basePath() {
         const cleanPath = window.location.pathname.replace(/\/+$/, '');
         const current = cleanPath.split('/').pop();
@@ -70,9 +77,46 @@
         `).join('');
     }
 
+    function currentTheme() {
+        const saved = localStorage.getItem('bios_logo_theme') || 'P2';
+        return logoThemes.find(theme => theme.logo === saved) || logoThemes[1];
+    }
+
+    function logoSrc(theme = currentTheme()) {
+        return `${basePath()}logos/${theme.logo}.png`;
+    }
+
+    function logoThemeMarkup() {
+        const active = currentTheme().logo;
+        return `
+            <div class="bios-panel-title">Temas visuales BIOS</div>
+            ${logoThemes.map(theme => `
+                <button type="button" class="logo-theme-option ${theme.logo === active ? 'active' : ''}" data-logo="${theme.logo}" data-color-1="${theme.color1}" data-color-2="${theme.color2}">
+                    <span class="logo-theme-swatch" style="--swatch-a:${theme.color1};--swatch-b:${theme.color2};"></span>
+                    <span>
+                        <strong>${theme.label}</strong>
+                        <small>${theme.desc}</small>
+                    </span>
+                    <i class="fa-solid ${theme.logo === active ? 'fa-circle-check' : 'fa-arrow-right'}"></i>
+                </button>
+            `).join('')}
+            <a class="bios-panel-link" href="${href('./')}"><i class="fa-solid fa-house"></i> Ir al inicio</a>
+        `;
+    }
+
+    function applyTheme(theme) {
+        if (!theme) return;
+        document.documentElement.style.setProperty('--bios-accent-1', theme.color1);
+        document.documentElement.style.setProperty('--bios-accent-2', theme.color2);
+        document.querySelectorAll('[data-bios-logo]').forEach(logo => {
+            logo.src = logoSrc(theme);
+        });
+    }
+
     function renderHeader() {
         const firstHeader = document.querySelector('header');
         if (!firstHeader) return;
+        const theme = currentTheme();
 
         document.querySelectorAll('#mobile-drawer, #drawer, .bios-mobile-drawer').forEach(item => item.remove());
         firstHeader.className = 'bios-main-header';
@@ -86,9 +130,13 @@
             </div>
             <div class="bios-wrap bios-header-body">
                 <div class="bios-brand-group">
-                    <a href="${href('./')}" class="bios-brand">
-                        <img id="global-logo" src="${basePath()}logos/P2.png" alt="BIOS" onerror="this.src='https://placehold.co/200x70/0A1C2E/FFF?text=BIOS'">
-                    </a>
+                    <div class="bios-logo-switcher">
+                        <button type="button" id="logo-switcher-button" class="bios-brand" aria-label="Cambiar tema visual">
+                            <img id="global-logo" data-bios-logo src="${logoSrc(theme)}" alt="BIOS" onerror="this.src='https://placehold.co/200x70/0A1C2E/FFF?text=BIOS'">
+                            <span><i class="fa-solid fa-chevron-down"></i></span>
+                        </button>
+                        <div id="logo-dropdown" class="bios-floating-panel logo-panel">${logoThemeMarkup()}</div>
+                    </div>
                     <div class="bios-clinic-select">
                         <button type="button" id="clinic-button" class="bios-clinic-button">
                             <i class="fa-solid fa-location-dot"></i>
@@ -118,7 +166,6 @@
             </div>
             <div class="bios-secondary-nav">
                 <div class="bios-wrap bios-secondary-inner">
-                    <a class="bios-services-tab" href="${href('servicios/')}"><i class="fa-solid fa-bars-staggered"></i> Servicios</a>
                     ${navMarkup()}
                     <a class="bios-profile-tab" href="${href('portal/')}"><i class="fa-solid fa-shield-heart"></i> Perfil Prevención</a>
                 </div>
@@ -147,6 +194,7 @@
         firstHeader.insertAdjacentElement('afterend', drawer);
 
         bindHeaderInteractions(drawer);
+        applyTheme(theme);
     }
 
     function renderClinicDropdown() {
@@ -204,6 +252,8 @@
     function bindHeaderInteractions(drawer) {
         const clinicButton = document.getElementById('clinic-button');
         const clinicDropdown = document.getElementById('clinic-dropdown');
+        const logoButton = document.getElementById('logo-switcher-button');
+        const logoDropdown = document.getElementById('logo-dropdown');
         const search = document.getElementById('global-service-search');
         const searchPanel = document.getElementById('global-service-results');
         const menuButton = document.getElementById('bios-menu-button');
@@ -220,6 +270,23 @@
             event.stopPropagation();
             clinicDropdown.classList.toggle('open');
             searchPanel?.classList.remove('open');
+        });
+
+        logoButton?.addEventListener('click', (event) => {
+            event.stopPropagation();
+            logoDropdown.classList.toggle('open');
+            clinicDropdown?.classList.remove('open');
+            searchPanel?.classList.remove('open');
+        });
+
+        logoDropdown?.addEventListener('click', (event) => {
+            const option = event.target.closest('.logo-theme-option');
+            if (!option) return;
+            const theme = logoThemes.find(item => item.logo === option.dataset.logo);
+            localStorage.setItem('bios_logo_theme', theme.logo);
+            applyTheme(theme);
+            logoDropdown.innerHTML = logoThemeMarkup();
+            logoDropdown.classList.remove('open');
         });
 
         clinicDropdown?.addEventListener('click', (event) => {
@@ -253,6 +320,7 @@
         closeButtons.forEach(button => button.addEventListener('click', () => drawer.classList.remove('active')));
 
         document.addEventListener('click', (event) => {
+            if (!event.target.closest('.bios-logo-switcher')) logoDropdown?.classList.remove('open');
             if (!event.target.closest('.bios-clinic-select')) clinicDropdown?.classList.remove('open');
             if (!event.target.closest('.bios-global-search')) searchPanel?.classList.remove('open');
         });
@@ -265,7 +333,7 @@
         footer.innerHTML = `
             <div class="bios-wrap footer-grid-main">
                 <div class="footer-brand-block">
-                    <img src="${basePath()}logos/P2.png" alt="BIOS" onerror="this.src='https://placehold.co/200x70/0A1C2E/FFF?text=BIOS'">
+                    <img id="footer-logo" data-bios-logo src="${logoSrc()}" alt="BIOS" onerror="this.src='https://placehold.co/200x70/0A1C2E/FFF?text=BIOS'">
                     <p>Un mundo de servicios a tu alcance. Proveedores líderes en análisis clínicos y diagnóstico de alta calidad tecnológica.</p>
                     <div class="footer-socials-main">
                         <a href="https://www.facebook.com/" target="_blank" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
