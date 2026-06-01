@@ -10,12 +10,14 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <link rel="stylesheet" href="../assets/multipage.css">
     <style>
         #map { min-height: 620px; border-radius: 8px; z-index: 1; }
         @media (max-width: 767px) { #map { min-height: 420px; } }
     </style>
+    <script src="../assets/site.js" defer></script>
 </head>
 <body>
     <div class="page-shell">
@@ -65,6 +67,13 @@
                             <h1 class="brand-type mobile-tight text-5xl font-black leading-none mb-4">Mapa BIOS</h1>
                             <p class="text-blue-100 leading-relaxed">Selecciona una sucursal para centrar el mapa. Tultepec aparece marcada como nueva.</p>
                         </div>
+                        <figure class="page-visual min-h-[220px]">
+                            <img src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&w=900&q=80" alt="Recepción de sucursal médica">
+                            <figcaption class="visual-caption">
+                                <p class="font-black">Atención por sucursal</p>
+                                <p class="text-sm text-white/75 mt-1">Encuentra el punto BIOS más cercano.</p>
+                            </figcaption>
+                        </figure>
                         <div id="branch-list" class="grid gap-3"></div>
                     </aside>
                 </div>

@@ -40,6 +40,195 @@ body {
     border-bottom: 1px solid rgba(255,255,255,0.12);
 }
 
+.shared-container {
+    width: min(100% - 2rem, 80rem);
+    margin-inline: auto;
+}
+
+.shared-topbar {
+    background: rgba(3, 9, 18, 0.72);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.shared-topbar-inner {
+    min-height: 32px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+}
+
+.shared-topbar a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: rgba(255,255,255,0.72);
+    font-size: 0.75rem;
+    font-weight: 800;
+}
+
+.shared-topbar a:hover {
+    color: white;
+}
+
+.shared-header-main {
+    min-height: 76px;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.shared-brand {
+    display: inline-flex;
+    align-items: center;
+    flex: 0 0 auto;
+}
+
+.shared-brand img {
+    height: 58px;
+    width: auto;
+    filter: brightness(0) invert(1);
+}
+
+.shared-nav {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin-left: auto;
+}
+
+.shared-nav-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    color: rgba(255,255,255,0.72);
+    border: 1px solid transparent;
+    border-radius: 8px;
+    min-height: 42px;
+    padding: 0 0.75rem;
+    font-size: 0.86rem;
+    font-weight: 900;
+    transition: background 180ms ease, border-color 180ms ease, color 180ms ease;
+}
+
+.shared-nav-link:hover,
+.shared-nav-link.active {
+    color: white;
+    background: rgba(255,255,255,0.09);
+    border-color: rgba(255,255,255,0.12);
+}
+
+.shared-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+}
+
+.shared-cta,
+.shared-menu-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border: 1px solid rgba(255,255,255,0.14);
+    border-radius: 8px;
+    background: #10b981;
+    color: white;
+    min-height: 42px;
+    padding: 0 0.9rem;
+    font-weight: 900;
+}
+
+.shared-menu-button {
+    display: none;
+    background: rgba(255,255,255,0.08);
+}
+
+.mobile-shared-link {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    border: 1px solid var(--bios-line);
+    border-radius: 8px;
+    min-height: 46px;
+    padding: 0 0.9rem;
+}
+
+.mobile-shared-link.active {
+    background: #dbeafe;
+    border-color: #bfdbfe;
+    color: #1d4ed8;
+}
+
+.site-footer {
+    color: rgba(255,255,255,0.74);
+    background: #040b14;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    padding: 3.5rem 0 1.5rem;
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) repeat(3, minmax(0, 0.8fr));
+    gap: 2rem;
+}
+
+.footer-brand img {
+    height: 64px;
+    width: auto;
+    filter: brightness(0) invert(1);
+    margin-bottom: 1rem;
+}
+
+.footer-brand p {
+    max-width: 28rem;
+    line-height: 1.7;
+}
+
+.footer-socials {
+    display: flex;
+    gap: 0.6rem;
+    margin-top: 1rem;
+}
+
+.footer-socials a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 8px;
+    background: rgba(255,255,255,0.06);
+    color: white;
+}
+
+.site-footer h3 {
+    color: white;
+    font-weight: 900;
+    margin: 0 0 1rem;
+}
+
+.site-footer a {
+    display: block;
+    color: rgba(255,255,255,0.68);
+    font-weight: 700;
+    margin: 0.75rem 0;
+}
+
+.site-footer a:hover {
+    color: white;
+}
+
+.footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.08);
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 2.5rem;
+    padding-top: 1.25rem;
+    font-size: 0.85rem;
+}
+
 .nav-link {
     color: rgba(255,255,255,0.78);
     font-size: 0.875rem;
@@ -167,6 +356,85 @@ body {
     animation: pageEnter 520ms ease both;
 }
 
+.animate-in,
+.panel,
+.dark-panel,
+.page-visual,
+.image-strip img {
+    opacity: 0;
+    transform: translateY(16px);
+}
+
+.animate-in.is-visible,
+.panel.is-visible,
+.dark-panel.is-visible,
+.page-visual.is-visible,
+.image-strip img.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 620ms ease, transform 620ms ease, border-color 180ms ease;
+}
+
+.page-visual {
+    position: relative;
+    min-height: 100%;
+    overflow: hidden;
+    border-radius: 8px;
+    border: 1px solid var(--bios-line);
+    background: #0a1c2e;
+    box-shadow: 0 18px 48px -34px rgba(15, 23, 42, 0.45);
+}
+
+.page-visual img {
+    width: 100%;
+    height: 100%;
+    min-height: 320px;
+    object-fit: cover;
+    display: block;
+    transform: scale(1.02);
+    transition: transform 700ms ease;
+}
+
+.page-visual:hover img {
+    transform: scale(1.06);
+}
+
+.visual-caption {
+    position: absolute;
+    left: 1rem;
+    right: 1rem;
+    bottom: 1rem;
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 8px;
+    background: rgba(10,28,46,0.76);
+    backdrop-filter: blur(12px);
+    color: white;
+    padding: 1rem;
+}
+
+.image-strip {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.8rem;
+}
+
+.image-strip img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid var(--bios-line);
+    box-shadow: 0 18px 48px -34px rgba(15, 23, 42, 0.45);
+}
+
+.image-strip img:nth-child(2) {
+    transition-delay: 100ms;
+}
+
+.image-strip img:nth-child(3) {
+    transition-delay: 180ms;
+}
+
 @keyframes pageEnter {
     from {
         opacity: 0;
@@ -199,8 +467,51 @@ body {
 }
 
 @media (max-width: 767px) {
+    .shared-topbar {
+        display: none;
+    }
+
+    .shared-nav,
+    .shared-cta {
+        display: none;
+    }
+
+    .shared-menu-button {
+        display: inline-flex;
+    }
+
+    .shared-header-main {
+        min-height: 72px;
+    }
+
+    .shared-brand img {
+        height: 52px;
+    }
+
+    .footer-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .footer-bottom {
+        flex-direction: column;
+    }
+
+    .image-strip {
+        grid-template-columns: 1fr;
+    }
+
     .mobile-tight {
         font-size: clamp(2rem, 11vw, 3rem);
         line-height: 1;
+    }
+}
+
+@media (max-width: 1100px) {
+    .shared-nav-link span {
+        display: none;
+    }
+
+    .shared-nav-link {
+        padding: 0 0.85rem;
     }
 }
