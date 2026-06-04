@@ -13,24 +13,54 @@
     <link rel="stylesheet" href="../assets/multipage.css">
     <script src="../assets/site.js" defer></script>
     <style>
-        .careers-shell {
-            background:
-                radial-gradient(circle at top left, rgba(37,99,235,0.18), transparent 26%),
-                radial-gradient(circle at 88% 12%, rgba(6,182,212,0.16), transparent 28%),
-                linear-gradient(180deg, #f8fbff 0%, #eef4fb 100%);
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .page-shell {
+            background: linear-gradient(180deg, #f0f8ff 0%, #e8f4ff 50%, #f8fbff 100%);
+            min-height: 100vh;
         }
 
         .careers-hero {
             position: relative;
             overflow: hidden;
             border-radius: 2rem;
-            padding: 1.5rem;
+            padding: 3rem 2rem;
             color: white;
-            background:
-                linear-gradient(135deg, rgba(6,17,29,0.98), rgba(16,47,84,0.96) 54%, rgba(37,99,235,0.92)),
-                radial-gradient(circle at 12% 22%, rgba(125,211,252,0.22), transparent 24%);
+            background: linear-gradient(135deg, rgba(10,28,46,0.98), rgba(30,58,138,0.96) 40%, rgba(37,99,235,0.92));
             box-shadow: 0 36px 90px -42px rgba(10, 28, 46, 0.8);
             border: 1px solid rgba(255,255,255,0.12);
+            animation: fadeInUp 0.8s ease-out;
         }
 
         .careers-hero::before,
@@ -57,147 +87,528 @@
             background: radial-gradient(circle, rgba(6,182,212,0.16) 0%, rgba(6,182,212,0) 70%);
         }
 
-        .careers-grid {
-            display: grid;
-            gap: 1.5rem;
+        .hero-content {
+            position: relative;
+            z-index: 10;
+        }
+
+        .hero-title {
+            font-family: "Outfit", sans-serif;
+            font-size: clamp(1.8rem, 5vw, 2.8rem);
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            font-weight: 900;
+            color: white;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: rgba(191,219,254,0.95);
+            max-width: 70rem;
+            margin-bottom: 2rem;
         }
 
         .hero-band {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            max-width: 100%;
-            padding: 0.9rem 1.15rem;
-            border-radius: 1.4rem;
-            background: linear-gradient(90deg, rgba(30,58,138,0.94), rgba(37,99,235,0.94));
-            box-shadow: 0 20px 55px -28px rgba(37,99,235,0.8);
+            display: inline-block;
+            padding: 0.7rem 1rem;
+            border-radius: 1rem;
+            background: linear-gradient(90deg, rgba(30,58,138,0.8), rgba(37,99,235,0.8));
+            border: 1px solid rgba(255,255,255,0.2);
+            font-family: "Outfit", sans-serif;
+            font-size: 0.95rem;
+            font-weight: 900;
+            color: #7dd3fc;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1.5rem;
         }
 
-        .hero-band span {
-            display: block;
-            font-family: "Outfit", sans-serif;
-            font-size: clamp(2.2rem, 6vw, 4.8rem);
-            line-height: 0.94;
-            font-weight: 900;
-            letter-spacing: -0.04em;
-            text-transform: uppercase;
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 2rem;
         }
 
         .hero-stat-grid {
             display: grid;
-            gap: 0.9rem;
+            gap: 1rem;
+            margin-top: 2rem;
         }
 
         .hero-stat {
             position: relative;
             overflow: hidden;
-            border-radius: 1.5rem;
-            padding: 1rem 1.1rem;
-            background: rgba(255,255,255,0.09);
-            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 1.2rem;
+            padding: 1.2rem;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.15);
             backdrop-filter: blur(10px);
+            animation: slideInRight 0.8s ease-out 0.1s both;
         }
 
-        .hero-stat strong,
-        .hero-stat span {
-            display: block;
+        .hero-stat:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .hero-stat:nth-child(3) {
+            animation-delay: 0.3s;
         }
 
         .hero-stat strong {
-            font-size: 1.4rem;
+            display: block;
+            font-size: 1.3rem;
             font-weight: 900;
             color: white;
+            margin-bottom: 0.3rem;
         }
 
         .hero-stat span {
-            font-size: 0.76rem;
+            display: block;
+            font-size: 0.7rem;
             font-weight: 800;
-            letter-spacing: 0.16em;
+            letter-spacing: 0.15em;
             text-transform: uppercase;
-            color: rgba(191,219,254,0.92);
-            margin-bottom: 0.4rem;
+            color: rgba(191,219,254,0.9);
+            margin-bottom: 0.5rem;
         }
 
-        .hero-tag-row,
-        .vacancy-tag-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.75rem;
-        }
-
-        .hero-tag,
-        .vacancy-tag {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.45rem;
-            border-radius: 999px;
-            padding: 0.7rem 0.95rem;
-            font-size: 0.76rem;
-            font-weight: 900;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-        }
-
-        .hero-tag {
-            background: rgba(255,255,255,0.1);
-            border: 1px solid rgba(255,255,255,0.12);
-            color: white;
+        .hero-stat p {
+            font-size: 0.85rem;
+            line-height: 1.4;
+            color: rgba(255,255,255,0.8);
         }
 
         .vacancy-board {
             display: grid;
-            gap: 1.5rem;
+            gap: 2rem;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
         }
 
         .vacancy-card {
             position: relative;
             overflow: hidden;
             border-radius: 2rem;
-            background:
-                linear-gradient(180deg, rgba(255,255,255,0.98), rgba(246,249,252,0.98));
+            background: white;
             border: 1px solid rgba(219,228,240,0.95);
-            box-shadow: 0 34px 80px -46px rgba(15, 23, 42, 0.32);
+            box-shadow: 0 10px 30px rgba(37,99,235,0.08);
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
+            animation: slideInLeft 0.8s ease-out 0.3s both;
+        }
+
+        .vacancy-card:nth-child(2) {
+            animation-delay: 0.4s;
+        }
+
+        .vacancy-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 50px rgba(37,99,235,0.16);
+            border-color: rgba(37,99,235,0.3);
         }
 
         .vacancy-card::before {
             content: "";
             position: absolute;
-            inset: 0 auto auto 0;
-            width: 100%;
-            height: 0.4rem;
-            background: linear-gradient(90deg, var(--vacancy-a), var(--vacancy-b));
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
         }
 
         .vacancy-card[data-theme="radiologo"] {
-            --vacancy-a: #1d4ed8;
-            --vacancy-b: #38bdf8;
+            --color-primary: #1d4ed8;
+            --color-secondary: #38bdf8;
         }
 
         .vacancy-card[data-theme="laboratorista"] {
-            --vacancy-a: #0f3a6b;
-            --vacancy-b: #2563eb;
+            --color-primary: #0f3a6b;
+            --color-secondary: #2563eb;
         }
 
         .vacancy-head {
-            position: relative;
-            padding: 1.5rem 1.5rem 0;
-        }
-
-        .vacancy-head::after {
-            content: "";
-            position: absolute;
-            width: 14rem;
-            height: 14rem;
-            right: -6rem;
-            top: -7rem;
-            border-radius: 999px;
-            background: radial-gradient(circle, rgba(96,165,250,0.2) 0%, rgba(255,255,255,0) 70%);
-            opacity: 0.8;
+            padding: 2rem;
+            border-bottom: 1px solid rgba(219,228,240,0.6);
         }
 
         .vacancy-kicker {
             display: inline-flex;
             align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1rem;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--color-primary);
+            background: rgba(219,234,254,0.8);
+            margin-bottom: 1rem;
+        }
+
+        .vacancy-title {
+            font-family: "Outfit", sans-serif;
+            font-size: clamp(1.6rem, 3vw, 2.2rem);
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            font-weight: 900;
+            color: #0a1c2e;
+            margin-bottom: 0.8rem;
+        }
+
+        .vacancy-subtitle {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #39506d;
+            margin-bottom: 1.2rem;
+        }
+
+        .vacancy-location {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: #5b7089;
+            margin-bottom: 0.6rem;
+        }
+
+        .vacancy-location i {
+            color: var(--color-primary);
+        }
+
+        .vacancy-content {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            padding: 2rem;
+        }
+
+        @media (min-width: 768px) {
+            .vacancy-content {
+                grid-template-columns: 1.5fr 1fr;
+                gap: 2rem;
+            }
+        }
+
+        .vacancy-benefits {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .benefit-title {
+            font-size: 0.8rem;
+            font-weight: 900;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--color-primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .benefit-list {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .benefit-item {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+
+        .benefit-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            border-radius: 999px;
+            background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+            color: white;
+            flex-shrink: 0;
+            font-size: 0.8rem;
+        }
+
+        .benefit-text {
+            flex: 1;
+        }
+
+        .benefit-name {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 900;
+            color: #0a1c2e;
+            margin-bottom: 0.2rem;
+        }
+
+        .benefit-desc {
+            display: block;
+            font-size: 0.8rem;
+            color: #5b7089;
+            line-height: 1.4;
+        }
+
+        .vacancy-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .sidebar-section {
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, rgba(10,28,46,0.98), rgba(18,60,118,0.96));
+            border: 1px solid rgba(255,255,255,0.1);
+            color: white;
+        }
+
+        .sidebar-title {
+            font-size: 0.8rem;
+            font-weight: 900;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: #7dd3fc;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .sidebar-subtitle {
+            font-family: "Outfit", sans-serif;
+            font-size: 1.3rem;
+            font-weight: 900;
+            color: white;
+            margin-bottom: 0.8rem;
+        }
+
+        .instructions {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .instruction-item {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+
+        .instruction-number {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: #7dd3fc;
+            font-weight: 900;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+
+        .instruction-text {
+            flex: 1;
+        }
+
+        .instruction-name {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 900;
+            color: white;
+            margin-bottom: 0.2rem;
+        }
+
+        .instruction-desc {
+            display: block;
+            font-size: 0.8rem;
+            color: rgba(191,219,254,0.9);
+            line-height: 1.4;
+        }
+
+        .whatsapp-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            width: 100%;
+            padding: 1rem;
+            border-radius: 999px;
+            background: #25d366;
+            color: white;
+            font-weight: 900;
+            font-size: 1rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 25px rgba(37,211,102,0.3);
+            margin-top: 1rem;
+        }
+
+        .whatsapp-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(37,211,102,0.4);
+            background: #20ba5a;
+        }
+
+        .schedule-info {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .schedule-label {
+            font-size: 0.75rem;
+            font-weight: 900;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: rgba(147,197,253,0.9);
+            margin-bottom: 0.5rem;
+        }
+
+        .schedule-time {
+            font-size: 0.9rem;
+            color: white;
+            line-height: 1.5;
+        }
+
+        .vacancies-container {
+            display: grid;
+            gap: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .careers-hero {
+                padding: 2rem 1.5rem;
+            }
+
+            .hero-title {
+                font-size: 1.6rem;
+            }
+
+            .vacancy-head {
+                padding: 1.5rem;
+            }
+
+            .vacancy-content {
+                padding: 1.5rem;
+            }
+
+            .sidebar-section {
+                padding: 1.2rem;
+            }
+        }
+
+        .primary-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            padding: 0.9rem 1.4rem;
+            border-radius: 999px;
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: white;
+            font-weight: 900;
+            font-size: 0.95rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 25px rgba(37,99,235,0.3);
+            text-decoration: none;
+        }
+
+        .primary-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(37,99,235,0.4);
+        }
+
+        .ghost-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            padding: 0.9rem 1.4rem;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            font-weight: 900;
+            font-size: 0.95rem;
+            border: 1px solid rgba(255,255,255,0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .ghost-button:hover {
+            background: rgba(255,255,255,0.15);
+            border-color: rgba(255,255,255,0.3);
+        }
+
+        .section-title {
+            font-family: "Outfit", sans-serif;
+            font-size: 2rem;
+            font-weight: 900;
+            color: #0a1c2e;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .section-kicker {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1rem;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: #1d4ed8;
+            background: rgba(191,219,254,0.2);
+            border: 1px solid rgba(191,219,254,0.4);
+        }
+
+        .page-header {
+            padding: 2rem 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-link {
+            padding: 0.5rem 0;
+            color: #374151;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: #2563eb;
+        }
+
+        .site-header {
+            background: white;
+            border-bottom: 1px solid rgba(219,228,240,0.95);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
             gap: 0.45rem;
             padding: 0.55rem 0.85rem;
             border-radius: 999px;
@@ -488,83 +899,6 @@
         .support-panel.dark .support-meta {
             color: rgba(219,234,254,0.82);
         }
-
-        .hero-actions {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.85rem;
-            margin-top: 1.25rem;
-        }
-
-        .ghost-button {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.55rem;
-            min-height: 46px;
-            padding: 0.8rem 1rem;
-            border-radius: 999px;
-            color: white;
-            font-weight: 900;
-            border: 1px solid rgba(255,255,255,0.14);
-            background: rgba(255,255,255,0.08);
-        }
-
-        @media (min-width: 1024px) {
-            .careers-grid {
-                grid-template-columns: minmax(0, 1.2fr) minmax(290px, 0.8fr);
-                align-items: end;
-            }
-
-            .vacancy-layout {
-                grid-template-columns: minmax(0, 1.05fr) minmax(280px, 0.95fr);
-                align-items: stretch;
-            }
-        }
-
-        @media (max-width: 767px) {
-            .careers-hero {
-                padding: 1.2rem;
-                border-radius: 1.7rem;
-            }
-
-            .hero-band {
-                width: 100%;
-                justify-content: flex-start;
-            }
-
-            .hero-band span {
-                font-size: clamp(1.9rem, 10vw, 3.2rem);
-            }
-
-            .vacancy-card,
-            .support-panel {
-                border-radius: 1.6rem;
-            }
-
-            .vacancy-head,
-            .vacancy-layout {
-                padding-left: 1rem;
-                padding-right: 1rem;
-            }
-
-            .vacancy-head {
-                padding-top: 1.2rem;
-            }
-
-            .vacancy-layout {
-                padding-bottom: 1rem;
-            }
-
-            .vacancy-panel {
-                border-radius: 1.3rem;
-                padding: 1rem;
-            }
-
-            .support-title {
-                font-size: 1.7rem;
-            }
-        }
     </style>
 </head>
 <body>
@@ -604,265 +938,225 @@
         </div>
 
         <main class="page-enter">
-            <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-14">
+            <!-- Header Section -->
+            <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
                 <div class="careers-hero">
-                    <div class="careers-grid relative z-10">
-                        <div>
-                            <span class="section-kicker !bg-white/10 !border-white/15 !text-cyan-100 mb-6"><i data-lucide="briefcase-business" class="w-4 h-4"></i> Talento BIOS</span>
-                            <h1 class="font-outfit text-4xl md:text-6xl font-black leading-[0.92] text-white mb-4">Únete a nuestro gran equipo de trabajo</h1>
-                            <div class="hero-band">
-                                <span>Vacantes clínicas activas</span>
-                            </div>
-                            <p class="text-blue-50/88 text-lg md:text-xl leading-relaxed max-w-3xl mt-6">Dos posiciones clave, beneficios claros y un proceso directo para postularte por WhatsApp o dejar tu perfil en línea.</p>
-                            <div class="hero-tag-row mt-6">
-                                <span class="hero-tag"><i data-lucide="map-pin" class="w-4 h-4"></i> Cuautitlán Izcalli</span>
-                                <span class="hero-tag"><i data-lucide="badge-check" class="w-4 h-4"></i> Prestaciones de ley</span>
-                                <span class="hero-tag"><i data-lucide="message-circle-more" class="w-4 h-4"></i> Respuesta por WhatsApp</span>
-                            </div>
-                            <div class="hero-actions">
-                                <a href="https://wa.me/525514968310?text=Hola%20BIOS,%20quiero%20postularme%20a%20una%20vacante" target="_blank" class="primary-button"><i data-lucide="message-circle" class="w-5 h-5"></i> Hablar con reclutamiento</a>
-                                <a href="#perfil-form" class="ghost-button"><i data-lucide="arrow-down" class="w-5 h-5"></i> Dejar mi perfil</a>
-                            </div>
+                    <div class="hero-content">
+                        <span class="hero-band"><i data-lucide="sparkles" class="w-4 h-4"></i> 2 Vacantes Activas</span>
+                        <h1 class="hero-title">Únete a nuestro gran equipo</h1>
+                        <p class="hero-subtitle">Buscamos talento comprometido para fortalecer nuestra clínica. Procesos claros, beneficios atractivos y ambiente colaborativo te esperan.</p>
+                        <div class="hero-actions">
+                            <a href="https://wa.me/525514968310?text=Hola%20BIOS,%20me%20interesa%20postularme%20a%20una%20vacante" class="primary-button" target="_blank"><i data-lucide="message-circle" class="w-5 h-5"></i> Contactar por WhatsApp</a>
+                            <a href="#vacantes" class="ghost-button"><i data-lucide="arrow-down" class="w-5 h-5"></i> Ver vacantes</a>
                         </div>
-
                         <div class="hero-stat-grid">
                             <div class="hero-stat">
                                 <span>Vacantes</span>
-                                <strong>2 posiciones abiertas</strong>
-                                <p class="text-white/70 text-sm leading-relaxed mt-2">Técnico Radiólogo y Técnico Laboratorista Clínico Dual.</p>
+                                <strong>2 Posiciones</strong>
+                                <p>Técnico Radiólogo y Técnico Laboratorista Clínico Dual</p>
                             </div>
                             <div class="hero-stat">
-                                <span>Atención</span>
-                                <strong>WhatsApp directo</strong>
-                                <p class="text-white/70 text-sm leading-relaxed mt-2">Lunes a viernes de 09:00 a 18:00 y sábados de 09:00 a 14:00.</p>
+                                <span>Ubicación</span>
+                                <strong>2 Sucursales</strong>
+                                <p>Tepojaco y Cuautitlán Izcalli disponibles</p>
                             </div>
                             <div class="hero-stat">
-                                <span>Ambiente</span>
-                                <strong>Equipo humano y tecnología</strong>
-                                <p class="text-white/70 text-sm leading-relaxed mt-2">Procesos claros, uniforme, bonos y crecimiento en laboratorio.</p>
+                                <span>Horario</span>
+                                <strong>Flexible</strong>
+                                <p>Turnos matutino, vespertino y mixto disponibles</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-14 lg:pb-20">
-                <div class="grid xl:grid-cols-[1.22fr_0.78fr] gap-6 items-start">
-                    <div class="vacancy-board" id="vacancy-board"></div>
+            <!-- Vacancies Section -->
+            <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16" id="vacantes">
+                <div class="vacancies-container" id="vacancies-container"></div>
+            </section>
 
-                    <aside class="grid gap-6">
-                        <div class="support-panel dark">
-                            <p class="section-kicker !bg-white/10 !border-white/15 !text-cyan-100 mb-5"><i data-lucide="route" class="w-4 h-4"></i> Instrucciones</p>
-                            <h2 class="support-title">Cómo postularte</h2>
-                            <p class="support-meta mb-5">Queremos que el proceso sea rápido y claro. Sigue estos pasos para que tu solicitud avance más fácil.</p>
-                            <div class="apply-steps">
-                                <div class="apply-step">
-                                    <span class="apply-step-number">1</span>
-                                    <div>
-                                        <strong>Elige tu vacante</strong>
-                                        <span>Revisa si te interesa Técnico Radiólogo o Técnico Laboratorista Clínico Dual.</span>
-                                    </div>
+            <!-- Info Section -->
+            <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+                <div class="grid lg:grid-cols-2 gap-8">
+                    <!-- How to Apply -->
+                    <div class="sidebar-section">
+                        <div class="sidebar-title"><i data-lucide="route" class="w-4 h-4"></i> Proceso</div>
+                        <div class="sidebar-subtitle">Cómo postularte</div>
+                        <div class="instructions">
+                            <div class="instruction-item">
+                                <span class="instruction-number">1</span>
+                                <div class="instruction-text">
+                                    <span class="instruction-name">Elige tu vacante</span>
+                                    <span class="instruction-desc">Revisa los detalles de Técnico Radiólogo o Técnico Laboratorista.</span>
                                 </div>
-                                <div class="apply-step">
-                                    <span class="apply-step-number">2</span>
-                                    <div>
-                                        <strong>Envía tu mensaje por WhatsApp</strong>
-                                        <span>Comparte nombre completo, vacante, turno de interés y experiencia previa.</span>
-                                    </div>
+                            </div>
+                            <div class="instruction-item">
+                                <span class="instruction-number">2</span>
+                                <div class="instruction-text">
+                                    <span class="instruction-name">Envía tu WhatsApp</span>
+                                    <span class="instruction-desc">Cuéntanos tu experiencia, turno de interés y disponibilidad.</span>
                                 </div>
-                                <div class="apply-step">
-                                    <span class="apply-step-number">3</span>
-                                    <div>
-                                        <strong>Espera contacto del equipo</strong>
-                                        <span>Si tu perfil encaja, te buscamos para seguimiento, entrevista y siguiente paso.</span>
-                                    </div>
+                            </div>
+                            <div class="instruction-item">
+                                <span class="instruction-number">3</span>
+                                <div class="instruction-text">
+                                    <span class="instruction-name">Avanza en el proceso</span>
+                                    <span class="instruction-desc">Si tu perfil encaja, te contactaremos para seguimiento inmediato.</span>
                                 </div>
                             </div>
                         </div>
+                    </div>
 
-                        <div class="support-panel">
-                            <p class="section-kicker mb-4"><i data-lucide="clock-3" class="w-4 h-4"></i> Horario de atención</p>
-                            <h2 class="support-title">Contacto de reclutamiento</h2>
-                            <p class="support-meta mb-5">Si quieres acelerar tu postulación, este es el canal más directo para hablar con el equipo.</p>
-                            <div class="apply-steps">
-                                <div class="apply-step">
-                                    <span class="apply-step-number"><i data-lucide="message-circle" class="w-4 h-4"></i></span>
-                                    <div>
-                                        <strong>WhatsApp</strong>
-                                        <span>55 1496 8310</span>
-                                    </div>
-                                </div>
-                                <div class="apply-step">
-                                    <span class="apply-step-number"><i data-lucide="calendar-clock" class="w-4 h-4"></i></span>
-                                    <div>
-                                        <strong>Lunes a viernes</strong>
-                                        <span>09:00 a 18:00 horas</span>
-                                    </div>
-                                </div>
-                                <div class="apply-step">
-                                    <span class="apply-step-number"><i data-lucide="sun-medium" class="w-4 h-4"></i></span>
-                                    <div>
-                                        <strong>Sábados</strong>
-                                        <span>09:00 a 14:00 horas</span>
-                                    </div>
+                    <!-- Contact Info -->
+                    <div class="sidebar-section">
+                        <div class="sidebar-title"><i data-lucide="clock-3" class="w-4 h-4"></i> Contacto</div>
+                        <div class="sidebar-subtitle">Habla con reclutamiento</div>
+                        <div class="instructions">
+                            <div class="instruction-item">
+                                <span class="instruction-number"><i data-lucide="message-circle" class="w-4 h-4"></i></span>
+                                <div class="instruction-text">
+                                    <span class="instruction-name">WhatsApp directo</span>
+                                    <span class="instruction-desc">55 1496 8310</span>
                                 </div>
                             </div>
-                            <a href="https://wa.me/525514968310?text=Hola%20BIOS,%20quiero%20postularme%20a%20una%20vacante" target="_blank" class="primary-button w-full mt-5"><i data-lucide="message-circle" class="w-5 h-5"></i> Enviar WhatsApp ahora</a>
+                            <div class="instruction-item">
+                                <span class="instruction-number"><i data-lucide="calendar" class="w-4 h-4"></i></span>
+                                <div class="instruction-text">
+                                    <span class="instruction-name">Lunes a viernes</span>
+                                    <span class="instruction-desc">09:00 a 18:00 horas</span>
+                                </div>
+                            </div>
+                            <div class="instruction-item">
+                                <span class="instruction-number"><i data-lucide="sun" class="w-4 h-4"></i></span>
+                                <div class="instruction-text">
+                                    <span class="instruction-name">Sábados</span>
+                                    <span class="instruction-desc">09:00 a 14:00 horas</span>
+                                </div>
+                            </div>
                         </div>
-
-                        <div class="support-panel" id="perfil-form">
-                            <p class="section-kicker mb-4"><i data-lucide="file-user" class="w-4 h-4"></i> Perfil rápido</p>
-                            <h2 class="support-title">Déjanos tu perfil</h2>
-                            <p class="support-meta mb-5">Si prefieres dejar tus datos aquí, selecciona la vacante y te damos seguimiento.</p>
-                            <form id="talent-form" class="support-form">
-                                <input id="name" class="field" type="text" placeholder="Nombre completo">
-                                <input id="phone" class="field" type="tel" placeholder="WhatsApp">
-                                <select id="role" class="field">
-                                    <option>Técnico Radiólogo</option>
-                                    <option>Técnico Laboratorista Clínico Dual</option>
-                                </select>
-                                <select id="branch" class="field">
-                                    <option>Cuautitlán Izcalli</option>
-                                    <option>Plaza Cantú</option>
-                                    <option>Plaza La Joya</option>
-                                    <option>Las Haciendas</option>
-                                </select>
-                                <textarea id="message" class="field" placeholder="Cuéntanos tu experiencia, turno que te interesa y cuándo podrías integrarte"></textarea>
-                                <button class="primary-button" type="submit"><i data-lucide="send" class="w-5 h-5"></i> Enviar interés</button>
-                                <p id="form-status" class="text-sm font-bold text-slate-500 min-h-6"></p>
-                            </form>
-                        </div>
-                    </aside>
+                        <a href="https://wa.me/525514968310?text=Hola%20BIOS,%20me%20interesa%20postularme%20a%20una%20vacante" target="_blank" class="whatsapp-button"><i data-lucide="message-circle" class="w-5 h-5"></i> Enviar mensaje ahora</a>
+                    </div>
                 </div>
             </section>
         </main>
     </div>
 
     <script>
-        const whatsappBase = 'https://wa.me/525514968310?text=';
-        const baseBenefits = [
-            { title: 'Sueldo competitivo', text: 'Esquema alineado a experiencia y responsabilidad del puesto.' },
-            { title: 'Prestaciones de ley', text: 'Integración formal con condiciones claras desde tu ingreso.' },
-            { title: 'Bono de productividad', text: 'Reconocimiento al desempeño y cumplimiento de objetivos.' },
-            { title: 'Bono de puntualidad y asistencia', text: 'Valoramos la constancia y la disciplina operativa.' },
-            { title: 'Uniforme', text: 'Imagen profesional y herramientas para presentarte con seguridad.' },
-            { title: 'Excelente ambiente laboral', text: 'Trabajo colaborativo, trato humano y procesos ordenados.' }
-        ];
-
+        // Datos de vacantes
         const vacancies = [
             {
                 key: 'radiologo',
-                label: 'Vacante activa',
+                theme: 'radiologo',
+                icon: 'zap',
                 title: 'Técnico Radiólogo',
-                location: 'Cuautitlán Izcalli',
-                schedule: 'Turno vespertino y matutino mixto',
+                kicker: 'Vacante Activa',
+                location: ['Tepojaco', 'Cuautitlán Izcalli'],
+                schedule: ['Turno vespertino', 'Turno matutino mixto'],
                 intro: 'Perfil orientado a atención precisa, operación técnica y seguimiento profesional dentro del flujo clínico.',
-                tags: ['Imagenología', 'Atención clínica', 'Ingreso inmediato'],
-                contactTitle: 'Si te interesa esta vacante',
-                whatsappText: 'Hola BIOS, me interesa postularme a la vacante de Técnico Radiólogo.',
-                instructions: [
-                    { title: 'Escribe por WhatsApp', text: 'Menciona que te interesa la vacante de Técnico Radiólogo.' },
-                    { title: 'Comparte tu experiencia', text: 'Indica si has trabajado con equipos, pacientes o procesos de gabinete.' },
-                    { title: 'Mantén tu teléfono disponible', text: 'El equipo de reclutamiento puede darte seguimiento por llamada o mensaje.' }
-                ]
+                whatsappText: 'Hola BIOS, me interesa postularme a la vacante de Técnico Radiólogo.'
             },
             {
                 key: 'laboratorista',
-                label: 'Vacante clínica',
+                theme: 'laboratorista',
+                icon: 'test-tubes',
                 title: 'Técnico Laboratorista Clínico Dual',
-                location: 'Cuautitlán Izcalli',
-                schedule: 'Turno vespertino y turno matutino',
-                intro: 'Buscamos un perfil con enfoque en toma, laboratorio, trato al paciente y disciplina operativa en jornada clínica.',
-                tags: ['Laboratorio', 'Toma de muestra', 'Turnos disponibles'],
-                contactTitle: 'Aplicación directa',
-                whatsappText: 'Hola BIOS, me interesa postularme a la vacante de Técnico Laboratorista Clínico Dual.',
-                instructions: [
-                    { title: 'Envía tu mensaje', text: 'Cuéntanos si tienes experiencia en toma, procesamiento o apoyo clínico.' },
-                    { title: 'Indica tu turno de interés', text: 'Especifica si te funciona mejor turno matutino o vespertino.' },
-                    { title: 'Prepara tu seguimiento', text: 'Si el perfil encaja, te compartimos el siguiente paso del proceso.' }
-                ]
+                kicker: 'Vacante Clínica',
+                location: ['Tepojaco', 'Cuautitlán Izcalli'],
+                schedule: ['Turno vespertino', 'Turno matutino'],
+                intro: 'Buscamos un perfil con enfoque en toma, laboratorio, trato al paciente y disciplina operativa.',
+                whatsappText: 'Hola BIOS, me interesa postularme a la vacante de Técnico Laboratorista Clínico Dual.'
             }
         ];
 
-        const vacancyBoard = document.getElementById('vacancy-board');
+        const benefits = [
+            { title: 'Sueldo competitivo', desc: 'Esquema alineado a experiencia y responsabilidad del puesto.' },
+            { title: 'Prestaciones de ley', desc: 'Integración formal con condiciones claras desde tu ingreso.' },
+            { title: 'Bono de productividad', desc: 'Reconocimiento al desempeño y cumplimiento de objetivos.' },
+            { title: 'Bono de puntualidad y asistencia', desc: 'Valoramos la constancia y la disciplina operativa.' },
+            { title: 'Uniforme', desc: 'Imagen profesional y herramientas para presentarte con seguridad.' },
+            { title: 'Excelente ambiente laboral', desc: 'Trabajo colaborativo, trato humano y procesos ordenados.' }
+        ];
 
-        vacancyBoard.innerHTML = vacancies.map(vacancy => `
-            <article class="vacancy-card" data-theme="${vacancy.key}">
+        // Renderizar vacantes
+        const container = document.getElementById('vacancies-container');
+        container.innerHTML = vacancies.map(vacancy => `
+            <article class="vacancy-card" data-theme="${vacancy.theme}">
+                <!-- Header -->
                 <div class="vacancy-head">
-                    <span class="vacancy-kicker"><i data-lucide="sparkles" class="w-4 h-4"></i>${vacancy.label}</span>
+                    <span class="vacancy-kicker"><i data-lucide="sparkles" class="w-4 h-4"></i> ${vacancy.kicker}</span>
                     <h2 class="vacancy-title">${vacancy.title}</h2>
-                    <p class="vacancy-subtitle">${vacancy.location} · ${vacancy.schedule}. ${vacancy.intro}</p>
-                    <div class="vacancy-tag-row mt-5">
-                        ${vacancy.tags.map(tag => `<span class="vacancy-tag"><i data-lucide="badge-check" class="w-4 h-4"></i>${tag}</span>`).join('')}
-                    </div>
+                    <p class="vacancy-subtitle">${vacancy.intro}</p>
+                    
+                    <!-- Locations -->
+                    ${vacancy.location.map(loc => `
+                        <div class="vacancy-location">
+                            <i data-lucide="map-pin" class="w-4 h-4"></i>
+                            <span>${loc}</span>
+                        </div>
+                    `).join('')}
+                    
+                    <!-- Schedule -->
+                    ${vacancy.schedule.map(sch => `
+                        <div class="vacancy-location" style="margin-top: 0.3rem;">
+                            <i data-lucide="clock" class="w-4 h-4"></i>
+                            <span>${sch}</span>
+                        </div>
+                    `).join('')}
                 </div>
-                <div class="vacancy-layout">
-                    <div class="vacancy-panel offers">
-                        <div class="vacancy-panel-title"><i data-lucide="shield-check" class="w-4 h-4"></i>Ofrecemos</div>
+
+                <!-- Content -->
+                <div class="vacancy-content">
+                    <!-- Benefits Column -->
+                    <div class="vacancy-benefits">
+                        <div class="benefit-title">
+                            <i data-lucide="shield-check" class="w-4 h-4"></i>
+                            Lo que ofrecemos
+                        </div>
                         <div class="benefit-list">
-                            ${baseBenefits.map(benefit => `
+                            ${benefits.map(benefit => `
                                 <div class="benefit-item">
                                     <span class="benefit-icon"><i data-lucide="check" class="w-4 h-4"></i></span>
-                                    <div>
-                                        <strong>${benefit.title}</strong>
-                                        <span>${benefit.text}</span>
+                                    <div class="benefit-text">
+                                        <span class="benefit-name">${benefit.title}</span>
+                                        <span class="benefit-desc">${benefit.desc}</span>
                                     </div>
                                 </div>
                             `).join('')}
                         </div>
                     </div>
-                    <div class="vacancy-panel contact">
-                        <div class="vacancy-panel-title"><i data-lucide="message-circle-more" class="w-4 h-4"></i>${vacancy.contactTitle}</div>
-                        <div class="instruction-list">
-                            ${vacancy.instructions.map(item => `
-                                <div class="instruction-item">
-                                    <span class="instruction-icon"><i data-lucide="arrow-right" class="w-4 h-4"></i></span>
-                                    <div>
-                                        <strong>${item.title}</strong>
-                                        <span>${item.text}</span>
-                                    </div>
+
+                    <!-- Sidebar Column -->
+                    <div class="vacancy-sidebar">
+                        <!-- Instructions -->
+                        <div style="border-radius: 1.5rem; padding: 1.5rem; background: linear-gradient(135deg, rgba(10,28,46,0.98), rgba(18,60,118,0.96)); border: 1px solid rgba(255,255,255,0.1); color: white;">
+                            <div style="font-size: 0.8rem; font-weight: 900; letter-spacing: 0.12em; text-transform: uppercase; color: #7dd3fc; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                                <i data-lucide="message-circle" class="w-4 h-4"></i>
+                                Postúlate ahora
+                            </div>
+                            <p style="font-size: 0.9rem; color: rgba(191,219,254,0.9); margin-bottom: 1rem; line-height: 1.5;">Envía tu WhatsApp y comparte tu experiencia con nuestro equipo de reclutamiento.</p>
+                            <a href="https://wa.me/525514968310?text=${encodeURIComponent(vacancy.whatsappText)}" target="_blank" class="whatsapp-button" style="text-decoration: none;">
+                                <i data-lucide="message-circle" class="w-5 h-5"></i>
+                                Contactar por WhatsApp
+                            </a>
+                            <div class="schedule-info">
+                                <div class="schedule-label">Horario de Atención</div>
+                                <div class="schedule-time">
+                                    <div>Lunes a viernes: 09:00 - 18:00</div>
+                                    <div>Sábados: 09:00 - 14:00</div>
                                 </div>
-                            `).join('')}
+                            </div>
                         </div>
-                        <a href="${whatsappBase}${encodeURIComponent(vacancy.whatsappText)}" target="_blank" class="contact-whatsapp mt-5">
-                            <i data-lucide="message-circle" class="w-5 h-5"></i> 55 1496 8310
-                        </a>
-                        <p class="contact-note">También puedes dejar tu perfil abajo si prefieres que te contactemos después.</p>
-                        <div class="contact-schedule">
-                            <strong>Horario de atención</strong>
-                            <p>De lunes a viernes de 09:00 a 18:00 horas y sábados de 09:00 a 14:00 horas.</p>
-                        </div>
-                        <button type="button" class="secondary-button w-full mt-4 vacancy-select-button" data-role="${vacancy.title}">
-                            <i data-lucide="file-user" class="w-5 h-5"></i> Quiero aplicar a esta vacante
-                        </button>
                     </div>
                 </div>
             </article>
         `).join('');
 
-        document.getElementById('talent-form').addEventListener('submit', event => {
-            event.preventDefault();
-            const name = document.getElementById('name').value.trim() || 'Tu perfil';
-            const role = document.getElementById('role').value;
-            const branch = document.getElementById('branch').value;
-            document.getElementById('form-status').textContent = `${name} quedó registrado para ${role} en ${branch}. El equipo de BIOS te dará seguimiento.`;
-            document.getElementById('form-status').className = 'text-sm font-bold text-emerald-600 min-h-6';
-            event.target.reset();
-        });
-
-        document.querySelectorAll('.vacancy-select-button').forEach(button => {
-            button.addEventListener('click', () => {
-                const role = document.getElementById('role');
-                role.value = button.dataset.role;
-                document.getElementById('perfil-form').scrollIntoView({ behavior: 'smooth', block: 'start' });
-                document.getElementById('name').focus();
-            });
-        });
-
+        // Drawer toggle
         function toggleDrawer(open) {
             document.getElementById('drawer').classList.toggle('open', open);
         }
 
+        // Inicializar iconos Lucide
         lucide.createIcons();
     </script>
 </body>
