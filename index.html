@@ -511,6 +511,52 @@
         .mobile-drawer.active .mobile-drawer-panel {
             transform: translateX(0);
         }
+
+        @media (max-width: 767px) {
+            #inicio {
+                min-height: 680px;
+                padding-top: 6.5rem;
+                padding-bottom: 5rem;
+            }
+
+            #inicio .hero-reactive-panel {
+                padding-inline: 0;
+            }
+
+            #inicio .hero-proof-pills {
+                gap: 0.6rem;
+                font-size: 0.62rem;
+                letter-spacing: 0.14em;
+            }
+
+            #servicios .interactive-depth.premium-surface {
+                padding: 1.25rem;
+            }
+
+            #service-feature-visual {
+                min-height: 0;
+            }
+
+            #service-feature-visual .service-feature-stat {
+                padding: 0.8rem 0.55rem;
+                border-radius: 1rem;
+            }
+
+            #service-feature-visual .service-feature-stat p:first-child {
+                font-size: 1.35rem;
+                line-height: 1;
+            }
+
+            #service-feature-visual .service-feature-stat p:last-child {
+                font-size: 0.5rem;
+                line-height: 1.15;
+                letter-spacing: 0.12em;
+            }
+
+            #service-feature-visual .grid.grid-cols-3 {
+                gap: 0.5rem;
+            }
+        }
     </style>
     <script src="assets/site.js" defer></script>
 </head>
@@ -705,11 +751,14 @@
                         Análisis clínicos, gabinete e imagenología con resultados confiables y atención precisa.
                     </p>
                     <div class="flex flex-col sm:flex-row gap-5 justify-center">
-                        <a href="servicios/" class="px-8 py-4 bg-white text-[#0A1C2E] hover:bg-gray-50 rounded-2xl font-black shadow-[0_20px_40px_-15px_rgba(255,255,255,0.3)] flex items-center justify-center gap-2 text-lg transition-all hover:-translate-y-1">
+                        <a href="servicios/" class="w-full sm:w-auto px-8 py-4 bg-white text-[#0A1C2E] hover:bg-gray-50 rounded-2xl font-black shadow-[0_20px_40px_-15px_rgba(255,255,255,0.3)] flex items-center justify-center gap-2 text-lg transition-all hover:-translate-y-1">
                             <i data-lucide="microscope" class="w-5 h-5"></i> Explorar Catálogo
                         </a>
-                        <a href="sucursales/" class="px-8 py-4 bg-white/10 text-white border border-white/20 hover:bg-white/20 rounded-2xl font-bold backdrop-blur-md flex items-center justify-center gap-2 text-lg transition-all hover:-translate-y-1">
+                        <a href="sucursales/" class="w-full sm:w-auto px-8 py-4 bg-white/10 text-white border border-white/20 hover:bg-white/20 rounded-2xl font-bold backdrop-blur-md flex items-center justify-center gap-2 text-lg transition-all hover:-translate-y-1">
                             <i data-lucide="map" class="w-5 h-5"></i> Ubica tu Sucursal
+                        </a>
+                        <a href="unete/" class="w-full sm:w-auto px-8 py-4 bg-cyan-400/18 text-white border border-cyan-300/35 hover:bg-cyan-400/28 rounded-2xl font-bold backdrop-blur-md flex items-center justify-center gap-2 text-lg transition-all hover:-translate-y-1">
+                            <i data-lucide="briefcase" class="w-5 h-5"></i> Contratación de personal
                         </a>
                     </div>
                     <div class="hero-proof-pills mt-10 flex flex-wrap justify-center gap-3 text-white/85 text-xs font-black uppercase tracking-[0.18em]">
@@ -758,29 +807,29 @@
                                 <h3 class="font-outfit text-4xl md:text-5xl font-black text-white leading-tight mb-4">Elige por objetivo, no por lista interminable.</h3>
                                 <p class="text-blue-100/90 text-lg leading-relaxed">Filtra preventivos, imagen y perfiles clínicos para encontrar más rápido lo que necesitas y agendar en un clic.</p>
                             </div>
-                            <div id="service-feature-visual" class="interactive-depth premium-surface service-orbit rounded-[2rem] border border-white/15 p-5 min-h-[290px] relative overflow-hidden">
+                            <div id="service-feature-visual" class="interactive-depth premium-surface service-orbit rounded-[2rem] border border-white/15 p-4 sm:p-5 min-h-[260px] sm:min-h-[290px] relative overflow-hidden">
                                 <canvas id="service-feature-canvas" class="service-three-canvas"></canvas>
                                 <div class="service-scan absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-cyan-300/35 to-transparent"></div>
-                                <div class="relative z-10 h-full min-h-[250px] flex flex-col justify-between">
+                                <div class="relative z-10 h-full min-h-[220px] sm:min-h-[250px] flex flex-col justify-between">
                                     <div class="flex justify-between items-center text-white/80 text-xs font-bold uppercase tracking-widest">
                                         <span>Preventivos</span>
                                         <span>Disponible</span>
                                     </div>
-                                    <div class="mx-auto w-24 h-24 rounded-[2rem] bg-white/95 text-[#0A1C2E] flex items-center justify-center shadow-[0_24px_60px_-24px_rgba(125,211,252,0.9)] rotate-3">
-                                        <i data-lucide="clipboard-check" class="w-12 h-12"></i>
+                                    <div class="mx-auto w-20 h-20 sm:w-24 sm:h-24 rounded-[2rem] bg-white/95 text-[#0A1C2E] flex items-center justify-center shadow-[0_24px_60px_-24px_rgba(125,211,252,0.9)] rotate-3">
+                                        <i data-lucide="clipboard-check" class="w-10 h-10 sm:w-12 sm:h-12"></i>
                                     </div>
-                                    <div class="grid grid-cols-3 gap-3">
+                                    <div class="grid grid-cols-3 gap-2 sm:gap-3">
                                         <div class="service-feature-stat rounded-2xl p-3 text-center">
-                                            <p class="text-2xl font-black text-white">6</p>
-                                            <p class="text-[10px] text-blue-100 font-bold uppercase">paquetes</p>
+                                            <p class="text-xl sm:text-2xl font-black text-white leading-none">6</p>
+                                            <p class="text-[9px] sm:text-[10px] text-blue-100 font-bold uppercase">paquetes</p>
                                         </div>
                                         <div class="service-feature-stat rounded-2xl p-3 text-center">
-                                            <p id="service-eta-countdown" class="text-2xl font-black text-white">--:--</p>
-                                            <p class="text-[10px] text-blue-100 font-bold uppercase">restante</p>
+                                            <p id="service-eta-countdown" class="text-xl sm:text-2xl font-black text-white leading-none">--:--</p>
+                                            <p class="text-[9px] sm:text-[10px] text-blue-100 font-bold uppercase">restante</p>
                                         </div>
                                         <div class="service-feature-stat rounded-2xl p-3 text-center">
-                                            <p class="text-2xl font-black text-white">$400</p>
-                                            <p class="text-[10px] text-blue-100 font-bold uppercase">desde</p>
+                                            <p class="text-xl sm:text-2xl font-black text-white leading-none">$400</p>
+                                            <p class="text-[9px] sm:text-[10px] text-blue-100 font-bold uppercase">desde</p>
                                         </div>
                                     </div>
                                 </div>

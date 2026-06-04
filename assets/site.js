@@ -12,6 +12,7 @@
         { label: 'Portal Pacientes', path: 'portal/', icon: 'fa-user' },
         { label: 'Empresas B2B', path: 'empresas/', icon: 'fa-building-user' },
         { label: 'Médicos', path: 'medicos/', icon: 'fa-user-doctor' },
+        { label: 'Contrataciones', path: 'unete/', icon: 'fa-briefcase' },
     ];
 
     const services = [
