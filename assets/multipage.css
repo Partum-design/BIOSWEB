@@ -7,6 +7,12 @@
     --bios-line: #dbe4f0;
     --bios-accent-1: #1e3a8a;
     --bios-accent-2: #3b82f6;
+    --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
+    --shadow-md: 0 8px 20px rgba(0,0,0,0.12);
+    --shadow-lg: 0 16px 40px rgba(0,0,0,0.16);
+    --shadow-xl: 0 24px 60px rgba(0,0,0,0.20);
+    --transition-smooth: all 0.3s cubic-bezier(0.4,0,0.2,1);
+    --transition-fast: all 0.15s ease-out;
 }
 
 .bios-wrap {
@@ -19,7 +25,8 @@
     top: 0;
     z-index: 9000;
     background: #0a1c2e;
-    box-shadow: 0 16px 38px -28px rgba(0,0,0,0.8);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    transition: box-shadow 0.3s ease;
 }
 
 .bios-topbar {
@@ -51,11 +58,12 @@
 }
 
 .bios-header-body {
-    min-height: 94px;
+    min-height: 90px;
     display: grid;
     grid-template-columns: auto minmax(280px, 1fr) auto;
     align-items: center;
-    gap: 1.5rem;
+    gap: 1.25rem;
+    padding: 0.5rem 0;
 }
 
 .bios-brand-group {
@@ -92,20 +100,22 @@
 .bios-brand span {
     width: 28px;
     height: 28px;
-    border-radius: 999px;
+    border-radius: 50%;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    background: rgba(255,255,255,0.1);
-    color: rgba(255,255,255,0.72);
+    background: rgba(255,255,255,0.08);
+    color: rgba(255,255,255,0.8);
     font-size: 0.72rem;
-    transition: background 180ms ease, color 180ms ease, transform 180ms ease;
+    transition: var(--transition-fast);
+    border: 1px solid rgba(255,255,255,0.1);
 }
 
 .bios-brand:hover span {
-    background: rgba(255,255,255,0.18);
+    background: rgba(255,255,255,0.15);
     color: white;
-    transform: translateY(-1px);
+    transform: translateY(-2px) scale(1.05);
+    border-color: rgba(255,255,255,0.2);
 }
 
 .bios-clinic-select,
@@ -118,19 +128,24 @@
     display: inline-flex;
     align-items: center;
     gap: 0.55rem;
-    border: 1px solid rgba(255,255,255,0.12);
-    border-radius: 8px;
-    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 12px;
+    background: rgba(255,255,255,0.08);
     color: rgba(255,255,255,0.92);
-    padding: 0 0.8rem;
+    padding: 0 1rem;
     font-size: 0.86rem;
     font-weight: 900;
     white-space: nowrap;
+    transition: var(--transition-fast);
+    cursor: pointer;
 }
 
 .bios-clinic-button:hover {
-    background: rgba(255,255,255,0.16);
+    background: rgba(255,255,255,0.14);
     color: white;
+    border-color: rgba(255,255,255,0.25);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
 .bios-global-search {
@@ -150,25 +165,25 @@
 .bios-global-search input {
     width: 100%;
     min-height: 44px;
-    border: 1px solid rgba(255,255,255,0.18);
-    border-radius: 999px;
-    background: rgba(255,255,255,0.1);
+    border: 1.5px solid rgba(255,255,255,0.15);
+    border-radius: 12px;
+    background: rgba(255,255,255,0.08);
     color: white;
     outline: none;
     padding: 0 3.15rem 0 2.8rem;
     font-size: 0.92rem;
     font-weight: 700;
-    transition: background 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+    transition: var(--transition-smooth);
 }
 
 .bios-global-search input::placeholder {
-    color: rgba(255,255,255,0.54);
+    color: rgba(255,255,255,0.5);
 }
 
 .bios-global-search input:focus {
-    background: rgba(255,255,255,0.16);
-    border-color: rgba(96,165,250,0.8);
-    box-shadow: 0 0 0 3px rgba(59,130,246,0.18);
+    background: rgba(255,255,255,0.12);
+    border-color: rgba(37,99,235,1);
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.15);
 }
 
 #global-search-link {
@@ -178,12 +193,20 @@
     transform: translateY(-50%);
     width: 34px;
     height: 34px;
-    border-radius: 999px;
+    border-radius: 10px;
     background: linear-gradient(135deg, var(--bios-accent-1), var(--bios-accent-2));
     color: white;
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    transition: var(--transition-fast);
+    box-shadow: 0 4px 12px rgba(37,99,235,0.3);
+    cursor: pointer;
+}
+
+#global-search-link:hover {
+    transform: translateY(-50%) scale(1.08);
+    box-shadow: 0 6px 16px rgba(37,99,235,0.4);
 }
 
 .bios-header-actions {
@@ -197,13 +220,21 @@
     position: relative;
     width: 44px;
     height: 44px;
-    border-radius: 999px;
+    border-radius: 10px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     color: white;
     background: rgba(255,255,255,0.08);
-    border: 1px solid rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.12);
+    transition: var(--transition-fast);
+    cursor: pointer;
+}
+
+.bios-icon-button:hover {
+    background: rgba(255,255,255,0.14);
+    border-color: rgba(255,255,255,0.2);
+    transform: translateY(-2px);
 }
 
 .bios-appointment-button,
@@ -213,13 +244,25 @@
     align-items: center;
     justify-content: center;
     gap: 0.55rem;
-    border-radius: 999px;
+    border-radius: 12px;
     color: white;
     font-size: 0.9rem;
     font-weight: 900;
-    padding: 0 1.2rem;
-    background: linear-gradient(90deg, #2563eb, #06b6d4);
-    box-shadow: 0 16px 32px -24px rgba(37,99,235,0.8);
+    padding: 0 1.5rem;
+    background: linear-gradient(135deg, #2563eb, #06b6d4);
+    box-shadow: 0 8px 24px rgba(37,99,235,0.35);
+    transition: var(--transition-fast);
+    border: none;
+    cursor: pointer;
+}
+
+.bios-appointment-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(37,99,235,0.45);
+}
+
+.bios-appointment-button:active {
+    transform: translateY(0);
 }
 
 .bios-menu-button {
@@ -233,8 +276,9 @@
 
 .bios-secondary-nav {
     background: white;
-    border-bottom: 1px solid #e5e7eb;
-    box-shadow: 0 8px 22px -24px rgba(15,23,42,0.4);
+    border-bottom: 1px solid #f0f0f0;
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow 0.3s ease;
 }
 
 .bios-secondary-inner {
@@ -249,28 +293,37 @@
 .bios-services-tab,
 .bios-profile-tab {
     min-height: 52px;
-    color: #374151;
+    color: #6b7280;
     font-size: 0.88rem;
     white-space: nowrap;
-    border-bottom: 2px solid transparent;
+    border-bottom: 2.5px solid transparent;
+    transition: var(--transition-fast);
+    cursor: pointer;
+    position: relative;
 }
 
 .bios-secondary-link:hover,
 .bios-secondary-link.active,
 .bios-services-tab {
-    color: #1d4ed8;
+    color: #2563eb;
     border-bottom-color: #2563eb;
 }
 
 .bios-profile-tab {
     margin-left: auto;
     min-height: 42px;
-    border: 1px solid #e5e7eb;
+    border: 1px solid #f0f0f0;
     border-bottom: 0;
-    border-radius: 12px 12px 0 0;
+    border-radius: 10px 10px 0 0;
     padding: 0 1rem;
-    background: #f8fafc;
+    background: #f8fbff;
     color: #0a1c2e;
+    transition: var(--transition-fast);
+    cursor: pointer;
+}
+
+.bios-profile-tab:hover {
+    background: #f0f7ff;
 }
 
 .bios-floating-panel {
@@ -280,15 +333,15 @@
     width: min(92vw, 560px);
     max-height: min(72vh, 520px);
     overflow: auto;
-    border: 1px solid #e5e7eb;
-    border-radius: 16px;
+    border: 1px solid #e8eef7;
+    border-radius: 14px;
     background: white;
     color: #0f172a;
-    box-shadow: 0 28px 80px -32px rgba(15,23,42,0.55);
+    box-shadow: var(--shadow-lg);
     opacity: 0;
     visibility: hidden;
-    transform: translateY(10px);
-    transition: opacity 180ms ease, transform 180ms ease, visibility 180ms ease;
+    transform: translateY(8px);
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
     z-index: 9999;
 }
 
@@ -332,6 +385,8 @@
     text-align: left;
     color: #0f172a;
     border-top: 1px solid #f1f5f9;
+    transition: var(--transition-fast);
+    cursor: pointer;
 }
 
 .clinic-option:hover,
@@ -346,12 +401,13 @@
 .logo-theme-swatch {
     width: 42px;
     height: 42px;
-    border-radius: 12px;
+    border-radius: 10px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     color: #2563eb;
     background: #eff6ff;
+    transition: var(--transition-fast);
 }
 
 .logo-theme-swatch {
@@ -408,9 +464,19 @@
     min-height: 48px;
     margin: 0.75rem;
     border-radius: 12px;
-    background: linear-gradient(135deg, #0a1c2e, #102f4a);
+    background: linear-gradient(135deg, rgba(10,28,46,0.9), rgba(16,47,74,0.8));
     color: white;
-    font-weight: 1000;
+    font-weight: 900;
+    transition: var(--transition-smooth);
+    border: 1px solid rgba(255,255,255,0.1);
+    cursor: pointer;
+}
+
+.bios-panel-link:hover {
+    background: linear-gradient(135deg, #0a1c2e, #102f4a);
+    border-color: rgba(255,255,255,0.2);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(10,28,46,0.3);
 }
 
 .bios-mobile-drawer {
@@ -419,7 +485,7 @@
     z-index: 10000;
     opacity: 0;
     visibility: hidden;
-    transition: opacity 220ms ease, visibility 220ms ease;
+    transition: opacity 0.25s ease, visibility 0.25s ease;
 }
 
 .bios-mobile-drawer.active {
@@ -432,8 +498,9 @@
     inset: 0;
     width: 100%;
     height: 100%;
-    background: rgba(3, 9, 18, 0.68);
-    backdrop-filter: blur(8px);
+    background: rgba(3, 9, 18, 0.65);
+    backdrop-filter: blur(6px);
+    transition: background 0.25s ease;
 }
 
 .bios-mobile-panel {
@@ -445,8 +512,8 @@
     background: white;
     overflow: auto;
     transform: translateX(100%);
-    transition: transform 260ms ease;
-    box-shadow: -24px 0 80px -45px rgba(0,0,0,0.7);
+    transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+    box-shadow: -16px 0 64px rgba(0,0,0,0.25);
 }
 
 .bios-mobile-drawer.active .bios-mobile-panel {
@@ -460,7 +527,8 @@
     gap: 1rem;
     padding: 1.25rem;
     color: white;
-    background: #0a1c2e;
+    background: linear-gradient(135deg, #0a1c2e, #112a48);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
 }
 
 .bios-mobile-head p {
@@ -481,8 +549,15 @@
 .bios-mobile-close {
     width: 44px;
     height: 44px;
-    border-radius: 12px;
+    border-radius: 10px;
     background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.15);
+    transition: var(--transition-fast);
+    cursor: pointer;
+}
+
+.bios-mobile-close:hover {
+    background: rgba(255,255,255,0.15);
 }
 
 .bios-mobile-links {
@@ -493,8 +568,8 @@
 
 .bios-mobile-link {
     min-height: 54px;
-    border: 1px solid #e5e7eb;
-    border-radius: 16px;
+    border: 1.5px solid #e5f2ff;
+    border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -502,6 +577,16 @@
     color: #0a1c2e;
     padding: 0 1rem;
     font-weight: 1000;
+    background: #f8fbff;
+    transition: var(--transition-smooth);
+    cursor: pointer;
+}
+
+.bios-mobile-link:hover {
+    border-color: #2563eb;
+    background: #f0f7ff;
+    box-shadow: var(--shadow-sm);
+    transform: translateX(4px);
 }
 
 .bios-mobile-link span {
@@ -517,24 +602,33 @@
     gap: 0.55rem;
     min-height: 50px;
     margin: 0 1rem 1.25rem;
-    border-radius: 16px;
-    background: #25d366;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #25d366, #128c7e);
     color: white;
     font-weight: 1000;
+    transition: var(--transition-smooth);
+    box-shadow: 0 8px 20px rgba(37,211,102,0.3);
+    cursor: pointer;
+    border: none;
+}
+
+.bios-mobile-whatsapp:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(37,211,102,0.4);
 }
 
 .bios-main-footer {
-    background: #040b14;
+    background: linear-gradient(180deg, #040b14 0%, #0a0e16 100%);
     color: #9ca3af;
-    border-top: 1px solid #1f2937;
-    padding: 6rem 0 3rem;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    padding: 5rem 0 2.5rem;
 }
 
 .footer-grid-main {
     display: grid;
     grid-template-columns: minmax(0, 2fr) repeat(4, minmax(0, 1fr));
-    gap: 3rem;
-    margin-bottom: 4rem;
+    gap: 2.5rem;
+    margin-bottom: 3.5rem;
 }
 
 .footer-brand-block img {
@@ -546,14 +640,16 @@
 }
 
 .footer-brand-block p {
-    line-height: 1.7;
+    line-height: 1.6;
     max-width: 32rem;
+    color: rgba(255,255,255,0.7);
+    font-size: 0.95rem;
 }
 
 .footer-socials-main {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.75rem;
+    gap: 1rem;
     margin-top: 1.5rem;
 }
 
@@ -588,38 +684,46 @@
 
 .bios-main-footer h4 {
     color: white;
-    font-size: 1.05rem;
-    font-weight: 1000;
-    margin: 0 0 1.5rem;
+    font-size: 1rem;
+    font-weight: 900;
+    margin: 0 0 1.25rem;
+    letter-spacing: 0.3px;
 }
 
 .bios-main-footer a {
     display: block;
     color: #9ca3af;
-    font-size: 0.92rem;
-    font-weight: 800;
-    margin: 0 0 1rem;
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin: 0 0 0.9rem;
+    transition: var(--transition-fast);
+    cursor: pointer;
+    position: relative;
+    padding-left: 0;
 }
 
 .bios-main-footer a:hover {
     color: #60a5fa;
+    transform: translateX(2px);
 }
 
 .footer-bottom-main {
-    border-top: 1px solid rgba(31,41,55,0.8);
-    padding-top: 2rem;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    padding-top: 1.75rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
-    font-size: 0.88rem;
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.6);
 }
 
 .footer-bottom-main div {
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 12px;
-    background: rgba(255,255,255,0.05);
-    padding: 0.65rem 1rem;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 8px;
+    background: rgba(255,255,255,0.03);
+    padding: 0.6rem 0.9rem;
+    font-size: 0.8rem;
 }
 
 .footer-bottom-main strong {
