@@ -397,25 +397,17 @@
         const footer = document.querySelector('.bios-main-footer') || document.querySelector('footer');
         if (!footer) return;
 
-        const updateFloatingState = (isVisible) => {
-            document.body.classList.toggle('footer-in-view', isVisible);
+        const checkFooter = () => {
+            const rect = footer.getBoundingClientRect();
+            const isMobile = window.matchMedia('(max-width: 640px)').matches;
+            const hideOffset = isMobile ? 88 : 112;
+            const reachedFooter = window.scrollY > 40 && rect.top <= window.innerHeight - hideOffset && rect.bottom > hideOffset;
+            document.body.classList.toggle('footer-in-view', reachedFooter);
         };
 
-        if (!('IntersectionObserver' in window)) {
-            const checkFooter = () => {
-                const rect = footer.getBoundingClientRect();
-                updateFloatingState(rect.top < window.innerHeight && rect.bottom > 0);
-            };
-            window.addEventListener('scroll', checkFooter, { passive: true });
-            window.addEventListener('resize', checkFooter);
-            checkFooter();
-            return;
-        }
-
-        const observer = new IntersectionObserver((entries) => {
-            updateFloatingState(entries.some(entry => entry.isIntersecting));
-        }, { threshold: 0.05 });
-        observer.observe(footer);
+        window.addEventListener('scroll', checkFooter, { passive: true });
+        window.addEventListener('resize', checkFooter);
+        checkFooter();
     }
 
     document.addEventListener('DOMContentLoaded', () => {
