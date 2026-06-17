@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campaña de la Mujer | Laboratorios BIOS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800;900&family=Outfit:wght@700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="../assets/multipage.css">
+    <script src="../assets/site.js" defer></script>
+</head>
+<body>
+    <div class="page-shell">
+        <header class="site-header">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+                <a href="../"><img src="../logos/bios-logo-sin-circulo.png" alt="Laboratorios BIOS" class="h-14"></a>
+            </div>
+        </header>
+
+        <main class="page-enter max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-14">
+            <section class="grid lg:grid-cols-[0.95fr_1.05fr] gap-6 items-stretch mb-6">
+                <div class="dark-panel p-6 lg:p-8 relative overflow-hidden">
+                    <span class="section-kicker !bg-pink-500/20 !border-pink-200/20 !text-pink-100 mb-5"><i data-lucide="venus" class="w-4 h-4"></i> Campaña de la mujer</span>
+                    <h1 class="brand-type mobile-tight text-5xl lg:text-6xl font-black leading-none mb-4">Agenda salud preventiva</h1>
+                    <p class="text-blue-100 text-lg leading-relaxed">Consulta paquetes ginecológicos, requisitos y horarios disponibles para estudios que requieren cita.</p>
+                    <div class="grid sm:grid-cols-3 gap-3 mt-6">
+                        <div class="metric p-4"><p class="text-2xl font-black">PAP</p><p class="text-xs uppercase font-black text-cyan-100">citología</p></div>
+                        <div class="metric p-4"><p class="text-2xl font-black">COLPO</p><p class="text-xs uppercase font-black text-cyan-100">con cita</p></div>
+                        <div class="metric p-4"><p class="text-2xl font-black">IMG</p><p class="text-xs uppercase font-black text-cyan-100">mastografía</p></div>
+                    </div>
+                </div>
+                <figure class="page-visual min-h-[460px]">
+                    <img src="https://images.unsplash.com/photo-1559757175-0eb30cd8c063?auto=format&fit=crop&w=1400&q=80" alt="Atención preventiva para mujeres en Laboratorios BIOS">
+                    <figcaption class="visual-caption">
+                        <p>Prevención con cita</p>
+                        <p>Te confirmamos preparación, horarios y forma de pago antes de acudir.</p>
+                    </figcaption>
+                </figure>
+            </section>
+
+            <section class="grid lg:grid-cols-3 gap-4 mb-6">
+                <article class="panel p-6">
+                    <i data-lucide="clipboard-check" class="w-8 h-8 text-pink-600 mb-4"></i>
+                    <h2 class="brand-type text-2xl font-black text-[#0A1C2E]">Requisitos</h2>
+                    <p class="text-slate-500 mt-2">Evitar periodo menstrual, no usar óvulos ni duchas vaginales previas y confirmar indicaciones específicas al agendar.</p>
+                </article>
+                <article class="panel p-6">
+                    <i data-lucide="calendar-heart" class="w-8 h-8 text-pink-600 mb-4"></i>
+                    <h2 class="brand-type text-2xl font-black text-[#0A1C2E]">Agenda</h2>
+                    <p class="text-slate-500 mt-2">Colposcopía, Papanicolaou y mastografía se coordinan con horario disponible por unidad.</p>
+                </article>
+                <article class="panel p-6">
+                    <i data-lucide="credit-card" class="w-8 h-8 text-pink-600 mb-4"></i>
+                    <h2 class="brand-type text-2xl font-black text-[#0A1C2E]">Pago en línea</h2>
+                    <p class="text-slate-500 mt-2">Preparado para integrar Mercado Pago, PayPal o Stripe en estudios especiales.</p>
+                </article>
+            </section>
+
+            <section class="grid lg:grid-cols-[0.9fr_1.1fr] gap-4">
+                <div class="panel p-6">
+                    <span class="section-kicker mb-4"><i data-lucide="heart-pulse" class="w-4 h-4"></i> Paquetes disponibles</span>
+                    <div class="grid gap-3">
+                        <div class="rounded-lg border border-pink-100 bg-pink-50 p-4">
+                            <p class="font-black text-[#0A1C2E]">Paquete ginecológico preventivo</p>
+                            <p class="text-sm text-slate-500 mt-1">Orientado a detección oportuna y seguimiento médico.</p>
+                        </div>
+                        <div class="rounded-lg border border-pink-100 bg-pink-50 p-4">
+                            <p class="font-black text-[#0A1C2E]">Colposcopía programada</p>
+                            <p class="text-sm text-slate-500 mt-1">Requiere cita y confirmación de requisitos.</p>
+                        </div>
+                        <div class="rounded-lg border border-pink-100 bg-pink-50 p-4">
+                            <p class="font-black text-[#0A1C2E]">Mastografía</p>
+                            <p class="text-sm text-slate-500 mt-1">Disponible con indicaciones previas y horario asignado.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <form id="woman-form" class="panel p-6 grid gap-4">
+                    <input class="field" id="woman-name" type="text" placeholder="Nombre completo" required>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <input class="field" id="woman-phone" type="tel" placeholder="WhatsApp" required>
+                        <select class="field" id="woman-service">
+                            <option>Paquete ginecológico</option>
+                            <option>Colposcopía</option>
+                            <option>Papanicolaou</option>
+                            <option>Mastografía</option>
+                            <option>Consultar requisitos</option>
+                        </select>
+                    </div>
+                    <select class="field" id="woman-branch">
+                        <option>Sucursal de interés</option>
+                        <option>Plaza Cantú</option>
+                        <option>Plaza La Joya</option>
+                        <option>Las Haciendas</option>
+                        <option>Tepojaco</option>
+                        <option>Tultepec</option>
+                    </select>
+                    <textarea class="field" id="woman-message" rows="4" placeholder="Horario preferido o dudas sobre requisitos"></textarea>
+                    <button class="primary-button" type="submit"><i data-lucide="calendar-check" class="w-4 h-4"></i> Solicitar agenda</button>
+                    <p id="woman-status" class="text-sm text-slate-500"></p>
+                </form>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        document.getElementById('woman-form').addEventListener('submit', event => {
+            event.preventDefault();
+            const name = document.getElementById('woman-name').value.trim();
+            const phone = document.getElementById('woman-phone').value.trim();
+            const service = document.getElementById('woman-service').value;
+            const branch = document.getElementById('woman-branch').value;
+            const message = document.getElementById('woman-message').value.trim();
+            const text = `Hola Laboratorios BIOS, quiero información de la campaña de la mujer.%0A%0ANombre: ${encodeURIComponent(name)}%0AWhatsApp: ${encodeURIComponent(phone)}%0AServicio: ${encodeURIComponent(service)}%0ASucursal: ${encodeURIComponent(branch)}%0ADetalles: ${encodeURIComponent(message)}`;
+            document.getElementById('woman-status').textContent = 'Abriremos WhatsApp para confirmar requisitos y agenda.';
+            window.open(`https://wa.me/5211234567890?text=${text}`, '_blank');
+        });
+        lucide.createIcons();
+    </script>
+</body>
+</html>

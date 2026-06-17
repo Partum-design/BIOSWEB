@@ -81,7 +81,6 @@
 .bios-brand img {
     height: clamp(56px, 6vw, 80px);
     width: auto;
-    filter: brightness(0) invert(1);
     display: block;
 }
 
@@ -634,9 +633,91 @@
 .footer-brand-block img {
     height: 80px;
     width: auto;
-    filter: brightness(0) invert(1);
     opacity: 0.9;
     margin-bottom: 1.5rem;
+}
+
+.bios-logo-intro {
+    position: fixed;
+    inset: 0;
+    z-index: 12000;
+    display: grid;
+    place-items: center;
+    background:
+        radial-gradient(circle at 50% 42%, rgba(37,99,235,0.22), transparent 34%),
+        linear-gradient(135deg, rgba(4,11,20,0.98), rgba(10,28,46,0.96));
+    animation: biosIntroExit 2.6s ease forwards;
+    pointer-events: none;
+}
+
+.bios-logo-intro-card {
+    width: min(78vw, 540px);
+    display: grid;
+    place-items: center;
+    gap: 1rem;
+    transform-origin: top center;
+    animation: biosLogoSettle 2.35s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.bios-logo-intro-card img {
+    width: min(78vw, 520px);
+    max-height: 170px;
+    object-fit: contain;
+    filter: drop-shadow(0 24px 45px rgba(37,99,235,0.26));
+}
+
+.bios-logo-intro-card p {
+    margin: 0;
+    color: rgba(219,234,254,0.92);
+    font-family: Outfit, sans-serif;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.bios-ecg-runner {
+    position: relative;
+    width: min(70vw, 420px);
+    height: 4px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: rgba(96,165,250,0.16);
+}
+
+.bios-ecg-runner span {
+    position: absolute;
+    top: 50%;
+    left: -12px;
+    width: 16px;
+    height: 16px;
+    border-radius: 999px;
+    background: #7dd3fc;
+    box-shadow: 0 0 24px 9px rgba(125,211,252,0.56);
+    transform: translateY(-50%);
+    animation: biosPulseDot 1.45s ease-in-out 0.18s forwards;
+}
+
+@keyframes biosPulseDot {
+    0% { left: -4%; opacity: 0; }
+    12%, 82% { opacity: 1; }
+    100% { left: 104%; opacity: 0; }
+}
+
+@keyframes biosLogoSettle {
+    0% { opacity: 0; transform: translateY(36px) scale(0.86); }
+    20%, 68% { opacity: 1; transform: translateY(0) scale(1); }
+    100% { opacity: 0; transform: translateY(-36vh) scale(0.32); }
+}
+
+@keyframes biosIntroExit {
+    0%, 76% { opacity: 1; visibility: visible; }
+    100% { opacity: 0; visibility: hidden; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .bios-logo-intro {
+        display: none;
+    }
 }
 
 .footer-brand-block p {
@@ -923,7 +1004,7 @@
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 0.65rem;
-    margin-bottom: 1.15rem;
+    margin-bottom: 0.85rem;
 }
 
 .service-meta div {
@@ -950,6 +1031,74 @@
     font-weight: 900;
     margin-top: 0.18rem;
     overflow-wrap: anywhere;
+}
+
+.service-detail {
+    margin: 0 0 1rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.72);
+    padding: 0.75rem;
+}
+
+.service-detail summary {
+    cursor: pointer;
+    color: #1d4ed8;
+    font-size: 0.82rem;
+    font-weight: 1000;
+    list-style: none;
+}
+
+.service-detail summary::-webkit-details-marker {
+    display: none;
+}
+
+.service-detail summary::after {
+    content: "+";
+    float: right;
+    color: #64748b;
+}
+
+.service-detail[open] summary::after {
+    content: "-";
+}
+
+.service-detail p {
+    margin: 0.7rem 0 0;
+    color: #475569;
+    font-size: 0.88rem;
+    line-height: 1.45;
+}
+
+.service-includes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    margin-top: 0.75rem;
+}
+
+.service-includes span {
+    border: 1px solid #dbeafe;
+    border-radius: 999px;
+    background: #eff6ff;
+    color: #1e40af;
+    padding: 0.35rem 0.55rem;
+    font-size: 0.72rem;
+    font-weight: 900;
+}
+
+.service-payments {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.45rem;
+    margin-top: 0.8rem;
+    border-radius: 10px;
+    background: #fdf2f8;
+    color: #9d174d;
+    padding: 0.7rem;
+    font-size: 0.78rem;
+    line-height: 1.35;
+    font-weight: 900;
 }
 
 .service-card-footer {
