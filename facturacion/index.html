@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal de Facturación | Laboratorios BIOS</title>
+    <meta name="description" content="Solicita tu comprobante fiscal de manera rápida y sencilla en Laboratorios BIOS. Llena el formulario con tus datos fiscales y recibe tu factura por correo.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="../assets/multipage.css">
+    <script src="../assets/site.js" defer></script>
+    <style>
+        /* ─── PAGE BASE ─────────────────────────────────────── */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f4f7fb;
+            color: #1e293b;
+            min-height: 100vh;
+        }
+
+        /* ─── HERO BANNER ────────────────────────────────────── */
+        .fact-hero {
+            background: linear-gradient(135deg, #0a1c2e 0%, #0e2d4a 55%, #0f3460 100%);
+            padding: 2.5rem 1.5rem 3.5rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .fact-hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse 60% 50% at 20% 50%, rgba(37,99,235,0.18), transparent),
+                radial-gradient(ellipse 50% 60% at 80% 30%, rgba(6,182,212,0.12), transparent);
+            pointer-events: none;
+        }
+
+        .fact-hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 999px;
+            color: #93c5fd;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 0.3rem 0.85rem;
+            margin-bottom: 0.9rem;
+        }
+
+        .fact-hero h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: clamp(1.6rem, 4vw, 2.4rem);
+            font-weight: 900;
+            color: white;
+            line-height: 1.1;
+            margin-bottom: 0.5rem;
+        }
+
+        .fact-hero h1 span {
+            background: linear-gradient(135deg, #60a5fa, #22d3ee);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .fact-hero p {
+            color: rgba(255,255,255,0.62);
+            font-size: 0.88rem;
+            max-width: 38rem;
+            margin: 0 auto 1.5rem;
+            line-height: 1.6;
+        }
+
+        /* ─── STEPS ROW ──────────────────────────────────────── */
+        .fact-steps {
+            display: flex;
+            justify-content: center;
+            gap: 0;
+            max-width: 52rem;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .fact-step {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.45rem;
+            padding: 0.75rem 0.5rem;
+            position: relative;
+        }
+
+        .fact-step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            top: 1.3rem;
+            right: -50%;
+            width: 100%;
+            height: 2px;
+            background: rgba(255,255,255,0.12);
+            z-index: 0;
+        }
+
+        .fact-step-num {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.78rem;
+            font-weight: 900;
+            position: relative;
+            z-index: 1;
+            flex-shrink: 0;
+        }
+
+        .fact-step-num.done {
+            background: linear-gradient(135deg, #2563eb, #06b6d4);
+            color: white;
+            box-shadow: 0 4px 14px rgba(37,99,235,0.45);
+        }
+
+        .fact-step-num.active {
+            background: white;
+            color: #0a1c2e;
+            box-shadow: 0 4px 14px rgba(255,255,255,0.25);
+        }
+
+        .fact-step-num.pending {
+            background: rgba(255,255,255,0.1);
+            border: 1.5px solid rgba(255,255,255,0.2);
+            color: rgba(255,255,255,0.4);
+        }
+
+        .fact-step-label {
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: rgba(255,255,255,0.55);
+            text-align: center;
+            line-height: 1.3;
+            max-width: 7rem;
+        }
+
+        .fact-step.active .fact-step-label { color: rgba(255,255,255,0.92); }
+
+        /* ─── MAIN LAYOUT ────────────────────────────────────── */
+        .fact-layout {
+            max-width: 72rem;
+            margin: 0 auto;
+            padding: 2rem 1.25rem 4rem;
+            display: grid;
+            grid-template-columns: 1fr 280px;
+            gap: 1.5rem;
+            align-items: start;
+        }
+
+        @media (max-width: 860px) {
+            .fact-layout { grid-template-columns: 1fr; }
+            .fact-sidebar { order: -1; }
+        }
+
+        /* ─── FORM CARD ──────────────────────────────────────── */
+        .fact-form-card {
+            background: white;
+            border-radius: 16px;
+            border: 1px solid #e2e8f4;
+            box-shadow: 0 4px 24px rgba(15,23,42,0.06);
+            overflow: hidden;
+        }
+
+        .form-section {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid #f0f4fa;
+        }
+
+        .form-section:last-of-type { border-bottom: none; }
+
+        .form-section-head {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            margin-bottom: 1rem;
+        }
+
+        .form-section-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            flex-shrink: 0;
+        }
+
+        .icon-blue  { background: #eff6ff; color: #2563eb; }
+        .icon-cyan  { background: #ecfeff; color: #0891b2; }
+        .icon-green { background: #f0fdf4; color: #16a34a; }
+        .icon-amber { background: #fffbeb; color: #d97706; }
+
+        .form-section-title {
+            font-size: 0.82rem;
+            font-weight: 800;
+            color: #0a1c2e;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        /* ─── FORM FIELDS ────────────────────────────────────── */
+        .field-row {
+            display: grid;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .field-row:last-child { margin-bottom: 0; }
+        .field-row.cols-2 { grid-template-columns: 1fr 1fr; }
+        .field-row.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+        .field-row.cols-auto { grid-template-columns: 1fr auto; }
+
+        @media (max-width: 540px) {
+            .field-row.cols-2,
+            .field-row.cols-3 { grid-template-columns: 1fr; }
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+
+        .field label {
+            font-size: 0.73rem;
+            font-weight: 700;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .field label .req {
+            color: #ef4444;
+            margin-left: 2px;
+        }
+
+        .field input,
+        .field select,
+        .field textarea {
+            width: 100%;
+            height: 38px;
+            padding: 0 0.75rem;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 9px;
+            background: #fafbfe;
+            color: #1e293b;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 500;
+            outline: none;
+            transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        .field select {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748b' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.7rem center;
+            padding-right: 2.2rem;
+            cursor: pointer;
+        }
+
+        .field textarea {
+            height: auto;
+            min-height: 72px;
+            padding: 0.55rem 0.75rem;
+            resize: vertical;
+            line-height: 1.5;
+        }
+
+        .field input:focus,
+        .field select:focus,
+        .field textarea:focus {
+            border-color: #2563eb;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+        }
+
+        .field input::placeholder,
+        .field textarea::placeholder { color: #b0bac8; font-weight: 400; }
+
+        /* ─── PERSONA TYPE ────────────────────────────────────── */
+        .persona-tabs {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .persona-tab {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            height: 38px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 9px;
+            background: #fafbfe;
+            color: #94a3b8;
+            font-size: 0.82rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.18s ease;
+        }
+
+        .persona-tab.active {
+            background: #eff6ff;
+            border-color: #2563eb;
+            color: #2563eb;
+        }
+
+        .persona-tab:hover:not(.active) {
+            background: #f0f9ff;
+            border-color: #bae6fd;
+            color: #0284c7;
+        }
+
+        /* ─── FILE UPLOAD ─────────────────────────────────────── */
+        .upload-area {
+            border: 1.5px dashed #cbd5e1;
+            border-radius: 10px;
+            padding: 0.85rem 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: #fafbfe;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .upload-area:hover {
+            border-color: #2563eb;
+            background: #f0f7ff;
+        }
+
+        .upload-area input[type="file"] {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .upload-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: #eff6ff;
+            color: #2563eb;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            margin: 0 auto 0.4rem;
+        }
+
+        .upload-area p {
+            font-size: 0.78rem;
+            color: #64748b;
+            font-weight: 600;
+            line-height: 1.4;
+        }
+
+        .upload-area p span {
+            color: #2563eb;
+            font-weight: 800;
+        }
+
+        .upload-area small {
+            display: block;
+            font-size: 0.68rem;
+            color: #94a3b8;
+            margin-top: 0.2rem;
+        }
+
+        .upload-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+        }
+
+        @media (max-width: 480px) {
+            .upload-grid { grid-template-columns: 1fr; }
+        }
+
+        /* ─── SUBMIT BUTTON ───────────────────────────────────── */
+        .fact-submit-wrap {
+            padding: 1.25rem 1.5rem;
+            background: linear-gradient(to bottom, #f8faff, white);
+            border-top: 1px solid #f0f4fa;
+        }
+
+        .fact-submit-btn {
+            width: 100%;
+            height: 46px;
+            background: linear-gradient(135deg, #2563eb 0%, #0891b2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 800;
+            letter-spacing: 0.02em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.55rem;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(37,99,235,0.35);
+            transition: all 0.2s ease;
+        }
+
+        .fact-submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 28px rgba(37,99,235,0.45);
+        }
+
+        .fact-submit-btn:active { transform: translateY(0); }
+
+        .fact-alt-contact {
+            text-align: center;
+            margin-top: 0.75rem;
+            font-size: 0.76rem;
+            color: #94a3b8;
+        }
+
+        .fact-alt-contact a {
+            color: #2563eb;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        /* ─── SIDEBAR ─────────────────────────────────────────── */
+        .fact-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .sidebar-card {
+            background: white;
+            border: 1px solid #e2e8f4;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 2px 12px rgba(15,23,42,0.05);
+        }
+
+        .sidebar-card-head {
+            padding: 0.85rem 1rem;
+            background: #0a1c2e;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .sidebar-card-head i { color: #60a5fa; font-size: 0.85rem; }
+        .sidebar-card-head span {
+            color: white;
+            font-size: 0.78rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .sidebar-card-body { padding: 0.85rem 1rem; }
+
+        /* Requirements list */
+        .req-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .req-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.55rem;
+            font-size: 0.78rem;
+            color: #475569;
+            line-height: 1.4;
+        }
+
+        .req-item i {
+            color: #2563eb;
+            font-size: 0.7rem;
+            margin-top: 0.18rem;
+            flex-shrink: 0;
+        }
+
+        .req-item strong { color: #1e293b; font-weight: 700; display: block; }
+
+        /* Deadline note */
+        .deadline-note {
+            background: #fffbeb;
+            border: 1px solid #fde68a;
+            border-radius: 10px;
+            padding: 0.75rem;
+            display: flex;
+            gap: 0.55rem;
+            font-size: 0.76rem;
+            color: #92400e;
+            line-height: 1.4;
+        }
+
+        .deadline-note i { color: #d97706; flex-shrink: 0; margin-top: 0.1rem; }
+
+        /* Payment methods */
+        .payment-methods {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.5rem;
+        }
+
+        .pm-chip {
+            height: 36px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #64748b;
+            font-size: 1.1rem;
+            transition: all 0.15s ease;
+        }
+
+        .pm-chip:hover {
+            border-color: #2563eb;
+            color: #2563eb;
+            background: #f0f7ff;
+        }
+
+        /* Contact CTA */
+        .contact-cta {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.75rem;
+            background: linear-gradient(135deg, #f0fdf4, #ecfeff);
+            border: 1px solid #bbf7d0;
+            border-radius: 10px;
+            font-size: 0.78rem;
+            color: #064e3b;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .contact-cta:hover {
+            background: linear-gradient(135deg, #d1fae5, #cffafe);
+            box-shadow: 0 4px 12px rgba(5,150,105,0.15);
+            transform: translateY(-1px);
+        }
+
+        .contact-cta-icon {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #25d366, #16a34a);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1rem;
+            flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(37,211,102,0.35);
+        }
+
+        /* ─── ANIMATIONS ──────────────────────────────────────── */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(14px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .fact-form-card { animation: fadeUp 0.45s ease both; }
+        .fact-sidebar { animation: fadeUp 0.5s 0.1s ease both; }
+
+        /* ─── RESPONSIVE ──────────────────────────────────────── */
+        @media (max-width: 640px) {
+            .fact-hero { padding: 2rem 1rem 2.75rem; }
+            .fact-layout { padding: 1.5rem 1rem 3rem; }
+            .form-section { padding: 1rem 1.1rem; }
+            .fact-submit-wrap { padding: 1rem 1.1rem; }
+        }
+    </style>
+    <link rel="stylesheet" href="../assets/compact.css">
+</head>
+<body>
+
+<!-- ═══════════════ NAV (reutilizamos el header global) ═════════════════ -->
+<div class="bios-main-header" id="mainHeader">
+    <div class="bios-wrap">
+        <div class="bios-header-body">
+            <div class="bios-brand-group">
+                <a href="../" class="bios-brand">
+                    <img src="../logos/bios-logo-sin-circulo.png" alt="Laboratorios BIOS">
+                </a>
+            </div>
+
+            <nav style="display:flex; align-items:center; gap:1.5rem; justify-content:center;">
+                <a href="../"          style="color:rgba(255,255,255,0.65);font-size:0.86rem;font-weight:700;text-decoration:none;transition:color 0.15s ease;">Inicio</a>
+                <a href="../servicios/" style="color:rgba(255,255,255,0.65);font-size:0.86rem;font-weight:700;text-decoration:none;transition:color 0.15s ease;">Servicios</a>
+                <a href="../portal/"    style="color:rgba(255,255,255,0.65);font-size:0.86rem;font-weight:700;text-decoration:none;transition:color 0.15s ease;">Portal</a>
+                <a href="../seguimiento/" style="color:rgba(255,255,255,0.65);font-size:0.86rem;font-weight:700;text-decoration:none;transition:color 0.15s ease;">Seguimiento</a>
+                <a href="../sucursales/"  style="color:rgba(255,255,255,0.65);font-size:0.86rem;font-weight:700;text-decoration:none;transition:color 0.15s ease;">Sucursales</a>
+                <a href="../facturacion/" style="color:#60a5fa;font-size:0.86rem;font-weight:800;text-decoration:none;border-bottom:2px solid #60a5fa;padding-bottom:2px;">Facturación</a>
+            </nav>
+
+            <div class="bios-header-actions">
+                <a href="../seguimiento/" class="bios-appointment-button">
+                    <i class="fa-solid fa-list-check" style="font-size:0.85rem;"></i>
+                    Ver estado
+                </a>
+                <button class="bios-menu-button" id="mobileMenuBtn" aria-label="Abrir menú">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════ HERO ════════════════════════════════════════════════ -->
+<section class="fact-hero">
+    <div class="fact-hero-badge">
+        <i class="fa-solid fa-file-invoice"></i>
+        Portal de facturación
+    </div>
+    <h1>Solicita tu <span>comprobante fiscal</span></h1>
+    <p>Rápido, sencillo y directo. Llena el formulario con tus datos y recibe tu CFDI al correo en breve.</p>
+
+    <div class="fact-steps">
+        <div class="fact-step">
+            <div class="fact-step-num done"><i class="fa-solid fa-folder-open" style="font-size:0.75rem;"></i></div>
+            <div class="fact-step-label">Reúne tus datos</div>
+        </div>
+        <div class="fact-step active">
+            <div class="fact-step-num active">2</div>
+            <div class="fact-step-label">Envía el formulario</div>
+        </div>
+        <div class="fact-step">
+            <div class="fact-step-num pending">3</div>
+            <div class="fact-step-label">Recibe tu factura</div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════ MAIN LAYOUT ═════════════════════════════════════════ -->
+<div class="fact-layout">
+
+    <!-- FORM -->
+    <div class="fact-form-card">
+
+        <!-- §1 Datos del ticket -->
+        <div class="form-section">
+            <div class="form-section-head">
+                <div class="form-section-icon icon-blue"><i class="fa-solid fa-receipt"></i></div>
+                <span class="form-section-title">Datos del ticket</span>
+            </div>
+
+            <div class="field-row cols-2">
+                <div class="field">
+                    <label for="monto">Monto a facturar <span class="req">*</span></label>
+                    <input type="text" id="monto" placeholder="$0.00" inputmode="decimal">
+                </div>
+                <div class="field">
+                    <label for="orden">Número de orden / folio <span class="req">*</span></label>
+                    <input type="text" id="orden" placeholder="Ej. 00123456">
+                </div>
+            </div>
+        </div>
+
+        <!-- §2 Datos fiscales -->
+        <div class="form-section">
+            <div class="form-section-head">
+                <div class="form-section-icon icon-cyan"><i class="fa-solid fa-building-columns"></i></div>
+                <span class="form-section-title">Datos fiscales</span>
+            </div>
+
+            <div class="field-row">
+                <div class="field">
+                    <label>Tipo de persona <span class="req">*</span></label>
+                    <div class="persona-tabs">
+                        <button type="button" class="persona-tab active" id="tab-fisica" onclick="setPersona('fisica')">
+                            <i class="fa-solid fa-user"></i> Física
+                        </button>
+                        <button type="button" class="persona-tab" id="tab-moral" onclick="setPersona('moral')">
+                            <i class="fa-solid fa-building"></i> Moral
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="field-row cols-2">
+                <div class="field" style="grid-column: 1 / -1;">
+                    <label for="rfc">RFC <span class="req">*</span></label>
+                    <input type="text" id="rfc" placeholder="XAXX010101000" maxlength="13"
+                           style="text-transform:uppercase;" autocomplete="off">
+                </div>
+            </div>
+
+            <div class="field-row cols-2">
+                <div class="field">
+                    <label for="regimen">Régimen fiscal <span class="req">*</span></label>
+                    <select id="regimen">
+                        <option value="" disabled selected>Selecciona régimen</option>
+                        <option value="601">601 – General de Ley Personas Morales</option>
+                        <option value="603">603 – Personas Morales con Fines no Lucrativos</option>
+                        <option value="605">605 – Sueldos y Salarios e Ingresos Asimilados</option>
+                        <option value="606">606 – Arrendamiento</option>
+                        <option value="607">607 – Régimen de Enajenación o Adquisición de Bienes</option>
+                        <option value="608">608 – Demás Ingresos</option>
+                        <option value="610">610 – Residentes en el Extranjero sin EP en México</option>
+                        <option value="611">611 – Ingresos por Dividendos (socios y accionistas)</option>
+                        <option value="612">612 – Personas Físicas con Actividades Empresariales</option>
+                        <option value="614">614 – Ingresos por Intereses</option>
+                        <option value="615">615 – Régimen de los Ingresos por obtención de Premios</option>
+                        <option value="616">616 – Sin Obligaciones Fiscales</option>
+                        <option value="621">621 – Incorporación Fiscal</option>
+                        <option value="622">622 – Actividades Agrícolas, Ganaderas, Silvícolas y Pesqueras</option>
+                        <option value="623">623 – Opcional para Grupos de Sociedades</option>
+                        <option value="624">624 – Coordinados</option>
+                        <option value="625">625 – Régimen de las Actividades Empresariales con Ingresos a través de Plataformas Tecnológicas</option>
+                        <option value="626">626 – Régimen Simplificado de Confianza (RESICO)</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label for="uso_cfdi">Uso de CFDI <span class="req">*</span></label>
+                    <select id="uso_cfdi">
+                        <option value="" disabled selected>Selecciona uso</option>
+                        <option value="G01">G01 – Adquisición de mercancias</option>
+                        <option value="G02">G02 – Devoluciones, descuentos o bonificaciones</option>
+                        <option value="G03">G03 – Gastos en general</option>
+                        <option value="I01">I01 – Construcciones</option>
+                        <option value="I02">I02 – Mobilario y equipo de oficina</option>
+                        <option value="I04">I04 – Equipo de computo y accesorios</option>
+                        <option value="I06">I06 – Comunicaciones telefónicas</option>
+                        <option value="D01">D01 – Honorarios médicos, dentales y gastos hospitalarios</option>
+                        <option value="D04">D04 – Donativos</option>
+                        <option value="S01">S01 – Sin efectos fiscales</option>
+                        <option value="CP01">CP01 – Pagos</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="field-row cols-2">
+                <div class="field">
+                    <label for="codigo_postal">Código postal fiscal <span class="req">*</span></label>
+                    <input type="text" id="codigo_postal" placeholder="00000" maxlength="5" inputmode="numeric">
+                </div>
+                <div class="field">
+                    <label for="forma_pago">Forma de pago <span class="req">*</span></label>
+                    <select id="forma_pago">
+                        <option value="" disabled selected>Selecciona</option>
+                        <option value="01">01 – Efectivo</option>
+                        <option value="02">02 – Cheque nominativo</option>
+                        <option value="03">03 – Transferencia electrónica</option>
+                        <option value="04">04 – Tarjeta de crédito</option>
+                        <option value="28">28 – Tarjeta de débito</option>
+                        <option value="99">99 – Por definir</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- §3 Datos personales -->
+        <div class="form-section">
+            <div class="form-section-head">
+                <div class="form-section-icon icon-green"><i class="fa-solid fa-user-pen"></i></div>
+                <span class="form-section-title">Datos de contacto</span>
+            </div>
+
+            <div class="field-row cols-2">
+                <div class="field">
+                    <label for="nombre">Nombre(s) <span class="req">*</span></label>
+                    <input type="text" id="nombre" placeholder="Juan">
+                </div>
+                <div class="field">
+                    <label for="ap_paterno">Apellido paterno <span class="req">*</span></label>
+                    <input type="text" id="ap_paterno" placeholder="Pérez">
+                </div>
+            </div>
+
+            <div class="field-row cols-2">
+                <div class="field">
+                    <label for="ap_materno">Apellido materno</label>
+                    <input type="text" id="ap_materno" placeholder="García">
+                </div>
+                <div class="field">
+                    <label for="email">Correo para envío <span class="req">*</span></label>
+                    <input type="email" id="email" placeholder="tu@correo.com">
+                </div>
+            </div>
+        </div>
+
+        <!-- §4 Archivos -->
+        <div class="form-section">
+            <div class="form-section-head">
+                <div class="form-section-icon icon-amber"><i class="fa-solid fa-paperclip"></i></div>
+                <span class="form-section-title">Archivos adjuntos</span>
+            </div>
+
+            <div class="upload-grid">
+                <div>
+                    <label style="font-size:0.72rem;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.05em;display:block;margin-bottom:0.4rem;">
+                        Constancia de Situación Fiscal <span style="color:#ef4444;">*</span>
+                    </label>
+                    <div class="upload-area" id="upload-csf">
+                        <input type="file" id="file-csf" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx" aria-label="Cargar Constancia de Situación Fiscal">
+                        <div class="upload-icon"><i class="fa-solid fa-file-pdf"></i></div>
+                        <p><span>Selecciona archivo</span></p>
+                        <small>PDF, JPG, PNG, DOC · Máx 10 MB</small>
+                    </div>
+                </div>
+
+                <div>
+                    <label style="font-size:0.72rem;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.05em;display:block;margin-bottom:0.4rem;">
+                        Comprobante de pago <span style="color:#ef4444;">*</span>
+                    </label>
+                    <div class="upload-area" id="upload-cp">
+                        <input type="file" id="file-cp" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx" aria-label="Cargar Comprobante de Pago">
+                        <div class="upload-icon"><i class="fa-solid fa-receipt"></i></div>
+                        <p><span>Seleccionar archivo</span></p>
+                        <small>PDF, JPG, PNG, DOC · Máx 10 MB</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SUBMIT -->
+        <div class="fact-submit-wrap">
+            <button type="submit" class="fact-submit-btn" id="btnEnviar" onclick="submitForm()">
+                <i class="fa-solid fa-paper-plane"></i>
+                Enviar solicitud de factura
+            </button>
+            <p class="fact-alt-contact">
+                ¿Prefieres enviarlo directo?
+                <a href="mailto:facturacion@labios.mx">facturacion@labios.mx</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- SIDEBAR -->
+    <aside class="fact-sidebar">
+
+        <!-- Requisitos -->
+        <div class="sidebar-card">
+            <div class="sidebar-card-head">
+                <i class="fa-solid fa-circle-info"></i>
+                <span>¿Qué necesitas?</span>
+            </div>
+            <div class="sidebar-card-body">
+                <div class="req-list">
+                    <div class="req-item">
+                        <i class="fa-solid fa-circle-check"></i>
+                        <div>
+                            <strong>RFC vigente</strong>
+                            Que corresponda al comprobante de pago.
+                        </div>
+                    </div>
+                    <div class="req-item">
+                        <i class="fa-solid fa-circle-check"></i>
+                        <div>
+                            <strong>Constancia de situación fiscal</strong>
+                            Descárgala del portal del SAT (máx. 3 meses).
+                        </div>
+                    </div>
+                    <div class="req-item">
+                        <i class="fa-solid fa-circle-check"></i>
+                        <div>
+                            <strong>Comprobante de pago</strong>
+                            Ticket o fotografía legible del mismo.
+                        </div>
+                    </div>
+                    <div class="req-item">
+                        <i class="fa-solid fa-circle-check"></i>
+                        <div>
+                            <strong>Correo electrónico</strong>
+                            Recibirás tu CFDI en ese correo.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Plazo -->
+        <div class="sidebar-card">
+            <div class="sidebar-card-head">
+                <i class="fa-solid fa-clock"></i>
+                <span>Plazo de emisión</span>
+            </div>
+            <div class="sidebar-card-body">
+                <div class="deadline-note">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                    <span>Las facturas solo pueden emitirse <strong>dentro del mismo mes</strong> en que se realizó el pago. Solicitudes fuera de plazo no son válidas ante el SAT.</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Métodos de pago aceptados -->
+        <div class="sidebar-card">
+            <div class="sidebar-card-head">
+                <i class="fa-solid fa-credit-card"></i>
+                <span>Métodos de pago</span>
+            </div>
+            <div class="sidebar-card-body">
+                <div class="payment-methods">
+                    <div class="pm-chip" title="Visa"><i class="fa-brands fa-cc-visa"></i></div>
+                    <div class="pm-chip" title="Mastercard"><i class="fa-brands fa-cc-mastercard"></i></div>
+                    <div class="pm-chip" title="American Express"><i class="fa-brands fa-cc-amex"></i></div>
+                    <div class="pm-chip" title="Efectivo / OXXO Pay"><i class="fa-solid fa-money-bill-wave"></i></div>
+                </div>
+                <p style="font-size:0.72rem;color:#94a3b8;margin-top:0.65rem;line-height:1.4;">
+                    También aceptamos transferencias bancarias y depósitos directos.
+                </p>
+            </div>
+        </div>
+
+        <!-- WhatsApp CTA -->
+        <a href="https://wa.me/52XXXXXXXXXX?text=Hola%2C%20necesito%20ayuda%20con%20mi%20factura"
+           target="_blank" class="contact-cta" id="whatsapp-factura-cta">
+            <div class="contact-cta-icon">
+                <i class="fa-brands fa-whatsapp"></i>
+            </div>
+            <div>
+                <strong style="display:block;font-size:0.8rem;font-weight:800;color:#064e3b;margin-bottom:0.1rem;">
+                    ¿Necesitas ayuda?
+                </strong>
+                <span style="color:#065f46;font-size:0.74rem;">Escríbenos por WhatsApp</span>
+            </div>
+        </a>
+
+    </aside>
+
+</div>
+
+<!-- ═══════════════ SUCCESS TOAST ════════════════════════════════════════ -->
+<div id="toast" style="
+    position:fixed; bottom:2rem; left:50%; transform:translateX(-50%) translateY(20px);
+    background:linear-gradient(135deg,#0a1c2e,#0f3460);
+    color:white; padding:0.85rem 1.5rem;
+    border-radius:14px; display:flex; align-items:center; gap:0.65rem;
+    font-size:0.86rem; font-weight:700;
+    box-shadow:0 12px 36px rgba(10,28,46,0.4);
+    opacity:0; pointer-events:none;
+    transition:all 0.35s cubic-bezier(0.4,0,0.2,1);
+    z-index:9999; white-space:nowrap;
+">
+    <i class="fa-solid fa-circle-check" style="color:#4ade80;"></i>
+    ¡Solicitud enviada! Recibirás tu factura pronto.
+</div>
+
+<script>
+    // Persona type toggle
+    function setPersona(tipo) {
+        document.querySelectorAll('.persona-tab').forEach(t => t.classList.remove('active'));
+        document.getElementById('tab-' + tipo).classList.add('active');
+    }
+
+    // File label update
+    ['file-csf', 'file-cp'].forEach(id => {
+        const input = document.getElementById(id);
+        if (!input) return;
+        input.addEventListener('change', function () {
+            const area = this.closest('.upload-area');
+            if (!area) return;
+            const p = area.querySelector('p');
+            if (this.files && this.files[0]) {
+                p.innerHTML = '<span>' + this.files[0].name + '</span>';
+                area.style.borderColor = '#16a34a';
+                area.style.background  = '#f0fdf4';
+            }
+        });
+    });
+
+    // RFC uppercase
+    const rfcInput = document.getElementById('rfc');
+    if (rfcInput) {
+        rfcInput.addEventListener('input', function () {
+            this.value = this.value.toUpperCase();
+        });
+    }
+
+    // Submit (demo)
+    function submitForm() {
+        const toast = document.getElementById('toast');
+        toast.style.opacity = '1';
+        toast.style.transform = 'translateX(-50%) translateY(0)';
+        toast.style.pointerEvents = 'auto';
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            toast.style.transform = 'translateX(-50%) translateY(20px)';
+            toast.style.pointerEvents = 'none';
+        }, 4000);
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,283 @@
+/* ════════════════════════════════════════════════════════════
+   BIOS COMPACT OVERRIDE v2
+   Aplica a TODAS las páginas del sitio.
+   Reduce textos y espaciados excesivos manteniendo estética.
+   NO toca el header ni el footer.
+   ════════════════════════════════════════════════════════════ */
+
+/* ── 1. BASE ───────────────────────────────────────────────── */
+body { font-size: 15px; }
+
+/* ── 2. SECCIONES: padding reducido ───────────────────────── */
+main > section          { padding-top: clamp(2rem,3.8vw,3.5rem)!important; padding-bottom: clamp(2rem,3.8vw,3.5rem)!important; }
+main #inicio            { min-height: clamp(380px,52vh,540px)!important; padding-top:3.25rem!important; padding-bottom:3.25rem!important; }
+main #tecnologia-bios   { padding-top: clamp(1.75rem,3vw,3rem)!important; padding-bottom: clamp(1.75rem,3vw,3rem)!important; }
+
+/* ── 3. MÁRGENES GLOBALES REDUCIDOS ────────────────────────── */
+main .mb-24 { margin-bottom:2rem!important; }
+main .mb-20 { margin-bottom:1.75rem!important; }
+main .mb-16 { margin-bottom:1.5rem!important; }
+main .mb-14 { margin-bottom:1.25rem!important; }
+main .mb-12 { margin-bottom:1.1rem!important; }
+main .mb-10 { margin-bottom:1rem!important; }
+main .mb-8  { margin-bottom:0.85rem!important; }
+main .mb-6  { margin-bottom:0.65rem!important; }
+main .mb-5  { margin-bottom:0.5rem!important; }
+main .mt-10 { margin-top:1rem!important; }
+main .mt-8  { margin-top:0.8rem!important; }
+main .mt-6  { margin-top:0.65rem!important; }
+
+/* ── 4. ESCALADO DE TIPOGRAFÍA — HOMEPAGE (Tailwind classes) ─ */
+
+/* text-6xl / lg:text-6xl / md:text-6xl */
+main .text-6xl { font-size: clamp(1.8rem,3.2vw,2.55rem)!important; line-height:1.08!important; }
+
+/* text-5xl / md:text-5xl / lg:text-5xl */
+main .text-5xl { font-size: clamp(1.6rem,2.8vw,2.15rem)!important; line-height:1.1!important; }
+
+/* text-4xl / md:text-4xl / lg:text-4xl */
+main .text-4xl { font-size: clamp(1.35rem,2.2vw,1.8rem)!important; line-height:1.15!important; }
+
+/* text-3xl */
+main .text-3xl { font-size: clamp(1.15rem,1.8vw,1.45rem)!important; line-height:1.2!important; }
+
+/* text-2xl */
+main .text-2xl { font-size: clamp(1.0rem,1.4vw,1.2rem)!important; line-height:1.3!important; }
+
+/* text-xl */
+main .text-xl  { font-size: 0.96rem!important; line-height:1.55!important; }
+
+/* text-lg */
+main .text-lg  { font-size: 0.92rem!important; line-height:1.55!important; }
+
+/* Hero headline específico */
+main .hero-signal { font-size: clamp(1.75rem,3.8vw,2.9rem)!important; line-height:1.06!important; margin-bottom:0.85rem!important; }
+main #inicio p.text-lg, main #inicio p.text-xl { font-size:0.9rem!important; max-width:34rem!important; }
+
+/* ── 5. TAILWIND RESPONSIVE OVERRIDES ──────────────────────── */
+/* Necesario para clases con prefijo md: y lg: */
+@media (min-width:768px) {
+    main .md\:text-5xl { font-size: clamp(1.6rem,2.8vw,2.15rem)!important; }
+    main .md\:text-4xl { font-size: clamp(1.35rem,2.2vw,1.8rem)!important; }
+    main .md\:text-3xl { font-size: clamp(1.15rem,1.8vw,1.45rem)!important; }
+    main .md\:text-2xl { font-size: clamp(1.0rem,1.4vw,1.2rem)!important; }
+    main .md\:text-xl  { font-size:0.96rem!important; }
+}
+@media (min-width:1024px) {
+    main .lg\:text-6xl { font-size: clamp(1.8rem,3.2vw,2.55rem)!important; }
+    main .lg\:text-5xl { font-size: clamp(1.6rem,2.8vw,2.15rem)!important; }
+    main .lg\:text-4xl { font-size: clamp(1.35rem,2.2vw,1.8rem)!important; }
+}
+
+/* ── 6. BORDER RADIUS REDUCIDO ─────────────────────────────── */
+main .rounded-\[3rem\]   { border-radius:1.2rem!important; }
+main .rounded-\[2\.5rem\]{ border-radius:1.05rem!important; }
+main .rounded-\[2rem\]   { border-radius:0.95rem!important; }
+main .rounded-\[1\.75rem\]{ border-radius:0.85rem!important; }
+main .rounded-\[1\.5rem\] { border-radius:0.75rem!important; }
+
+/* ── 7. PADDING INTERNO DE CARDS ─────────────────────────────── */
+main .p-12, main .md\:p-12 { padding:1.6rem!important; }
+main .p-10, main .md\:p-10 { padding:1.4rem!important; }
+main .p-9,  main .md\:p-9  { padding:1.25rem!important; }
+main .p-8,  main .md\:p-8  { padding:1.15rem!important; }
+main .p-7,  main .md\:p-7  { padding:1.05rem!important; }
+main .p-6,  main .md\:p-6  { padding:0.95rem!important; }
+main .p-5                  { padding:0.8rem!important; }
+main .px-10 { padding-left:1.5rem!important; padding-right:1.5rem!important; }
+main .px-8  { padding-left:1.1rem!important; padding-right:1.1rem!important; }
+main .py-12 { padding-top:1.2rem!important; padding-bottom:1.2rem!important; }
+main .py-10 { padding-top:1rem!important;   padding-bottom:1rem!important; }
+main .py-8  { padding-top:0.85rem!important; padding-bottom:0.85rem!important; }
+main .py-5  { padding-top:0.65rem!important; padding-bottom:0.65rem!important; }
+main .py-4  { padding-top:0.55rem!important; padding-bottom:0.55rem!important; }
+main .px-5  { padding-left:0.75rem!important; padding-right:0.75rem!important; }
+main .px-4  { padding-left:0.65rem!important; padding-right:0.65rem!important; }
+
+/* ── 8. GAPS ────────────────────────────────────────────────── */
+main .gap-12 { gap:1.4rem!important; }
+main .gap-10 { gap:1.15rem!important; }
+main .gap-8  { gap:0.95rem!important; }
+
+/* ── 9. ÍCONOS GIGANTES ─────────────────────────────────────── */
+main .w-14.h-14 { width:2.4rem!important; height:2.4rem!important; }
+main .w-16.h-16 { width:2.65rem!important; height:2.65rem!important; }
+main .w-20.h-20 { width:2.9rem!important;  height:2.9rem!important; }
+
+/* Íconos dentro de tarjetas de visión/misión */
+main #vision i.w-14 { width:2rem!important; height:2rem!important; }
+
+/* ── 10. BOTONES CTA ─────────────────────────────────────────── */
+main a.px-8.py-4, main button.px-8.py-4 { padding:0.6rem 1.4rem!important; font-size:0.88rem!important; }
+main a.px-10.py-5, main button.px-10.py-5 { padding:0.65rem 1.6rem!important; font-size:0.88rem!important; }
+main a.text-lg, main button.text-lg { font-size:0.88rem!important; }
+
+/* ── 11. PROOF PILLS DEL HERO ────────────────────────────────── */
+main .hero-proof-pills { margin-top:1.1rem!important; gap:0.45rem!important; }
+main .hero-proof-pills span { min-height:30px!important; padding:0 11px!important; font-size:0.66rem!important; }
+
+/* ── 12. VISION / MISIÓN ─────────────────────────────────────── */
+main #vision .grid.grid-cols-1.lg\:grid-cols-2 { gap:1.1rem!important; }
+main #vision [class*="p-12"] { padding:1.4rem!important; }
+main #vision h3 { font-size:clamp(1.1rem,1.6vw,1.5rem)!important; margin-bottom:0.6rem!important; }
+main #vision h3 i { width:1.75rem!important; height:1.75rem!important; }
+main #vision p { font-size:0.88rem!important; line-height:1.6!important; }
+
+/* ── 13. SERVICIOS SECTION ───────────────────────────────────── */
+main #servicios > div > .text-center.mb-20 { margin-bottom:1.5rem!important; }
+main #servicios h3.font-outfit { font-size:clamp(1.2rem,1.8vw,1.6rem)!important; }
+main #servicios p.text-xl { font-size:0.88rem!important; }
+main #servicios .min-h-\[260px\], main #servicios .sm\:min-h-\[290px\] { min-height:190px!important; }
+
+/* Tech Bios panel */
+main #tecnologia-bios .min-h-\[420px\],
+main #tecnologia-bios .md\:min-h-\[460px\] { min-height:clamp(220px,28vw,320px)!important; }
+main #tecnologia-bios [class*="px-5"][class*="py-10"],
+main #tecnologia-bios [class*="px-10"][class*="py-14"] { padding:1.75rem 1.5rem!important; }
+main #tecnologia-bios h2 { font-size:clamp(1.5rem,2.5vw,2rem)!important; margin-bottom:0.5rem!important; }
+
+/* ── 14. SEGUIMIENTO SECTION ─────────────────────────────────── */
+main #seguimiento h3.text-3xl,
+main #seguimiento h3.md\:text-4xl { font-size:clamp(1.1rem,1.6vw,1.4rem)!important; }
+main .tracker-stage-label { font-size:clamp(1rem,1.5vw,1.3rem)!important; }
+main #seguimiento .min-h-\[260px\] { min-height:200px!important; }
+
+/* ── 15. UNETE SECTION ───────────────────────────────────────── */
+main #unete h3.font-outfit.text-3xl { font-size:clamp(1.0rem,1.5vw,1.25rem)!important; margin-bottom:0.4rem!important; }
+main #unete h3.font-outfit.text-3xl + p { font-size:0.82rem!important; }
+main #unete article.p-6 { padding:0.95rem!important; }
+
+/* ── 16. SUCURSALES ──────────────────────────────────────────── */
+main #sucursales .min-h-\[420px\] { min-height:340px!important; }
+main #sucursales .max-h-\[620px\] { max-height:420px!important; }
+
+/* ── 17. SPECIALTY CHIPS ─────────────────────────────────────── */
+main .flex.flex-wrap.gap-4 > span { padding:0.3rem 0.7rem!important; font-size:0.78rem!important; }
+
+/* ── 18. BENTO CARDS (homepage) ─────────────────────────────── */
+.bento-card h3.font-outfit { font-size:clamp(0.95rem,1.3vw,1.15rem)!important; line-height:1.2!important; }
+.bento-card p { font-size:0.83rem!important; line-height:1.55!important; }
+.bento-card:hover { transform:translateY(-4px) scale(1.01)!important; }
+
+/* ── 19. SPACE UTILITIES ────────────────────────────────────── */
+main .space-y-4>*+* { margin-top:0.6rem!important; }
+main .space-y-3>*+* { margin-top:0.45rem!important; }
+
+/* ══════════════════════════════════════════════════════════════
+   SUB-PAGES — .page-shell (conocenos, servicios, seguimiento,
+   sucursales, portal, empresas, medicos, mujer, unete)
+   ══════════════════════════════════════════════════════════════ */
+
+/* Main padding */
+.page-shell main.page-enter.max-w-7xl { padding-top:1.5rem!important; padding-bottom:2.5rem!important; }
+.page-shell main section { padding-block:0!important; }
+
+/* Dark panel hero */
+.page-shell .dark-panel { padding:1.1rem 1.35rem!important; }
+.page-shell .dark-panel h1,
+.page-shell .dark-panel .brand-type.text-4xl,
+.page-shell .dark-panel .brand-type.text-5xl,
+.page-shell .dark-panel .brand-type.text-6xl,
+.page-shell .dark-panel .mobile-tight {
+    font-size: clamp(1.4rem,2.8vw,2rem)!important;
+    line-height:1.1!important;
+    margin-bottom:0.35rem!important;
+}
+.page-shell .dark-panel p { font-size:0.87rem!important; line-height:1.6!important; }
+.page-shell .section-kicker { font-size:0.64rem!important; padding:0.3rem 0.7rem!important; margin-bottom:0.65rem!important; }
+
+/* Panel cards */
+.page-shell .panel.p-6 { padding:1rem!important; }
+.page-shell .panel.p-5 { padding:0.85rem!important; }
+.page-shell .panel h2.brand-type.text-4xl { font-size:clamp(1.15rem,1.7vw,1.45rem)!important; margin-bottom:0.5rem!important; }
+.page-shell .panel h2.brand-type.text-3xl { font-size:clamp(1.05rem,1.5vw,1.3rem)!important; margin-bottom:0.45rem!important; }
+.page-shell .panel h2.brand-type.text-2xl { font-size:clamp(0.95rem,1.3vw,1.15rem)!important; }
+.page-shell .panel h3.brand-type.text-2xl { font-size:clamp(0.95rem,1.3vw,1.15rem)!important; }
+.page-shell .panel p.text-lg { font-size:0.87rem!important; line-height:1.58!important; }
+.page-shell .panel p.text-xl { font-size:0.9rem!important; }
+.page-shell .panel i.w-9.h-9 { width:2rem!important; height:2rem!important; margin-bottom:0.6rem!important; }
+
+/* page-visual height */
+.page-visual { min-height:clamp(150px,18vw,220px)!important; }
+
+/* image-strip */
+.image-strip { gap:0.65rem!important; }
+
+/* mb spacing in sub-pages */
+.page-shell .mb-6 { margin-bottom:0.85rem!important; }
+.page-shell .mb-5 { margin-bottom:0.7rem!important; }
+.page-shell .mb-4 { margin-bottom:0.55rem!important; }
+
+/* grid gap sub-pages */
+.page-shell .gap-5 { gap:0.9rem!important; }
+.page-shell .gap-4 { gap:0.75rem!important; }
+
+/* Services summary card */
+.services-summary-card { padding:1rem!important; min-height:auto!important; }
+
+/* Service cards */
+.service-card { border-radius:12px!important; }
+.service-title { font-size:clamp(1rem,1.2vw,1.25rem)!important; margin:0.35rem 0 0.75rem!important; }
+.service-price { font-size:clamp(1.25rem,1.6vw,1.65rem)!important; }
+
+/* Branch route cards */
+.branch-route-card { gap:0.7rem!important; }
+
+/* ── Servicios page summary card content ─── */
+.services-summary-card h2,
+.services-summary-card .brand-type { font-size:clamp(1.1rem,1.5vw,1.35rem)!important; }
+.services-summary-card p { font-size:0.82rem!important; }
+
+/* ── Medicos / Empresas / Mujer — (same page-shell pattern) ── */
+.page-shell .panel .metric { padding:0.65rem 0.85rem!important; }
+.page-shell .panel .metric p:first-child { font-size:1.1rem!important; }
+.page-shell .panel .metric p:last-child  { font-size:0.62rem!important; }
+
+/* Primary / secondary buttons in sub-pages */
+.page-shell .primary-button,
+.page-shell .secondary-button {
+    min-height:38px!important;
+    padding:0.55rem 0.9rem!important;
+    font-size:0.82rem!important;
+    border-radius:8px!important;
+}
+
+/* ── Sub-page dark-panel grid ── */
+.page-shell .dark-panel .grid.lg\:grid-cols-2,
+.page-shell .dark-panel [class*="lg:grid-cols"] { gap:0.85rem!important; }
+
+/* ══════════════════════════════════════════════════════════════
+   BIOS-MAIN-HEADER PAGES (nuevo header global en otras páginas)
+   ══════════════════════════════════════════════════════════════ */
+.bios-main-header ~ main h1 { font-size:clamp(1.4rem,2.5vw,2rem)!important; }
+.bios-main-header ~ main h2 { font-size:clamp(1.2rem,2vw,1.7rem)!important; }
+.bios-main-header ~ main h3 { font-size:clamp(1.0rem,1.5vw,1.3rem)!important; }
+.bios-main-header ~ main p  { font-size:0.88rem!important; line-height:1.6!important; }
+.bios-main-header ~ main .services-section { padding-block:clamp(1.5rem,2.5vw,2.5rem)!important; }
+
+/* ══════════════════════════════════════════════════════════════
+   RESPONSIVE MÓVIL
+   ══════════════════════════════════════════════════════════════ */
+@media (max-width:767px) {
+    main > section { padding-top:1.75rem!important; padding-bottom:1.75rem!important; }
+    main #inicio   { min-height:360px!important; padding-top:2.75rem!important; }
+
+    main .hero-signal { font-size:1.6rem!important; }
+    main .text-6xl,
+    main .text-5xl,
+    main .text-4xl { font-size:clamp(1.25rem,5.5vw,1.75rem)!important; }
+    main .text-3xl,
+    main .text-2xl { font-size:clamp(1.0rem,4.2vw,1.3rem)!important; }
+
+    main .p-12, main .p-10, main .p-9, main .p-8 { padding:1rem!important; }
+
+    main .rounded-\[3rem\],
+    main .rounded-\[2\.5rem\],
+    main .rounded-\[2rem\] { border-radius:0.85rem!important; }
+
+    .page-shell .dark-panel h1,
+    .page-shell .dark-panel .brand-type { font-size:1.35rem!important; }
+
+    .page-shell .panel.p-6 { padding:0.85rem!important; }
+    .page-shell .panel h2.brand-type { font-size:1.0rem!important; }
+}
