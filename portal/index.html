@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal Pacientes BIOS</title>
+    <title>Portal Pacientes | Laboratorios BIOS</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800;900&family=Outfit:wght@700;800;900&display=swap" rel="stylesheet">
@@ -17,7 +17,7 @@
     <div class="page-shell">
         <header class="site-header">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-                <a href="../"><img src="../logos/P2.png" alt="BIOS" class="h-14 brightness-0 invert"></a>
+                <a href="../"><img src="../logos/bios-logo-sin-circulo.png" alt="Laboratorios BIOS" class="h-14"></a>
                 <nav class="hidden lg:flex items-center gap-6">
                     <a class="nav-link" href="../">Inicio</a>
                     <a class="nav-link" href="../servicios/">Servicios</a>
@@ -25,7 +25,7 @@
                     <a class="nav-link" href="../seguimiento/">Seguimiento</a>
                     <a class="nav-link" href="../sucursales/">Sucursales</a>
                 </nav>
-                <a href="../seguimiento/" class="primary-button"><i data-lucide="timer" class="w-5 h-5"></i> Rastrear</a>
+                <a href="../seguimiento/" class="primary-button"><i data-lucide="list-checks" class="w-5 h-5"></i> Ver estado</a>
             </div>
         </header>
         <main class="page-enter max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-14">
@@ -41,10 +41,11 @@
                     <p>Resultados, cotizaciones y sucursales en un mismo flujo.</p>
                 </figcaption>
             </figure>
-            <section class="grid md:grid-cols-3 gap-4">
-                <a class="panel p-6 hover:border-blue-300 transition" href="../seguimiento/"><i data-lucide="timer" class="w-8 h-8 text-blue-600 mb-4"></i><h2 class="brand-type text-2xl font-black text-[#0A1C2E]">Rastrear estudios</h2><p class="text-slate-500 mt-2">Consulta visual por folio.</p></a>
+            <section class="grid md:grid-cols-4 gap-4">
+                <a class="panel p-6 hover:border-blue-300 transition" href="../seguimiento/"><i data-lucide="list-checks" class="w-8 h-8 text-blue-600 mb-4"></i><h2 class="brand-type text-2xl font-black text-[#0A1C2E]">Estado de estudios</h2><p class="text-slate-500 mt-2">Consulta visual por folio.</p></a>
                 <a class="panel p-6 hover:border-blue-300 transition" href="../servicios/"><i data-lucide="microscope" class="w-8 h-8 text-blue-600 mb-4"></i><h2 class="brand-type text-2xl font-black text-[#0A1C2E]">Cotizar estudios</h2><p class="text-slate-500 mt-2">Catálogo y WhatsApp.</p></a>
                 <a class="panel p-6 hover:border-blue-300 transition" href="../sucursales/"><i data-lucide="map-pin" class="w-8 h-8 text-blue-600 mb-4"></i><h2 class="brand-type text-2xl font-black text-[#0A1C2E]">Ubicar sucursal</h2><p class="text-slate-500 mt-2">Mapa interactivo.</p></a>
+                <a class="panel p-6 hover:border-blue-300 transition" href="../seguimiento/"><i data-lucide="folder-open" class="w-8 h-8 text-blue-600 mb-4"></i><h2 class="brand-type text-2xl font-black text-[#0A1C2E]">Resultados y archivos</h2><p class="text-slate-500 mt-2">Preparado para conexión al sistema administrativo.</p></a>
             </section>
         </main>
     </div>

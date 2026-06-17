@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Médicos BIOS</title>
+    <title>Médicos | Laboratorios BIOS</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800;900&family=Outfit:wght@700;800;900&display=swap" rel="stylesheet">
@@ -17,7 +17,7 @@
     <div class="page-shell">
         <header class="site-header">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-                <a href="../"><img src="../logos/P2.png" alt="BIOS" class="h-14 brightness-0 invert"></a>
+                <a href="../"><img src="../logos/bios-logo-sin-circulo.png" alt="Laboratorios BIOS" class="h-14"></a>
                 <nav class="hidden lg:flex items-center gap-6">
                     <a class="nav-link" href="../">Inicio</a>
                     <a class="nav-link" href="../servicios/">Servicios</a>
@@ -25,29 +25,63 @@
                     <a class="nav-link" href="../seguimiento/">Seguimiento</a>
                     <a class="nav-link" href="../conocenos/">Conócenos</a>
                 </nav>
-                <a href="https://wa.me/5211234567890?text=Hola%20BIOS,%20soy%20médico%20y%20quiero%20información" class="primary-button" target="_blank"><i data-lucide="message-circle" class="w-5 h-5"></i> Contacto</a>
+                <a href="https://wa.me/5211234567890?text=Hola%20Laboratorios%20BIOS,%20soy%20médico%20y%20quiero%20información" class="primary-button" target="_blank"><i data-lucide="message-circle" class="w-5 h-5"></i> Contacto</a>
             </div>
         </header>
         <main class="page-enter max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-14">
             <section class="dark-panel p-6 lg:p-8 mb-6">
                 <span class="section-kicker !bg-white/10 !border-white/15 !text-cyan-100 mb-5"><i data-lucide="stethoscope" class="w-4 h-4"></i> Médicos</span>
-                <h1 class="brand-type mobile-tight text-5xl lg:text-6xl font-black leading-none mb-4">Herramientas para médicos</h1>
-                <p class="text-blue-100 text-lg">Referencias, seguimiento de resultados y comunicación clara para consulta.</p>
+                <h1 class="brand-type mobile-tight text-5xl lg:text-6xl font-black leading-none mb-4">Contacto para médicos</h1>
+                <p class="text-blue-100 text-lg">Solicita atención de un representante, cotizaciones para pacientes o seguimiento de convenios médicos.</p>
             </section>
             <figure class="page-visual mb-6">
-                <img src="https://images.unsplash.com/photo-1582750433449-648ed127bb54?auto=format&fit=crop&w=1400&q=80" alt="Médico revisando información clínica BIOS">
+                <img src="https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=1400&q=80" alt="Médico revisando resultados clínicos de Laboratorios BIOS">
                 <figcaption class="visual-caption">
-                    <p>Apoyo para consulta</p>
-                    <p>Referencias, resultados y comunicación directa.</p>
+                    <p>Atención a médicos</p>
+                    <p>Comunicación directa con representantes de Laboratorios BIOS.</p>
                 </figcaption>
             </figure>
-            <section class="grid md:grid-cols-3 gap-4">
-                <article class="panel p-6"><i data-lucide="clipboard-plus" class="w-8 h-8 text-blue-600 mb-4"></i><h2 class="brand-type text-2xl font-black text-[#0A1C2E]">Referencias</h2><p class="text-slate-500 mt-2">Flujo visual para solicitud de estudios.</p></article>
-                <article class="panel p-6"><i data-lucide="file-search" class="w-8 h-8 text-blue-600 mb-4"></i><h2 class="brand-type text-2xl font-black text-[#0A1C2E]">Resultados</h2><p class="text-slate-500 mt-2">Consulta por folio y estado del proceso.</p></article>
-                <article class="panel p-6"><i data-lucide="messages-square" class="w-8 h-8 text-blue-600 mb-4"></i><h2 class="brand-type text-2xl font-black text-[#0A1C2E]">Comunicación</h2><p class="text-slate-500 mt-2">Canal de contacto para dudas clínicas.</p></article>
+            <section class="grid lg:grid-cols-[0.9fr_1.1fr] gap-4">
+                <div class="panel p-6">
+                    <i data-lucide="stethoscope" class="w-8 h-8 text-blue-600 mb-4"></i>
+                    <h2 class="brand-type text-3xl font-black text-[#0A1C2E]">Representante médico</h2>
+                    <p class="text-slate-500 mt-2">Déjanos tus datos para coordinar una llamada, compartir catálogo médico o revisar un convenio de referencia.</p>
+                    <div class="grid sm:grid-cols-2 gap-3 mt-5">
+                        <div class="rounded-lg border border-blue-100 bg-blue-50 p-4"><p class="font-black text-[#0A1C2E]">Cotizaciones</p><p class="text-sm text-slate-500">Estudios para pacientes y consultorios.</p></div>
+                        <div class="rounded-lg border border-blue-100 bg-blue-50 p-4"><p class="font-black text-[#0A1C2E]">Convenios</p><p class="text-sm text-slate-500">Seguimiento comercial y operativo.</p></div>
+                    </div>
+                </div>
+                <form id="doctor-form" class="panel p-6 grid gap-4">
+                    <input class="field" id="doctor-name" type="text" placeholder="Nombre del médico o consultorio" required>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <input class="field" id="doctor-phone" type="tel" placeholder="WhatsApp" required>
+                        <input class="field" id="doctor-email" type="email" placeholder="Correo">
+                    </div>
+                    <select class="field" id="doctor-request">
+                        <option>Solicitar cotización</option>
+                        <option>Contactar representante</option>
+                        <option>Convenio médico</option>
+                        <option>Seguimiento de paciente</option>
+                    </select>
+                    <textarea class="field" id="doctor-message" rows="4" placeholder="Cuéntanos qué necesitas"></textarea>
+                    <button class="primary-button" type="submit"><i data-lucide="send" class="w-4 h-4"></i> Enviar solicitud</button>
+                    <p id="doctor-status" class="text-sm text-slate-500"></p>
+                </form>
             </section>
         </main>
     </div>
-    <script>lucide.createIcons();</script>
+    <script>
+        document.getElementById('doctor-form').addEventListener('submit', event => {
+            event.preventDefault();
+            const name = document.getElementById('doctor-name').value.trim();
+            const phone = document.getElementById('doctor-phone').value.trim();
+            const request = document.getElementById('doctor-request').value;
+            const message = document.getElementById('doctor-message').value.trim();
+            const text = `Hola Laboratorios BIOS, soy médico y solicito contacto.%0A%0ANombre: ${encodeURIComponent(name)}%0AWhatsApp: ${encodeURIComponent(phone)}%0ASolicitud: ${encodeURIComponent(request)}%0ADetalles: ${encodeURIComponent(message)}`;
+            document.getElementById('doctor-status').textContent = 'Abriremos WhatsApp para enviar tu solicitud.';
+            window.open(`https://wa.me/5211234567890?text=${text}`, '_blank');
+        });
+        lucide.createIcons();
+    </script>
 </body>
 </html>

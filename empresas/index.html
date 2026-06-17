@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Empresas BIOS</title>
+    <title>Empresas | Laboratorios BIOS</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800;900&family=Outfit:wght@700;800;900&display=swap" rel="stylesheet">
@@ -17,7 +17,7 @@
     <div class="page-shell">
         <header class="site-header">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-                <a href="../"><img src="../logos/P2.png" alt="BIOS" class="h-14 brightness-0 invert"></a>
+                <a href="../"><img src="../logos/bios-logo-sin-circulo.png" alt="Laboratorios BIOS" class="h-14"></a>
                 <nav class="hidden lg:flex items-center gap-6">
                     <a class="nav-link" href="../">Inicio</a>
                     <a class="nav-link" href="../servicios/">Servicios</a>
@@ -25,14 +25,14 @@
                     <a class="nav-link" href="../sucursales/">Sucursales</a>
                     <a class="nav-link" href="../unete/">Únete</a>
                 </nav>
-                <a href="https://wa.me/5211234567890?text=Hola%20BIOS,%20quiero%20informes%20para%20empresa" class="primary-button" target="_blank"><i data-lucide="message-circle" class="w-5 h-5"></i> Contacto</a>
+                <a href="https://wa.me/5211234567890?text=Hola%20Laboratorios%20BIOS,%20quiero%20informes%20para%20empresa" class="primary-button" target="_blank"><i data-lucide="message-circle" class="w-5 h-5"></i> Contacto</a>
             </div>
         </header>
         <main class="page-enter max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-14">
             <section class="dark-panel p-6 lg:p-8 mb-6">
                 <span class="section-kicker !bg-white/10 !border-white/15 !text-cyan-100 mb-5"><i data-lucide="building-2" class="w-4 h-4"></i> Empresas B2B</span>
                 <h1 class="brand-type mobile-tight text-5xl lg:text-6xl font-black leading-none mb-4">Programas para empresas</h1>
-                <p class="text-blue-100 text-lg">Campañas de salud, facturación, control de colaboradores y seguimiento operativo.</p>
+                <p class="text-blue-100 text-lg">Campañas de salud, cotizaciones empresariales, facturación y contacto directo con representantes.</p>
             </section>
             <figure class="page-visual mb-6">
                 <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1400&q=80" alt="Programa de salud para empresas BIOS">
@@ -41,13 +41,84 @@
                     <p>Campañas, paneles y seguimiento para equipos.</p>
                 </figcaption>
             </figure>
-            <section class="grid md:grid-cols-3 gap-4">
-                <article class="panel p-6"><i data-lucide="users" class="w-8 h-8 text-blue-600 mb-4"></i><h2 class="brand-type text-2xl font-black text-[#0A1C2E]">Campañas</h2><p class="text-slate-500 mt-2">Paquetes preventivos por equipo o sucursal.</p></article>
-                <article class="panel p-6"><i data-lucide="file-check" class="w-8 h-8 text-blue-600 mb-4"></i><h2 class="brand-type text-2xl font-black text-[#0A1C2E]">Facturación</h2><p class="text-slate-500 mt-2">Flujo visual para RFC y razón social.</p></article>
-                <article class="panel p-6"><i data-lucide="bar-chart-3" class="w-8 h-8 text-blue-600 mb-4"></i><h2 class="brand-type text-2xl font-black text-[#0A1C2E]">Panel empresa</h2><p class="text-slate-500 mt-2">Resumen de estudios y entregas.</p></article>
+            <section class="grid lg:grid-cols-[0.9fr_1.1fr] gap-4 mb-6">
+                <div class="panel p-6">
+                    <i data-lucide="building-2" class="w-8 h-8 text-blue-600 mb-4"></i>
+                    <h2 class="brand-type text-3xl font-black text-[#0A1C2E]">Cotización para empresas</h2>
+                    <p class="text-slate-500 mt-2">Solicita programas preventivos, campañas por sucursal o atención para colaboradores.</p>
+                    <div class="grid sm:grid-cols-2 gap-3 mt-5">
+                        <div class="rounded-lg border border-blue-100 bg-blue-50 p-4"><p class="font-black text-[#0A1C2E]">Campañas</p><p class="text-sm text-slate-500">Perfiles por equipo o sede.</p></div>
+                        <div class="rounded-lg border border-blue-100 bg-blue-50 p-4"><p class="font-black text-[#0A1C2E]">Representante</p><p class="text-sm text-slate-500">Contacto comercial directo.</p></div>
+                    </div>
+                </div>
+                <form id="company-form" class="panel p-6 grid gap-4">
+                    <input class="field" id="company-name" type="text" placeholder="Empresa o razón social" required>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <input class="field" id="company-contact" type="text" placeholder="Nombre de contacto" required>
+                        <input class="field" id="company-phone" type="tel" placeholder="WhatsApp" required>
+                    </div>
+                    <select class="field" id="company-request">
+                        <option>Solicitar cotización</option>
+                        <option>Campaña de salud</option>
+                        <option>Contacto con representante</option>
+                        <option>Convenio empresarial</option>
+                    </select>
+                    <textarea class="field" id="company-message" rows="4" placeholder="Número aproximado de colaboradores, ubicación y estudios de interés"></textarea>
+                    <button class="primary-button" type="submit"><i data-lucide="send" class="w-4 h-4"></i> Enviar solicitud</button>
+                    <p id="company-status" class="text-sm text-slate-500"></p>
+                </form>
+            </section>
+
+            <section id="facturacion" class="grid lg:grid-cols-[0.9fr_1.1fr] gap-4">
+                <div class="dark-panel p-6">
+                    <span class="section-kicker !bg-white/10 !border-white/15 !text-cyan-100 mb-5"><i data-lucide="receipt-text" class="w-4 h-4"></i> Facturación</span>
+                    <h2 class="brand-type text-4xl font-black leading-none mb-4">Facturación Picofi</h2>
+                    <p class="text-blue-100">Formulario preparado para enlazarse al sistema administrativo Picofi. Por ahora envía la solicitud al equipo de administración.</p>
+                </div>
+                <form id="billing-form" class="panel p-6 grid gap-4">
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <input class="field" id="billing-rfc" type="text" placeholder="RFC" required>
+                        <input class="field" id="billing-amount" type="text" placeholder="Monto o folio">
+                    </div>
+                    <input class="field" id="billing-name" type="text" placeholder="Razón social" required>
+                    <input class="field" id="billing-email" type="email" placeholder="Correo para factura" required>
+                    <textarea class="field" id="billing-message" rows="4" placeholder="Uso CFDI, forma de pago y comentarios"></textarea>
+                    <button class="primary-button" type="submit"><i data-lucide="file-check" class="w-4 h-4"></i> Solicitar factura</button>
+                    <p id="billing-status" class="text-sm text-slate-500"></p>
+                </form>
             </section>
         </main>
     </div>
-    <script>lucide.createIcons();</script>
+    <script>
+        function openWhatsApp(text) {
+            window.open(`https://wa.me/5211234567890?text=${text}`, '_blank');
+        }
+
+        document.getElementById('company-form').addEventListener('submit', event => {
+            event.preventDefault();
+            const company = document.getElementById('company-name').value.trim();
+            const contact = document.getElementById('company-contact').value.trim();
+            const phone = document.getElementById('company-phone').value.trim();
+            const request = document.getElementById('company-request').value;
+            const message = document.getElementById('company-message').value.trim();
+            const text = `Hola Laboratorios BIOS, solicito atención para empresa.%0A%0AEmpresa: ${encodeURIComponent(company)}%0AContacto: ${encodeURIComponent(contact)}%0AWhatsApp: ${encodeURIComponent(phone)}%0ASolicitud: ${encodeURIComponent(request)}%0ADetalles: ${encodeURIComponent(message)}`;
+            document.getElementById('company-status').textContent = 'Abriremos WhatsApp para enviar la solicitud.';
+            openWhatsApp(text);
+        });
+
+        document.getElementById('billing-form').addEventListener('submit', event => {
+            event.preventDefault();
+            const rfc = document.getElementById('billing-rfc').value.trim();
+            const name = document.getElementById('billing-name').value.trim();
+            const email = document.getElementById('billing-email').value.trim();
+            const amount = document.getElementById('billing-amount').value.trim();
+            const message = document.getElementById('billing-message').value.trim();
+            const text = `Hola Laboratorios BIOS, solicito factura para Picofi.%0A%0ARFC: ${encodeURIComponent(rfc)}%0ARazón social: ${encodeURIComponent(name)}%0ACorreo: ${encodeURIComponent(email)}%0AFolio/Monto: ${encodeURIComponent(amount)}%0ADetalles: ${encodeURIComponent(message)}`;
+            document.getElementById('billing-status').textContent = 'Abriremos WhatsApp para enviar la solicitud de facturación.';
+            openWhatsApp(text);
+        });
+
+        lucide.createIcons();
+    </script>
 </body>
 </html>

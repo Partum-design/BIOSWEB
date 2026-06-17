@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Laboratorios BIOS - Excelencia y Precisión</title>
+    <title>Laboratorios BIOS | Excelencia y Precisión</title>
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -580,32 +580,9 @@
             <!-- Logo & Location with Switcher Feature -->
             <div class="flex items-center gap-6">
                 
-                <!-- NEW LOGO SWITCHER WRAPPER -->
-                <div class="relative cursor-pointer z-50 flex items-center gap-2" onclick="document.getElementById('logo-dropdown').classList.toggle('hidden')">
-                    <img id="global-logo" src="logos/P2.png" alt="BIOS" class="h-16 lg:h-20 brightness-0 invert transition-all" onerror="this.src='https://placehold.co/200x60/0A1C2E/FFF?text=BIOS'">
-                    <i data-lucide="chevron-down" class="w-4 h-4 text-white/50 hover:text-white transition hidden md:block"></i>
-                    
-                    <!-- Dropdown Options -->
-                    <div id="logo-dropdown" class="absolute hidden top-full left-0 mt-2 bg-white rounded-2xl shadow-2xl p-3 min-w-[260px] border border-gray-100 transform origin-top-left transition-all">
-                        <div class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2 px-2">Temas Visuales</div>
-                        <button class="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-gray-50 rounded-xl transition" onclick="event.stopPropagation(); switchTheme('P1', '#059669', '#10b981')">
-                            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-[#059669] to-[#10b981]"></div>
-                            <span class="text-sm font-bold text-gray-800">Medical Emerald</span>
-                        </button>
-                        <button class="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-gray-50 rounded-xl transition" onclick="event.stopPropagation(); switchTheme('P2', '#1e3a8a', '#3b82f6')">
-                            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-[#1e3a8a] to-[#3b82f6]"></div>
-                            <span class="text-sm font-bold text-gray-800">Clinical Blue</span>
-                        </button>
-                        <button class="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-gray-50 rounded-xl transition" onclick="event.stopPropagation(); switchTheme('P3', '#0891b2', '#06b6d4')">
-                            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-[#0891b2] to-[#06b6d4]"></div>
-                            <span class="text-sm font-bold text-gray-800">High-Tech Cyan</span>
-                        </button>
-                        <button class="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-gray-50 rounded-xl transition" onclick="event.stopPropagation(); switchTheme('P4', '#4f46e5', '#22d3ee')">
-                            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-[#4f46e5] to-[#22d3ee]"></div>
-                            <span class="text-sm font-bold text-gray-800">BIOS Premium</span>
-                        </button>
-                    </div>
-                </div>
+                <a href="./" class="relative z-50 flex items-center">
+                    <img id="global-logo" src="logos/bios-logo-sin-circulo.png" alt="Laboratorios BIOS" class="h-16 lg:h-20 transition-all" onerror="this.src='https://placehold.co/260x78/0A1C2E/FFF?text=Laboratorios%20BIOS'">
+                </a>
 
                 <button class="hidden lg:flex items-center gap-1.5 text-white/90 text-sm font-semibold hover:text-blue-300 transition bg-white/10 px-3 py-2 rounded-lg">
                     <i data-lucide="map-pin" class="w-4 h-4 text-blue-400"></i> Seleccionar Sucursal <i data-lucide="chevron-down" class="w-3 h-3 ml-1"></i>
@@ -650,6 +627,7 @@
                 <a href="conocenos/" class="py-4 hover:text-blue-600 transition">Conócenos</a>
                 <a href="seguimiento/" class="py-4 hover:text-blue-600 transition">Seguimiento</a>
                 <a href="sucursales/" class="py-4 hover:text-blue-600 transition">Sucursales</a>
+                <a href="mujer/" class="py-4 hover:text-pink-600 transition"><i data-lucide="venus" class="w-4 h-4 inline-block mr-1 text-pink-500"></i> Mujer</a>
                 <a href="unete/" class="py-4 hover:text-blue-600 transition">Únete a nosotros</a>
                 
                 <div class="ml-auto py-3 flex items-center gap-2 cursor-pointer text-[#0A1C2E] bg-gray-50 px-5 rounded-t-xl border-x border-t border-gray-200 mt-1 hover:bg-gray-100 transition shadow-inner">
@@ -701,7 +679,7 @@
                     <div class="relative z-10">
                         <p class="text-[10px] uppercase tracking-[0.35em] text-blue-200 font-black mb-2">Informes</p>
                         <p class="font-outfit text-2xl font-black leading-tight mb-3">Pide ayuda por WhatsApp</p>
-                        <a href="https://wa.me/5211234567890?text=Hola%20BIOS,%20quiero%20informes%20desde%20el%20menú%20móvil" target="_blank" class="inline-flex items-center gap-2 px-4 py-3 rounded-2xl bg-[#25D366] text-white font-black shadow-lg shadow-green-500/20">
+                        <a href="https://wa.me/5211234567890?text=Hola%20Laboratorios%20BIOS,%20quiero%20informes%20desde%20el%20menú%20móvil" target="_blank" class="inline-flex items-center gap-2 px-4 py-3 rounded-2xl bg-[#25D366] text-white font-black shadow-lg shadow-green-500/20">
                             <i data-lucide="message-circle" class="w-4 h-4"></i> 521 123 456 7890
                         </a>
                     </div>
@@ -824,8 +802,8 @@
                                             <p class="text-[9px] sm:text-[10px] text-blue-100 font-bold uppercase">paquetes</p>
                                         </div>
                                         <div class="service-feature-stat rounded-2xl p-3 text-center">
-                                            <p id="service-eta-countdown" class="text-xl sm:text-2xl font-black text-white leading-none">--:--</p>
-                                            <p class="text-[9px] sm:text-[10px] text-blue-100 font-bold uppercase">restante</p>
+                                            <p class="text-xl sm:text-2xl font-black text-white leading-none">Estado</p>
+                                            <p class="text-[9px] sm:text-[10px] text-blue-100 font-bold uppercase">por folio</p>
                                         </div>
                                         <div class="service-feature-stat rounded-2xl p-3 text-center">
                                             <p class="text-xl sm:text-2xl font-black text-white leading-none">$400</p>
@@ -855,10 +833,10 @@
                             </div>
                         </label>
                         <div class="flex flex-wrap items-center gap-3 mb-5">
-                            <a href="https://wa.me/5211234567890?text=Hola%20BIOS,%20quiero%20informes%20sobre%20un%20servicio" target="_blank" class="magnetic-action inline-flex items-center gap-2 px-4 py-3 rounded-2xl bg-[#25D366] text-white font-black text-sm shadow-lg shadow-green-500/20 hover:-translate-y-0.5 transition">
+                            <a href="https://wa.me/5211234567890?text=Hola%20Laboratorios%20BIOS,%20quiero%20informes%20sobre%20un%20servicio" target="_blank" class="magnetic-action inline-flex items-center gap-2 px-4 py-3 rounded-2xl bg-[#25D366] text-white font-black text-sm shadow-lg shadow-green-500/20 hover:-translate-y-0.5 transition">
                                 <i data-lucide="message-circle" class="w-4 h-4"></i> WhatsApp informes
                             </a>
-                            <a href="https://wa.me/5211234567890?text=Hola%20BIOS,%20me%20ayudan%20a%20buscar%20un%20servicio" target="_blank" class="text-sm font-bold text-gray-600 hover:text-blue-600 transition">
+                            <a href="https://wa.me/5211234567890?text=Hola%20Laboratorios%20BIOS,%20me%20ayudan%20a%20buscar%20un%20servicio" target="_blank" class="text-sm font-bold text-gray-600 hover:text-blue-600 transition">
                                 521 123 456 7890
                             </a>
                         </div>
@@ -883,7 +861,7 @@
                             <h3 class="font-outfit text-3xl font-black text-[#0A1C2E] mb-3">Escríbenos por WhatsApp y te ayudamos a elegir el estudio correcto.</h3>
                             <p class="text-gray-600 text-lg leading-relaxed">A veces el nombre cambia un poco, así que te acompañamos a encontrar el servicio exacto y resolver dudas de preparación, precios y entrega.</p>
                         </div>
-                        <a href="https://wa.me/5211234567890?text=Hola%20BIOS,%20necesito%20informes%20sobre%20un%20servicio%20y%20no%20lo%20encontré%20en%20la%20web" target="_blank" class="inline-flex items-center justify-center gap-3 px-6 py-4 rounded-2xl bg-[#25D366] text-white font-black shadow-lg shadow-green-500/20 hover:-translate-y-0.5 transition">
+                        <a href="https://wa.me/5211234567890?text=Hola%20Laboratorios%20BIOS,%20necesito%20informes%20sobre%20un%20servicio%20y%20no%20lo%20encontré%20en%20la%20web" target="_blank" class="inline-flex items-center justify-center gap-3 px-6 py-4 rounded-2xl bg-[#25D366] text-white font-black shadow-lg shadow-green-500/20 hover:-translate-y-0.5 transition">
                             <i data-lucide="message-circle-more" class="w-5 h-5"></i> Pedir informes
                         </a>
                     </div>
@@ -1046,10 +1024,10 @@
             <div class="max-w-[96rem] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                 <div class="mb-14 text-center" data-aos="fade-down">
                     <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 border border-blue-100 text-blue-600 font-black text-xs uppercase tracking-[0.28em] shadow-sm mb-5">
-                        <i data-lucide="timer" class="w-4 h-4"></i> Rastreo en vivo
+                        <i data-lucide="list-checks" class="w-4 h-4"></i> Estado por folio
                     </span>
                     <h2 class="font-outfit text-5xl md:text-6xl font-black text-[#0A1C2E] mb-4 tracking-tight">Sigue tus estudios paso a paso</h2>
-                    <p class="text-gray-600 text-lg md:text-xl font-medium max-w-3xl mx-auto">Un tracker visual tipo Domino’s para saber en qué punto va tu muestra, cuánto falta y cuál es el siguiente paso.</p>
+                    <p class="text-gray-600 text-lg md:text-xl font-medium max-w-3xl mx-auto">Consulta el estado de tu muestra por folio y conoce el siguiente paso sin mostrar cuentas regresivas.</p>
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
@@ -1060,8 +1038,8 @@
                         </div>
                         <div class="relative z-10">
                             <p class="text-[10px] uppercase tracking-[0.32em] text-blue-200 font-black mb-2">Consulta tu folio</p>
-                            <h3 class="font-outfit text-3xl md:text-4xl font-black leading-tight mb-4">Cuenta regresiva real según el avance del estudio.</h3>
-                            <p class="text-blue-100/90 text-base md:text-lg leading-relaxed mb-6">Escribe un folio demo o selecciona uno de los accesos rápidos. El tracker actualiza estado y tiempo restante en pantalla, sin servidor.</p>
+                            <h3 class="font-outfit text-3xl md:text-4xl font-black leading-tight mb-4">Estado claro según el avance del estudio.</h3>
+                            <p class="text-blue-100/90 text-base md:text-lg leading-relaxed mb-6">Escribe un folio demo o selecciona uno de los accesos rápidos. El sistema muestra el estado operativo del estudio.</p>
 
                             <form id="tracker-form" class="space-y-4">
                                 <label class="block">
@@ -1104,8 +1082,8 @@
                                     </div>
                                     <div class="grid grid-cols-2 gap-3 mb-4">
                                         <div class="rounded-2xl bg-white/10 border border-white/10 p-4">
-                                            <p class="text-[10px] uppercase tracking-[0.24em] text-blue-200 font-black mb-1">Tiempo restante</p>
-                                            <p id="tracker-countdown" class="font-outfit text-3xl font-black leading-none">--:--:--</p>
+                                            <p class="text-[10px] uppercase tracking-[0.24em] text-blue-200 font-black mb-1">Estado actual</p>
+                                            <p class="tracker-stage-label font-outfit text-3xl font-black leading-none">Recepción</p>
                                         </div>
                                         <div class="rounded-2xl bg-white/10 border border-white/10 p-4">
                                             <p class="text-[10px] uppercase tracking-[0.24em] text-blue-200 font-black mb-1">Progreso</p>
@@ -1128,7 +1106,7 @@
                                 <h3 class="font-outfit text-3xl md:text-4xl font-black text-[#0A1C2E]">Estado del estudio en tiempo real</h3>
                             </div>
                             <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-gray-200 text-gray-600 font-black text-xs uppercase tracking-[0.22em] shadow-sm">
-                                <i data-lucide="wifi" class="w-4 h-4 text-blue-500"></i> Actualización cada segundo
+                                <i data-lucide="list-checks" class="w-4 h-4 text-blue-500"></i> Estado por etapas
                             </div>
                         </div>
 
@@ -1138,9 +1116,9 @@
                                     <div class="absolute -right-6 -top-6 w-32 h-32 rounded-full blur-3xl bg-cyan-400/30"></div>
                                 </div>
                                 <div class="relative z-10">
-                                    <p class="text-[10px] uppercase tracking-[0.28em] text-cyan-200 font-black mb-2">Reloj del estudio</p>
-                                    <p id="tracker-clock" class="font-outfit text-5xl md:text-6xl font-black leading-none">--:--:--</p>
-                                    <p class="text-blue-100/80 mt-3 text-sm">La cuenta regresiva se mueve según la etapa actual.</p>
+                                    <p class="text-[10px] uppercase tracking-[0.28em] text-cyan-200 font-black mb-2">Estado del estudio</p>
+                                    <p class="tracker-stage-label font-outfit text-5xl md:text-6xl font-black leading-none">Recepción</p>
+                                    <p class="text-blue-100/80 mt-3 text-sm">El estado se actualiza por etapa operativa.</p>
                                 </div>
                             </div>
                             <div class="rounded-[2rem] bg-white border border-gray-200 p-6">
@@ -1154,7 +1132,7 @@
                         <div class="rounded-[2rem] bg-white border border-gray-200 p-5 md:p-6 mb-6">
                             <div class="flex items-center justify-between gap-4 mb-4">
                                 <p class="font-black text-[#0A1C2E]">Ruta del estudio</p>
-                                <p id="tracker-stage-label" class="text-sm font-black text-blue-600">Recepción</p>
+                                <p class="tracker-stage-label text-sm font-black text-blue-600">Recepción</p>
                             </div>
                             <div id="tracker-stages" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
                                 <!-- Filled by JS -->
@@ -1210,8 +1188,8 @@
                                     <span class="px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-black uppercase">Imagenología</span>
                                 </div>
                                 <div class="space-y-3 text-slate-700">
-                                    <p class="flex items-start gap-3"><i data-lucide="badge-check" class="w-5 h-5 text-blue-600 mt-0.5"></i> Sueldo competitivo, prestaciones de ley y bono de productividad.</p>
-                                    <p class="flex items-start gap-3"><i data-lucide="badge-check" class="w-5 h-5 text-blue-600 mt-0.5"></i> Bono de puntualidad y asistencia, uniforme y ambiente laboral sólido.</p>
+                                    <p class="flex items-start gap-3"><i data-lucide="badge-check" class="w-5 h-5 text-blue-600 mt-0.5"></i> Mejora continua y cursos de capacitación.</p>
+                                    <p class="flex items-start gap-3"><i data-lucide="badge-check" class="w-5 h-5 text-blue-600 mt-0.5"></i> Uniforme y excelente ambiente laboral.</p>
                                     <p class="flex items-start gap-3"><i data-lucide="message-circle-more" class="w-5 h-5 text-blue-600 mt-0.5"></i> Postulación directa por WhatsApp al 55 1496 8310.</p>
                                 </div>
                             </article>
@@ -1226,7 +1204,7 @@
                                     <span class="px-3 py-1 rounded-full bg-cyan-50 text-cyan-700 text-xs font-black uppercase">Laboratorio</span>
                                 </div>
                                 <div class="space-y-3 text-slate-700">
-                                    <p class="flex items-start gap-3"><i data-lucide="badge-check" class="w-5 h-5 text-cyan-600 mt-0.5"></i> Prestaciones de ley, bonos y entorno profesional con atención humana.</p>
+                                    <p class="flex items-start gap-3"><i data-lucide="badge-check" class="w-5 h-5 text-cyan-600 mt-0.5"></i> Cursos de capacitación y entorno profesional con atención humana.</p>
                                     <p class="flex items-start gap-3"><i data-lucide="badge-check" class="w-5 h-5 text-cyan-600 mt-0.5"></i> Ideal para perfiles con experiencia en toma, laboratorio y trato al paciente.</p>
                                     <p class="flex items-start gap-3"><i data-lucide="message-circle-more" class="w-5 h-5 text-cyan-600 mt-0.5"></i> Seguimiento por WhatsApp y contacto del equipo de reclutamiento.</p>
                                 </div>
@@ -1237,10 +1215,10 @@
                             <div class="rounded-[2rem] bg-white/10 border border-white/10 p-6 text-white backdrop-blur-md">
                                 <p class="text-[10px] uppercase tracking-[0.26em] text-cyan-200 font-black mb-3">Lo que ofrecemos</p>
                                 <div class="grid sm:grid-cols-2 gap-3 text-white/90 font-medium">
-                                    <div class="rounded-2xl bg-white/10 border border-white/10 p-4">Sueldo competitivo</div>
-                                    <div class="rounded-2xl bg-white/10 border border-white/10 p-4">Prestaciones de ley</div>
-                                    <div class="rounded-2xl bg-white/10 border border-white/10 p-4">Bono de productividad</div>
-                                    <div class="rounded-2xl bg-white/10 border border-white/10 p-4">Bono de puntualidad y asistencia</div>
+                                    <div class="rounded-2xl bg-white/10 border border-white/10 p-4">Mejora continua</div>
+                                    <div class="rounded-2xl bg-white/10 border border-white/10 p-4">Cursos de capacitación</div>
+                                    <div class="rounded-2xl bg-white/10 border border-white/10 p-4">Procesos claros</div>
+                                    <div class="rounded-2xl bg-white/10 border border-white/10 p-4">Trato humano</div>
                                     <div class="rounded-2xl bg-white/10 border border-white/10 p-4">Uniforme</div>
                                     <div class="rounded-2xl bg-white/10 border border-white/10 p-4">Excelente ambiente laboral</div>
                                 </div>
@@ -1266,7 +1244,7 @@
                                             <p class="text-blue-50/90 font-medium">Te damos seguimiento de lunes a viernes de 09:00 a 18:00 y sábados de 09:00 a 14:00.</p>
                                         </div>
                                     </div>
-                                    <a href="https://wa.me/525514968310?text=Hola%20BIOS,%20quiero%20postularme%20a%20una%20vacante" target="_blank" class="inline-flex items-center gap-2 px-4 py-3 rounded-2xl bg-[#25D366] text-white font-black mt-6 shadow-lg shadow-green-500/20">
+                                    <a href="https://wa.me/525514968310?text=Hola%20Laboratorios%20BIOS,%20quiero%20postularme%20a%20una%20vacante" target="_blank" class="inline-flex items-center gap-2 px-4 py-3 rounded-2xl bg-[#25D366] text-white font-black mt-6 shadow-lg shadow-green-500/20">
                                         <i data-lucide="message-circle" class="w-4 h-4"></i> 55 1496 8310
                                     </a>
                                 </div>
@@ -1339,7 +1317,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-12 mb-16">
                 <!-- Brand Info -->
                 <div class="lg:col-span-2">
-                    <img src="logos/P2.png" id="footer-logo" alt="BIOS" class="h-20 brightness-0 invert opacity-90 mb-6 transition-all" onerror="this.src='https://placehold.co/200x60/0A1C2E/FFF?text=BIOS'">
+                    <img src="logos/bios-logo-sin-circulo.png" id="footer-logo" alt="Laboratorios BIOS" class="h-20 opacity-90 mb-6 transition-all" onerror="this.src='https://placehold.co/260x78/0A1C2E/FFF?text=Laboratorios%20BIOS'">
                     <p class="text-base leading-relaxed mb-6">Un mundo de servicios a tu alcance!! Proveedores líderes en análisis clínicos y diagnóstico de alta calidad tecnológica.</p>
                     <div class="flex gap-4 items-center">
                         <a href="https://www.facebook.com/" target="_blank" class="w-14 h-14 rounded-full bg-gradient-to-br from-blue-500/20 to-cyan-500/10 border border-white/15 flex items-center justify-center hover:bg-blue-600 hover:text-white hover:border-white/30 transition-all shadow-md hover:shadow-lg hover:-translate-y-1 duration-300 group" title="Síguenos en Facebook"><i data-lucide="facebook" class="w-6 h-6 group-hover:scale-110 transition-transform"></i></a>
@@ -1356,7 +1334,7 @@
                         <li><a href="portal/" class="hover:text-blue-400 transition">Pre-registro</a></li>
                         <li><a href="servicios/" class="hover:text-blue-400 transition">Cotizar y agendar</a></li>
                         <li><a href="seguimiento/" class="hover:text-blue-400 transition">Resultados por Folio</a></li>
-                        <li><a href="seguimiento/" class="hover:text-blue-400 transition">Rastreo en Tiempo Real</a></li>
+                        <li><a href="seguimiento/" class="hover:text-blue-400 transition">Estado por folio</a></li>
                     </ul>
                 </div>
 
@@ -1364,7 +1342,7 @@
                     <h4 class="text-white font-black tracking-wide mb-6 text-lg">Empresas B2B</h4>
                     <ul class="space-y-4 text-sm font-medium">
                         <li><a href="empresas/" class="hover:text-blue-400 transition">Registro RFC/Moral</a></li>
-                        <li><a href="empresas/" class="hover:text-blue-400 transition">Facturación SICOFI</a></li>
+                        <li><a href="empresas/#facturacion" class="hover:text-blue-400 transition">Facturación Picofi</a></li>
                         <li><a href="empresas/" class="hover:text-blue-400 transition">Panel Empresa</a></li>
                         <li><a href="medicos/" class="hover:text-blue-400 transition">Campaña Médicos</a></li>
                     </ul>
@@ -1402,66 +1380,51 @@
     <!-- ==========================================
          INTERACTIVE PROMO POP-UP (Requested)
          ========================================== -->
-    <div id="promo-modal" class="modal-overlay fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-[#0A1C2E]/70 backdrop-blur-md">
-        <div class="modal-content bg-white rounded-[2.5rem] shadow-[0_30px_60px_-15px_rgba(0,0,0,0.8)] max-w-3xl w-full relative overflow-hidden border border-gray-100">
-            <!-- Decorative blur -->
-            <div class="absolute -top-20 -right-20 w-64 h-64 bg-blue-100 rounded-full blur-3xl pointer-events-none opacity-50"></div>
-            <div class="absolute -bottom-24 -left-24 w-72 h-72 bg-cyan-100 rounded-full blur-3xl pointer-events-none opacity-70"></div>
-            
-            <button onclick="closePromoModal()" class="absolute top-5 right-5 w-10 h-10 bg-white/80 backdrop-blur rounded-full flex items-center justify-center hover:bg-gray-100 hover:rotate-90 transition-all z-20 shadow-sm border border-gray-200">
-                <i data-lucide="x" class="w-5 h-5 text-gray-800"></i>
+    <div id="promo-modal" class="modal-overlay fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-[#06111d]/68 backdrop-blur-md">
+        <div class="modal-content bg-white rounded-[1.75rem] shadow-[0_28px_70px_-28px_rgba(0,0,0,0.62)] max-w-2xl w-full relative overflow-hidden border border-pink-100">
+            <button onclick="closePromoModal()" class="absolute top-4 right-4 w-10 h-10 bg-white text-slate-700 rounded-full flex items-center justify-center hover:bg-slate-50 transition z-20 shadow-sm border border-slate-200" aria-label="Cerrar">
+                <i data-lucide="x" class="w-5 h-5"></i>
             </button>
-            
-            <div class="grid md:grid-cols-[0.95fr_1.05fr]">
-                <div class="relative min-h-[320px] bg-[#0A1C2E] overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=900" class="absolute inset-0 w-full h-full object-cover opacity-70 mix-blend-screen" alt="Promo BIOS">
-                    <div class="absolute inset-0 bg-gradient-to-br from-[#0A1C2E] via-[#0A1C2E]/80 to-blue-600/50"></div>
-                    <div class="absolute left-7 top-7 offer-badge inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white text-[#0A1C2E] font-black text-xs uppercase tracking-widest">
-                        <i data-lucide="zap" class="w-4 h-4 text-blue-600"></i> Oferta activa
-                    </div>
-                    <div class="relative z-10 h-full p-8 flex flex-col justify-end text-white">
-                        <p class="text-sm uppercase tracking-widest text-blue-100 font-black mb-3">Campaña preventiva</p>
-                        <h3 class="font-outfit text-5xl font-black leading-none mb-4">Check Up 27 elementos</h3>
-                        <div class="grid grid-cols-2 gap-3">
-                            <div class="rounded-2xl bg-white/10 border border-white/15 p-4 backdrop-blur">
-                                <p class="text-3xl font-black">$930</p>
-                                <p class="text-xs text-blue-100 font-bold uppercase">precio promo</p>
-                            </div>
-                            <div class="rounded-2xl bg-white/10 border border-white/15 p-4 backdrop-blur">
-                                <p id="promo-countdown" class="text-3xl font-black">--:--</p>
-                                <p class="text-xs text-blue-100 font-bold uppercase">rastreo</p>
-                            </div>
-                        </div>
+
+            <div class="grid md:grid-cols-[0.82fr_1.18fr]">
+                <div class="relative min-h-[240px] bg-pink-950 overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1559757175-0eb30cd8c063?auto=format&fit=crop&w=900&q=80" class="absolute inset-0 w-full h-full object-cover opacity-80" alt="Campaña de la mujer Laboratorios BIOS">
+                    <div class="absolute inset-0 bg-gradient-to-br from-pink-950/82 via-pink-900/58 to-blue-950/34"></div>
+                    <div class="absolute left-5 top-5 inline-flex items-center gap-2 px-3 py-2 rounded-full bg-white/92 text-pink-700 font-black text-[11px] uppercase tracking-[0.16em]">
+                        <i data-lucide="venus" class="w-4 h-4"></i> Mujer
                     </div>
                 </div>
-                
-                <div class="p-8 md:p-10 relative z-10">
-                    <div class="w-20 h-20 mb-6 bg-gradient-to-br from-red-500 to-pink-500 text-white rounded-[1.5rem] flex items-center justify-center shadow-xl rotate-3">
-                        <i data-lucide="percent" class="w-10 h-10"></i>
-                    </div>
-                    <h3 class="font-outfit text-4xl font-black text-[#0A1C2E] mb-4 tracking-tight">Oferta Especial BIOS</h3>
-                    <p class="text-gray-500 text-lg mb-6 font-medium">Agenda hoy mismo tu <strong class="text-gray-900">CHECK UP 27 ELEMENTOS</strong> y recibe atención preferencial inmediata.</p>
-                    <div class="space-y-3 mb-8">
-                        <div class="flex items-center gap-3 bg-gray-50 rounded-2xl p-4 border border-gray-100">
-                            <i data-lucide="check-circle-2" class="w-5 h-5 text-blue-600"></i>
-                            <span class="font-bold text-gray-700">Ayuno de 8 horas</span>
+
+                <div class="p-7 md:p-8">
+                    <p class="text-[11px] uppercase tracking-[0.24em] text-pink-600 font-black mb-3">Campaña preventiva</p>
+                    <h3 class="font-outfit text-4xl font-black text-[#0A1C2E] leading-none mb-4">Agenda tu campaña de la mujer</h3>
+                    <p class="text-slate-600 text-base leading-relaxed mb-5">Consulta requisitos, horarios y estudios disponibles como Papanicolaou, colposcopía y mastografía.</p>
+                    <div class="grid gap-2 mb-6">
+                        <div class="flex items-center gap-3 rounded-xl bg-pink-50 border border-pink-100 px-4 py-3">
+                            <i data-lucide="clipboard-check" class="w-5 h-5 text-pink-600"></i>
+                            <span class="font-black text-slate-700">Requisitos claros antes de acudir</span>
                         </div>
-                        <div class="flex items-center gap-3 bg-gray-50 rounded-2xl p-4 border border-gray-100">
-                            <i data-lucide="clock-3" class="w-5 h-5 text-blue-600"></i>
-                            <span class="font-bold text-gray-700">Entrega según avance del tracker</span>
+                        <div class="flex items-center gap-3 rounded-xl bg-blue-50 border border-blue-100 px-4 py-3">
+                            <i data-lucide="calendar-heart" class="w-5 h-5 text-blue-600"></i>
+                            <span class="font-black text-slate-700">Agenda por sucursal</span>
                         </div>
                     </div>
-                    <button onclick="closePromoModal()" class="w-full py-4 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white rounded-2xl font-black text-lg shadow-[0_10px_25px_rgba(37,99,235,0.4)] transition-transform hover:scale-[1.02]">
-                        Aprovechar Oferta
-                    </button>
+                    <div class="flex flex-col sm:flex-row gap-3">
+                        <a href="mujer/" class="flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-[#0A1C2E] text-white font-black hover:-translate-y-0.5 transition">
+                            <i data-lucide="arrow-right" class="w-4 h-4"></i> Ver campaña
+                        </a>
+                        <a href="https://wa.me/5211234567890?text=Hola%20Laboratorios%20BIOS,%20quiero%20información%20sobre%20la%20campaña%20de%20la%20mujer" target="_blank" class="flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-[#25D366] text-white font-black hover:-translate-y-0.5 transition">
+                            <i class="fa-brands fa-whatsapp"></i> WhatsApp
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Fixed WhatsApp Button -->
-    <a href="https://wa.me/5211234567890?text=Hola%20BIOS%2C%20me%20interesa%20agendar..." target="_blank" class="fixed bottom-8 right-8 z-[9000] bg-[#25D366] text-white p-4 rounded-2xl shadow-[0_15px_30px_rgba(37,211,102,0.4)] hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(37,211,102,0.5)] transition-all flex items-center justify-center border-2 border-white">
-        <i data-lucide="message-circle" class="w-8 h-8 fill-current"></i>
+    <a href="https://wa.me/5211234567890?text=Hola%20Laboratorios%20BIOS%2C%20me%20interesa%20agendar..." target="_blank" class="fixed bottom-8 right-8 z-[9000] bg-[#25D366] text-white w-16 h-16 rounded-full shadow-[0_15px_30px_rgba(37,211,102,0.4)] hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(37,211,102,0.5)] transition-all flex items-center justify-center border-2 border-white" aria-label="WhatsApp Laboratorios BIOS">
+        <i class="fa-brands fa-whatsapp text-4xl leading-none"></i>
     </a>
 
     <!-- Scripts Data & Logic -->
@@ -2054,31 +2017,15 @@
         });
 
         /* =================================================================
-           0. DYNAMIC THEME SWITCHER
-           ================================================================= */
-        window.switchTheme = function(logoName, color1, color2) {
-            const root = document.documentElement;
-            root.style.setProperty('--theme-color-1', color1);
-            root.style.setProperty('--theme-color-2', color2);
-            
-            const headerLogo = document.getElementById('global-logo');
-            const footerLogo = document.getElementById('footer-logo');
-            headerLogo.src = `logos/${logoName}.png`;
-            footerLogo.src = `logos/${logoName}.png`;
-            
-            document.getElementById('logo-dropdown').classList.add('hidden');
-        };
-
-        /* =================================================================
            1. SERVICES BLOCKS DATA
            ================================================================= */
         const servicesData = [
-            { name: "CHECK UP COMPLETO", price: "930.00", desc: "Evaluación integral de tu salud general. Incluye biometría hemática, química sanguínea extensa y perfil lipídico.", prep: "Ayuno 8 horas", time: "Rastreo activo", size: "lg", delay: 100, category: "Preventivo", icon: "heart-pulse", tag: "Más vendido" },
-            { name: "PERFIL TIROIDEO 3", price: "1,400.00", desc: "Panel completo con anticuerpos antitiroideos, ideal para detectar enfermedades autoinmunes.", prep: "Sin ayuno", time: "6 horas", size: "normal", delay: 200, category: "Hormonal", icon: "activity", tag: "Alta demanda" },
-            { name: "PERFIL HORMONAL COMPLETO", price: "1,200.00", desc: "Análisis exhaustivo endocrinológico detallado para evaluar fertilidad y ciclos.", prep: "Ayuno 8 horas", time: "24 horas", size: "normal", delay: 300, category: "Hormonal", icon: "dna", tag: "Especializado" },
-            { name: "CAMPAÑA GINECOLÓGICA / UROLÓGICA", price: "650.00", desc: "Paquete preventivo especializado para la detección temprana de anomalías con tecnología avanzada.", prep: "Preparación especial", time: "48 horas", size: "wide", delay: 100, category: "Especialidad", icon: "shield-check", tag: "Preventivo" },
-            { name: "CHECK UP MASCULINO", price: "1,090.00", desc: "Evaluación especializada que incluye Antígeno Prostático Específico (PSA).", prep: "Ayuno especial", time: "24 horas", size: "normal", delay: 200, category: "Preventivo", icon: "badge-check", tag: "Recomendado" },
-            { name: "MASTOGRAFÍA", price: "400.00", desc: "Estudio de imagen de alta resolución esencial para la detección oportuna.", prep: "Sin desodorante", time: "1 hora", size: "normal", delay: 300, category: "Imagen", icon: "scan-line", tag: "Imagen" }
+            { name: "PERFIL INTEGRAL 27 ELEMENTOS", price: "930.00", desc: "Revisión preventiva de salud general. Incluye biometría hemática, química sanguínea, perfil lipídico y EGO.", prep: "Ayuno 8 horas", time: "Un día hábil", size: "lg", delay: 100, category: "Preventivo", icon: "heart-pulse", tag: "Más solicitado" },
+            { name: "PERFIL TIROIDEO 3", price: "1,400.00", desc: "Panel para valorar función tiroidea y orientar seguimiento médico.", prep: "Sin ayuno", time: "Menos de 36 horas", size: "normal", delay: 200, category: "Hormonal", icon: "activity", tag: "Alta demanda" },
+            { name: "PERFIL HORMONAL COMPLETO", price: "1,200.00", desc: "Análisis endocrinológico para apoyar valoración de fertilidad y ciclos.", prep: "Ayuno sugerido", time: "Menos de 36 horas", size: "normal", delay: 300, category: "Hormonal", icon: "dna", tag: "Especializado" },
+            { name: "PAQUETE GINECOLÓGICO / UROLÓGICO", price: "650.00", desc: "Paquete preventivo para detección oportuna y seguimiento médico.", prep: "Preparación especial", time: "Un día hábil", size: "wide", delay: 100, category: "Especialidad", icon: "shield-check", tag: "Preventivo" },
+            { name: "PERFIL MASCULINO PREVENTIVO", price: "1,090.00", desc: "Revisión especializada que incluye Antígeno Prostático Específico (PSA).", prep: "Ayuno especial", time: "Un día hábil", size: "normal", delay: 200, category: "Preventivo", icon: "badge-check", tag: "Recomendado" },
+            { name: "MASTOGRAFÍA", price: "400.00", desc: "Estudio de imagen para apoyo en detección oportuna.", prep: "Sin desodorante", time: "Entrega programada", size: "normal", delay: 300, category: "Imagen", icon: "scan-line", tag: "Imagen" }
         ];
 
         const bentoContainer = document.getElementById('bento-container');
@@ -2148,7 +2095,7 @@
                             <p class="text-[11px] uppercase tracking-[0.24em] font-black ${featured ? 'text-blue-200' : 'text-gray-400'} mb-1">Desde</p>
                             <p class="font-black text-4xl ${priceColor}">$${s.price}</p>
                         </div>
-                        <a href="https://wa.me/5211234567890?text=Hola%20BIOS,%20quiero%20informes%20sobre%20${encodeURIComponent(s.name)}" target="_blank" class="magnetic-action inline-flex items-center gap-2 px-4 py-3 rounded-2xl ${featured ? 'bg-white text-[#0A1C2E]' : 'bg-[#0A1C2E] text-white'} font-black text-sm shadow-lg transition hover:-translate-y-0.5">
+                        <a href="https://wa.me/5211234567890?text=Hola%20Laboratorios%20BIOS,%20quiero%20informes%20sobre%20${encodeURIComponent(s.name)}" target="_blank" class="magnetic-action inline-flex items-center gap-2 px-4 py-3 rounded-2xl ${featured ? 'bg-white text-[#0A1C2E]' : 'bg-[#0A1C2E] text-white'} font-black text-sm shadow-lg transition hover:-translate-y-0.5">
                             <i data-lucide="message-circle" class="w-4 h-4"></i> Informes
                         </a>
                     </div>
@@ -2227,33 +2174,33 @@
                 folio: 'BIOS-2026-014',
                 branch: 'Plaza Cantú',
                 patient: 'María L.',
-                totalMinutes: 720,
-                readyAt: Date.now() + (10 * 60 * 60 * 1000) + (22 * 60 * 1000),
+                stageIndex: 1,
+                progress: 42,
                 note: 'Muestra en proceso con prioridad alta.',
             },
             'BIOS-2026-021': {
                 folio: 'BIOS-2026-021',
                 branch: 'Tultepec (Nueva)',
                 patient: 'Carlos R.',
-                totalMinutes: 300,
-                readyAt: Date.now() + (2 * 60 * 60 * 1000) + (58 * 60 * 1000),
+                stageIndex: 2,
+                progress: 78,
                 note: 'Validación en curso, revisión final pendiente.',
             },
             'BIOS-2026-033': {
                 folio: 'BIOS-2026-033',
                 branch: 'La Joya',
                 patient: 'Fernanda P.',
-                totalMinutes: 180,
-                readyAt: Date.now() + (18 * 60 * 1000),
-                note: 'Liberación casi lista para descarga.',
+                stageIndex: 3,
+                progress: 100,
+                note: 'Resultado listo para entrega.',
             },
             'BIOS-2026-099': {
                 folio: 'BIOS-2026-099',
                 branch: 'Las Haciendas',
                 patient: 'Demo BIOS',
-                totalMinutes: 60,
-                readyAt: Date.now() + (5 * 60 * 1000),
-                note: 'Última fase, resultado en minutos.',
+                stageIndex: 0,
+                progress: 12,
+                note: 'Folio registrado para seguimiento.',
             }
         };
 
@@ -2266,50 +2213,18 @@
             branch: document.getElementById('tracker-branch'),
             status: document.getElementById('tracker-status'),
             statusDot: document.getElementById('tracker-status-dot'),
-            countdown: document.getElementById('tracker-countdown'),
             progressText: document.getElementById('tracker-progress-text'),
             progressBar: document.getElementById('tracker-progress-bar'),
             note: document.getElementById('tracker-note'),
-            clock: document.getElementById('tracker-clock'),
             stages: document.getElementById('tracker-stages'),
             nextStep: document.getElementById('tracker-next-step'),
-            stageLabel: document.getElementById('tracker-stage-label'),
-            serviceEta: document.getElementById('service-eta-countdown'),
-            promoCountdown: document.getElementById('promo-countdown'),
+            stageLabels: document.querySelectorAll('.tracker-stage-label'),
         };
 
-        let activeTrackerKey = 'BIOS-2026-014';
-
-        function formatDuration(ms) {
-            const safeMs = Math.max(0, ms);
-            const totalSeconds = Math.floor(safeMs / 1000);
-            const hours = Math.floor(totalSeconds / 3600);
-            const minutes = Math.floor((totalSeconds % 3600) / 60);
-            const seconds = totalSeconds % 60;
-            return [
-                String(hours).padStart(2, '0'),
-                String(minutes).padStart(2, '0'),
-                String(seconds).padStart(2, '0'),
-            ].join(':');
-        }
-
         function getTrackerState(record) {
-            const now = Date.now();
-            const remainingMs = Math.max(0, record.readyAt - now);
-            const totalMs = Math.max(60 * 1000, record.totalMinutes * 60 * 1000);
-            const elapsedRatio = Math.min(1, Math.max(0, 1 - (remainingMs / totalMs)));
-            const stageIndex = remainingMs === 0
-                ? 3
-                : elapsedRatio >= 0.78
-                    ? 2
-                    : elapsedRatio >= 0.4
-                        ? 1
-                        : 0;
             return {
-                remainingMs,
-                totalMs,
-                elapsedRatio,
-                stageIndex,
+                progress: record.progress,
+                stageIndex: record.stageIndex,
             };
         }
 
@@ -2335,23 +2250,19 @@
 
         function renderTracker(record) {
             const selected = record || trackerSamples['BIOS-2026-014'];
-            activeTrackerKey = selected.folio;
             const state = getTrackerState(selected);
             const currentStage = trackerStages[state.stageIndex];
-            const progress = Math.round(state.elapsedRatio * 100);
-            const countdown = formatDuration(state.remainingMs);
+            const progress = Math.round(state.progress);
 
             if (trackerRefs.folio) trackerRefs.folio.textContent = selected.folio;
             if (trackerRefs.branch) trackerRefs.branch.textContent = selected.branch;
             if (trackerRefs.status) trackerRefs.status.textContent = currentStage.title;
-            if (trackerRefs.countdown) trackerRefs.countdown.textContent = countdown;
-            if (trackerRefs.clock) trackerRefs.clock.textContent = countdown;
             if (trackerRefs.progressText) trackerRefs.progressText.textContent = `${progress}%`;
             if (trackerRefs.progressBar) trackerRefs.progressBar.style.width = `${Math.max(8, progress)}%`;
             if (trackerRefs.note) trackerRefs.note.textContent = selected.note;
-            if (trackerRefs.stageLabel) trackerRefs.stageLabel.textContent = currentStage.title;
-            if (trackerRefs.serviceEta) trackerRefs.serviceEta.textContent = countdown;
-            if (trackerRefs.promoCountdown) trackerRefs.promoCountdown.textContent = countdown;
+            trackerRefs.stageLabels.forEach(label => {
+                label.textContent = currentStage.title;
+            });
             if (trackerRefs.statusDot) {
                 trackerRefs.statusDot.className = `w-3.5 h-3.5 rounded-full shadow-[0_0_0_8px_rgba(16,185,129,0.12)] ${
                     state.stageIndex === 3 ? 'bg-emerald-400' : state.stageIndex === 2 ? 'bg-cyan-400' : 'bg-blue-400'
@@ -2407,9 +2318,6 @@
         });
 
         setTrackerByFolio('BIOS-2026-014');
-        window.setInterval(() => {
-            renderTracker(trackerSamples[activeTrackerKey] || trackerSamples['BIOS-2026-014']);
-        }, 1000);
 
         /* =================================================================
            2. VERBATIM UNITS LOCATOR

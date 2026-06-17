@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Servicios BIOS</title>
+    <title>Servicios | Laboratorios BIOS</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
@@ -18,7 +18,7 @@
         <header class="site-header">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
                 <a href="../" class="flex items-center gap-3">
-                    <img src="../logos/P2.png" alt="BIOS" class="h-14 brightness-0 invert" onerror="this.src='https://placehold.co/150x54/0A1C2E/FFFFFF?text=BIOS'">
+                    <img src="../logos/bios-logo-sin-circulo.png" alt="Laboratorios BIOS" class="h-14" onerror="this.src='https://placehold.co/260x78/0A1C2E/FFFFFF?text=Laboratorios%20BIOS'">
                 </a>
                 <nav class="hidden lg:flex items-center gap-6">
                     <a class="nav-link" href="../">Inicio</a>
@@ -28,7 +28,7 @@
                     <a class="nav-link" href="../conocenos/">Conócenos</a>
                     <a class="nav-link" href="../unete/">Únete</a>
                 </nav>
-                <a href="https://wa.me/5211234567890?text=Hola%20BIOS,%20quiero%20cotizar%20un%20estudio" class="primary-button hidden sm:inline-flex" target="_blank">
+                <a href="https://wa.me/5211234567890?text=Hola%20Laboratorios%20BIOS,%20quiero%20cotizar%20un%20estudio" class="primary-button hidden sm:inline-flex" target="_blank">
                     <i data-lucide="message-circle" class="w-5 h-5"></i> Cotizar
                 </a>
                 <button class="secondary-button lg:hidden" onclick="toggleDrawer(true)" aria-label="Abrir menú">
@@ -56,12 +56,12 @@
         </div>
 
         <main class="page-enter">
-            <section class="services-section">
+            <section class="services-section" id="especiales">
                 <div class="services-hero-grid">
                     <div class="dark-panel services-summary-card p-6 lg:p-8">
                         <span class="section-kicker !bg-white/10 !border-white/15 !text-cyan-100 mb-5"><i data-lucide="microscope" class="w-4 h-4"></i> Catálogo BIOS</span>
                         <h1 class="brand-type mobile-tight text-5xl lg:text-6xl font-black leading-none mb-5">Estudios y paquetes</h1>
-                        <p class="text-blue-100 text-lg leading-relaxed mb-6">Busca por objetivo, categoría o preparación. Esta página ya funciona como catálogo visual sin servidor.</p>
+                        <p class="text-blue-100 text-lg leading-relaxed mb-6">Busca por objetivo, categoría, preparación o por análisis incluido dentro de un perfil o paquete.</p>
                         <div class="grid sm:grid-cols-3 gap-3">
                             <div class="metric p-4"><p class="text-3xl font-black" id="total-services">0</p><p class="text-xs uppercase font-black text-cyan-100">visibles</p></div>
                             <div class="metric p-4"><p class="text-3xl font-black">6</p><p class="text-xs uppercase font-black text-cyan-100">categorías</p></div>
@@ -73,7 +73,7 @@
                         <div class="grid md:grid-cols-[1fr_auto] gap-3 mb-5">
                             <div class="relative">
                                 <i data-lucide="search" class="w-5 h-5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
-                                <input id="service-search" class="field pl-10" type="search" placeholder="Buscar: check up, tiroides, mastografía...">
+                                <input id="service-search" class="field pl-10" type="search" placeholder="Buscar: EGO, tiroides, mastografía...">
                             </div>
                             <select id="sort-services" class="field md:w-52">
                                 <option value="featured">Orden recomendado</option>
@@ -101,15 +101,149 @@
 
     <script>
         const services = [
-            { name: 'Check Up Completo', category: 'Preventivo', price: 930, time: 12, prep: 'Ayuno de 8 horas', icon: 'heart-pulse', tag: 'Más vendido' },
-            { name: 'Perfil Tiroideo 3', category: 'Hormonal', price: 1400, time: 6, prep: 'Sin ayuno', icon: 'activity', tag: 'Alta demanda' },
-            { name: 'Perfil Hormonal Completo', category: 'Hormonal', price: 1200, time: 24, prep: 'Ayuno sugerido', icon: 'dna', tag: 'Especializado' },
-            { name: 'Campaña Ginecológica / Urológica', category: 'Especialidad', price: 650, time: 48, prep: 'Preparación especial', icon: 'shield-check', tag: 'Preventivo' },
-            { name: 'Check Up Masculino', category: 'Preventivo', price: 1090, time: 24, prep: 'Ayuno especial', icon: 'badge-check', tag: 'Recomendado' },
-            { name: 'Mastografía', category: 'Imagen', price: 400, time: 1, prep: 'Sin desodorante', icon: 'scan-line', tag: 'Imagen' },
-            { name: 'Electrocardiograma', category: 'Gabinete', price: 320, time: 1, prep: 'Ropa cómoda', icon: 'waveform', tag: 'Rápido' },
-            { name: 'Ultrasonido General', category: 'Imagen', price: 520, time: 2, prep: 'Depende del estudio', icon: 'scan', tag: 'Disponible' },
-            { name: 'Química Sanguínea', category: 'Laboratorio', price: 280, time: 8, prep: 'Ayuno recomendado', icon: 'test-tube', tag: 'Básico' }
+            {
+                key: 'perfil-integral',
+                name: 'Perfil Integral 27 elementos',
+                category: 'Preventivo',
+                price: 930,
+                delivery: 'Un día hábil',
+                deliveryRank: 1,
+                prep: 'Ayuno de 8 horas',
+                icon: 'heart-pulse',
+                tag: 'Más solicitado',
+                desc: 'Revisión anual para conocer indicadores generales y apoyar decisiones preventivas con tu médico.',
+                includes: ['Biometría hemática', 'Química sanguínea', 'Perfil lipídico', 'EGO', 'Examen general de orina', 'Glucosa', 'Colesterol', 'Triglicéridos']
+            },
+            {
+                key: 'perfil-tiroideo',
+                name: 'Perfil Tiroideo 3',
+                category: 'Hormonal',
+                price: 1400,
+                delivery: 'Menos de 36 horas',
+                deliveryRank: 2,
+                prep: 'Sin ayuno',
+                icon: 'activity',
+                tag: 'Alta demanda',
+                desc: 'Perfil orientado a valorar función tiroidea y dar seguimiento a alteraciones hormonales.',
+                includes: ['TSH', 'T3', 'T4', 'Tiroides']
+            },
+            {
+                key: 'perfil-hormonal',
+                name: 'Perfil Hormonal Completo',
+                category: 'Hormonal',
+                price: 1200,
+                delivery: 'Menos de 36 horas',
+                deliveryRank: 2,
+                prep: 'Ayuno sugerido',
+                icon: 'dna',
+                tag: 'Especializado',
+                desc: 'Apoya la valoración médica de ciclos, fertilidad y equilibrio endocrino.',
+                includes: ['FSH', 'LH', 'Estradiol', 'Progesterona', 'Prolactina', 'Testosterona']
+            },
+            {
+                key: 'paquete-gine-urologico',
+                name: 'Paquete Ginecológico / Urológico',
+                category: 'Especialidad',
+                price: 650,
+                delivery: 'Un día hábil',
+                deliveryRank: 1,
+                prep: 'Preparación especial',
+                icon: 'shield-check',
+                tag: 'Preventivo',
+                desc: 'Paquete enfocado en detección oportuna y orientación preventiva para mujer u hombre.',
+                includes: ['Papanicolaou', 'Colposcopía', 'Urocultivo', 'EGO', 'PSA']
+            },
+            {
+                key: 'perfil-masculino',
+                name: 'Perfil Masculino Preventivo',
+                category: 'Preventivo',
+                price: 1090,
+                delivery: 'Un día hábil',
+                deliveryRank: 1,
+                prep: 'Ayuno especial',
+                icon: 'badge-check',
+                tag: 'Recomendado',
+                desc: 'Revisión preventiva con marcadores generales y prostáticos para seguimiento médico.',
+                includes: ['PSA', 'Antígeno prostático', 'Biometría hemática', 'Química sanguínea', 'EGO']
+            },
+            {
+                key: 'mastografia',
+                name: 'Mastografía',
+                category: 'Imagen',
+                price: 400,
+                delivery: 'Entrega programada',
+                deliveryRank: 3,
+                prep: 'Sin desodorante',
+                icon: 'scan-line',
+                tag: 'Imagen',
+                desc: 'Estudio de imagen utilizado como apoyo para detección oportuna en salud mamaria.',
+                includes: ['Mastografía', 'Mama', 'Imagen']
+            },
+            {
+                key: 'electrocardiograma',
+                name: 'Electrocardiograma',
+                category: 'Gabinete',
+                price: 320,
+                delivery: 'Entrega programada',
+                deliveryRank: 3,
+                prep: 'Ropa cómoda',
+                icon: 'waveform',
+                tag: 'Gabinete',
+                desc: 'Registro de actividad eléctrica del corazón para valoración médica.',
+                includes: ['ECG', 'Ritmo cardiaco', 'Corazón']
+            },
+            {
+                key: 'ultrasonido',
+                name: 'Ultrasonido General',
+                category: 'Imagen',
+                price: 520,
+                delivery: 'Entrega programada',
+                deliveryRank: 3,
+                prep: 'Depende del estudio',
+                icon: 'scan',
+                tag: 'Disponible',
+                desc: 'Estudio de imagen que se agenda según zona anatómica y preparación requerida.',
+                includes: ['Ultrasonido', 'Abdomen', 'Pélvico', 'Imagen']
+            },
+            {
+                key: 'quimica-sanguinea',
+                name: 'Química Sanguínea',
+                category: 'Laboratorio',
+                price: 280,
+                delivery: 'Un día hábil',
+                deliveryRank: 1,
+                prep: 'Ayuno recomendado',
+                icon: 'test-tube',
+                tag: 'Básico',
+                desc: 'Conjunto de indicadores metabólicos de uso frecuente en valoración preventiva.',
+                includes: ['Glucosa', 'Urea', 'Creatinina', 'Ácido úrico', 'Colesterol', 'Triglicéridos']
+            },
+            {
+                key: 'tomografia',
+                name: 'Tomografía programada',
+                category: 'Servicios especiales',
+                price: null,
+                delivery: 'Requiere cita',
+                deliveryRank: 4,
+                prep: 'Indicaciones por confirmar',
+                icon: 'scan-face',
+                tag: 'Pago en línea',
+                desc: 'Servicio especial con agenda previa, confirmación de requisitos y opción de pago en línea.',
+                includes: ['Tomografía', 'Cita', 'Pago en línea', 'Mercado Pago', 'PayPal', 'Stripe']
+            },
+            {
+                key: 'colposcopia',
+                name: 'Colposcopía',
+                category: 'Servicios especiales',
+                price: null,
+                delivery: 'Requiere cita',
+                deliveryRank: 4,
+                prep: 'Preparación especial',
+                icon: 'calendar-heart',
+                tag: 'Campaña mujer',
+                desc: 'Estudio especial para salud de la mujer. Se agenda con requisitos previos claros.',
+                includes: ['Colposcopía', 'Papanicolaou', 'Campaña mujer', 'Pago en línea']
+            }
         ];
         const categories = ['Todos', ...new Set(services.map(item => item.category))];
         let activeCategory = 'Todos';
@@ -129,11 +263,11 @@
             const sort = document.getElementById('sort-services').value;
             const list = services.filter(item => {
                 const matchesCategory = activeCategory === 'Todos' || item.category === activeCategory;
-                const matchesQuery = !query || `${item.name} ${item.category} ${item.prep} ${item.tag}`.toLowerCase().includes(query);
+                const matchesQuery = !query || `${item.name} ${item.category} ${item.prep} ${item.tag} ${item.desc} ${item.includes.join(' ')}`.toLowerCase().includes(query);
                 return matchesCategory && matchesQuery;
             });
-            if (sort === 'price-asc') list.sort((a, b) => a.price - b.price);
-            if (sort === 'time') list.sort((a, b) => a.time - b.time);
+            if (sort === 'price-asc') list.sort((a, b) => (a.price || 999999) - (b.price || 999999));
+            if (sort === 'time') list.sort((a, b) => a.deliveryRank - b.deliveryRank);
             return list;
         }
 
@@ -151,11 +285,17 @@
                     <h2 class="brand-type service-title">${item.name}</h2>
                     <div class="service-meta">
                         <div><p>Prep</p><p>${item.prep}</p></div>
-                        <div><p>Entrega</p><p>${item.time} h aprox.</p></div>
+                        <div><p>Entrega</p><p>${item.delivery}</p></div>
                     </div>
+                    <details class="service-detail">
+                        <summary>Ver detalle e incluidos</summary>
+                        <p>${item.desc}</p>
+                        <div class="service-includes">${item.includes.map(include => `<span>${include}</span>`).join('')}</div>
+                        ${item.category === 'Servicios especiales' ? `<div class="service-payments"><i data-lucide="credit-card" class="w-4 h-4"></i> Requiere cita. Pago en línea por Mercado Pago, PayPal o Stripe al integrar backend.</div>` : ''}
+                    </details>
                     <div class="service-card-footer">
-                        <strong class="brand-type service-price">${money(item.price)}</strong>
-                        <a class="primary-button quote-button" target="_blank" aria-label="Cotizar ${item.name}" href="https://wa.me/5211234567890?text=Hola%20BIOS,%20quiero%20cotizar%20${encodeURIComponent(item.name)}"><i data-lucide="message-circle" class="w-4 h-4"></i></a>
+                        <strong class="brand-type service-price">${item.price ? money(item.price) : 'Con cita'}</strong>
+                        <a class="primary-button quote-button" target="_blank" aria-label="Cotizar ${item.name}" href="https://wa.me/5211234567890?text=Hola%20Laboratorios%20BIOS,%20quiero%20cotizar%20${encodeURIComponent(item.name)}"><i data-lucide="message-circle" class="w-4 h-4"></i></a>
                     </div>
                 </article>
             `).join('');

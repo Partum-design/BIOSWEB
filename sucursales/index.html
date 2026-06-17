@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sucursales BIOS</title>
+    <title>Sucursales | Laboratorios BIOS</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
@@ -23,7 +23,7 @@
     <div class="page-shell">
         <header class="site-header">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
-                <a href="../"><img src="../logos/P2.png" alt="BIOS" class="h-14 brightness-0 invert" onerror="this.src='https://placehold.co/150x54/0A1C2E/FFFFFF?text=BIOS'"></a>
+                <a href="../"><img src="../logos/bios-logo-sin-circulo.png" alt="Laboratorios BIOS" class="h-14" onerror="this.src='https://placehold.co/260x78/0A1C2E/FFFFFF?text=Laboratorios%20BIOS'"></a>
                 <nav class="hidden lg:flex items-center gap-6">
                     <a class="nav-link" href="../">Inicio</a>
                     <a class="nav-link" href="../servicios/">Servicios</a>
@@ -32,7 +32,7 @@
                     <a class="nav-link" href="../conocenos/">Conócenos</a>
                     <a class="nav-link" href="../unete/">Únete</a>
                 </nav>
-                <a href="https://wa.me/5211234567890?text=Hola%20BIOS,%20quiero%20ubicar%20una%20sucursal" class="primary-button hidden sm:inline-flex" target="_blank"><i data-lucide="message-circle" class="w-5 h-5"></i> Ayuda</a>
+                <a href="https://wa.me/5211234567890?text=Hola%20Laboratorios%20BIOS,%20quiero%20ubicar%20una%20sucursal" class="primary-button hidden sm:inline-flex" target="_blank"><i data-lucide="message-circle" class="w-5 h-5"></i> Ayuda</a>
                 <button class="secondary-button lg:hidden" onclick="toggleDrawer(true)" aria-label="Abrir menú"><i data-lucide="menu" class="w-5 h-5"></i></button>
             </div>
         </header>
@@ -67,6 +67,16 @@
                             <h1 class="brand-type mobile-tight text-5xl font-black leading-none mb-4">Mapa BIOS</h1>
                             <p class="text-blue-100 leading-relaxed">Selecciona una sucursal para centrar el mapa. Tultepec aparece marcada como nueva.</p>
                         </div>
+                        <div class="panel p-5">
+                            <span class="section-kicker mb-4"><i data-lucide="map-pinned" class="w-4 h-4"></i> Unidad cercana</span>
+                            <h2 class="brand-type text-2xl font-black text-[#0A1C2E] mb-2">Busca por código postal</h2>
+                            <p class="text-sm text-slate-500 mb-4">Ingresa tu CP para sugerir la unidad más conveniente y abrir la ruta en Google Maps.</p>
+                            <div class="grid sm:grid-cols-[1fr_auto] gap-3">
+                                <input id="zip-input" class="field" type="text" inputmode="numeric" maxlength="5" placeholder="Ej. 54700">
+                                <button id="zip-button" class="primary-button" type="button"><i data-lucide="navigation" class="w-4 h-4"></i> Detectar</button>
+                            </div>
+                            <div id="zip-result" class="mt-4 hidden rounded-lg border border-blue-100 bg-blue-50 p-4"></div>
+                        </div>
                         <figure class="page-visual">
                             <img src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&w=900&q=80" alt="Recepción de sucursal médica BIOS">
                             <figcaption class="visual-caption">
@@ -83,12 +93,12 @@
 
     <script>
         const branches = [
-            { name: 'Unidad Plaza Cantú', badge: 'Principal', address: 'Av. Dr. Jiménez Cantú S/N, Plaza Cantú Centro Urbano, Cuautitlán Izcalli.', phones: ['55-1113-2754', '55-5871-9069'], lat: 19.6450, lng: -99.2150 },
-            { name: 'Unidad Plaza La Joya', badge: 'Alta afluencia', address: 'Carr. Cuautitlán-Melchor Ocampo esq. Libramiento La Joya.', phones: ['55-5872-9277'], lat: 19.6710, lng: -99.1820 },
-            { name: 'Unidad Plaza Las Haciendas', badge: 'Cerca de ti', address: 'Av. Huehuetoca S/N, esq. Jiménez Cantú Local D-40.', phones: ['55-5817-3401'], lat: 19.6500, lng: -99.2100 },
-            { name: 'Unidad Tepalcapa', badge: 'Express', address: 'Av. Hidalgo #140, locales 14, 15 y 16, Granjas de Guadalupe.', phones: ['55-2602-0764'], lat: 19.6300, lng: -99.2300 },
-            { name: 'Unidad Tepojaco', badge: 'Especialidad', address: 'Av. San Sebastián S/N casi esq. San Martín Caballero.', phones: ['55-5391-8066'], lat: 19.6900, lng: -99.2500 },
-            { name: 'Unidad Tultepec', badge: 'Nueva', isNew: true, address: 'Av. Joaquín Montenegro S/N, esq. Av. 2 de Marzo, Tultepec.', phones: ['55-9413-2041'], lat: 19.6850, lng: -99.1280 }
+            { name: 'Unidad Plaza Cantú', badge: 'Principal', address: 'Av. Dr. Jiménez Cantú S/N, Plaza Cantú Centro Urbano, Cuautitlán Izcalli.', phones: ['55-1113-2754', '55-5871-9069'], lat: 19.6450, lng: -99.2150, zips: ['54700', '54710', '54720'] },
+            { name: 'Unidad Plaza La Joya', badge: 'Alta afluencia', address: 'Carr. Cuautitlán-Melchor Ocampo esq. Libramiento La Joya.', phones: ['55-5872-9277'], lat: 19.6710, lng: -99.1820, zips: ['54800', '54830', '54840'] },
+            { name: 'Unidad Plaza Las Haciendas', badge: 'Cerca de ti', address: 'Av. Huehuetoca S/N, esq. Jiménez Cantú Local D-40.', phones: ['55-5817-3401'], lat: 19.6500, lng: -99.2100, zips: ['54740', '54750', '54753'] },
+            { name: 'Unidad Tepalcapa', badge: 'Express', address: 'Av. Hidalgo #140, locales 14, 15 y 16, Granjas de Guadalupe.', phones: ['55-2602-0764'], lat: 19.6300, lng: -99.2300, zips: ['54743', '54745', '54760'] },
+            { name: 'Unidad Tepojaco', badge: 'Especialidad', address: 'Av. San Sebastián S/N casi esq. San Martín Caballero.', phones: ['55-5391-8066'], lat: 19.6900, lng: -99.2500, zips: ['54770', '54783', '54784'] },
+            { name: 'Unidad Tultepec', badge: 'Nueva', isNew: true, address: 'Av. Joaquín Montenegro S/N, esq. Av. 2 de Marzo, Tultepec.', phones: ['55-9413-2041'], lat: 19.6850, lng: -99.1280, zips: ['54960', '54963', '54964'] }
         ];
         const map = L.map('map', { scrollWheelZoom: false }).setView([19.66, -99.20], 12);
         L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', { attribution: '&copy; CARTO' }).addTo(map);
@@ -98,6 +108,43 @@
             const branch = branches[index];
             map.flyTo([branch.lat, branch.lng], 15, { duration: 1.1 });
             markers[index].openPopup();
+        }
+
+        function mapsUrl(branch) {
+            return `https://www.google.com/maps/search/?api=1&query=${branch.lat},${branch.lng}`;
+        }
+
+        function nearestByZip(zip) {
+            const exact = branches.find(branch => branch.zips.includes(zip));
+            if (exact) return exact;
+            const numericZip = Number(zip);
+            if (!Number.isFinite(numericZip)) return branches[0];
+            return branches.reduce((best, branch) => {
+                const branchDistance = Math.min(...branch.zips.map(item => Math.abs(Number(item) - numericZip)));
+                const bestDistance = Math.min(...best.zips.map(item => Math.abs(Number(item) - numericZip)));
+                return branchDistance < bestDistance ? branch : best;
+            }, branches[0]);
+        }
+
+        function detectByZip() {
+            const zip = document.getElementById('zip-input').value.replace(/\D/g, '').slice(0, 5);
+            const result = document.getElementById('zip-result');
+            if (zip.length !== 5) {
+                result.classList.remove('hidden');
+                result.innerHTML = '<p class="font-black text-[#0A1C2E]">Ingresa un código postal de 5 dígitos.</p>';
+                return;
+            }
+            const branch = nearestByZip(zip);
+            const index = branches.indexOf(branch);
+            focusBranch(index);
+            result.classList.remove('hidden');
+            result.innerHTML = `
+                <p class="text-xs uppercase tracking-[0.18em] font-black text-blue-700 mb-1">Unidad sugerida</p>
+                <h3 class="brand-type text-xl font-black text-[#0A1C2E]">${branch.name}</h3>
+                <p class="text-sm text-slate-600 mt-1">${branch.address}</p>
+                <a class="primary-button mt-3" target="_blank" href="${mapsUrl(branch)}"><i data-lucide="map" class="w-4 h-4"></i> Abrir ruta en Google Maps</a>
+            `;
+            lucide.createIcons();
         }
 
         document.getElementById('branch-list').innerHTML = branches.map((branch, index) => `
@@ -113,8 +160,13 @@
 
         branches.forEach((branch, index) => {
             const marker = L.marker([branch.lat, branch.lng]).addTo(map);
-            marker.bindPopup(`<strong>${branch.name}</strong><br>${branch.address}<br><b>${branch.badge}</b>`);
+            marker.bindPopup(`<strong>${branch.name}</strong><br>${branch.address}<br><b>${branch.badge}</b><br><a href="${mapsUrl(branch)}" target="_blank">Abrir en Google Maps</a>`);
             markers.push(marker);
+        });
+
+        document.getElementById('zip-button').addEventListener('click', detectByZip);
+        document.getElementById('zip-input').addEventListener('keydown', event => {
+            if (event.key === 'Enter') detectByZip();
         });
 
         function toggleDrawer(open) {

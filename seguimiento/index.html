@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Seguimiento BIOS</title>
+    <title>Seguimiento | Laboratorios BIOS</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
@@ -17,7 +17,7 @@
     <div class="page-shell">
         <header class="site-header">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
-                <a href="../"><img src="../logos/P2.png" alt="BIOS" class="h-14 brightness-0 invert" onerror="this.src='https://placehold.co/150x54/0A1C2E/FFFFFF?text=BIOS'"></a>
+                <a href="../"><img src="../logos/bios-logo-sin-circulo.png" alt="Laboratorios BIOS" class="h-14" onerror="this.src='https://placehold.co/260x78/0A1C2E/FFFFFF?text=Laboratorios%20BIOS'"></a>
                 <nav class="hidden lg:flex items-center gap-6">
                     <a class="nav-link" href="../">Inicio</a>
                     <a class="nav-link" href="../servicios/">Servicios</a>
@@ -53,7 +53,7 @@
             <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-14">
                 <div class="grid lg:grid-cols-[420px_1fr] gap-6 items-start">
                     <aside class="dark-panel p-6 lg:p-8">
-                        <span class="section-kicker !bg-white/10 !border-white/15 !text-cyan-100 mb-5"><i data-lucide="timer" class="w-4 h-4"></i> Tracker BIOS</span>
+                        <span class="section-kicker !bg-white/10 !border-white/15 !text-cyan-100 mb-5"><i data-lucide="list-checks" class="w-4 h-4"></i> Estado BIOS</span>
                         <h1 class="brand-type mobile-tight text-5xl font-black leading-none mb-5">Rastrea tus estudios</h1>
                         <form id="tracker-form" class="grid gap-3 mb-5">
                             <input id="folio-input" class="field" type="text" placeholder="BIOS-2026-014">
@@ -65,8 +65,8 @@
                             <button class="chip !bg-white/10 !border-white/15 !text-white" onclick="loadFolio('BIOS-2026-033')">BIOS-2026-033</button>
                         </div>
                         <div class="metric p-5">
-                            <p class="text-xs uppercase tracking-[0.18em] font-black text-cyan-100 mb-2">Tiempo restante</p>
-                            <p id="countdown" class="brand-type text-5xl font-black leading-none">--:--:--</p>
+                            <p class="text-xs uppercase tracking-[0.18em] font-black text-cyan-100 mb-2">Estado actual</p>
+                            <p id="folio-state" class="brand-type text-4xl font-black leading-none">Recepción</p>
                             <p id="folio-note" class="text-blue-100 text-sm mt-3">Listo para consultar.</p>
                         </div>
                     </aside>
@@ -76,7 +76,7 @@
                             <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1400&q=80" alt="Seguimiento de análisis clínicos BIOS">
                             <figcaption class="visual-caption">
                                 <p>Estado visible por folio</p>
-                                <p>Reloj, progreso y ruta del estudio en una sola vista.</p>
+                                <p>Progreso por etapas y ruta del estudio en una sola vista.</p>
                             </figcaption>
                         </figure>
                         <div class="panel p-5 lg:p-6">
@@ -109,7 +109,7 @@
                             <div class="panel p-5">
                                 <h3 class="brand-type text-2xl font-black text-[#0A1C2E] mb-3">Acciones</h3>
                                 <div class="grid gap-3">
-                                    <a class="primary-button" target="_blank" href="https://wa.me/5211234567890?text=Hola%20BIOS,%20quiero%20ayuda%20con%20mi%20folio"><i data-lucide="message-circle" class="w-5 h-5"></i> Ayuda por WhatsApp</a>
+                                    <a class="primary-button" target="_blank" href="https://wa.me/5211234567890?text=Hola%20Laboratorios%20BIOS,%20quiero%20ayuda%20con%20mi%20folio"><i data-lucide="message-circle" class="w-5 h-5"></i> Ayuda por WhatsApp</a>
                                     <a class="secondary-button" href="../sucursales/"><i data-lucide="map-pin" class="w-5 h-5"></i> Ver sucursales</a>
                                 </div>
                             </div>
@@ -128,26 +128,14 @@
             { name: 'Listo', icon: 'circle-check', text: 'Resultado liberado.' }
         ];
         const records = {
-            'BIOS-2026-014': { branch: 'Plaza Cantú', patient: 'María L.', total: 720, readyAt: Date.now() + 37000000 },
-            'BIOS-2026-021': { branch: 'Tultepec (Nueva)', patient: 'Carlos R.', total: 300, readyAt: Date.now() + 9800000 },
-            'BIOS-2026-033': { branch: 'La Joya', patient: 'Fernanda P.', total: 180, readyAt: Date.now() + 1100000 }
+            'BIOS-2026-014': { branch: 'Plaza Cantú', patient: 'María L.', progress: 42, stage: 1 },
+            'BIOS-2026-021': { branch: 'Tultepec (Nueva)', patient: 'Carlos R.', progress: 78, stage: 2 },
+            'BIOS-2026-033': { branch: 'La Joya', patient: 'Fernanda P.', progress: 100, stage: 3 }
         };
         let active = 'BIOS-2026-014';
 
-        function format(ms) {
-            const seconds = Math.max(0, Math.floor(ms / 1000));
-            const h = String(Math.floor(seconds / 3600)).padStart(2, '0');
-            const m = String(Math.floor((seconds % 3600) / 60)).padStart(2, '0');
-            const s = String(seconds % 60).padStart(2, '0');
-            return `${h}:${m}:${s}`;
-        }
-
         function state(record) {
-            const remaining = Math.max(0, record.readyAt - Date.now());
-            const totalMs = record.total * 60 * 1000;
-            const progress = Math.min(100, Math.round((1 - remaining / totalMs) * 100));
-            const stage = remaining === 0 ? 3 : progress >= 78 ? 2 : progress >= 40 ? 1 : 0;
-            return { remaining, progress: Math.max(8, progress), stage };
+            return { progress: Math.max(8, record.progress), stage: record.stage };
         }
 
         function render() {
@@ -156,8 +144,8 @@
             document.getElementById('active-folio').textContent = active;
             document.getElementById('branch').textContent = record.branch;
             document.getElementById('patient').textContent = record.patient;
-            document.getElementById('countdown').textContent = format(current.remaining);
             document.getElementById('stage-name').textContent = stages[current.stage].name;
+            document.getElementById('folio-state').textContent = stages[current.stage].name;
             document.getElementById('progress-text').textContent = `${current.progress}%`;
             document.getElementById('progress-bar').style.width = `${current.progress}%`;
             document.getElementById('folio-note').textContent = stages[current.stage].text;
@@ -171,7 +159,7 @@
             document.getElementById('detail-list').innerHTML = [
                 ['Estado', stages[current.stage].name],
                 ['Sucursal', record.branch],
-                ['Entrega estimada', current.remaining ? format(current.remaining) : 'Disponible'],
+                ['Resultado', current.stage === 3 ? 'Disponible' : 'En proceso'],
                 ['Canal', 'Portal y WhatsApp']
             ].map(([label, value]) => `<div class="flex justify-between gap-4 border border-slate-200 rounded-lg p-3"><span class="text-slate-500 font-bold">${label}</span><strong>${value}</strong></div>`).join('');
             lucide.createIcons();
@@ -192,7 +180,6 @@
             loadFolio(document.getElementById('folio-input').value.trim().toUpperCase());
         });
         loadFolio(active);
-        setInterval(render, 1000);
     </script>
 </body>
 </html>

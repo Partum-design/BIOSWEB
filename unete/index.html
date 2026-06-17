@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Únete a BIOS</title>
+    <title>Únete a nosotros | Laboratorios BIOS</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
@@ -905,7 +905,7 @@
     <div class="page-shell careers-shell">
         <header class="site-header">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
-                <a href="../"><img src="../logos/P2.png" alt="BIOS" class="h-14 brightness-0 invert" onerror="this.src='https://placehold.co/150x54/0A1C2E/FFFFFF?text=BIOS'"></a>
+                <a href="../"><img src="../logos/bios-logo-sin-circulo.png" alt="Laboratorios BIOS" class="h-14" onerror="this.src='https://placehold.co/260x78/0A1C2E/FFFFFF?text=Laboratorios%20BIOS'"></a>
                 <nav class="hidden lg:flex items-center gap-6">
                     <a class="nav-link" href="../">Inicio</a>
                     <a class="nav-link" href="../servicios/">Servicios</a>
@@ -914,7 +914,7 @@
                     <a class="nav-link" href="../conocenos/">Conócenos</a>
                     <a class="nav-link active" href="../unete/">Únete</a>
                 </nav>
-                <a href="https://wa.me/525514968310?text=Hola%20BIOS,%20me%20interesa%20postularme%20a%20una%20vacante" class="primary-button hidden sm:inline-flex" target="_blank"><i data-lucide="message-circle" class="w-5 h-5"></i> Postúlate</a>
+                <a href="https://wa.me/525514968310?text=Hola%20Laboratorios%20BIOS,%20me%20interesa%20postularme%20a%20una%20vacante" class="primary-button hidden sm:inline-flex" target="_blank"><i data-lucide="message-circle" class="w-5 h-5"></i> Postúlate</a>
                 <button class="secondary-button lg:hidden" onclick="toggleDrawer(true)" aria-label="Abrir menú"><i data-lucide="menu" class="w-5 h-5"></i></button>
             </div>
         </header>
@@ -942,11 +942,11 @@
             <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
                 <div class="careers-hero">
                     <div class="hero-content">
-                        <span class="hero-band"><i data-lucide="sparkles" class="w-4 h-4"></i> 2 Vacantes Activas</span>
-                        <h1 class="hero-title">Únete a nuestro gran equipo</h1>
-                        <p class="hero-subtitle">Buscamos talento comprometido para fortalecer nuestra clínica. Procesos claros, beneficios atractivos y ambiente colaborativo te esperan.</p>
+                        <span class="hero-band"><i data-lucide="sparkles" class="w-4 h-4"></i> Únete a nosotros</span>
+                        <h1 class="hero-title">Únete a nosotros</h1>
+                        <p class="hero-subtitle">Buscamos talento comprometido para fortalecer Laboratorios BIOS. Procesos claros, capacitación y un ambiente colaborativo te esperan.</p>
                         <div class="hero-actions">
-                            <a href="https://wa.me/525514968310?text=Hola%20BIOS,%20me%20interesa%20postularme%20a%20una%20vacante" class="primary-button" target="_blank"><i data-lucide="message-circle" class="w-5 h-5"></i> Contactar por WhatsApp</a>
+                            <a href="https://wa.me/525514968310?text=Hola%20Laboratorios%20BIOS,%20me%20interesa%20postularme%20a%20una%20vacante" class="primary-button" target="_blank"><i data-lucide="message-circle" class="w-5 h-5"></i> Contactar por WhatsApp</a>
                             <a href="#vacantes" class="ghost-button"><i data-lucide="arrow-down" class="w-5 h-5"></i> Ver vacantes</a>
                         </div>
                         <div class="hero-stat-grid">
@@ -973,6 +973,36 @@
             <!-- Vacancies Section -->
             <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16" id="vacantes">
                 <div class="vacancies-container" id="vacancies-container"></div>
+            </section>
+
+            <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12" id="banco-talento">
+                <div class="grid lg:grid-cols-[0.95fr_1.05fr] gap-6">
+                    <div class="support-panel dark">
+                        <div class="sidebar-title"><i data-lucide="inbox" class="w-4 h-4"></i> Banco de talento</div>
+                        <h2 class="support-title">¿No ves una vacante para ti?</h2>
+                        <p class="support-meta">Déjanos tus datos para contactarte cuando se abra una posición compatible. Este formulario está listo para conectarse al sistema administrativo cuando se habilite el backend.</p>
+                    </div>
+                    <div class="support-panel">
+                        <form id="talent-form" class="support-form">
+                            <input class="field" id="talent-name" type="text" placeholder="Nombre completo" required>
+                            <div class="grid md:grid-cols-2 gap-4">
+                                <input class="field" id="talent-phone" type="tel" placeholder="WhatsApp" required>
+                                <input class="field" id="talent-email" type="email" placeholder="Correo electrónico">
+                            </div>
+                            <select class="field" id="talent-area">
+                                <option>Área de interés</option>
+                                <option>Laboratorio</option>
+                                <option>Imagenología</option>
+                                <option>Recepción</option>
+                                <option>Administración</option>
+                                <option>Ventas / Empresas</option>
+                            </select>
+                            <textarea class="field" id="talent-message" placeholder="Experiencia, disponibilidad y sucursal de interés"></textarea>
+                            <button type="submit" class="primary-button"><i data-lucide="send" class="w-4 h-4"></i> Enviar datos</button>
+                            <p id="talent-status" class="support-meta"></p>
+                        </form>
+                    </div>
+                </div>
             </section>
 
             <!-- Info Section -->
@@ -1034,7 +1064,7 @@
                                 </div>
                             </div>
                         </div>
-                        <a href="https://wa.me/525514968310?text=Hola%20BIOS,%20me%20interesa%20postularme%20a%20una%20vacante" target="_blank" class="whatsapp-button"><i data-lucide="message-circle" class="w-5 h-5"></i> Enviar mensaje ahora</a>
+                        <a href="https://wa.me/525514968310?text=Hola%20Laboratorios%20BIOS,%20me%20interesa%20postularme%20a%20una%20vacante" target="_blank" class="whatsapp-button"><i data-lucide="message-circle" class="w-5 h-5"></i> Enviar mensaje ahora</a>
                     </div>
                 </div>
             </section>
@@ -1053,7 +1083,7 @@
                 location: ['Tepojaco', 'Cuautitlán Izcalli'],
                 schedule: ['Turno vespertino', 'Turno matutino mixto'],
                 intro: 'Perfil orientado a atención precisa, operación técnica y seguimiento profesional dentro del flujo clínico.',
-                whatsappText: 'Hola BIOS, me interesa postularme a la vacante de Técnico Radiólogo.'
+                whatsappText: 'Hola Laboratorios BIOS, me interesa postularme a la vacante de Técnico Radiólogo.'
             },
             {
                 key: 'laboratorista',
@@ -1064,15 +1094,13 @@
                 location: ['Tepojaco', 'Cuautitlán Izcalli'],
                 schedule: ['Turno vespertino', 'Turno matutino'],
                 intro: 'Buscamos un perfil con enfoque en toma, laboratorio, trato al paciente y disciplina operativa.',
-                whatsappText: 'Hola BIOS, me interesa postularme a la vacante de Técnico Laboratorista Clínico Dual.'
+                whatsappText: 'Hola Laboratorios BIOS, me interesa postularme a la vacante de Técnico Laboratorista Clínico Dual.'
             }
         ];
 
         const benefits = [
-            { title: 'Sueldo competitivo', desc: 'Esquema alineado a experiencia y responsabilidad del puesto.' },
-            { title: 'Prestaciones de ley', desc: 'Integración formal con condiciones claras desde tu ingreso.' },
-            { title: 'Bono de productividad', desc: 'Reconocimiento al desempeño y cumplimiento de objetivos.' },
-            { title: 'Bono de puntualidad y asistencia', desc: 'Valoramos la constancia y la disciplina operativa.' },
+            { title: 'Mejora continua', desc: 'Procesos orientados a aprender, corregir y crecer con el equipo.' },
+            { title: 'Cursos de capacitación', desc: 'Actualización técnica y de atención para fortalecer tu desempeño.' },
             { title: 'Uniforme', desc: 'Imagen profesional y herramientas para presentarte con seguridad.' },
             { title: 'Excelente ambiente laboral', desc: 'Trabajo colaborativo, trato humano y procesos ordenados.' }
         ];
@@ -1155,6 +1183,17 @@
         function toggleDrawer(open) {
             document.getElementById('drawer').classList.toggle('open', open);
         }
+
+        document.getElementById('talent-form').addEventListener('submit', event => {
+            event.preventDefault();
+            const name = document.getElementById('talent-name').value.trim();
+            const phone = document.getElementById('talent-phone').value.trim();
+            const area = document.getElementById('talent-area').value;
+            const message = document.getElementById('talent-message').value.trim();
+            const text = `Hola Laboratorios BIOS, quiero dejar mis datos para futuras vacantes.%0A%0ANombre: ${encodeURIComponent(name)}%0AWhatsApp: ${encodeURIComponent(phone)}%0AÁrea: ${encodeURIComponent(area)}%0ADetalles: ${encodeURIComponent(message)}`;
+            document.getElementById('talent-status').textContent = 'Abriremos WhatsApp para enviar tus datos a reclutamiento.';
+            window.open(`https://wa.me/525514968310?text=${text}`, '_blank');
+        });
 
         // Inicializar iconos Lucide
         lucide.createIcons();
