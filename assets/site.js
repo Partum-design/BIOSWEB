@@ -339,8 +339,6 @@
     }
 
     function renderLogoIntro() {
-        if (sessionStorage.getItem('bios_logo_intro_seen')) return;
-        sessionStorage.setItem('bios_logo_intro_seen', '1');
         const intro = document.createElement('div');
         intro.className = 'bios-logo-intro';
         intro.setAttribute('aria-hidden', 'true');

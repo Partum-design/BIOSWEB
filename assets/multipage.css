@@ -949,15 +949,15 @@ body.footer-in-view .bios-women-ribbon {
 }
 
 .compact-site main > section {
-    padding-block: clamp(3rem, 5vw, 5rem) !important;
+    padding-block: clamp(2.5rem, 4.2vw, 4.25rem) !important;
 }
 
 .compact-site #inicio {
-    min-height: clamp(560px, 72vh, 660px) !important;
+    min-height: clamp(520px, 68vh, 600px) !important;
 }
 
 .compact-site .hero-signal {
-    font-size: clamp(2.65rem, 6.8vw, 5.25rem) !important;
+    font-size: clamp(2.35rem, 6vw, 4.65rem) !important;
     letter-spacing: 0 !important;
 }
 
@@ -986,15 +986,23 @@ body.footer-in-view .bios-women-ribbon {
     padding-bottom: var(--page-pad-y) !important;
 }
 
+.page-enter .brand-type.text-3xl,
 .page-enter .brand-type.text-4xl,
 .page-enter .brand-type.text-5xl,
 .page-enter .brand-type.lg\:text-5xl,
 .page-enter .brand-type.lg\:text-6xl {
-    font-size: clamp(2rem, 4.2vw, 3.45rem) !important;
+    font-size: clamp(1.85rem, 3.6vw, 3rem) !important;
+}
+
+.page-enter .brand-type.text-4xl,
+.page-enter .brand-type.text-5xl,
+.page-enter .brand-type.lg\:text-5xl,
+.page-enter .brand-type.lg\:text-6xl {
+    font-size: clamp(1.95rem, 3.8vw, 3.1rem) !important;
 }
 
 .page-visual {
-    min-height: clamp(240px, 30vw, 340px);
+    min-height: clamp(220px, 28vw, 320px);
 }
 
 .services-summary-card {
@@ -1017,7 +1025,7 @@ body.footer-in-view .bios-women-ribbon {
 .services-summary-card {
     position: sticky;
     top: 10.25rem;
-    min-height: 520px;
+    min-height: 420px;
     overflow: hidden;
 }
 
