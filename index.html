@@ -2327,6 +2327,23 @@
         L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', { attribution: '&copy; CARTO' }).addTo(map);
 
         const unitsList = document.getElementById('units-list');
+        function mapsUrl(unit) {
+            return `https://www.google.com/maps/dir/?api=1&destination=${unit.lat},${unit.lng}&travelmode=driving`;
+        }
+
+        function unitPopupMarkup(unit) {
+            return `
+                <div class="bios-map-popup">
+                    <p class="bios-map-popup-kicker">${unit.isNew ? 'Nueva' : unit.badge}</p>
+                    <strong>${unit.name}</strong>
+                    <span>${unit.address}</span>
+                    <a href="${mapsUrl(unit)}" target="_blank" rel="noopener">
+                        <i class="fa-solid fa-route"></i> Ir con Google Maps
+                    </a>
+                </div>
+            `;
+        }
+
         unitsList.innerHTML = unitsData.map((u, i) => `
             <div class="interactive-depth premium-surface bg-white border border-gray-100 p-6 rounded-[2rem] cursor-pointer hover:bg-blue-50 hover:border-blue-300 transition-all shadow-sm hover:shadow-md group" onclick="focusUnit(${i})">
                 <div class="flex items-start justify-between gap-3 mb-2">
@@ -2337,6 +2354,9 @@
                 <div class="flex flex-wrap gap-2">
                     ${u.phones.map(p => `<span class="inline-flex items-center gap-1.5 bg-white border border-gray-200 px-3 py-1.5 rounded-xl text-xs font-bold text-gray-700 shadow-sm"><i data-lucide="phone" class="w-3.5 h-3.5 text-blue-500"></i> ${p}</span>`).join('')}
                 </div>
+                <a href="${mapsUrl(u)}" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="map-route-button mt-4 w-full">
+                    <i class="fa-solid fa-route"></i> Ir con Google Maps
+                </a>
             </div>
         `).join('');
         lucide.createIcons({root: unitsList});
@@ -2344,7 +2364,7 @@
 
         unitsData.forEach((u, i) => {
             const marker = L.marker([u.lat, u.lng]).addTo(map);
-            marker.bindPopup(`<b style="font-family:'Outfit', sans-serif; font-size:16px;">${u.name}</b><br><span style="color:#666; font-size:12px;">${u.address}</span><br><span style="display:inline-block;margin-top:6px;padding:4px 8px;border-radius:999px;background:${u.isNew ? '#dcfce7' : '#dbeafe'};color:${u.isNew ? '#047857' : '#1d4ed8'};font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.16em;">${u.isNew ? 'Nueva' : u.badge}</span>`);
+            marker.bindPopup(unitPopupMarkup(u), { className: 'bios-leaflet-popup', minWidth: 230 });
             u.markerObj = marker;
         });
 

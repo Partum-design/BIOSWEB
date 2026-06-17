@@ -111,7 +111,20 @@
         }
 
         function mapsUrl(branch) {
-            return `https://www.google.com/maps/search/?api=1&query=${branch.lat},${branch.lng}`;
+            return `https://www.google.com/maps/dir/?api=1&destination=${branch.lat},${branch.lng}&travelmode=driving`;
+        }
+
+        function popupMarkup(branch) {
+            return `
+                <div class="bios-map-popup">
+                    <p class="bios-map-popup-kicker">${branch.badge}</p>
+                    <strong>${branch.name}</strong>
+                    <span>${branch.address}</span>
+                    <a href="${mapsUrl(branch)}" target="_blank" rel="noopener">
+                        <i class="fa-solid fa-route"></i> Ir con Google Maps
+                    </a>
+                </div>
+            `;
         }
 
         function nearestByZip(zip) {
@@ -142,25 +155,31 @@
                 <p class="text-xs uppercase tracking-[0.18em] font-black text-blue-700 mb-1">Unidad sugerida</p>
                 <h3 class="brand-type text-xl font-black text-[#0A1C2E]">${branch.name}</h3>
                 <p class="text-sm text-slate-600 mt-1">${branch.address}</p>
-                <a class="primary-button mt-3" target="_blank" href="${mapsUrl(branch)}"><i data-lucide="map" class="w-4 h-4"></i> Abrir ruta en Google Maps</a>
+                <a class="primary-button mt-3" target="_blank" rel="noopener" href="${mapsUrl(branch)}"><i data-lucide="route" class="w-4 h-4"></i> Ir con Google Maps</a>
             `;
             lucide.createIcons();
         }
 
         document.getElementById('branch-list').innerHTML = branches.map((branch, index) => `
-            <button class="panel p-4 text-left hover:border-blue-300 transition" onclick="focusBranch(${index})">
-                <div class="flex items-start justify-between gap-3 mb-2">
-                    <h2 class="brand-type text-xl font-black text-[#0A1C2E]">${branch.name}</h2>
-                    <span class="${branch.isNew ? 'bg-emerald-100 text-emerald-700 border-emerald-200' : 'bg-blue-50 text-blue-700 border-blue-100'} border rounded-full px-3 py-1 text-[10px] uppercase tracking-[0.18em] font-black">${branch.badge}</span>
+            <article class="panel branch-route-card p-4 hover:border-blue-300 transition">
+                <button type="button" class="branch-route-main text-left" onclick="focusBranch(${index})">
+                    <div class="flex items-start justify-between gap-3 mb-2">
+                        <h2 class="brand-type text-xl font-black text-[#0A1C2E]">${branch.name}</h2>
+                        <span class="${branch.isNew ? 'bg-emerald-100 text-emerald-700 border-emerald-200' : 'bg-blue-50 text-blue-700 border-blue-100'} border rounded-full px-3 py-1 text-[10px] uppercase tracking-[0.18em] font-black">${branch.badge}</span>
+                    </div>
+                    <p class="text-sm text-slate-500 mb-3">${branch.address}</p>
+                    <div class="flex flex-wrap gap-2">${branch.phones.map(phone => `<span class="text-xs font-black bg-slate-50 border border-slate-200 rounded-full px-3 py-1">${phone}</span>`).join('')}</div>
+                </button>
+                <div class="branch-route-actions">
+                    <button type="button" class="secondary-button !min-h-10 !px-3 !py-2" onclick="focusBranch(${index})"><i data-lucide="map-pin" class="w-4 h-4"></i> Ver</button>
+                    <a class="map-route-button" target="_blank" rel="noopener" href="${mapsUrl(branch)}"><i class="fa-solid fa-route"></i> Ir</a>
                 </div>
-                <p class="text-sm text-slate-500 mb-3">${branch.address}</p>
-                <div class="flex flex-wrap gap-2">${branch.phones.map(phone => `<span class="text-xs font-black bg-slate-50 border border-slate-200 rounded-full px-3 py-1">${phone}</span>`).join('')}</div>
-            </button>
+            </article>
         `).join('');
 
         branches.forEach((branch, index) => {
             const marker = L.marker([branch.lat, branch.lng]).addTo(map);
-            marker.bindPopup(`<strong>${branch.name}</strong><br>${branch.address}<br><b>${branch.badge}</b><br><a href="${mapsUrl(branch)}" target="_blank">Abrir en Google Maps</a>`);
+            marker.bindPopup(popupMarkup(branch), { className: 'bios-leaflet-popup', minWidth: 230 });
             markers.push(marker);
         });
 

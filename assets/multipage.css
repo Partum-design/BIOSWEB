@@ -1003,6 +1003,113 @@ body.footer-in-view .bios-women-ribbon {
     margin-top: 0.25rem;
 }
 
+.branch-route-card {
+    display: grid;
+    gap: 0.9rem;
+}
+
+.branch-route-main {
+    width: 100%;
+    display: block;
+    border: 0;
+    padding: 0;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+}
+
+.branch-route-actions {
+    display: grid;
+    grid-template-columns: minmax(0, 0.75fr) minmax(0, 1fr);
+    gap: 0.65rem;
+}
+
+.map-route-button {
+    min-height: 42px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.55rem;
+    border-radius: 8px;
+    padding: 0.72rem 1rem;
+    color: white;
+    text-decoration: none;
+    font-size: 0.86rem;
+    font-weight: 1000;
+    background: linear-gradient(135deg, #0a1c2e, #2563eb);
+    border: 1px solid rgba(37,99,235,0.42);
+    box-shadow: 0 16px 34px -24px rgba(37,99,235,0.9);
+    transition: transform 180ms ease, box-shadow 180ms ease, filter 180ms ease;
+}
+
+.map-route-button:hover {
+    color: white;
+    transform: translateY(-2px);
+    filter: saturate(1.08);
+    box-shadow: 0 20px 38px -24px rgba(37,99,235,1);
+}
+
+.bios-leaflet-popup .leaflet-popup-content-wrapper {
+    border-radius: 14px;
+    padding: 0;
+    overflow: hidden;
+    box-shadow: 0 24px 58px -26px rgba(15,23,42,0.48);
+}
+
+.bios-leaflet-popup .leaflet-popup-content {
+    width: 240px !important;
+    margin: 0;
+}
+
+.bios-map-popup {
+    display: grid;
+    gap: 0.55rem;
+    padding: 1rem;
+    color: #0a1c2e;
+}
+
+.bios-map-popup-kicker {
+    width: max-content;
+    margin: 0;
+    padding: 0.35rem 0.55rem;
+    border-radius: 999px;
+    color: #1d4ed8;
+    background: #dbeafe;
+    font-size: 0.62rem;
+    font-weight: 1000;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.bios-map-popup strong {
+    display: block;
+    font-family: Outfit, sans-serif;
+    font-size: 1rem;
+    line-height: 1.1;
+}
+
+.bios-map-popup span {
+    display: block;
+    color: #64748b;
+    font-size: 0.78rem;
+    line-height: 1.35;
+}
+
+.bios-map-popup a {
+    min-height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 0.2rem;
+    border-radius: 8px;
+    color: white;
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: 1000;
+    background: linear-gradient(135deg, #0a1c2e, #2563eb);
+}
+
 .image-strip {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
