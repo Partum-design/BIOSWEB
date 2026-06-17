@@ -354,7 +354,9 @@
             </div>
         `;
         document.body.appendChild(intro);
-        window.setTimeout(() => intro.remove(), 2600);
+        intro.addEventListener('animationend', (event) => {
+            if (event.target === intro) intro.remove();
+        });
     }
 
     function setupRevealAnimations() {
@@ -377,10 +379,36 @@
         });
     }
 
+    function setupFloatingVisibility() {
+        const footer = document.querySelector('.bios-main-footer') || document.querySelector('footer');
+        if (!footer) return;
+
+        const updateFloatingState = (isVisible) => {
+            document.body.classList.toggle('footer-in-view', isVisible);
+        };
+
+        if (!('IntersectionObserver' in window)) {
+            const checkFooter = () => {
+                const rect = footer.getBoundingClientRect();
+                updateFloatingState(rect.top < window.innerHeight && rect.bottom > 0);
+            };
+            window.addEventListener('scroll', checkFooter, { passive: true });
+            window.addEventListener('resize', checkFooter);
+            checkFooter();
+            return;
+        }
+
+        const observer = new IntersectionObserver((entries) => {
+            updateFloatingState(entries.some(entry => entry.isIntersecting));
+        }, { threshold: 0.05 });
+        observer.observe(footer);
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
         renderHeader();
         renderFooter();
         renderLogoIntro();
         setupRevealAnimations();
+        setupFloatingVisibility();
     });
 })();

@@ -560,7 +560,7 @@
     </style>
     <script src="assets/site.js" defer></script>
 </head>
-<body class="font-inter text-gray-800">
+<body class="font-inter text-gray-800 compact-site">
 
     <!-- ==========================================
          HEADER (Dark Blue - Untouched structurally, just added Logo Switcher)
@@ -701,12 +701,9 @@
         <!-- ==========================================
              HIGH-IMPACT HERO (Interactive & Cinematic)
              ========================================== -->
-        <section id="inicio" class="relative w-full min-h-[760px] flex items-center overflow-hidden py-16">
+        <section id="inicio" class="relative w-full min-h-[620px] flex items-center overflow-hidden py-12">
             <div class="absolute inset-0 z-0">
-                <video autoplay muted loop playsinline class="w-full h-full object-cover transform scale-105">
-                    <source src="vids/4881334_Science_Microscope_3840x2160.mp4" type="video/mp4">
-                    <source src="file:///C:/Users/lloop/OneDrive/Documentos/BIOS/vids/4881334_Science_Microscope_3840x2160.mp4" type="video/mp4">
-                </video>
+                <img src="assets/img/lab-hero.webp" class="w-full h-full object-cover transform scale-105" alt="Procesamiento de muestras en laboratorio BIOS">
                 <div class="absolute inset-0 hero-stage"></div>
                 <div class="absolute inset-0 bg-gradient-to-r from-[#0A1C2E]/94 via-[#0A1C2E]/80 to-[#0A1C2E]/24"></div>
             </div>
@@ -715,17 +712,17 @@
             <div class="hero-reactive-light absolute inset-0 z-[2] pointer-events-none"></div>
 
             <div class="relative z-10 max-w-[96rem] mx-auto px-4 sm:px-6 lg:px-8 w-full" data-aos="fade-up" data-aos-duration="1000">
-                <div class="hero-reactive-panel relative max-w-6xl mx-auto text-center px-2 py-12 md:py-16">
+                <div class="hero-reactive-panel relative max-w-5xl mx-auto text-center px-2 py-10 md:py-12">
                     <span class="inline-flex items-center gap-3 text-blue-100 text-sm font-black tracking-widest uppercase mb-7">
                         <span class="w-10 h-px hero-kicker-line"></span>
                         Laboratorios BIOS
                         <span class="w-10 h-px hero-kicker-line"></span>
                     </span>
-                    <h1 class="hero-signal font-outfit text-5xl md:text-[5.4rem] lg:text-[6.6rem] font-black text-white leading-[0.92] mb-10 drop-shadow-2xl hero-word-glow">
+                    <h1 class="hero-signal font-outfit text-4xl md:text-6xl lg:text-7xl font-black text-white leading-[0.96] mb-7 drop-shadow-2xl hero-word-glow">
                         Diagnóstico claro.<br/>
                         <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-200 via-blue-400 to-blue-600" style="background-size: 200%; animation: gradientFlow 5s ease infinite;">Decisiones a tiempo.</span>
                     </h1>
-                    <p class="text-xl md:text-2xl text-gray-200 mb-10 leading-relaxed font-light max-w-3xl mx-auto">
+                    <p class="text-lg md:text-xl text-gray-200 mb-8 leading-relaxed font-light max-w-3xl mx-auto">
                         Análisis clínicos, gabinete e imagenología con resultados confiables y atención precisa.
                     </p>
                     <div class="flex flex-col sm:flex-row gap-5 justify-center">
@@ -755,7 +752,7 @@
         <!-- ==========================================
              SERVICES MODULE
              ========================================== -->
-        <section id="servicios" class="py-32 bg-gray-50 relative overflow-hidden">
+        <section id="servicios" class="py-20 bg-gray-50 relative overflow-hidden">
             <canvas id="services-ambient-canvas" class="section-ambient-canvas"></canvas>
             <!-- Strategic mesh accents only -->
             <div class="mesh-accent top-8 right-6 w-[320px] h-[320px]" style="background: radial-gradient(circle, rgba(59,130,246,0.40) 0%, rgba(59,130,246,0.10) 42%, transparent 70%);"></div>
@@ -767,7 +764,7 @@
                     <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-blue-600 text-white shadow-xl mb-6 shadow-blue-500/30">
                         <i data-lucide="activity" class="w-8 h-8"></i>
                     </div>
-                    <h2 class="font-outfit text-5xl md:text-6xl font-black text-[#0A1C2E] mb-6 tracking-tight">Catálogo de Alta Especialidad</h2>
+                    <h2 class="font-outfit text-4xl md:text-5xl font-black text-[#0A1C2E] mb-6 tracking-tight">Catálogo de Alta Especialidad</h2>
                     <p class="text-gray-500 text-xl font-medium max-w-3xl mx-auto leading-relaxed">Conoce nuestra oferta de estudios impulsada por plataformas de última generación, diseñadas para entregar certeza total.</p>
                 </div>
 
@@ -925,14 +922,14 @@
         <!-- ==========================================
              DYNAMIC VISION & MISSION (Animated Scroll)
              ========================================== -->
-        <section id="vision" class="py-32 relative bg-white border-t border-gray-100">
+        <section id="vision" class="py-20 relative bg-white border-t border-gray-100">
             <div class="max-w-[96rem] mx-auto px-4 sm:px-6 lg:px-8">
                 
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-24">
                     <!-- Visión -->
                     <div class="interactive-depth premium-surface bg-gray-50 rounded-[3rem] p-12 shadow-lg border border-gray-100 relative overflow-hidden group transition-all hover:shadow-2xl" data-aos="fade-right">
                         <div class="absolute -right-20 -top-20 w-64 h-64 bg-blue-100 rounded-full blur-3xl group-hover:bg-blue-200 transition-colors duration-700"></div>
-                        <h3 class="font-outfit text-5xl md:text-6xl font-black text-[#0A1C2E] mb-8 relative z-10 flex items-center gap-4">
+                        <h3 class="font-outfit text-4xl md:text-5xl font-black text-[#0A1C2E] mb-8 relative z-10 flex items-center gap-4">
                             <i data-lucide="eye" class="w-14 h-14 text-blue-500"></i> VISIÓN
                         </h3>
                         <p class="text-xl md:text-2xl text-gray-600 leading-relaxed font-medium relative z-10">
@@ -943,7 +940,7 @@
                     <!-- Misión -->
                     <div class="interactive-depth premium-surface bg-[#0A1C2E] rounded-[3rem] p-12 shadow-2xl relative overflow-hidden group transition-all hover:shadow-[0_30px_60px_-15px_rgba(10,28,46,0.6)]" data-aos="fade-left" data-aos-delay="200">
                         <div class="absolute -left-20 -bottom-20 w-64 h-64 bg-blue-900 rounded-full blur-3xl group-hover:bg-blue-800 transition-colors duration-700"></div>
-                        <h3 class="font-outfit text-5xl md:text-6xl font-black text-white mb-8 relative z-10 flex items-center gap-4">
+                        <h3 class="font-outfit text-4xl md:text-5xl font-black text-white mb-8 relative z-10 flex items-center gap-4">
                             <i data-lucide="target" class="w-14 h-14 text-cyan-400"></i> MISIÓN
                         </h3>
                         <p class="text-xl md:text-2xl text-gray-300 leading-relaxed font-light relative z-10">
@@ -979,7 +976,7 @@
         <!-- ==========================================
              SUCURSALES BIOS
              ========================================== -->
-        <section id="sucursales" class="py-32 bg-gray-50 relative overflow-hidden">
+        <section id="sucursales" class="py-20 bg-gray-50 relative overflow-hidden">
             <div class="absolute inset-0 pointer-events-none">
                 <div class="absolute -left-28 top-10 w-80 h-80 rounded-full blur-3xl bg-blue-200/50"></div>
                 <div class="absolute right-0 bottom-0 w-[28rem] h-[28rem] rounded-full blur-3xl bg-cyan-200/40"></div>
@@ -989,7 +986,7 @@
                     <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-blue-100 text-blue-600 font-black text-xs uppercase tracking-[0.28em] shadow-sm mb-5">
                         <i data-lucide="map-pin" class="w-4 h-4"></i> Mapa de sucursales
                     </span>
-                    <h2 class="font-outfit text-5xl md:text-6xl font-black text-[#0A1C2E] mb-4 tracking-tight">Sucursales BIOS</h2>
+                    <h2 class="font-outfit text-4xl md:text-5xl font-black text-[#0A1C2E] mb-4 tracking-tight">Sucursales BIOS</h2>
                     <p class="text-gray-600 text-lg md:text-xl font-medium max-w-3xl mx-auto">Ubica tu punto más cercano, revisa qué sucursal es nueva y entra directo al mapa sin perder tiempo.</p>
                 </div>
 
@@ -1016,7 +1013,7 @@
         <!-- ==========================================
              TRACKER DE ESTUDIOS
              ========================================== -->
-        <section id="seguimiento" class="py-32 bg-white relative overflow-hidden">
+        <section id="seguimiento" class="py-20 bg-white relative overflow-hidden">
             <div class="absolute inset-0 pointer-events-none">
                 <div class="absolute -right-24 top-8 w-80 h-80 rounded-full blur-3xl bg-blue-100/70"></div>
                 <div class="absolute left-0 bottom-0 w-[30rem] h-[30rem] rounded-full blur-3xl bg-cyan-100/60"></div>
@@ -1026,7 +1023,7 @@
                     <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 border border-blue-100 text-blue-600 font-black text-xs uppercase tracking-[0.28em] shadow-sm mb-5">
                         <i data-lucide="list-checks" class="w-4 h-4"></i> Estado por folio
                     </span>
-                    <h2 class="font-outfit text-5xl md:text-6xl font-black text-[#0A1C2E] mb-4 tracking-tight">Sigue tus estudios paso a paso</h2>
+                    <h2 class="font-outfit text-4xl md:text-5xl font-black text-[#0A1C2E] mb-4 tracking-tight">Sigue tus estudios paso a paso</h2>
                     <p class="text-gray-600 text-lg md:text-xl font-medium max-w-3xl mx-auto">Consulta el estado de tu muestra por folio y conoce el siguiente paso sin mostrar cuentas regresivas.</p>
                 </div>
 
@@ -1117,7 +1114,7 @@
                                 </div>
                                 <div class="relative z-10">
                                     <p class="text-[10px] uppercase tracking-[0.28em] text-cyan-200 font-black mb-2">Estado del estudio</p>
-                                    <p class="tracker-stage-label font-outfit text-5xl md:text-6xl font-black leading-none">Recepción</p>
+                                    <p class="tracker-stage-label font-outfit text-4xl md:text-5xl font-black leading-none">Recepción</p>
                                     <p class="text-blue-100/80 mt-3 text-sm">El estado se actualiza por etapa operativa.</p>
                                 </div>
                             </div>
@@ -1161,7 +1158,7 @@
         <!-- ==========================================
              ÚNETE A NOSOTROS
              ========================================== -->
-        <section id="unete" class="py-32 bg-[#06111d] relative overflow-hidden">
+        <section id="unete" class="py-20 bg-[#06111d] relative overflow-hidden">
             <div class="absolute inset-0 pointer-events-none">
                 <div class="absolute -left-24 top-0 w-[30rem] h-[30rem] rounded-full blur-3xl bg-blue-600/25"></div>
                 <div class="absolute right-0 bottom-0 w-[26rem] h-[26rem] rounded-full blur-3xl bg-cyan-400/18"></div>
@@ -1171,7 +1168,7 @@
                     <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/10 text-cyan-100 font-black text-xs uppercase tracking-[0.28em] shadow-sm mb-5">
                         <i data-lucide="briefcase" class="w-4 h-4"></i> Talento BIOS
                     </span>
-                    <h2 class="font-outfit text-5xl md:text-6xl font-black text-white mb-4 tracking-tight">Únete a nosotros</h2>
+                    <h2 class="font-outfit text-4xl md:text-5xl font-black text-white mb-4 tracking-tight">Únete a nosotros</h2>
                     <p class="text-blue-100/80 text-lg md:text-xl font-medium max-w-4xl mx-auto">Vacantes activas con beneficios claros, atención por WhatsApp y una ruta directa para integrarte al equipo BIOS.</p>
                 </div>
 
@@ -1387,17 +1384,17 @@
             </button>
 
             <div class="grid md:grid-cols-[0.82fr_1.18fr]">
-                <div class="relative min-h-[240px] bg-pink-950 overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1559757175-0eb30cd8c063?auto=format&fit=crop&w=900&q=80" class="absolute inset-0 w-full h-full object-cover opacity-80" alt="Campaña de la mujer Laboratorios BIOS">
+                <div class="relative min-h-[220px] bg-pink-950 overflow-hidden">
+                    <img src="assets/img/lab-women.webp" class="absolute inset-0 w-full h-full object-cover opacity-90" alt="Microscopía preventiva para campaña de la mujer Laboratorios BIOS">
                     <div class="absolute inset-0 bg-gradient-to-br from-pink-950/82 via-pink-900/58 to-blue-950/34"></div>
                     <div class="absolute left-5 top-5 inline-flex items-center gap-2 px-3 py-2 rounded-full bg-white/92 text-pink-700 font-black text-[11px] uppercase tracking-[0.16em]">
                         <i data-lucide="venus" class="w-4 h-4"></i> Mujer
                     </div>
                 </div>
 
-                <div class="p-7 md:p-8">
+                <div class="p-6 md:p-7">
                     <p class="text-[11px] uppercase tracking-[0.24em] text-pink-600 font-black mb-3">Campaña preventiva</p>
-                    <h3 class="font-outfit text-4xl font-black text-[#0A1C2E] leading-none mb-4">Agenda tu campaña de la mujer</h3>
+                    <h3 class="font-outfit text-3xl md:text-4xl font-black text-[#0A1C2E] leading-none mb-4">Agenda tu campaña de la mujer</h3>
                     <p class="text-slate-600 text-base leading-relaxed mb-5">Consulta requisitos, horarios y estudios disponibles como Papanicolaou, colposcopía y mastografía.</p>
                     <div class="grid gap-2 mb-6">
                         <div class="flex items-center gap-3 rounded-xl bg-pink-50 border border-pink-100 px-4 py-3">
@@ -1423,7 +1420,7 @@
     </div>
 
     <!-- Fixed WhatsApp Button -->
-    <a href="https://wa.me/5211234567890?text=Hola%20Laboratorios%20BIOS%2C%20me%20interesa%20agendar..." target="_blank" class="fixed bottom-8 right-8 z-[9000] bg-[#25D366] text-white w-16 h-16 rounded-full shadow-[0_15px_30px_rgba(37,211,102,0.4)] hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(37,211,102,0.5)] transition-all flex items-center justify-center border-2 border-white" aria-label="WhatsApp Laboratorios BIOS">
+    <a href="https://wa.me/5211234567890?text=Hola%20Laboratorios%20BIOS%2C%20me%20interesa%20agendar..." target="_blank" class="bios-whatsapp-float fixed bottom-8 right-8 z-[9000] bg-[#25D366] text-white w-16 h-16 rounded-full shadow-[0_15px_30px_rgba(37,211,102,0.4)] hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(37,211,102,0.5)] transition-all flex items-center justify-center border-2 border-white" aria-label="WhatsApp Laboratorios BIOS">
         <i class="fa-brands fa-whatsapp text-4xl leading-none"></i>
     </a>
 
@@ -2388,8 +2385,9 @@
             sessionStorage.setItem('bios_promo_viewed', 'true');
         };
 
-        if(!sessionStorage.getItem('bios_promo_viewed')) {
-            setTimeout(() => modal.classList.add('active'), 2500);
+        if(modal && !sessionStorage.getItem('bios_promo_viewed')) {
+            requestAnimationFrame(() => document.body.classList.add('promo-ready'));
+            requestAnimationFrame(() => modal.classList.add('active'));
         }
 
     </script>
