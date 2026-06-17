@@ -161,7 +161,6 @@
 
         bindHeaderInteractions(drawer);
         applyLogo();
-        renderWomenRibbon();
     }
 
     function renderClinicDropdown() {
@@ -338,6 +337,23 @@
         document.body.appendChild(ribbon);
     }
 
+    function renderWhatsappFloat() {
+        document.querySelectorAll('.bios-whatsapp-float').forEach(item => item.remove());
+        const button = document.createElement('a');
+        button.className = 'bios-whatsapp-float';
+        button.href = 'https://wa.me/5211234567890?text=Hola%20Laboratorios%20BIOS%2C%20me%20interesa%20agendar...';
+        button.target = '_blank';
+        button.rel = 'noopener';
+        button.setAttribute('aria-label', 'WhatsApp Laboratorios BIOS');
+        button.innerHTML = '<i class="fa-brands fa-whatsapp"></i>';
+        document.body.appendChild(button);
+    }
+
+    function renderFloatingActions() {
+        renderWomenRibbon();
+        renderWhatsappFloat();
+    }
+
     function renderLogoIntro() {
         const intro = document.createElement('div');
         intro.className = 'bios-logo-intro';
@@ -405,6 +421,7 @@
     document.addEventListener('DOMContentLoaded', () => {
         renderHeader();
         renderFooter();
+        renderFloatingActions();
         renderLogoIntro();
         setupRevealAnimations();
         setupFloatingVisibility();
