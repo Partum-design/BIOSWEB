@@ -610,87 +610,279 @@
     margin-bottom: 1.5rem;
 }
 
-.bios-logo-intro {
+/* ════════════════════════════════════════════════════════════
+   BIOS PRELOADER v3 — cinematic tech intro
+   ════════════════════════════════════════════════════════════ */
+
+.bios-preloader {
     position: fixed;
     inset: 0;
     z-index: 12000;
-    display: grid;
-    place-items: center;
-    background:
-        radial-gradient(circle at 50% 42%, rgba(37,99,235,0.22), transparent 34%),
-        linear-gradient(135deg, rgba(4,11,20,0.98), rgba(10,28,46,0.96));
-    animation: biosIntroExit 2.6s ease forwards;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #020810;
+    overflow: hidden;
+    pointer-events: auto;
+    cursor: pointer;
+}
+
+.bios-preloader::before {
+    content: '';
+    position: absolute;
+    width: 700px;
+    height: 700px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(37,99,235,0.16) 0%, transparent 68%);
+    animation: bPreloaderPulse 3s ease-in-out infinite;
     pointer-events: none;
 }
 
-.bios-logo-intro-card {
-    width: min(78vw, 540px);
-    display: grid;
-    place-items: center;
-    gap: 1rem;
-    transform-origin: top center;
-    animation: biosLogoSettle 2.35s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+@keyframes bPreloaderPulse {
+    0%, 100% { transform: scale(0.8);  opacity: 0.45; }
+    50%       { transform: scale(1.18); opacity: 1; }
 }
 
-.bios-logo-intro-card img {
-    width: min(78vw, 520px);
-    max-height: 170px;
-    object-fit: contain;
-    filter: drop-shadow(0 24px 45px rgba(37,99,235,0.26));
+@keyframes bPreloaderExit {
+    0%   { opacity: 1; transform: scale(1);    filter: blur(0); }
+    55%  { opacity: 1; }
+    100% { opacity: 0; transform: scale(1.05); filter: blur(6px); }
 }
 
-.bios-logo-intro-card p {
-    margin: 0;
-    color: rgba(219,234,254,0.92);
-    font-family: Outfit, sans-serif;
-    font-weight: 900;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+.bios-preloader.exiting {
+    animation: bPreloaderExit 0.58s cubic-bezier(0.4, 0, 0.8, 1) forwards;
+    pointer-events: none;
 }
 
-.bios-ecg-runner {
+.bios-preloader-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+/* — HUD corners — */
+.bios-preloader-hud {
+    position: absolute;
+    inset: clamp(1.25rem, 3.5vw, 2.75rem);
+    pointer-events: none;
+}
+
+.bios-hud-corner {
+    position: absolute;
+    width: 26px;
+    height: 26px;
+    opacity: 0;
+    animation: bHudIn 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0.2s forwards;
+}
+
+.bios-hud-corner::before,
+.bios-hud-corner::after {
+    content: '';
+    position: absolute;
+    background: rgba(125,211,252,0.65);
+}
+
+.bios-hud-corner.tl { top: 0; left: 0; }
+.bios-hud-corner.tl::before { top: 0; left: 0; width: 100%; height: 1.5px; }
+.bios-hud-corner.tl::after  { top: 0; left: 0; width: 1.5px; height: 100%; }
+.bios-hud-corner.tr { top: 0; right: 0; }
+.bios-hud-corner.tr::before { top: 0; right: 0; width: 100%; height: 1.5px; }
+.bios-hud-corner.tr::after  { top: 0; right: 0; width: 1.5px; height: 100%; }
+.bios-hud-corner.bl { bottom: 0; left: 0; }
+.bios-hud-corner.bl::before { bottom: 0; left: 0; width: 100%; height: 1.5px; }
+.bios-hud-corner.bl::after  { bottom: 0; left: 0; width: 1.5px; height: 100%; }
+.bios-hud-corner.br { bottom: 0; right: 0; }
+.bios-hud-corner.br::before { bottom: 0; right: 0; width: 100%; height: 1.5px; }
+.bios-hud-corner.br::after  { bottom: 0; right: 0; width: 1.5px; height: 100%; }
+
+@keyframes bHudIn {
+    from { opacity: 0; transform: scale(0.4); }
+    to   { opacity: 1; transform: scale(1); }
+}
+
+/* — Stage — */
+.bios-preloader-stage {
     position: relative;
-    width: min(70vw, 420px);
-    height: 4px;
-    overflow: hidden;
-    border-radius: 999px;
-    background: rgba(96,165,250,0.16);
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(0.9rem, 2.5vh, 1.6rem);
+    text-align: center;
+    pointer-events: none;
 }
 
-.bios-ecg-runner span {
+.bios-preloader-kicker {
+    font-family: 'Inter', monospace;
+    font-size: clamp(0.48rem, 1.1vw, 0.65rem);
+    font-weight: 900;
+    letter-spacing: 0.52em;
+    color: rgba(125,211,252,0.65);
+    text-transform: uppercase;
+    opacity: 0;
+    animation: bSlideUp 0.65s cubic-bezier(0.22, 1, 0.36, 1) 0.08s forwards;
+}
+
+.bios-preloader-logo-wrap {
+    position: relative;
+    width: min(64vw, 380px);
+    opacity: 0;
+    animation: bSlideUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.22s forwards;
+}
+
+.bios-preloader-logo-glow {
+    position: absolute;
+    inset: -50px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(37,99,235,0.2) 0%, transparent 60%);
+    animation: bPreloaderPulse 3s ease-in-out 0.5s infinite;
+}
+
+.bios-preloader-logo {
+    position: relative;
+    z-index: 1;
+    display: block;
+    width: 100%;
+    max-height: 115px;
+    object-fit: contain;
+    filter:
+        drop-shadow(0 0 22px rgba(37,99,235,0.55))
+        drop-shadow(0 0 8px rgba(125,211,252,0.35));
+}
+
+.bios-preloader-scanline {
+    position: absolute;
+    left: -8%;
+    right: -8%;
+    top: 0;
+    height: 1.5px;
+    background: linear-gradient(90deg, transparent, rgba(125,211,252,0.9), rgba(56,189,248,0.75), transparent);
+    box-shadow: 0 0 12px 2px rgba(125,211,252,0.45);
+    animation: bScanDown 2.2s ease-in-out 0.55s infinite;
+    pointer-events: none;
+}
+
+@keyframes bScanDown {
+    0%   { top: -2px; opacity: 0; }
+    8%   { opacity: 1; }
+    92%  { opacity: 1; }
+    100% { top: 100%; opacity: 0; }
+}
+
+/* — Progress — */
+.bios-preloader-progress {
+    width: min(68vw, 340px);
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.55rem;
+    opacity: 0;
+    animation: bSlideUp 0.65s cubic-bezier(0.22, 1, 0.36, 1) 0.42s forwards;
+}
+
+.bios-preloader-track {
+    position: relative;
+    width: 100%;
+    height: 1.5px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.07);
+}
+
+.bios-preloader-fill {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 0%;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #1d4ed8, #0ea5e9, #7dd3fc);
+    box-shadow: 0 0 10px 2px rgba(125,211,252,0.55), 0 0 20px rgba(37,99,235,0.35);
+}
+
+.bios-preloader-fill::after {
+    content: '';
+    position: absolute;
+    right: -3px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #7dd3fc;
+    box-shadow: 0 0 10px 4px rgba(125,211,252,0.75);
+}
+
+.bios-preloader-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+}
+
+.bios-preloader-count {
+    font-family: 'Outfit', sans-serif;
+    font-size: clamp(0.56rem, 1.1vw, 0.68rem);
+    font-weight: 900;
+    letter-spacing: 0.2em;
+    color: rgba(125,211,252,0.9);
+    flex-shrink: 0;
+}
+
+.bios-preloader-status {
+    font-family: 'Inter', monospace;
+    font-size: clamp(0.5rem, 1vw, 0.62rem);
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.3);
+    text-align: right;
+    text-transform: uppercase;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+}
+
+/* — Side decorators — */
+.bios-preloader-deco {
     position: absolute;
     top: 50%;
-    left: -12px;
-    width: 16px;
-    height: 16px;
-    border-radius: 999px;
-    background: #7dd3fc;
-    box-shadow: 0 0 24px 9px rgba(125,211,252,0.56);
     transform: translateY(-50%);
-    animation: biosPulseDot 1.45s ease-in-out 0.18s forwards;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    opacity: 0;
+    animation: bDecoIn 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.32s forwards;
 }
 
-@keyframes biosPulseDot {
-    0% { left: -4%; opacity: 0; }
-    12%, 82% { opacity: 1; }
-    100% { left: 104%; opacity: 0; }
+.bios-preloader-deco.left  { left:  clamp(1.25rem, 4.5vw, 4.5rem); }
+.bios-preloader-deco.right { right: clamp(1.25rem, 4.5vw, 4.5rem); }
+
+.bios-preloader-deco span {
+    display: block;
+    width: 1px;
+    border-radius: 1px;
+    background: linear-gradient(180deg, transparent, rgba(125,211,252,0.42), transparent);
 }
 
-@keyframes biosLogoSettle {
-    0% { opacity: 0; transform: translateY(36px) scale(0.86); }
-    20%, 68% { opacity: 1; transform: translateY(0) scale(1); }
-    100% { opacity: 0; transform: translateY(-36vh) scale(0.32); }
+.bios-preloader-deco span:nth-child(1) { height: 55px; }
+.bios-preloader-deco span:nth-child(2) { height: 7px;  background: rgba(125,211,252,0.7); }
+.bios-preloader-deco span:nth-child(3) { height: 28px; }
+
+@keyframes bDecoIn {
+    from { opacity: 0; transform: translateY(-50%) scaleY(0.1); }
+    to   { opacity: 1; transform: translateY(-50%) scaleY(1); }
 }
 
-@keyframes biosIntroExit {
-    0%, 76% { opacity: 1; visibility: visible; }
-    100% { opacity: 0; visibility: hidden; }
+@keyframes bSlideUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .bios-logo-intro {
-        display: none;
-    }
+    .bios-preloader { display: none !important; }
 }
 
 .footer-brand-block p {
@@ -943,14 +1135,18 @@ body.footer-in-view .bios-women-ribbon {
 
 .bios-reveal {
     opacity: 0;
-    transform: translateY(18px);
+    transform: translateY(22px);
 }
 
 .bios-reveal.is-visible {
     opacity: 1;
     transform: translateY(0);
-    transition: opacity 650ms ease, transform 650ms ease;
+    transition: opacity 540ms cubic-bezier(0.22, 1, 0.36, 1), transform 540ms cubic-bezier(0.22, 1, 0.36, 1);
 }
+
+.bios-reveal-delay-1 { transition-delay: 80ms !important; }
+.bios-reveal-delay-2 { transition-delay: 160ms !important; }
+.bios-reveal-delay-3 { transition-delay: 240ms !important; }
 
 .page-visual {
     position: relative;

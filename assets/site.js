@@ -356,21 +356,113 @@
 
     function renderLogoIntro() {
         const intro = document.createElement('div');
-        intro.className = 'bios-logo-intro';
+        intro.className = 'bios-preloader';
         intro.setAttribute('aria-hidden', 'true');
         intro.innerHTML = `
-            <div class="bios-logo-intro-card">
-                <img src="${logoSrc()}" alt="">
-                <div class="bios-ecg-runner">
-                    <span></span>
-                </div>
-                <p>Laboratorios BIOS</p>
+            <canvas class="bios-preloader-canvas" id="bios-p-canvas"></canvas>
+            <div class="bios-preloader-hud">
+                <div class="bios-hud-corner tl"></div>
+                <div class="bios-hud-corner tr"></div>
+                <div class="bios-hud-corner bl"></div>
+                <div class="bios-hud-corner br"></div>
             </div>
+            <div class="bios-preloader-stage">
+                <div class="bios-preloader-kicker">Sistema de diagnóstico clínico</div>
+                <div class="bios-preloader-logo-wrap">
+                    <div class="bios-preloader-logo-glow"></div>
+                    <img src="${logoSrc()}" alt="" class="bios-preloader-logo"
+                         onerror="this.src='https://placehold.co/380x115/020810/FFF?text=Laboratorios+BIOS'">
+                    <div class="bios-preloader-scanline"></div>
+                </div>
+                <div class="bios-preloader-progress">
+                    <div class="bios-preloader-track">
+                        <div class="bios-preloader-fill" id="bios-p-fill"></div>
+                    </div>
+                    <div class="bios-preloader-meta">
+                        <div class="bios-preloader-count" id="bios-p-count">0%</div>
+                        <div class="bios-preloader-status" id="bios-p-status">Iniciando...</div>
+                    </div>
+                </div>
+            </div>
+            <div class="bios-preloader-deco left"><span></span><span></span><span></span></div>
+            <div class="bios-preloader-deco right"><span></span><span></span><span></span></div>
         `;
-        document.body.appendChild(intro);
-        intro.addEventListener('animationend', (event) => {
-            if (event.target === intro) intro.remove();
-        });
+        document.body.insertBefore(intro, document.body.firstChild);
+
+        // — Particle canvas —
+        const canvas = document.getElementById('bios-p-canvas');
+        if (canvas) {
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const pts = Array.from({ length: 58 }, () => ({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                r: Math.random() * 1.35 + 0.4,
+                vx: (Math.random() - 0.5) * 0.26,
+                vy: (Math.random() - 0.5) * 0.26,
+                o: Math.random() * 0.42 + 0.08,
+            }));
+
+            let raf;
+            const MAX_D = 90;
+
+            const drawFrame = () => {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                for (const p of pts) {
+                    p.x = (p.x + p.vx + canvas.width)  % canvas.width;
+                    p.y = (p.y + p.vy + canvas.height) % canvas.height;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(125,211,252,${p.o})`;
+                    ctx.fill();
+                }
+                for (let i = 0; i < pts.length; i++) {
+                    for (let j = i + 1; j < pts.length; j++) {
+                        const dx = pts[i].x - pts[j].x, dy = pts[i].y - pts[j].y;
+                        const d = Math.sqrt(dx * dx + dy * dy);
+                        if (d < MAX_D) {
+                            ctx.beginPath();
+                            ctx.moveTo(pts[i].x, pts[i].y);
+                            ctx.lineTo(pts[j].x, pts[j].y);
+                            ctx.strokeStyle = `rgba(37,99,235,${0.16 * (1 - d / MAX_D)})`;
+                            ctx.lineWidth = 0.55;
+                            ctx.stroke();
+                        }
+                    }
+                }
+                raf = requestAnimationFrame(drawFrame);
+            };
+            drawFrame();
+
+            // — Progress counter —
+            const fill    = document.getElementById('bios-p-fill');
+            const countEl = document.getElementById('bios-p-count');
+            const statusEl = document.getElementById('bios-p-status');
+            const stages = ['Iniciando...', 'Módulos clínicos', 'Catálogo de estudios', 'Sucursales en línea', 'Listo'];
+            const DURATION = 1900;
+            const t0 = performance.now();
+
+            const finish = () => {
+                cancelAnimationFrame(raf);
+                intro.classList.add('exiting');
+                intro.addEventListener('animationend', () => intro.remove(), { once: true });
+            };
+
+            const tick = (now) => {
+                const t    = Math.min((now - t0) / DURATION, 1);
+                const pct  = Math.round((1 - Math.pow(1 - t, 2.6)) * 100);
+                if (fill)     fill.style.width       = pct + '%';
+                if (countEl)  countEl.textContent     = pct + '%';
+                if (statusEl) statusEl.textContent    = stages[Math.min(Math.floor(t * stages.length), stages.length - 1)];
+                if (t < 1) { requestAnimationFrame(tick); return; }
+                setTimeout(finish, 280);
+            };
+            requestAnimationFrame(tick);
+
+            intro.addEventListener('click', finish, { once: true });
+        }
     }
 
     function setupRevealAnimations() {
@@ -384,9 +476,19 @@
                 if (entry.isIntersecting) {
                     entry.target.classList.add('is-visible');
                     observer.unobserve(entry.target);
+
+                    // stagger direct children in grids
+                    const gridChildren = entry.target.querySelectorAll(':scope > .grid > *, :scope > div > .grid > *');
+                    gridChildren.forEach((child, i) => {
+                        if (!child.classList.contains('bios-reveal')) {
+                            child.style.transitionDelay = `${i * 55}ms`;
+                            child.classList.add('bios-reveal');
+                            requestAnimationFrame(() => child.classList.add('is-visible'));
+                        }
+                    });
                 }
             });
-        }, { threshold: 0.08 });
+        }, { threshold: 0.06 });
         targets.forEach(target => {
             target.classList.add('bios-reveal');
             observer.observe(target);
