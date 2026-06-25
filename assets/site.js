@@ -42,7 +42,7 @@
     function basePath() {
         const cleanPath = window.location.pathname.replace(/\/+$/, '');
         const current = cleanPath.split('/').pop();
-        return ['servicios', 'seguimiento', 'sucursales', 'unete', 'conocenos', 'portal', 'empresas', 'medicos', 'mujer'].includes(current) ? '../' : './';
+        return ['servicios', 'seguimiento', 'sucursales', 'unete', 'conocenos', 'portal', 'empresas', 'medicos', 'mujer', 'facturacion'].includes(current) ? '../' : './';
     }
 
     function href(path) {

@@ -607,37 +607,8 @@
 </head>
 <body>
 
-<!-- ═══════════════ NAV (reutilizamos el header global) ═════════════════ -->
-<div class="bios-main-header" id="mainHeader">
-    <div class="bios-wrap">
-        <div class="bios-header-body">
-            <div class="bios-brand-group">
-                <a href="../" class="bios-brand">
-                    <img src="../logos/bios-logo-sin-circulo.png" alt="Laboratorios BIOS">
-                </a>
-            </div>
-
-            <nav style="display:flex; align-items:center; gap:1.5rem; justify-content:center;">
-                <a href="../"          style="color:rgba(255,255,255,0.65);font-size:0.86rem;font-weight:700;text-decoration:none;transition:color 0.15s ease;">Inicio</a>
-                <a href="../servicios/" style="color:rgba(255,255,255,0.65);font-size:0.86rem;font-weight:700;text-decoration:none;transition:color 0.15s ease;">Servicios</a>
-                <a href="../portal/"    style="color:rgba(255,255,255,0.65);font-size:0.86rem;font-weight:700;text-decoration:none;transition:color 0.15s ease;">Portal</a>
-                <a href="../seguimiento/" style="color:rgba(255,255,255,0.65);font-size:0.86rem;font-weight:700;text-decoration:none;transition:color 0.15s ease;">Seguimiento</a>
-                <a href="../sucursales/"  style="color:rgba(255,255,255,0.65);font-size:0.86rem;font-weight:700;text-decoration:none;transition:color 0.15s ease;">Sucursales</a>
-                <a href="../facturacion/" style="color:#60a5fa;font-size:0.86rem;font-weight:800;text-decoration:none;border-bottom:2px solid #60a5fa;padding-bottom:2px;">Facturación</a>
-            </nav>
-
-            <div class="bios-header-actions">
-                <a href="../seguimiento/" class="bios-appointment-button">
-                    <i class="fa-solid fa-list-check" style="font-size:0.85rem;"></i>
-                    Ver estado
-                </a>
-                <button class="bios-menu-button" id="mobileMenuBtn" aria-label="Abrir menú">
-                    <i class="fa-solid fa-bars"></i>
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
+<!-- ═══════════════ NAV — header global unificado (lo inyecta site.js) ═══ -->
+<header></header>
 
 <!-- ═══════════════ HERO ════════════════════════════════════════════════ -->
 <section class="fact-hero">
