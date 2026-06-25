@@ -1,19 +1,12 @@
-import type { NextConfig } from "next";
-
-const nextConfig: NextConfig = {
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   images: {
     remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "*.supabase.co",
-      },
-      {
-        protocol: "https",
-        hostname: "lh3.googleusercontent.com",
-      },
+      { protocol: "https", hostname: "*.supabase.co" },
+      { protocol: "https", hostname: "lh3.googleusercontent.com" },
     ],
   },
-  // Allow reading PDF files from Supabase signed URLs
+  // Headers de seguridad para la consulta pública por token
   async headers() {
     return [
       {
