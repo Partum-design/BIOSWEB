@@ -1050,63 +1050,32 @@
                             <div class="absolute left-4 bottom-0 w-36 h-36 rounded-full blur-3xl bg-cyan-400/25"></div>
                         </div>
                         <div class="relative z-10">
-                            <p class="text-[10px] uppercase tracking-[0.32em] text-blue-200 font-black mb-2">Consulta tu folio</p>
-                            <h3 class="font-outfit text-3xl md:text-4xl font-black leading-tight mb-4">Estado claro según el avance del estudio.</h3>
-                            <p class="text-blue-100/90 text-base md:text-lg leading-relaxed mb-6">Escribe un folio demo o selecciona uno de los accesos rápidos. El sistema muestra el estado operativo del estudio.</p>
+                            <p class="text-[10px] uppercase tracking-[0.32em] text-blue-200 font-black mb-2">Consulta tu estudio</p>
+                            <h3 class="font-outfit text-3xl md:text-4xl font-black leading-tight mb-4">Conoce el avance de tu estudio.</h3>
+                            <p class="text-blue-100/90 text-base md:text-lg leading-relaxed mb-6">Escribe el folio de tu orden y te conectamos por WhatsApp con tu sucursal para confirmar el avance. Para ver y descargar tus resultados, entra al portal de pacientes.</p>
 
                             <form id="tracker-form" class="space-y-4">
                                 <label class="block">
                                     <span class="sr-only">Folio</span>
                                     <div class="relative">
                                         <i data-lucide="hash" class="w-5 h-5 text-blue-200 absolute left-4 top-1/2 -translate-y-1/2"></i>
-                                        <input id="tracker-input" type="text" placeholder="Ej. BIOS-2026-014" class="w-full rounded-2xl bg-white/10 border border-white/15 text-white placeholder:text-white/45 pl-12 pr-4 py-4 outline-none focus:ring-2 focus:ring-cyan-300 focus:border-cyan-300 transition">
+                                        <input id="tracker-input" type="text" placeholder="Folio de tu orden (opcional)" class="w-full rounded-2xl bg-white/10 border border-white/15 text-white placeholder:text-white/45 pl-12 pr-4 py-4 outline-none focus:ring-2 focus:ring-cyan-300 focus:border-cyan-300 transition">
                                     </div>
                                 </label>
                                 <div class="flex flex-col sm:flex-row gap-3">
-                                    <button type="submit" class="flex-1 px-5 py-4 rounded-2xl bg-white text-[#0A1C2E] font-black shadow-lg hover:-translate-y-0.5 transition">
-                                        Buscar folio
+                                    <button type="submit" class="flex-1 inline-flex items-center justify-center gap-2 px-5 py-4 rounded-2xl bg-[#25D366] text-white font-black shadow-lg hover:-translate-y-0.5 transition">
+                                        <i class="fa-brands fa-whatsapp"></i> Consultar estado
                                     </button>
-                                    <button type="button" id="tracker-demo-button" class="flex-1 px-5 py-4 rounded-2xl bg-cyan-500/15 border border-cyan-300/25 text-white font-black hover:bg-cyan-500/25 transition">
-                                        Usar demo
-                                    </button>
+                                    <a href="portal/" class="flex-1 inline-flex items-center justify-center gap-2 px-5 py-4 rounded-2xl bg-white text-[#0A1C2E] font-black hover:-translate-y-0.5 transition">
+                                        <i data-lucide="log-in" class="w-5 h-5"></i> Entrar al portal
+                                    </a>
                                 </div>
                             </form>
 
-                            <div class="mt-6">
-                                <div class="flex flex-wrap gap-2 mb-4" id="tracker-quick-folios">
-                                    <button type="button" class="tracker-quick-pill px-3 py-2 rounded-full bg-white/10 border border-white/10 text-xs font-black tracking-wide">BIOS-2026-014</button>
-                                    <button type="button" class="tracker-quick-pill px-3 py-2 rounded-full bg-white/10 border border-white/10 text-xs font-black tracking-wide">BIOS-2026-021</button>
-                                    <button type="button" class="tracker-quick-pill px-3 py-2 rounded-full bg-white/10 border border-white/10 text-xs font-black tracking-wide">BIOS-2026-033</button>
-                                </div>
-                                <div class="rounded-[1.75rem] bg-white/10 border border-white/10 p-5">
-                                    <div class="flex items-center justify-between gap-4 mb-3">
-                                        <div>
-                                            <p class="text-[10px] uppercase tracking-[0.28em] text-blue-200 font-black">Folio activo</p>
-                                            <p id="tracker-folio" class="font-outfit text-2xl font-black">BIOS-2026-014</p>
-                                        </div>
-                                        <div class="text-right">
-                                            <p class="text-[10px] uppercase tracking-[0.28em] text-blue-200 font-black">Sucursal</p>
-                                            <p id="tracker-branch" class="font-bold text-white/95">Plaza Cantú</p>
-                                        </div>
-                                    </div>
-                                    <div class="flex items-center gap-3 mb-4">
-                                        <div id="tracker-status-dot" class="w-3.5 h-3.5 rounded-full bg-emerald-400 shadow-[0_0_0_8px_rgba(16,185,129,0.12)]"></div>
-                                        <p id="tracker-status" class="font-bold text-white/90">En recepción</p>
-                                    </div>
-                                    <div class="grid grid-cols-2 gap-3 mb-4">
-                                        <div class="rounded-2xl bg-white/10 border border-white/10 p-4">
-                                            <p class="text-[10px] uppercase tracking-[0.24em] text-blue-200 font-black mb-1">Estado actual</p>
-                                            <p class="tracker-stage-label font-outfit text-3xl font-black leading-none">Recepción</p>
-                                        </div>
-                                        <div class="rounded-2xl bg-white/10 border border-white/10 p-4">
-                                            <p class="text-[10px] uppercase tracking-[0.24em] text-blue-200 font-black mb-1">Progreso</p>
-                                            <p id="tracker-progress-text" class="font-outfit text-3xl font-black leading-none">0%</p>
-                                        </div>
-                                    </div>
-                                    <div class="w-full h-3 rounded-full bg-white/10 overflow-hidden mb-4">
-                                        <div id="tracker-progress-bar" class="h-full rounded-full bg-gradient-to-r from-cyan-300 via-blue-400 to-blue-600 transition-all duration-700" style="width: 8%;"></div>
-                                    </div>
-                                    <p id="tracker-note" class="text-sm text-blue-100/85 leading-relaxed">Tu muestra fue recibida y está por pasar a análisis.</p>
+                            <div class="mt-6 rounded-[1.75rem] bg-white/10 border border-white/10 p-5">
+                                <div class="flex items-start gap-3">
+                                    <i data-lucide="shield-check" class="w-5 h-5 text-cyan-200 mt-0.5 shrink-0"></i>
+                                    <p class="text-sm text-blue-100/85 leading-relaxed">Tus resultados son privados. En el portal los consultas y descargas en PDF de forma segura; por WhatsApp solo confirmamos el avance de tu estudio.</p>
                                 </div>
                             </div>
                         </div>
@@ -1115,11 +1084,11 @@
                     <div class="lg:col-span-7 interactive-depth premium-surface bg-gray-50 rounded-[2.5rem] p-6 md:p-8 border border-gray-100 shadow-xl" data-aos="fade-left">
                         <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-8">
                             <div>
-                                <p class="text-[10px] uppercase tracking-[0.32em] text-gray-400 font-black mb-2">Proceso visible</p>
-                                <h3 class="font-outfit text-3xl md:text-4xl font-black text-[#0A1C2E]">Estado del estudio en tiempo real</h3>
+                                <p class="text-[10px] uppercase tracking-[0.32em] text-gray-400 font-black mb-2">Proceso transparente</p>
+                                <h3 class="font-outfit text-3xl md:text-4xl font-black text-[#0A1C2E]">Así avanza tu estudio</h3>
                             </div>
                             <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-gray-200 text-gray-600 font-black text-xs uppercase tracking-[0.22em] shadow-sm">
-                                <i data-lucide="list-checks" class="w-4 h-4 text-blue-500"></i> Estado por etapas
+                                <i data-lucide="list-checks" class="w-4 h-4 text-blue-500"></i> 4 etapas
                             </div>
                         </div>
 
@@ -1129,41 +1098,36 @@
                                     <div class="absolute -right-6 -top-6 w-32 h-32 rounded-full blur-3xl bg-cyan-400/30"></div>
                                 </div>
                                 <div class="relative z-10">
-                                    <p class="text-[10px] uppercase tracking-[0.28em] text-cyan-200 font-black mb-2">Estado del estudio</p>
-                                    <p class="tracker-stage-label font-outfit text-4xl md:text-5xl font-black leading-none">Recepción</p>
-                                    <p class="text-blue-100/80 mt-3 text-sm">El estado se actualiza por etapa operativa.</p>
+                                    <p class="text-[10px] uppercase tracking-[0.28em] text-cyan-200 font-black mb-2">Tu tranquilidad</p>
+                                    <p class="font-outfit text-3xl md:text-4xl font-black leading-none">Claridad en cada paso</p>
+                                    <p class="text-blue-100/80 mt-3 text-sm">Desde que recibimos tu muestra hasta que liberamos tu resultado.</p>
                                 </div>
                             </div>
-                            <div class="rounded-[2rem] bg-white border border-gray-200 p-6">
-                                <p class="text-[10px] uppercase tracking-[0.28em] text-gray-400 font-black mb-2">Siguiente paso</p>
-                                <div class="space-y-3" id="tracker-next-step">
-                                    <!-- Filled by JS -->
+                            <div class="rounded-[2rem] bg-white border border-gray-200 p-6 flex flex-col justify-between">
+                                <div>
+                                    <p class="text-[10px] uppercase tracking-[0.28em] text-gray-400 font-black mb-2">¿Tu resultado está listo?</p>
+                                    <p class="text-[#0A1C2E] font-bold">Cuando se libera, lo consultas y descargas en el portal de pacientes.</p>
                                 </div>
+                                <a href="portal/" class="inline-flex items-center gap-2 px-4 py-2.5 mt-4 rounded-xl bg-[#0A1C2E] text-white font-black text-sm hover:-translate-y-0.5 transition self-start"><i data-lucide="folder-open" class="w-4 h-4"></i> Ver mis resultados</a>
                             </div>
                         </div>
 
-                        <div class="rounded-[2rem] bg-white border border-gray-200 p-5 md:p-6 mb-6">
-                            <div class="flex items-center justify-between gap-4 mb-4">
-                                <p class="font-black text-[#0A1C2E]">Ruta del estudio</p>
-                                <p class="tracker-stage-label text-sm font-black text-blue-600">Recepción</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                            <div class="rounded-[1.5rem] bg-blue-50 border border-blue-100 p-5">
+                                <p class="text-[10px] uppercase tracking-[0.22em] text-blue-500 font-black mb-2">01 · Recepción</p>
+                                <p class="font-black text-[#0A1C2E]">Validamos tu solicitud y el folio.</p>
                             </div>
-                            <div id="tracker-stages" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-                                <!-- Filled by JS -->
+                            <div class="rounded-[1.5rem] bg-cyan-50 border border-cyan-100 p-5">
+                                <p class="text-[10px] uppercase tracking-[0.22em] text-cyan-600 font-black mb-2">02 · Análisis</p>
+                                <p class="font-black text-[#0A1C2E]">Procesamos tus muestras o imagen.</p>
                             </div>
-                        </div>
-
-                        <div class="grid md:grid-cols-3 gap-4">
-                            <div class="rounded-[1.75rem] bg-blue-50 border border-blue-100 p-5">
-                                <p class="text-[10px] uppercase tracking-[0.24em] text-blue-500 font-black mb-2">Recepción</p>
-                                <p class="font-black text-[#0A1C2E] text-lg">Se valida la solicitud y el folio.</p>
+                            <div class="rounded-[1.5rem] bg-indigo-50 border border-indigo-100 p-5">
+                                <p class="text-[10px] uppercase tracking-[0.22em] text-indigo-500 font-black mb-2">03 · Validación</p>
+                                <p class="font-black text-[#0A1C2E]">Un especialista revisa y valida.</p>
                             </div>
-                            <div class="rounded-[1.75rem] bg-cyan-50 border border-cyan-100 p-5">
-                                <p class="text-[10px] uppercase tracking-[0.24em] text-cyan-600 font-black mb-2">Análisis</p>
-                                <p class="font-black text-[#0A1C2E] text-lg">El equipo procesa tus muestras o imagen.</p>
-                            </div>
-                            <div class="rounded-[1.75rem] bg-emerald-50 border border-emerald-100 p-5">
-                                <p class="text-[10px] uppercase tracking-[0.24em] text-emerald-600 font-black mb-2">Entrega</p>
-                                <p class="font-black text-[#0A1C2E] text-lg">Se libera el resultado cuando ya está listo.</p>
+                            <div class="rounded-[1.5rem] bg-emerald-50 border border-emerald-100 p-5">
+                                <p class="text-[10px] uppercase tracking-[0.22em] text-emerald-600 font-black mb-2">04 · Entrega</p>
+                                <p class="font-black text-[#0A1C2E]">Liberamos tu resultado en el portal.</p>
                             </div>
                         </div>
                     </div>
@@ -2146,186 +2110,20 @@
         /* =================================================================
            2. STUDY TRACKER LOGIC
            ================================================================= */
-        const trackerStages = [
-            {
-                title: 'Recepción',
-                note: 'Tu muestra ya fue registrada en sucursal.',
-                icon: 'package-open',
-                color: 'from-blue-500 to-cyan-400',
-                ring: 'bg-blue-100 text-blue-700 border-blue-200',
-            },
-            {
-                title: 'Análisis',
-                note: 'El equipo está procesando el estudio.',
-                icon: 'flask-conical',
-                color: 'from-cyan-500 to-blue-500',
-                ring: 'bg-cyan-100 text-cyan-700 border-cyan-200',
-            },
-            {
-                title: 'Validación',
-                note: 'Se revisa calidad y consistencia de resultados.',
-                icon: 'badge-check',
-                color: 'from-sky-500 to-blue-600',
-                ring: 'bg-sky-100 text-sky-700 border-sky-200',
-            },
-            {
-                title: 'Listo',
-                note: 'El resultado ya está liberado para entrega.',
-                icon: 'circle-check-big',
-                color: 'from-emerald-500 to-cyan-500',
-                ring: 'bg-emerald-100 text-emerald-700 border-emerald-200',
-            }
-        ];
-
-        const trackerSamples = {
-            'BIOS-2026-014': {
-                folio: 'BIOS-2026-014',
-                branch: 'Plaza Cantú',
-                patient: 'María L.',
-                stageIndex: 1,
-                progress: 42,
-                note: 'Muestra en proceso con prioridad alta.',
-            },
-            'BIOS-2026-021': {
-                folio: 'BIOS-2026-021',
-                branch: 'Tultepec (Nueva)',
-                patient: 'Carlos R.',
-                stageIndex: 2,
-                progress: 78,
-                note: 'Validación en curso, revisión final pendiente.',
-            },
-            'BIOS-2026-033': {
-                folio: 'BIOS-2026-033',
-                branch: 'La Joya',
-                patient: 'Fernanda P.',
-                stageIndex: 3,
-                progress: 100,
-                note: 'Resultado listo para entrega.',
-            },
-            'BIOS-2026-099': {
-                folio: 'BIOS-2026-099',
-                branch: 'Las Haciendas',
-                patient: 'Demo BIOS',
-                stageIndex: 0,
-                progress: 12,
-                note: 'Folio registrado para seguimiento.',
-            }
-        };
-
-        const trackerRefs = {
-            form: document.getElementById('tracker-form'),
-            input: document.getElementById('tracker-input'),
-            demoButton: document.getElementById('tracker-demo-button'),
-            quickButtons: document.querySelectorAll('.tracker-quick-pill'),
-            folio: document.getElementById('tracker-folio'),
-            branch: document.getElementById('tracker-branch'),
-            status: document.getElementById('tracker-status'),
-            statusDot: document.getElementById('tracker-status-dot'),
-            progressText: document.getElementById('tracker-progress-text'),
-            progressBar: document.getElementById('tracker-progress-bar'),
-            note: document.getElementById('tracker-note'),
-            stages: document.getElementById('tracker-stages'),
-            nextStep: document.getElementById('tracker-next-step'),
-            stageLabels: document.querySelectorAll('.tracker-stage-label'),
-        };
-
-        function getTrackerState(record) {
-            return {
-                progress: record.progress,
-                stageIndex: record.stageIndex,
-            };
-        }
-
-        function renderTrackerStages(stageIndex) {
-            if (!trackerRefs.stages) return;
-            trackerRefs.stages.innerHTML = trackerStages.map((stage, index) => {
-                const active = index <= stageIndex;
-                return `
-                    <div class="rounded-[1.5rem] border p-4 transition-all ${active ? `${stage.ring} shadow-md` : 'bg-gray-50 border-gray-200 text-gray-400'}">
-                        <div class="flex items-center justify-between gap-3 mb-3">
-                            <div class="w-10 h-10 rounded-2xl flex items-center justify-center ${active ? `bg-gradient-to-br ${stage.color} text-white` : 'bg-white text-gray-400 border border-gray-200'}">
-                                <i data-lucide="${stage.icon}" class="w-5 h-5"></i>
-                            </div>
-                            <span class="text-[10px] uppercase tracking-[0.24em] font-black ${active ? 'text-inherit' : 'text-gray-400'}">${String(index + 1).padStart(2, '0')}</span>
-                        </div>
-                        <p class="font-black text-base ${active ? 'text-[#0A1C2E]' : 'text-gray-500'}">${stage.title}</p>
-                        <p class="text-sm leading-relaxed ${active ? 'text-gray-700' : 'text-gray-400'} mt-1">${stage.note}</p>
-                    </div>
-                `;
-            }).join('');
-            lucide.createIcons({ root: trackerRefs.stages });
-        }
-
-        function renderTracker(record) {
-            const selected = record || trackerSamples['BIOS-2026-014'];
-            const state = getTrackerState(selected);
-            const currentStage = trackerStages[state.stageIndex];
-            const progress = Math.round(state.progress);
-
-            if (trackerRefs.folio) trackerRefs.folio.textContent = selected.folio;
-            if (trackerRefs.branch) trackerRefs.branch.textContent = selected.branch;
-            if (trackerRefs.status) trackerRefs.status.textContent = currentStage.title;
-            if (trackerRefs.progressText) trackerRefs.progressText.textContent = `${progress}%`;
-            if (trackerRefs.progressBar) trackerRefs.progressBar.style.width = `${Math.max(8, progress)}%`;
-            if (trackerRefs.note) trackerRefs.note.textContent = selected.note;
-            trackerRefs.stageLabels.forEach(label => {
-                label.textContent = currentStage.title;
-            });
-            if (trackerRefs.statusDot) {
-                trackerRefs.statusDot.className = `w-3.5 h-3.5 rounded-full shadow-[0_0_0_8px_rgba(16,185,129,0.12)] ${
-                    state.stageIndex === 3 ? 'bg-emerald-400' : state.stageIndex === 2 ? 'bg-cyan-400' : 'bg-blue-400'
-                }`;
-            }
-            if (trackerRefs.nextStep) {
-                const nextIndex = Math.min(state.stageIndex + 1, trackerStages.length - 1);
-                const nextStage = trackerStages[nextIndex];
-                trackerRefs.nextStep.innerHTML = `
-                    <div class="rounded-2xl bg-blue-50 border border-blue-100 p-4">
-                        <p class="text-[10px] uppercase tracking-[0.24em] text-blue-500 font-black mb-2">Siguiente paso</p>
-                        <p class="font-black text-[#0A1C2E] text-lg">${nextStage.title}</p>
-                        <p class="text-sm text-gray-600 mt-1">${nextStage.note}</p>
-                    </div>
-                    <div class="rounded-2xl bg-gray-50 border border-gray-100 p-4">
-                        <p class="text-[10px] uppercase tracking-[0.24em] text-gray-400 font-black mb-2">Paciente</p>
-                        <p class="font-black text-[#0A1C2E] text-lg">${selected.patient}</p>
-                        <p class="text-sm text-gray-600 mt-1">Folio ${selected.folio}</p>
-                    </div>
-                `;
-            }
-
-            renderTrackerStages(state.stageIndex);
-        }
-
-        function setTrackerByFolio(folio) {
-            const normalized = (folio || '').trim().toUpperCase();
-            const selected = trackerSamples[normalized] || trackerSamples['BIOS-2026-014'];
-            renderTracker(selected);
-            if (!trackerSamples[normalized] && trackerRefs.note) {
-                trackerRefs.note.textContent = 'No encontramos ese folio, así que te mostramos el demo BIOS para que veas cómo funciona.';
-            }
-            if (trackerRefs.input) trackerRefs.input.value = selected.folio;
-        }
-
-        if (trackerRefs.form) {
-            trackerRefs.form.addEventListener('submit', (event) => {
+        // Consulta de estado por folio → WhatsApp con la sucursal.
+        // (Sin datos de ejemplo: los resultados reales viven en el portal.)
+        const trackerForm = document.getElementById('tracker-form');
+        if (trackerForm) {
+            trackerForm.addEventListener('submit', (event) => {
                 event.preventDefault();
-                setTrackerByFolio(trackerRefs.input ? trackerRefs.input.value : '');
+                const input = document.getElementById('tracker-input');
+                const folio = (input ? input.value : '').trim();
+                const msg = folio
+                    ? `Hola Laboratorios BIOS, quiero consultar el estado de mi estudio. Folio: ${folio}`
+                    : 'Hola Laboratorios BIOS, quiero consultar el estado de mi estudio.';
+                window.open(`https://wa.me/5211234567890?text=${encodeURIComponent(msg)}`, '_blank');
             });
         }
-
-        if (trackerRefs.demoButton) {
-            trackerRefs.demoButton.addEventListener('click', () => {
-                setTrackerByFolio('BIOS-2026-014');
-            });
-        }
-
-        trackerRefs.quickButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                setTrackerByFolio(button.textContent);
-            });
-        });
-
-        setTrackerByFolio('BIOS-2026-014');
 
         /* =================================================================
            2. VERBATIM UNITS LOCATOR

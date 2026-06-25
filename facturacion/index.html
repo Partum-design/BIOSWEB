@@ -971,17 +971,36 @@
         });
     }
 
-    // Submit (demo)
+    // Envío real: arma la solicitud de factura y la manda por WhatsApp a BIOS.
     function submitForm() {
+        const v = id => (document.getElementById(id)?.value || '').trim();
+        const rfc = v('rfc');
+        if (!rfc) { alert('Ingresa tu RFC para solicitar tu factura.'); return; }
+
+        const nombre = [v('nombre'), v('ap_paterno'), v('ap_materno')].filter(Boolean).join(' ');
+        const lines = [
+            'Hola Laboratorios BIOS, solicito mi factura (CFDI):',
+            nombre        && `• Nombre / Razón social: ${nombre}`,
+            rfc           && `• RFC: ${rfc}`,
+            v('email')    && `• Correo: ${v('email')}`,
+            v('monto')    && `• Monto: ${v('monto')}`,
+            v('orden')    && `• Orden / Folio: ${v('orden')}`,
+            v('codigo_postal') && `• C.P. fiscal: ${v('codigo_postal')}`,
+        ].filter(Boolean);
+
+        window.open(`https://wa.me/5211234567890?text=${encodeURIComponent(lines.join('\n'))}`, '_blank');
+
         const toast = document.getElementById('toast');
-        toast.style.opacity = '1';
-        toast.style.transform = 'translateX(-50%) translateY(0)';
-        toast.style.pointerEvents = 'auto';
-        setTimeout(() => {
-            toast.style.opacity = '0';
-            toast.style.transform = 'translateX(-50%) translateY(20px)';
-            toast.style.pointerEvents = 'none';
-        }, 4000);
+        if (toast) {
+            toast.style.opacity = '1';
+            toast.style.transform = 'translateX(-50%) translateY(0)';
+            toast.style.pointerEvents = 'auto';
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(-50%) translateY(20px)';
+                toast.style.pointerEvents = 'none';
+            }, 4000);
+        }
     }
 </script>
 </body>

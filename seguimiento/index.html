@@ -54,21 +54,19 @@
             <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-14">
                 <div class="grid lg:grid-cols-[420px_1fr] gap-6 items-start">
                     <aside class="dark-panel p-6 lg:p-8">
-                        <span class="section-kicker !bg-white/10 !border-white/15 !text-cyan-100 mb-5"><i data-lucide="list-checks" class="w-4 h-4"></i> Estado BIOS</span>
-                        <h1 class="brand-type mobile-tight text-4xl font-black leading-none mb-5">Rastrea tus estudios</h1>
-                        <form id="tracker-form" class="grid gap-3 mb-5">
-                            <input id="folio-input" class="field" type="text" placeholder="BIOS-2026-014">
-                            <button class="primary-button !bg-white !text-[#0A1C2E]" type="submit"><i data-lucide="scan-search" class="w-5 h-5"></i> Buscar folio</button>
+                        <span class="section-kicker !bg-white/10 !border-white/15 !text-cyan-100 mb-5"><i data-lucide="list-checks" class="w-4 h-4"></i> Estado de tu estudio</span>
+                        <h1 class="brand-type mobile-tight text-4xl font-black leading-none mb-4">Consulta tu estudio</h1>
+                        <p class="text-blue-100 text-sm mb-5">Escribe el folio de tu orden y te conectamos por WhatsApp con tu sucursal para confirmar el avance. Tus resultados los ves y descargas en el portal.</p>
+                        <form id="tracker-form" class="grid gap-3 mb-3">
+                            <input id="folio-input" class="field" type="text" placeholder="Folio de tu orden (opcional)">
+                            <button class="primary-button !bg-[#25D366]" type="submit"><i class="fa-brands fa-whatsapp"></i> Consultar por WhatsApp</button>
                         </form>
-                        <div class="flex flex-wrap gap-2 mb-6">
-                            <button class="chip !bg-white/10 !border-white/15 !text-white" onclick="loadFolio('BIOS-2026-014')">BIOS-2026-014</button>
-                            <button class="chip !bg-white/10 !border-white/15 !text-white" onclick="loadFolio('BIOS-2026-021')">BIOS-2026-021</button>
-                            <button class="chip !bg-white/10 !border-white/15 !text-white" onclick="loadFolio('BIOS-2026-033')">BIOS-2026-033</button>
-                        </div>
-                        <div class="metric p-5">
-                            <p class="text-xs uppercase tracking-[0.18em] font-black text-cyan-100 mb-2">Estado actual</p>
-                            <p id="folio-state" class="brand-type text-4xl font-black leading-none">Recepción</p>
-                            <p id="folio-note" class="text-blue-100 text-sm mt-3">Listo para consultar.</p>
+                        <a href="../portal/" class="primary-button !bg-white !text-[#0A1C2E] w-full"><i data-lucide="log-in" class="w-5 h-5"></i> Entrar al portal</a>
+                        <div class="metric p-5 mt-5">
+                            <div class="flex items-start gap-3">
+                                <i data-lucide="shield-check" class="w-5 h-5 text-cyan-200 mt-0.5 shrink-0"></i>
+                                <p class="text-blue-100 text-sm">Tus resultados son privados. Por WhatsApp solo confirmamos el avance; el PDF se descarga de forma segura desde el portal.</p>
+                            </div>
                         </div>
                     </aside>
 
@@ -76,41 +74,31 @@
                         <figure class="page-visual">
                             <img src="../assets/img/lab-hero.webp" alt="Seguimiento de análisis clínicos BIOS">
                             <figcaption class="visual-caption">
-                                <p>Estado visible por folio</p>
-                                <p>Progreso por etapas y ruta del estudio en una sola vista.</p>
+                                <p>Proceso transparente</p>
+                                <p>Conoce las cuatro etapas por las que pasa tu estudio.</p>
                             </figcaption>
                         </figure>
+
                         <div class="panel p-5 lg:p-6">
-                            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-5">
-                                <div>
-                                    <p class="text-xs uppercase tracking-[0.18em] font-black text-slate-400">Folio activo</p>
-                                    <h2 id="active-folio" class="brand-type text-3xl font-black text-[#0A1C2E]">BIOS-2026-014</h2>
-                                </div>
-                                <div class="grid grid-cols-2 gap-3 min-w-[260px]">
-                                    <div class="bg-slate-50 border border-slate-200 rounded-lg p-3"><p class="text-xs uppercase font-black text-slate-400">Sucursal</p><p id="branch" class="font-black">Plaza Cantú</p></div>
-                                    <div class="bg-slate-50 border border-slate-200 rounded-lg p-3"><p class="text-xs uppercase font-black text-slate-400">Paciente</p><p id="patient" class="font-black">María L.</p></div>
-                                </div>
-                            </div>
-                            <div class="h-4 bg-slate-100 rounded-full overflow-hidden mb-4">
-                                <div id="progress-bar" class="h-full bg-gradient-to-r from-emerald-500 via-cyan-500 to-blue-600 rounded-full transition-all duration-500" style="width: 10%;"></div>
-                            </div>
-                            <div class="flex items-center justify-between gap-3">
-                                <p id="stage-name" class="font-black text-blue-700">Recepción</p>
-                                <p id="progress-text" class="font-black text-[#0A1C2E]">10%</p>
+                            <h2 class="brand-type text-2xl font-black text-[#0A1C2E] mb-4">Así avanza tu estudio</h2>
+                            <div class="grid sm:grid-cols-2 xl:grid-cols-4 gap-4">
+                                <article class="panel p-5"><div class="w-11 h-11 rounded-lg bg-blue-600 text-white flex items-center justify-center mb-4"><i data-lucide="package-check" class="w-6 h-6"></i></div><p class="brand-type text-xl font-black text-[#0A1C2E]">01 · Recepción</p><p class="text-sm text-slate-500 mt-1">Validamos tu orden y folio en sucursal.</p></article>
+                                <article class="panel p-5"><div class="w-11 h-11 rounded-lg bg-cyan-600 text-white flex items-center justify-center mb-4"><i data-lucide="flask-conical" class="w-6 h-6"></i></div><p class="brand-type text-xl font-black text-[#0A1C2E]">02 · Análisis</p><p class="text-sm text-slate-500 mt-1">Procesamos tu muestra o imagen.</p></article>
+                                <article class="panel p-5"><div class="w-11 h-11 rounded-lg bg-indigo-600 text-white flex items-center justify-center mb-4"><i data-lucide="badge-check" class="w-6 h-6"></i></div><p class="brand-type text-xl font-black text-[#0A1C2E]">03 · Validación</p><p class="text-sm text-slate-500 mt-1">Un especialista revisa y valida.</p></article>
+                                <article class="panel p-5"><div class="w-11 h-11 rounded-lg bg-emerald-600 text-white flex items-center justify-center mb-4"><i data-lucide="circle-check" class="w-6 h-6"></i></div><p class="brand-type text-xl font-black text-[#0A1C2E]">04 · Entrega</p><p class="text-sm text-slate-500 mt-1">Liberamos tu resultado en el portal.</p></article>
                             </div>
                         </div>
 
-                        <div id="stage-grid" class="grid sm:grid-cols-2 xl:grid-cols-4 gap-4"></div>
-
                         <div class="grid lg:grid-cols-2 gap-5">
                             <div class="panel p-5">
-                                <h3 class="brand-type text-2xl font-black text-[#0A1C2E] mb-3">Detalle operativo</h3>
-                                <div id="detail-list" class="grid gap-2"></div>
+                                <h3 class="brand-type text-2xl font-black text-[#0A1C2E] mb-3">Ver tus resultados</h3>
+                                <p class="text-slate-500 text-sm mb-4">Cuando tu resultado se libera, entra al portal con tu cuenta para verlo y descargarlo en PDF de forma segura.</p>
+                                <a class="primary-button" href="../portal/"><i data-lucide="folder-open" class="w-5 h-5"></i> Ir al portal de pacientes</a>
                             </div>
                             <div class="panel p-5">
-                                <h3 class="brand-type text-2xl font-black text-[#0A1C2E] mb-3">Acciones</h3>
+                                <h3 class="brand-type text-2xl font-black text-[#0A1C2E] mb-3">¿Necesitas ayuda?</h3>
                                 <div class="grid gap-3">
-                                    <a class="primary-button" target="_blank" href="https://wa.me/5211234567890?text=Hola%20Laboratorios%20BIOS,%20quiero%20ayuda%20con%20mi%20folio"><i data-lucide="message-circle" class="w-5 h-5"></i> Ayuda por WhatsApp</a>
+                                    <a class="primary-button !bg-[#25D366]" target="_blank" rel="noopener" href="https://wa.me/5211234567890?text=Hola%20Laboratorios%20BIOS,%20quiero%20ayuda%20con%20mi%20estudio"><i class="fa-brands fa-whatsapp"></i> Ayuda por WhatsApp</a>
                                     <a class="secondary-button" href="../sucursales/"><i data-lucide="map-pin" class="w-5 h-5"></i> Ver sucursales</a>
                                 </div>
                             </div>
@@ -122,65 +110,27 @@
     </div>
 
     <script>
-        const stages = [
-            { name: 'Recepción', icon: 'package-check', text: 'Tu folio fue registrado.' },
-            { name: 'Análisis', icon: 'flask-conical', text: 'La muestra está en proceso.' },
-            { name: 'Validación', icon: 'badge-check', text: 'Revisión final de calidad.' },
-            { name: 'Listo', icon: 'circle-check', text: 'Resultado liberado.' }
-        ];
-        const records = {
-            'BIOS-2026-014': { branch: 'Plaza Cantú', patient: 'María L.', progress: 42, stage: 1 },
-            'BIOS-2026-021': { branch: 'Tultepec (Nueva)', patient: 'Carlos R.', progress: 78, stage: 2 },
-            'BIOS-2026-033': { branch: 'La Joya', patient: 'Fernanda P.', progress: 100, stage: 3 }
-        };
-        let active = 'BIOS-2026-014';
-
-        function state(record) {
-            return { progress: Math.max(8, record.progress), stage: record.stage };
-        }
-
-        function render() {
-            const record = records[active];
-            const current = state(record);
-            document.getElementById('active-folio').textContent = active;
-            document.getElementById('branch').textContent = record.branch;
-            document.getElementById('patient').textContent = record.patient;
-            document.getElementById('stage-name').textContent = stages[current.stage].name;
-            document.getElementById('folio-state').textContent = stages[current.stage].name;
-            document.getElementById('progress-text').textContent = `${current.progress}%`;
-            document.getElementById('progress-bar').style.width = `${current.progress}%`;
-            document.getElementById('folio-note').textContent = stages[current.stage].text;
-            document.getElementById('stage-grid').innerHTML = stages.map((item, index) => `
-                <article class="panel p-5 ${index <= current.stage ? '!border-blue-300' : ''}">
-                    <div class="w-11 h-11 rounded-lg ${index <= current.stage ? 'bg-blue-600 text-white' : 'bg-slate-100 text-slate-400'} flex items-center justify-center mb-4"><i data-lucide="${item.icon}" class="w-6 h-6"></i></div>
-                    <p class="brand-type text-xl font-black text-[#0A1C2E]">${item.name}</p>
-                    <p class="text-sm text-slate-500 mt-1">${item.text}</p>
-                </article>
-            `).join('');
-            document.getElementById('detail-list').innerHTML = [
-                ['Estado', stages[current.stage].name],
-                ['Sucursal', record.branch],
-                ['Resultado', current.stage === 3 ? 'Disponible' : 'En proceso'],
-                ['Canal', 'Portal y WhatsApp']
-            ].map(([label, value]) => `<div class="flex justify-between gap-4 border border-slate-200 rounded-lg p-3"><span class="text-slate-500 font-bold">${label}</span><strong>${value}</strong></div>`).join('');
-            lucide.createIcons();
-        }
-
-        function loadFolio(folio) {
-            active = records[folio] ? folio : 'BIOS-2026-014';
-            document.getElementById('folio-input').value = active;
-            render();
+        // Consulta de estado por folio → WhatsApp (sin datos de ejemplo).
+        // Los resultados reales se consultan en el portal de pacientes.
+        const trackerForm = document.getElementById('tracker-form');
+        if (trackerForm) {
+            trackerForm.addEventListener('submit', (event) => {
+                event.preventDefault();
+                const input = document.getElementById('folio-input');
+                const folio = (input ? input.value : '').trim();
+                const msg = folio
+                    ? `Hola Laboratorios BIOS, quiero consultar el estado de mi estudio. Folio: ${folio}`
+                    : 'Hola Laboratorios BIOS, quiero consultar el estado de mi estudio.';
+                window.open(`https://wa.me/5211234567890?text=${encodeURIComponent(msg)}`, '_blank');
+            });
         }
 
         function toggleDrawer(open) {
-            document.getElementById('drawer').classList.toggle('open', open);
+            const d = document.getElementById('drawer');
+            if (d) d.classList.toggle('open', open);
         }
 
-        document.getElementById('tracker-form').addEventListener('submit', event => {
-            event.preventDefault();
-            loadFolio(document.getElementById('folio-input').value.trim().toUpperCase());
-        });
-        loadFolio(active);
+        lucide.createIcons();
     </script>
 </body>
 </html>
