@@ -247,7 +247,7 @@ export default function NuevoResultadoPage() {
                       <p className="text-xs text-green-600">{(file.size / 1024 / 1024).toFixed(2)} MB</p>
                     </div>
                     <button type="button" onClick={(e) => { e.stopPropagation(); setFile(null); }}
-                            className="text-xs text-red-500 hover:underline">Quitar archivo</button>
+                            className="text-xs text-red-500 font-semibold hover:text-red-700 transition-colors">Quitar archivo</button>
                   </>
                 ) : (
                   <>

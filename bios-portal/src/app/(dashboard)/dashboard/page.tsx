@@ -99,7 +99,7 @@ export default async function DashboardPage() {
         <div className="flex items-center justify-between mb-4">
           <h2 className="font-outfit text-xl font-black text-bios-navy">Resultados recientes</h2>
           {(results?.length ?? 0) > 0 && (
-            <Link href="/dashboard/resultados" className="flex items-center gap-1 text-sm font-bold text-bios-blue hover:underline">
+            <Link href="/dashboard/resultados" className="flex items-center gap-1 text-sm font-bold text-bios-blue hover:text-bios-cyan transition-colors">
               Ver todos <ArrowRight className="w-4 h-4" />
             </Link>
           )}

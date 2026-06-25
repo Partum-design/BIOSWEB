@@ -84,6 +84,16 @@
         });
     }
 
+    // Favicon de marca (usa el logo BIOS) — aplica a todas las páginas.
+    function applyFavicon() {
+        if (document.querySelector('link[rel="icon"]:not([data-default])')) return;
+        const link = document.createElement('link');
+        link.rel = 'icon';
+        link.type = 'image/png';
+        link.href = logoSrc();
+        document.head.appendChild(link);
+    }
+
     function renderHeader() {
         const firstHeader = document.querySelector('header');
         if (!firstHeader) return;
@@ -513,6 +523,7 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
+        applyFavicon();
         renderHeader();
         renderFooter();
         renderFloatingActions();

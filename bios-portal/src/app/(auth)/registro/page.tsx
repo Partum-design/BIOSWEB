@@ -67,7 +67,7 @@ export default function RegistroPage() {
         </h2>
         <p className="text-gray-500 text-sm">
           ¿Ya tienes cuenta?{" "}
-          <Link href="/login" className="text-bios-blue font-bold hover:underline">
+          <Link href="/login" className="text-bios-blue font-bold hover:text-bios-cyan transition-colors">
             Inicia sesión
           </Link>
         </p>
@@ -221,7 +221,7 @@ export default function RegistroPage() {
 
       <p className="mt-6 text-center text-xs text-gray-400">
         Al registrarte aceptas nuestros{" "}
-        <a href="https://laboratoriosbios.com/aviso-privacidad" className="underline">
+        <a href="https://laboratoriosbios.com/aviso-privacidad" className="font-semibold text-bios-blue hover:text-bios-cyan transition-colors">
           términos y aviso de privacidad
         </a>
         .

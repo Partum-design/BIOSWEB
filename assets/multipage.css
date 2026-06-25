@@ -1941,3 +1941,25 @@ body {
         min-height: auto;
     }
 }
+
+/* ════════════════════════════════════════════════════════════
+   ENLACES — sin subrayado en todo el sitio.
+   El énfasis se da por color/peso, nunca por subrayado (se ve más
+   limpio y premium). Se usa !important para ganarle a utilidades
+   tipo `hover:underline` del CDN de Tailwind.
+   ════════════════════════════════════════════════════════════ */
+a,
+a:hover,
+a:focus,
+a:active {
+    text-decoration: none !important;
+}
+
+/* Énfasis sutil al pasar el mouse en enlaces de texto (sin reflow):
+   simula un trazo ligeramente más grueso en vez de subrayar. */
+main a:not([class*="btn"]):not([class*="button"]):not(.bios-brand):hover,
+footer a:hover,
+.bios-secondary-link:hover,
+.bios-mobile-link:hover {
+    text-shadow: 0 0 0.45px currentColor;
+}

@@ -51,7 +51,7 @@ export default function LoginPage() {
         </h2>
         <p className="text-gray-500 text-sm">
           ¿No tienes cuenta?{" "}
-          <Link href="/registro" className="text-bios-blue font-bold hover:underline">
+          <Link href="/registro" className="text-bios-blue font-bold hover:text-bios-cyan transition-colors">
             Regístrate gratis
           </Link>
         </p>
@@ -122,7 +122,7 @@ export default function LoginPage() {
         <div>
           <div className="flex items-center justify-between mb-1.5">
             <label htmlFor="password" className="bios-field-label">Contraseña</label>
-            <Link href="/recuperar-password" className="text-xs text-bios-blue font-bold hover:underline">
+            <Link href="/recuperar-password" className="text-xs text-bios-blue font-bold hover:text-bios-cyan transition-colors">
               ¿Olvidaste tu contraseña?
             </Link>
           </div>
@@ -169,7 +169,7 @@ export default function LoginPage() {
 
       <p className="mt-6 text-center text-xs text-gray-400">
         Al ingresar aceptas nuestros{" "}
-        <a href="https://laboratoriosbios.com/aviso-privacidad" className="underline">
+        <a href="https://laboratoriosbios.com/aviso-privacidad" className="font-semibold text-bios-blue hover:text-bios-cyan transition-colors">
           términos y aviso de privacidad
         </a>
         .
