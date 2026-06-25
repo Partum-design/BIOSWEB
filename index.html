@@ -495,6 +495,21 @@
         .modal-content { transform: scale(0.9) translateY(20px); transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); }
         .modal-overlay.active .modal-content { transform: scale(1) translateY(0); }
 
+        /* Promo modal — compacto en móvil (antes ocupaba casi toda la pantalla) */
+        @media (max-width: 640px) {
+            #promo-modal { padding: 0.85rem; }
+            #promo-modal .modal-content { border-radius: 1.25rem; max-height: 88vh; overflow-y: auto; }
+            #promo-modal .grid > div:first-child { min-height: 128px !important; }
+            #promo-modal .grid > div:last-child { padding: 1.15rem !important; }
+            #promo-modal h3 { font-size: 1.45rem !important; line-height: 1.12 !important; margin-bottom: 0.55rem !important; }
+            #promo-modal .grid > div:last-child > p:first-child { margin-bottom: 0.55rem !important; }
+            #promo-modal p.text-base { font-size: 0.88rem !important; line-height: 1.5 !important; margin-bottom: 0.85rem !important; }
+            #promo-modal .grid.gap-2 { gap: 0.5rem !important; margin-bottom: 1rem !important; }
+            #promo-modal .grid.gap-2 .px-4 { padding: 0.55rem 0.8rem !important; }
+            #promo-modal .grid.gap-2 span { font-size: 0.82rem !important; }
+            #promo-modal a[class*="py-3"] { padding-top: 0.7rem !important; padding-bottom: 0.7rem !important; }
+        }
+
         /* Mobile Off Canvas */
         .mobile-drawer {
             opacity: 0;
@@ -2402,6 +2417,9 @@
         };
 
         if(modal && !sessionStorage.getItem('bios_promo_viewed')) {
+            // Marcar como visto al mostrarlo (solo una vez por sesión, aunque
+            // el usuario navegue sin cerrarlo manualmente).
+            sessionStorage.setItem('bios_promo_viewed', 'true');
             requestAnimationFrame(() => document.body.classList.add('promo-ready'));
             requestAnimationFrame(() => modal.classList.add('active'));
         }

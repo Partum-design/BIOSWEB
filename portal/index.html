@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal Pacientes | Laboratorios BIOS</title>
+    <title>Portal de Pacientes | Laboratorios BIOS</title>
+    <meta name="description" content="Accede al portal de pacientes de Laboratorios BIOS: inicia sesión o crea tu cuenta para consultar y descargar tus resultados de forma segura.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800;900&family=Outfit:wght@700;800;900&display=swap" rel="stylesheet">
@@ -13,43 +14,64 @@
     <link rel="stylesheet" href="../assets/multipage.css">
     <link rel="stylesheet" href="../assets/compact.css">
     <script src="../assets/site.js" defer></script>
+    <script>
+        /* ⚠️  URL DEL PORTAL (app Next.js).  Cámbiala por la URL real tras
+           desplegar bios-portal en Vercel — ver bios-portal/DEPLOY.md.
+           Ej: 'https://portal.laboratoriosbios.com'  */
+        window.PORTAL_URL = 'https://bios-portal.vercel.app';
+    </script>
 </head>
 <body>
     <div class="page-shell">
-        <header class="site-header">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-                <a href="../"><img src="../logos/bios-logo-sin-circulo.png" alt="Laboratorios BIOS" class="h-14"></a>
-                <nav class="hidden lg:flex items-center gap-6">
-                    <a class="nav-link" href="../">Inicio</a>
-                    <a class="nav-link" href="../servicios/">Servicios</a>
-                    <a class="nav-link active" href="../portal/">Portal</a>
-                    <a class="nav-link" href="../seguimiento/">Seguimiento</a>
-                    <a class="nav-link" href="../sucursales/">Sucursales</a>
-                </nav>
-                <a href="../seguimiento/" class="primary-button"><i data-lucide="list-checks" class="w-5 h-5"></i> Ver estado</a>
-            </div>
-        </header>
+        <header class="site-header"></header>
         <main class="page-enter max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-14">
-            <section class="dark-panel p-6 lg:p-8 mb-6">
-                <span class="section-kicker !bg-white/10 !border-white/15 !text-cyan-100 mb-5"><i data-lucide="user" class="w-4 h-4"></i> Pacientes</span>
-                <h1 class="brand-type mobile-tight text-4xl lg:text-5xl font-black leading-none mb-4">Portal de pacientes</h1>
-                <p class="text-blue-100 text-lg">Accesos visuales para rastreo, cotización y sucursales mientras se conecta el backend real.</p>
+
+            <!-- Acceso de pacientes -->
+            <section class="dark-panel p-6 lg:p-10 mb-6 relative overflow-hidden">
+                <span class="section-kicker !bg-white/10 !border-white/15 !text-cyan-100 mb-5"><i data-lucide="shield-check" class="w-4 h-4"></i> Portal seguro</span>
+                <div class="grid lg:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <h1 class="brand-type mobile-tight text-4xl lg:text-5xl font-black leading-none mb-4">Consulta tus resultados en línea</h1>
+                        <p class="text-blue-100 text-lg mb-7">Inicia sesión o crea tu cuenta para ver, descargar e imprimir tus estudios clínicos de forma segura, desde cualquier dispositivo.</p>
+                        <div class="flex flex-col sm:flex-row gap-3">
+                            <a id="portal-login" href="#" class="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-white text-[#0A1C2E] font-black hover:-translate-y-0.5 transition shadow-lg">
+                                <i data-lucide="log-in" class="w-5 h-5"></i> Iniciar sesión
+                            </a>
+                            <a id="portal-register" href="#" class="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-white/10 border border-white/25 text-white font-black hover:bg-white/15 transition">
+                                <i data-lucide="user-plus" class="w-5 h-5"></i> Crear cuenta
+                            </a>
+                        </div>
+                        <p class="text-blue-200/70 text-sm mt-5">
+                            ¿No tienes cuenta? También puedes
+                            <a href="../seguimiento/" class="text-cyan-200 font-bold">consultar tus estudios por folio</a>.
+                        </p>
+                    </div>
+                    <figure class="hidden lg:block rounded-2xl overflow-hidden border border-white/10 max-h-[260px]">
+                        <img src="../assets/img/lab-services.webp" alt="Procesamiento de estudios clínicos en Laboratorios BIOS" class="w-full h-full object-cover">
+                    </figure>
+                </div>
             </section>
-            <figure class="page-visual mb-6">
-                <img src="../assets/img/lab-services.webp" alt="Procesamiento de estudios para portal BIOS">
-                <figcaption class="visual-caption">
-                    <p>Accesos de paciente</p>
-                    <p>Resultados, cotizaciones y sucursales en un mismo flujo.</p>
-                </figcaption>
-            </figure>
-            <section class="grid md:grid-cols-4 gap-4">
-                <a class="panel p-6 hover:border-blue-300 transition" href="../seguimiento/"><i data-lucide="list-checks" class="w-8 h-8 text-blue-600 mb-4"></i><h2 class="brand-type text-2xl font-black text-[#0A1C2E]">Estado de estudios</h2><p class="text-slate-500 mt-2">Consulta visual por folio.</p></a>
-                <a class="panel p-6 hover:border-blue-300 transition" href="../servicios/"><i data-lucide="microscope" class="w-8 h-8 text-blue-600 mb-4"></i><h2 class="brand-type text-2xl font-black text-[#0A1C2E]">Cotizar estudios</h2><p class="text-slate-500 mt-2">Catálogo y WhatsApp.</p></a>
-                <a class="panel p-6 hover:border-blue-300 transition" href="../sucursales/"><i data-lucide="map-pin" class="w-8 h-8 text-blue-600 mb-4"></i><h2 class="brand-type text-2xl font-black text-[#0A1C2E]">Ubicar sucursal</h2><p class="text-slate-500 mt-2">Mapa interactivo.</p></a>
-                <a class="panel p-6 hover:border-blue-300 transition" href="../seguimiento/"><i data-lucide="folder-open" class="w-8 h-8 text-blue-600 mb-4"></i><h2 class="brand-type text-2xl font-black text-[#0A1C2E]">Resultados y archivos</h2><p class="text-slate-500 mt-2">Preparado para conexión al sistema administrativo.</p></a>
+
+            <!-- Atajos -->
+            <section class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <a class="panel p-6 hover:border-blue-300 transition" href="../seguimiento/"><i data-lucide="list-checks" class="w-8 h-8 text-blue-600 mb-4"></i><h2 class="brand-type text-2xl font-black text-[#0A1C2E]">Estado de estudios</h2><p class="text-slate-500 mt-2">Consulta el avance por folio, sin cuenta.</p></a>
+                <a class="panel p-6 hover:border-blue-300 transition" href="../servicios/"><i data-lucide="microscope" class="w-8 h-8 text-blue-600 mb-4"></i><h2 class="brand-type text-2xl font-black text-[#0A1C2E]">Cotizar estudios</h2><p class="text-slate-500 mt-2">Catálogo completo e informes por WhatsApp.</p></a>
+                <a class="panel p-6 hover:border-blue-300 transition" href="../sucursales/"><i data-lucide="map-pin" class="w-8 h-8 text-blue-600 mb-4"></i><h2 class="brand-type text-2xl font-black text-[#0A1C2E]">Ubicar sucursal</h2><p class="text-slate-500 mt-2">Mapa interactivo de unidades.</p></a>
+                <a id="portal-results" class="panel p-6 hover:border-blue-300 transition" href="#"><i data-lucide="folder-open" class="w-8 h-8 text-blue-600 mb-4"></i><h2 class="brand-type text-2xl font-black text-[#0A1C2E]">Mis resultados</h2><p class="text-slate-500 mt-2">Entra a tu cuenta para ver y descargar tus PDF.</p></a>
             </section>
         </main>
     </div>
-    <script>lucide.createIcons();</script>
+    <script>
+        // Conecta los botones de acceso con el portal (app Next.js)
+        (function () {
+            var base = (window.PORTAL_URL || '').replace(/\/+$/, '');
+            var map = { 'portal-login': '/login', 'portal-register': '/registro', 'portal-results': '/login' };
+            Object.keys(map).forEach(function (id) {
+                var el = document.getElementById(id);
+                if (el) el.href = base ? base + map[id] : '../seguimiento/';
+            });
+        })();
+        lucide.createIcons();
+    </script>
 </body>
 </html>

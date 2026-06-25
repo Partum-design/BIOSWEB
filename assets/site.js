@@ -328,7 +328,7 @@
             </div>
             <div class="bios-wrap footer-bottom-main">
                 <p>© 2026 Laboratorios BIOS. Todos los derechos reservados.</p>
-                <div>Diseñado y Desarrollado por <strong>Partum Design · Laboratorios BIOS</strong></div>
+                <div>Diseñado y desarrollado por <a href="https://partumdesign.com.mx" target="_blank" rel="noopener"><strong>Partum Design</strong></a></div>
             </div>
         `;
         (document.querySelector('.page-shell') || document.body).appendChild(footer);
@@ -365,6 +365,13 @@
     }
 
     function renderLogoIntro() {
+        // Solo en la primera visita de la sesión — no en cada cambio de página
+        // ni al volver al inicio.
+        try {
+            if (sessionStorage.getItem('bios_intro_seen')) return;
+            sessionStorage.setItem('bios_intro_seen', '1');
+        } catch (e) { /* sessionStorage no disponible: mostrar normalmente */ }
+
         const intro = document.createElement('div');
         intro.className = 'bios-preloader';
         intro.setAttribute('aria-hidden', 'true');
