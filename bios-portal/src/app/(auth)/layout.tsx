@@ -16,9 +16,9 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
         {/* Logo */}
         <Link href="/" className="relative z-10">
           <img
-            src="/logos/bios-logo-sin-circulo.png"
+            src="/logos/bios-logo-white.png"
             alt="Laboratorios BIOS"
-            className="h-16 xl:h-20 object-contain"
+            className="h-24 xl:h-28 w-auto object-contain drop-shadow-sm"
           />
         </Link>
 
@@ -65,9 +65,15 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
       {/* Panel derecho — formulario */}
       <main className="flex-1 flex flex-col items-center justify-center p-6 sm:p-10">
         {/* Logo móvil */}
-        <Link href="/" className="lg:hidden mb-8">
-          <img src="/logos/bios-logo-sin-circulo.png" alt="Laboratorios BIOS"
-               className="h-12 object-contain" />
+        <Link
+          href="/"
+          className="lg:hidden mb-8 rounded-2xl bg-bios-navy px-5 py-4 shadow-lg"
+        >
+          <img
+            src="/logos/bios-logo-white.png"
+            alt="Laboratorios BIOS"
+            className="h-16 w-auto object-contain"
+          />
         </Link>
 
         <div className="w-full max-w-md animate-page-enter">

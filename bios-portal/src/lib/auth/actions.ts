@@ -1,12 +1,26 @@
 "use server";
 
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import {
+  DEMO_SESSION_COOKIE,
+  findDemoAccount,
+  getDemoHomePath,
+  isDemoMode,
+} from "@/lib/demo";
 import { createClient } from "@/lib/supabase/server";
 import { logAudit } from "@/lib/audit";
 import type { ActionResult } from "@/types";
 
 // ─── Registro con email y contraseña ─────────────────────────────────────────
 export async function signUp(formData: FormData): Promise<ActionResult> {
+  if (isDemoMode) {
+    return {
+      success: false,
+      error: "El registro está desactivado en modo demo. Usa una de las cuentas de ejemplo.",
+    };
+  }
+
   const supabase = createClient();
 
   const email    = (formData.get("email")    as string)?.toLowerCase().trim();
@@ -46,8 +60,6 @@ export async function signUp(formData: FormData): Promise<ActionResult> {
 
 // ─── Inicio de sesión con email y contraseña ──────────────────────────────────
 export async function signIn(formData: FormData): Promise<ActionResult> {
-  const supabase = createClient();
-
   const email    = (formData.get("email")    as string)?.toLowerCase().trim();
   const password = formData.get("password")  as string;
   const captchaToken = formData.get("captchaToken") as string | null;
@@ -55,6 +67,28 @@ export async function signIn(formData: FormData): Promise<ActionResult> {
   if (!email || !password) {
     return { success: false, error: "Correo y contraseña son requeridos." };
   }
+
+  if (isDemoMode) {
+    const demoAccount = findDemoAccount(email, password);
+
+    if (!demoAccount) {
+      return {
+        success: false,
+        error: "Usa una cuenta demo válida. La contraseña para todas es Demo1234.",
+      };
+    }
+
+    cookies().set(DEMO_SESSION_COOKIE, demoAccount.role, {
+      httpOnly: true,
+      sameSite: "lax",
+      path: "/",
+      maxAge: 60 * 60 * 8,
+    });
+
+    redirect(getDemoHomePath(demoAccount.role));
+  }
+
+  const supabase = createClient();
 
   const { data, error } = await supabase.auth.signInWithPassword({
     email,
@@ -80,6 +114,10 @@ export async function signIn(formData: FormData): Promise<ActionResult> {
 
 // ─── Login con Google OAuth ───────────────────────────────────────────────────
 export async function signInWithGoogle(): Promise<ActionResult<{ url: string }>> {
+  if (isDemoMode) {
+    return { success: false, error: "Google OAuth está desactivado en modo demo." };
+  }
+
   const supabase = createClient();
 
   const { data, error } = await supabase.auth.signInWithOAuth({
@@ -99,6 +137,14 @@ export async function signInWithGoogle(): Promise<ActionResult<{ url: string }>>
 
 // ─── Recuperar contraseña ─────────────────────────────────────────────────────
 export async function resetPassword(formData: FormData): Promise<ActionResult> {
+  if (isDemoMode) {
+    return {
+      success: true,
+      data: undefined,
+      message: "En modo demo no se envían correos reales.",
+    };
+  }
+
   const supabase = createClient();
 
   const email = (formData.get("email") as string)?.toLowerCase().trim();
@@ -121,6 +167,10 @@ export async function resetPassword(formData: FormData): Promise<ActionResult> {
 
 // ─── Actualizar contraseña (después de reset) ────────────────────────────────
 export async function updatePassword(formData: FormData): Promise<ActionResult> {
+  if (isDemoMode) {
+    redirect("/dashboard");
+  }
+
   const supabase = createClient();
 
   const password = formData.get("password") as string;
@@ -144,6 +194,17 @@ export async function updatePassword(formData: FormData): Promise<ActionResult> 
 
 // ─── Cerrar sesión ────────────────────────────────────────────────────────────
 export async function signOut(): Promise<never> {
+  if (isDemoMode) {
+    cookies().set(DEMO_SESSION_COOKIE, "", {
+      httpOnly: true,
+      sameSite: "lax",
+      path: "/",
+      maxAge: 0,
+    });
+
+    redirect("/login");
+  }
+
   const supabase = createClient();
   const { data: { user } } = await supabase.auth.getUser();
 

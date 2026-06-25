@@ -58,7 +58,7 @@
 }
 
 .bios-header-body {
-    min-height: 90px;
+    min-height: 132px;
     display: grid;
     grid-template-columns: auto minmax(280px, 1fr) auto;
     align-items: center;
@@ -74,9 +74,12 @@
 }
 
 .bios-brand img {
-    height: clamp(56px, 6vw, 80px);
+    height: clamp(96px, 8vw, 150px);
     width: auto;
+    max-width: min(54vw, 560px);
     display: block;
+    object-fit: contain;
+    filter: drop-shadow(0 12px 28px rgba(0,0,0,0.28));
 }
 
 .bios-brand {
@@ -604,9 +607,10 @@
 }
 
 .footer-brand-block img {
-    height: 80px;
+    height: clamp(120px, 9vw, 170px);
     width: auto;
-    opacity: 0.9;
+    max-width: 100%;
+    opacity: 0.96;
     margin-bottom: 1.5rem;
 }
 
@@ -727,7 +731,7 @@
 
 .bios-preloader-logo-wrap {
     position: relative;
-    width: min(64vw, 380px);
+    width: min(78vw, 620px);
     opacity: 0;
     animation: bSlideUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.22s forwards;
 }
@@ -745,7 +749,7 @@
     z-index: 1;
     display: block;
     width: 100%;
-    max-height: 115px;
+    max-height: 245px;
     object-fit: contain;
     filter:
         drop-shadow(0 0 22px rgba(37,99,235,0.55))
@@ -1871,14 +1875,15 @@ body {
     }
 
     .bios-header-body {
-        min-height: 74px;
+        min-height: 98px;
         display: flex;
         justify-content: space-between;
         gap: 1rem;
     }
 
     .bios-brand img {
-        height: 54px;
+        height: 86px;
+        max-width: min(66vw, 300px);
     }
 
     .bios-menu-button {

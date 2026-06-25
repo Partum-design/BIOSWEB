@@ -1,6 +1,13 @@
 "use server";
 
 import { createClient, createAdminClient } from "@/lib/supabase/server";
+import {
+  DEMO_PUBLIC_TOKEN,
+  demoPatients,
+  getDemoPatientById,
+  isDemoMode,
+} from "@/lib/demo";
+import { getDemoSession } from "@/lib/demo-server";
 import { logAudit } from "@/lib/audit";
 import { generateSecureToken, hashToken, getLinkExpiryDate, getResultStoragePath } from "@/lib/utils";
 import type { ActionResult } from "@/types";
@@ -8,10 +15,6 @@ import { redirect } from "next/navigation";
 
 // ─── Buscar o crear paciente ──────────────────────────────────────────────────
 export async function findOrCreatePatient(formData: FormData): Promise<ActionResult<{ id: string; isNew: boolean }>> {
-  const supabase = createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return { success: false, error: "No autenticado." };
-
   const email    = (formData.get("email") as string)?.toLowerCase().trim();
   const fullName = (formData.get("fullName") as string)?.trim();
   const phone    = (formData.get("phone") as string)?.trim() || null;
@@ -19,6 +22,24 @@ export async function findOrCreatePatient(formData: FormData): Promise<ActionRes
   if (!email || !fullName) {
     return { success: false, error: "Nombre y correo son requeridos." };
   }
+
+  if (isDemoMode) {
+    const session = getDemoSession();
+    if (!session) return { success: false, error: "No autenticado." };
+
+    const existing = demoPatients.find((patient) => patient.email === email);
+    return {
+      success: true,
+      data: {
+        id: existing?.id ?? "demo-patient-new",
+        isNew: !existing,
+      },
+    };
+  }
+
+  const supabase = createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return { success: false, error: "No autenticado." };
 
   // Buscar primero por email
   const { data: existing } = await supabase
@@ -48,6 +69,35 @@ export async function findOrCreatePatient(formData: FormData): Promise<ActionRes
 
 // ─── Subir resultado médico completo ────────────────────────────────────────
 export async function uploadResult(formData: FormData): Promise<ActionResult<{ resultId: string; accessToken?: string }>> {
+  if (isDemoMode) {
+    const session = getDemoSession();
+    if (!session) return { success: false, error: "No autenticado." };
+    if (!["doctor", "admin"].includes(session.role)) {
+      return { success: false, error: "No tienes perfil de médico activo." };
+    }
+
+    const patientId = formData.get("patientId") as string;
+    const title = (formData.get("title") as string)?.trim();
+    const studyType = (formData.get("studyType") as string)?.trim();
+    const resultDate = formData.get("resultDate") as string;
+
+    if (!patientId || !title || !studyType || !resultDate) {
+      return { success: false, error: "Paciente, título, tipo de estudio y fecha son requeridos." };
+    }
+
+    if (patientId !== "demo-patient-new" && !getDemoPatientById(patientId)) {
+      return { success: false, error: "Selecciona un paciente válido para la demo." };
+    }
+
+    return {
+      success: true,
+      data: {
+        resultId: "demo-result-created",
+        accessToken: formData.get("generateLink") === "true" ? DEMO_PUBLIC_TOKEN : undefined,
+      },
+    };
+  }
+
   const supabase      = createClient();
   const adminClient   = createAdminClient();
 

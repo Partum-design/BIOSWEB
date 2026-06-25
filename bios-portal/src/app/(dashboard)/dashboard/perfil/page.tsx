@@ -22,9 +22,18 @@ export default function PerfilPage() {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPw, setShowPw] = useState(false);
+  const demoMode = process.env.NEXT_PUBLIC_DEMO_MODE === "true";
 
   useEffect(() => {
     async function load() {
+      if (demoMode) {
+        setUserId("demo-profile-patient");
+        setEmail("paciente@bios.demo");
+        setFullName("María Fernández López");
+        setPhone("55 1200 3344");
+        return;
+      }
+
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) { router.push("/login"); return; }
       setUserId(user.id);
@@ -46,11 +55,17 @@ export default function PerfilPage() {
       if (patient?.phone) setPhone(patient.phone ?? "");
     }
     load();
-  }, []);
+  }, [demoMode, router]);
 
   async function saveProfile(e: React.FormEvent) {
     e.preventDefault();
     setProfileMsg(null);
+
+    if (demoMode) {
+      setProfileMsg({ ok: true, text: "Perfil actualizado correctamente en la demo." });
+      return;
+    }
+
     startTransition(async () => {
       const { error } = await supabase
         .from("profiles")
@@ -76,6 +91,13 @@ export default function PerfilPage() {
   async function savePassword(e: React.FormEvent) {
     e.preventDefault();
     setPasswordMsg(null);
+
+    if (demoMode) {
+      setPasswordMsg({ ok: true, text: "Contraseña actualizada correctamente en la demo." });
+      setNewPassword("");
+      setConfirmPassword("");
+      return;
+    }
 
     if (newPassword.length < 8) {
       setPasswordMsg({ ok: false, text: "La contraseña debe tener al menos 8 caracteres." });

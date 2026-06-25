@@ -1,8 +1,55 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
+import {
+  DEMO_SESSION_COOKIE,
+  getDemoHomePath,
+  getDemoRoleFromCookie,
+  isDemoMode,
+} from "@/lib/demo";
 import type { Database } from "@/types/database";
 
 export async function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+
+  if (isDemoMode) {
+    const role = getDemoRoleFromCookie(request.cookies.get(DEMO_SESSION_COOKIE)?.value);
+    const authOnlyPaths = ["/login", "/registro", "/recuperar-password"];
+    const patientPaths = ["/dashboard"];
+    const doctorPaths = ["/medico"];
+    const adminPaths = ["/admin"];
+
+    const isAuthRoute = authOnlyPaths.some((r) => pathname.startsWith(r));
+    const isPatientRoute = patientPaths.some((r) => pathname.startsWith(r));
+    const isDoctorRoute = doctorPaths.some((r) => pathname.startsWith(r));
+    const isAdminRoute = adminPaths.some((r) => pathname.startsWith(r));
+    const isProtected = isPatientRoute || isDoctorRoute || isAdminRoute;
+
+    if (role && isAuthRoute) {
+      return NextResponse.redirect(new URL(getDemoHomePath(role), request.url));
+    }
+
+    if (!role && isProtected) {
+      const url = request.nextUrl.clone();
+      url.pathname = "/login";
+      url.searchParams.set("next", pathname);
+      return NextResponse.redirect(url);
+    }
+
+    if (role === "patient" && (isDoctorRoute || isAdminRoute)) {
+      return NextResponse.redirect(new URL("/dashboard", request.url));
+    }
+
+    if (role === "doctor" && (isPatientRoute || isAdminRoute)) {
+      return NextResponse.redirect(new URL("/medico", request.url));
+    }
+
+    if (role === "admin" && isPatientRoute) {
+      return NextResponse.redirect(new URL("/admin", request.url));
+    }
+
+    return NextResponse.next();
+  }
+
   let supabaseResponse = NextResponse.next({ request });
 
   const supabase = createServerClient<Database>(
@@ -28,8 +75,6 @@ export async function middleware(request: NextRequest) {
 
   // Refrescar la sesión si expiró
   const { data: { user } } = await supabase.auth.getUser();
-
-  const { pathname } = request.nextUrl;
 
   // Rutas públicas que nunca requieren auth
   const publicPaths = ["/consulta/", "/auth/", "/api/consulta/"];

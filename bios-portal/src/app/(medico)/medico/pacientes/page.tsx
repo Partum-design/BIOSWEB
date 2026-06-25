@@ -1,4 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
+import { demoPatients, demoResults, isDemoMode } from "@/lib/demo";
+import { getDemoSession } from "@/lib/demo-server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { Users, FilePlus, Search, User, Mail, Phone, FileText } from "lucide-react";
@@ -13,25 +15,60 @@ interface PageProps {
 }
 
 export default async function PacientesPage({ searchParams }: PageProps) {
-  const supabase = createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) redirect("/login");
+  let patients: {
+    id: string;
+    full_name: string;
+    email: string;
+    phone: string | null;
+    created_at: string;
+    profile_id: string | null;
+    result_count: { count: number }[];
+  }[] = [];
 
-  let query = supabase
-    .from("patients")
-    .select(`
-      id, full_name, email, phone, created_at, profile_id,
-      result_count:medical_results(count)
-    `)
-    .eq("created_by", user.id)
-    .order("created_at", { ascending: false });
+  if (isDemoMode) {
+    const session = getDemoSession();
+    if (!session) redirect("/login");
 
-  if (searchParams.q) {
-    query = query.or(`full_name.ilike.%${searchParams.q}%,email.ilike.%${searchParams.q}%`);
+    patients = demoPatients.map((patient) => ({
+      ...patient,
+      result_count: [
+        {
+          count: demoResults.filter((result) => result.patient_id === patient.id).length,
+        },
+      ],
+    }));
+
+    if (searchParams.q) {
+      const query = searchParams.q.toLowerCase();
+      patients = patients.filter(
+        (patient) =>
+          patient.full_name.toLowerCase().includes(query) ||
+          patient.email.toLowerCase().includes(query)
+      );
+    }
+  } else {
+    const supabase = createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) redirect("/login");
+
+    let query = supabase
+      .from("patients")
+      .select(`
+        id, full_name, email, phone, created_at, profile_id,
+        result_count:medical_results(count)
+      `)
+      .eq("created_by", user.id)
+      .order("created_at", { ascending: false });
+
+    if (searchParams.q) {
+      query = query.or(`full_name.ilike.%${searchParams.q}%,email.ilike.%${searchParams.q}%`);
+    }
+
+    const { data } = await query;
+    patients = (data ?? []) as unknown as typeof patients;
   }
 
-  const { data: patients } = await query;
-  const total = patients?.length ?? 0;
+  const total = patients.length;
 
   return (
     <div className="animate-page-enter space-y-6">

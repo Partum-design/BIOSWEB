@@ -1,4 +1,11 @@
 import { createClient } from "@/lib/supabase/server";
+import {
+  demoDoctor,
+  demoPatients,
+  getDemoResultsForDoctor,
+  isDemoMode,
+} from "@/lib/demo";
+import { getDemoSession } from "@/lib/demo-server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { FilePlus, FileText, Users, ArrowRight, Stethoscope, TrendingUp } from "lucide-react";
@@ -10,21 +17,110 @@ import type { Metadata } from "next";
 export const metadata: Metadata = { title: "Panel Médico" };
 
 export default async function MedicoDashboardPage() {
-  const supabase = createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) redirect("/login");
+  let firstName = "Doctor";
+  let doctor: {
+    id: string;
+    professional_name: string | null;
+    specialty: string | null;
+  } | null = null;
+  let totalResults = 0;
+  let publishedResults = 0;
+  let draftResults = 0;
+  let totalPatients = 0;
+  let recentResults: {
+    id: string;
+    title: string;
+    study_type: string;
+    status: "draft" | "published" | "sent" | "viewed" | "archived";
+    created_at: string;
+    patient: { full_name: string; email: string } | null;
+  }[] = [];
 
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("full_name")
-    .eq("id", user.id)
-    .single();
+  if (isDemoMode) {
+    const session = getDemoSession();
+    if (!session) redirect("/login");
 
-  const { data: doctor } = await supabase
-    .from("doctors")
-    .select("id, professional_name, specialty")
-    .eq("profile_id", user.id)
-    .single();
+    const doctorResults = getDemoResultsForDoctor(demoDoctor.id);
+
+    doctor = demoDoctor;
+    firstName = session.profile.full_name.split(" ")[0] ?? "Doctor";
+    totalResults = doctorResults.length;
+    publishedResults = doctorResults.filter((result) =>
+      ["published", "sent", "viewed"].includes(result.status)
+    ).length;
+    draftResults = doctorResults.filter((result) => result.status === "draft").length;
+    totalPatients = demoPatients.length;
+    recentResults = doctorResults.slice(0, 6).map((result) => {
+      const patient = demoPatients.find((item) => item.id === result.patient_id) ?? null;
+      return {
+        ...result,
+        patient: patient ? { full_name: patient.full_name, email: patient.email } : null,
+      };
+    });
+  } else {
+    const supabase = createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) redirect("/login");
+
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("full_name")
+      .eq("id", user.id)
+      .single();
+
+    const { data: doctorData } = await supabase
+      .from("doctors")
+      .select("id, professional_name, specialty")
+      .eq("profile_id", user.id)
+      .single();
+
+    doctor = doctorData;
+    firstName = profile?.full_name?.split(" ")[0] ?? "Doctor";
+
+    if (doctor) {
+      const [
+        { count: total },
+        { count: published },
+        { count: drafts },
+        { count: patients },
+        { data },
+      ] = await Promise.all([
+        supabase
+          .from("medical_results")
+          .select("id", { count: "exact", head: true })
+          .eq("doctor_id", doctor.id),
+        supabase
+          .from("medical_results")
+          .select("id", { count: "exact", head: true })
+          .eq("doctor_id", doctor.id)
+          .in("status", ["published", "sent", "viewed"]),
+        supabase
+          .from("medical_results")
+          .select("id", { count: "exact", head: true })
+          .eq("doctor_id", doctor.id)
+          .eq("status", "draft"),
+        supabase
+          .from("patients")
+          .select("id", { count: "exact", head: true })
+          .eq("created_by", user.id),
+        supabase
+          .from("medical_results")
+          .select(`
+            id, title, study_type, status, created_at,
+            patient:patients(full_name, email)
+          `)
+          .eq("doctor_id", doctor.id)
+          .order("created_at", { ascending: false })
+          .limit(6),
+      ]);
+
+      totalResults = total ?? 0;
+      publishedResults = published ?? 0;
+      draftResults = drafts ?? 0;
+      totalPatients = patients ?? 0;
+      recentResults = (data ?? []) as unknown as typeof recentResults;
+    }
+  }
 
   // Si no tiene registro de médico todavía, pedirle que complete su perfil
   if (!doctor) {
@@ -43,47 +139,11 @@ export default async function MedicoDashboardPage() {
     );
   }
 
-  // Stats
-  const { count: totalResults } = await supabase
-    .from("medical_results")
-    .select("id", { count: "exact", head: true })
-    .eq("doctor_id", doctor.id);
-
-  const { count: publishedResults } = await supabase
-    .from("medical_results")
-    .select("id", { count: "exact", head: true })
-    .eq("doctor_id", doctor.id)
-    .in("status", ["published", "sent", "viewed"]);
-
-  const { count: draftResults } = await supabase
-    .from("medical_results")
-    .select("id", { count: "exact", head: true })
-    .eq("doctor_id", doctor.id)
-    .eq("status", "draft");
-
-  const { count: totalPatients } = await supabase
-    .from("patients")
-    .select("id", { count: "exact", head: true })
-    .eq("created_by", user.id);
-
-  // Últimos resultados subidos
-  const { data: recentResults } = await supabase
-    .from("medical_results")
-    .select(`
-      id, title, study_type, status, created_at,
-      patient:patients(full_name, email)
-    `)
-    .eq("doctor_id", doctor.id)
-    .order("created_at", { ascending: false })
-    .limit(6);
-
-  const firstName = profile?.full_name?.split(" ")[0] ?? "Doctor";
-
   const stats = [
-    { label: "Resultados totales",  value: totalResults ?? 0,    icon: FileText, color: "text-bios-blue",  bg: "bg-blue-50" },
-    { label: "Publicados / Vistos", value: publishedResults ?? 0, icon: TrendingUp, color: "text-green-600", bg: "bg-green-50" },
-    { label: "Borradores",          value: draftResults ?? 0,    icon: FileText, color: "text-amber-600",  bg: "bg-amber-50" },
-    { label: "Pacientes creados",   value: totalPatients ?? 0,   icon: Users,    color: "text-purple-600", bg: "bg-purple-50" },
+    { label: "Resultados totales",  value: totalResults,    icon: FileText, color: "text-bios-blue",  bg: "bg-blue-50" },
+    { label: "Publicados / Vistos", value: publishedResults, icon: TrendingUp, color: "text-green-600", bg: "bg-green-50" },
+    { label: "Borradores",          value: draftResults,    icon: FileText, color: "text-amber-600",  bg: "bg-amber-50" },
+    { label: "Pacientes creados",   value: totalPatients,   icon: Users,    color: "text-purple-600", bg: "bg-purple-50" },
   ];
 
   return (

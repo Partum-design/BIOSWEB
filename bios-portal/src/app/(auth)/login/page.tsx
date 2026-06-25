@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Eye, EyeOff, Mail, Lock, LogIn, Chrome } from "lucide-react";
 import { signIn, signInWithGoogle } from "@/lib/auth/actions";
+import { demoLoginAccounts } from "@/lib/demo";
 import { cn } from "@/lib/utils";
 
 export default function LoginPage() {
@@ -13,7 +14,10 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [googleLoading, setGoogleLoading] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const googleEnabled = process.env.NEXT_PUBLIC_ENABLE_GOOGLE_AUTH === "true";
+  const demoMode = process.env.NEXT_PUBLIC_DEMO_MODE === "true";
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -40,6 +44,23 @@ export default function LoginPage() {
     }
   }
 
+  function handleDemoSignIn(account: (typeof demoLoginAccounts)[number]) {
+    setEmail(account.email);
+    setPassword(account.password);
+    setError(null);
+
+    const formData = new FormData();
+    formData.set("email", account.email);
+    formData.set("password", account.password);
+
+    startTransition(async () => {
+      const result = await signIn(formData);
+      if (result && !result.success) {
+        setError(result.error);
+      }
+    });
+  }
+
   return (
     <div>
       <div className="mb-8">
@@ -61,6 +82,37 @@ export default function LoginPage() {
       {error && (
         <div className="mb-5 px-4 py-3 rounded-xl bg-red-50 border border-red-200 text-red-700 text-sm font-medium flex items-start gap-2">
           <span className="mt-0.5">⚠</span> {error}
+        </div>
+      )}
+
+      {demoMode && (
+        <div className="mb-5 space-y-2">
+          <p className="text-xs font-black uppercase tracking-widest text-gray-400">
+            Acceso demo
+          </p>
+          <div className="grid gap-2">
+            {demoLoginAccounts.map((account) => (
+              <button
+                key={account.role}
+                type="button"
+                onClick={() => handleDemoSignIn(account)}
+                disabled={isPending}
+                className="w-full text-left rounded-xl border border-bios-line bg-white px-4 py-3 transition hover:border-bios-blue hover:shadow-sm disabled:opacity-60"
+              >
+                <span className="flex items-center justify-between gap-3">
+                  <span>
+                    <span className="block text-sm font-black text-bios-navy">
+                      Entrar como {account.label}
+                    </span>
+                    <span className="block text-xs text-gray-400 mt-0.5">
+                      {account.email} · {account.description}
+                    </span>
+                  </span>
+                  <LogIn className="w-4 h-4 text-bios-blue flex-shrink-0" />
+                </span>
+              </button>
+            ))}
+          </div>
         </div>
       )}
 
@@ -110,6 +162,8 @@ export default function LoginPage() {
               id="email"
               name="email"
               type="email"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
               required
               autoComplete="email"
               placeholder="tu@correo.com"
@@ -132,6 +186,8 @@ export default function LoginPage() {
               id="password"
               name="password"
               type={showPassword ? "text" : "password"}
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
               required
               autoComplete="current-password"
               placeholder="••••••••"

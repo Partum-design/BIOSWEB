@@ -32,9 +32,9 @@ export function DashboardSidebar({ profile }: DashboardSidebarProps) {
       <div className="p-5 border-b border-white/10">
         <Link href="/" className="block mb-5">
           <img
-            src="/logos/bios-logo-sin-circulo.png"
+            src="/logos/bios-logo-white.png"
             alt="Laboratorios BIOS"
-            className="h-11 object-contain"
+            className="h-16 max-w-full object-contain"
           />
         </Link>
         <div className="flex items-center gap-3">

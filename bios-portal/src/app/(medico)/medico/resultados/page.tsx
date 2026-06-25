@@ -1,4 +1,11 @@
 import { createClient } from "@/lib/supabase/server";
+import {
+  demoDoctor,
+  demoPatients,
+  getDemoResultsForDoctor,
+  isDemoMode,
+} from "@/lib/demo";
+import { getDemoSession } from "@/lib/demo-server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { FilePlus, FileText, ArrowRight, Search, Link2, Trash2 } from "lucide-react";
@@ -14,29 +21,63 @@ interface PageProps {
 }
 
 export default async function MedicoResultadosPage({ searchParams }: PageProps) {
-  const supabase = createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) redirect("/login");
+  let results: {
+    id: string;
+    title: string;
+    study_type: string;
+    result_date: string;
+    status: "draft" | "published" | "sent" | "viewed" | "archived";
+    created_at: string;
+    patient: { full_name: string; email: string } | null;
+  }[] = [];
 
-  const { data: doctor } = await supabase
-    .from("doctors").select("id").eq("profile_id", user.id).single();
+  if (isDemoMode) {
+    const session = getDemoSession();
+    if (!session) redirect("/login");
 
-  if (!doctor) redirect("/medico");
+    results = getDemoResultsForDoctor(demoDoctor.id).map((result) => {
+      const patient = demoPatients.find((item) => item.id === result.patient_id) ?? null;
+      return {
+        ...result,
+        patient: patient ? { full_name: patient.full_name, email: patient.email } : null,
+      };
+    });
 
-  let query = supabase
-    .from("medical_results")
-    .select(`
-      id, title, study_type, result_date, status, created_at,
-      patient:patients(full_name, email)
-    `)
-    .eq("doctor_id", doctor.id)
-    .order("created_at", { ascending: false });
+    if (searchParams.estatus) {
+      results = results.filter((result) => result.status === searchParams.estatus);
+    }
+    if (searchParams.q) {
+      results = results.filter((result) =>
+        result.title.toLowerCase().includes(searchParams.q!.toLowerCase())
+      );
+    }
+  } else {
+    const supabase = createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) redirect("/login");
 
-  if (searchParams.estatus) query = query.eq("status", searchParams.estatus as never);
-  if (searchParams.q)       query = query.or(`title.ilike.%${searchParams.q}%`);
+    const { data: doctor } = await supabase
+      .from("doctors").select("id").eq("profile_id", user.id).single();
 
-  const { data: results } = await query;
-  const total = results?.length ?? 0;
+    if (!doctor) redirect("/medico");
+
+    let query = supabase
+      .from("medical_results")
+      .select(`
+        id, title, study_type, result_date, status, created_at,
+        patient:patients(full_name, email)
+      `)
+      .eq("doctor_id", doctor.id)
+      .order("created_at", { ascending: false });
+
+    if (searchParams.estatus) query = query.eq("status", searchParams.estatus as never);
+    if (searchParams.q)       query = query.or(`title.ilike.%${searchParams.q}%`);
+
+    const { data } = await query;
+    results = (data ?? []) as unknown as typeof results;
+  }
+
+  const total = results.length;
 
   return (
     <div className="animate-page-enter space-y-6">

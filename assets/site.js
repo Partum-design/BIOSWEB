@@ -75,7 +75,7 @@
     }
 
     function logoSrc() {
-        return `${basePath()}logos/bios-logo-sin-circulo.png`;
+        return `${basePath()}logos/bios-logo-white.png`;
     }
 
     function applyLogo() {

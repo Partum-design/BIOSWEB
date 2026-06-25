@@ -1,4 +1,10 @@
 import { createClient } from "@/lib/supabase/server";
+import {
+  getDemoPatientByProfileId,
+  getDemoVisibleResultsForPatient,
+  isDemoMode,
+} from "@/lib/demo";
+import { getDemoSession } from "@/lib/demo-server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import {
@@ -12,51 +18,80 @@ import type { Metadata } from "next";
 export const metadata: Metadata = { title: "Inicio" };
 
 export default async function DashboardPage() {
-  const supabase = createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) redirect("/login");
+  let firstName = "Paciente";
+  let results: {
+    id: string;
+    title: string;
+    study_type: string;
+    result_date: string;
+    status: "draft" | "published" | "sent" | "viewed" | "archived";
+    created_at: string;
+  }[] = [];
+  let totalCount = 0;
+  let newCount = 0;
 
-  const [profileResult, patientResult] = await Promise.all([
-    supabase.from("profiles").select("full_name").eq("id", user.id).single(),
-    supabase.from("patients").select("id").eq("profile_id", user.id).single(),
-  ]);
+  if (isDemoMode) {
+    const session = getDemoSession();
+    if (!session) redirect("/login");
 
-  const profile  = profileResult.data;
-  const patient  = patientResult.data;
+    const patient = getDemoPatientByProfileId(session.profile.id);
+    const allResults = patient ? getDemoVisibleResultsForPatient(patient.id) : [];
 
-  const { data: results } = patient
-    ? await supabase
-        .from("medical_results")
-        .select("id, title, study_type, result_date, status, created_at")
-        .eq("patient_id", patient.id)
-        .in("status", ["published", "sent", "viewed", "archived"])
-        .order("created_at", { ascending: false })
-        .limit(5)
-    : { data: [] };
+    results = allResults.slice(0, 5);
+    totalCount = allResults.length;
+    newCount = allResults.filter((result) =>
+      ["published", "sent"].includes(result.status)
+    ).length;
+    firstName = session.profile.full_name.split(" ")[0] ?? "Paciente";
+  } else {
+    const supabase = createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) redirect("/login");
 
-  // Estadísticas
-  const { count: totalCount } = patient
-    ? await supabase
-        .from("medical_results")
-        .select("id", { count: "exact", head: true })
-        .eq("patient_id", patient.id)
-        .in("status", ["published", "sent", "viewed", "archived"])
-    : { count: 0 };
+    const [profileResult, patientResult] = await Promise.all([
+      supabase.from("profiles").select("full_name").eq("id", user.id).single(),
+      supabase.from("patients").select("id").eq("profile_id", user.id).single(),
+    ]);
 
-  const { count: newCount } = patient
-    ? await supabase
-        .from("medical_results")
-        .select("id", { count: "exact", head: true })
-        .eq("patient_id", patient.id)
-        .in("status", ["published", "sent"])
-    : { count: 0 };
+    const profile = profileResult.data;
+    const patient = patientResult.data;
 
-  const firstName = profile?.full_name?.split(" ")[0] ?? "Paciente";
+    const { data } = patient
+      ? await supabase
+          .from("medical_results")
+          .select("id, title, study_type, result_date, status, created_at")
+          .eq("patient_id", patient.id)
+          .in("status", ["published", "sent", "viewed", "archived"])
+          .order("created_at", { ascending: false })
+          .limit(5)
+      : { data: [] };
+
+    const { count: total } = patient
+      ? await supabase
+          .from("medical_results")
+          .select("id", { count: "exact", head: true })
+          .eq("patient_id", patient.id)
+          .in("status", ["published", "sent", "viewed", "archived"])
+      : { count: 0 };
+
+    const { count: fresh } = patient
+      ? await supabase
+          .from("medical_results")
+          .select("id", { count: "exact", head: true })
+          .eq("patient_id", patient.id)
+          .in("status", ["published", "sent"])
+      : { count: 0 };
+
+    results = data ?? [];
+    totalCount = total ?? 0;
+    newCount = fresh ?? 0;
+    firstName = profile?.full_name?.split(" ")[0] ?? "Paciente";
+  }
 
   const stats = [
-    { label: "Resultados totales",  value: totalCount ?? 0, icon: FileText,    color: "text-bios-blue",  bg: "bg-blue-50" },
-    { label: "Nuevos disponibles",  value: newCount ?? 0,   icon: Clock,       color: "text-amber-600",  bg: "bg-amber-50" },
-    { label: "Resultados vistos",   value: (totalCount ?? 0) - (newCount ?? 0), icon: CheckCircle, color: "text-green-600", bg: "bg-green-50" },
+    { label: "Resultados totales",  value: totalCount, icon: FileText,    color: "text-bios-blue",  bg: "bg-blue-50" },
+    { label: "Nuevos disponibles",  value: newCount,   icon: Clock,       color: "text-amber-600",  bg: "bg-amber-50" },
+    { label: "Resultados vistos",   value: totalCount - newCount, icon: CheckCircle, color: "text-green-600", bg: "bg-green-50" },
     { label: "Estudios este año",   value: results?.filter(r => new Date(r.created_at).getFullYear() === new Date().getFullYear()).length ?? 0, icon: FlaskConical, color: "text-purple-600", bg: "bg-purple-50" },
   ];
 

@@ -1,4 +1,12 @@
 import { createAdminClient } from "@/lib/supabase/server";
+import {
+  demoAuditLogs,
+  demoDoctor,
+  demoPatients,
+  demoProfiles,
+  demoResults,
+  isDemoMode,
+} from "@/lib/demo";
 import { formatRelativeTime } from "@/lib/utils";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import {
@@ -10,63 +18,125 @@ import type { Metadata } from "next";
 export const metadata: Metadata = { title: "Panel Administrador" };
 
 export default async function AdminPage() {
-  const adminClient = createAdminClient();
+  let totalUsers = 0;
+  let totalPatients = 0;
+  let totalDoctors = 0;
+  let totalResults = 0;
+  let activeLinks = 0;
+  let auditToday = 0;
+  let recentAudit: {
+    id: string;
+    action: string;
+    entity_type: string;
+    entity_id: string | null;
+    created_at: string;
+    actor_profile_id: string | null;
+  }[] = [];
+  let recentResults: {
+    id: string;
+    title: string;
+    status: "draft" | "published" | "sent" | "viewed" | "archived";
+    created_at: string;
+    patient: { full_name: string } | null;
+  }[] = [];
+  let pendingDoctors: {
+    id: string;
+    full_name: string;
+    email: string;
+    created_at: string;
+  }[] = [];
 
-  // Totales
-  const [
-    { count: totalUsers },
-    { count: totalPatients },
-    { count: totalDoctors },
-    { count: totalResults },
-    { count: activeLinks },
-    { count: auditToday },
-  ] = await Promise.all([
-    adminClient.from("profiles").select("id", { count: "exact", head: true }),
-    adminClient.from("patients").select("id", { count: "exact", head: true }),
-    adminClient.from("doctors").select("id", { count: "exact", head: true }),
-    adminClient.from("medical_results").select("id", { count: "exact", head: true }),
-    adminClient
-      .from("result_access_links")
-      .select("id", { count: "exact", head: true })
-      .is("revoked_at", null)
-      .gt("expires_at", new Date().toISOString()),
-    adminClient
+  if (isDemoMode) {
+    totalUsers = Object.keys(demoProfiles).length + 2;
+    totalPatients = demoPatients.length;
+    totalDoctors = 1;
+    totalResults = demoResults.length;
+    activeLinks = 3;
+    auditToday = 4;
+    recentAudit = demoAuditLogs;
+    recentResults = demoResults.slice(0, 6).map((result) => {
+      const patient = demoPatients.find((item) => item.id === result.patient_id) ?? null;
+      return {
+        id: result.id,
+        title: result.title,
+        status: result.status,
+        created_at: result.created_at,
+        patient: patient ? { full_name: patient.full_name } : null,
+      };
+    });
+    pendingDoctors = [
+      {
+        id: "demo-pending-doctor",
+        full_name: "Dr. Roberto Salas",
+        email: "roberto.salas@example.com",
+        created_at: "2026-06-22T10:30:00.000Z",
+      },
+    ].filter((doctor) => doctor.id !== demoDoctor.id);
+  } else {
+    const adminClient = createAdminClient();
+
+    const [
+      { count: users },
+      { count: patients },
+      { count: doctors },
+      { count: results },
+      { count: links },
+      { count: audits },
+    ] = await Promise.all([
+      adminClient.from("profiles").select("id", { count: "exact", head: true }),
+      adminClient.from("patients").select("id", { count: "exact", head: true }),
+      adminClient.from("doctors").select("id", { count: "exact", head: true }),
+      adminClient.from("medical_results").select("id", { count: "exact", head: true }),
+      adminClient
+        .from("result_access_links")
+        .select("id", { count: "exact", head: true })
+        .is("revoked_at", null)
+        .gt("expires_at", new Date().toISOString()),
+      adminClient
+        .from("audit_logs")
+        .select("id", { count: "exact", head: true })
+        .gte("created_at", new Date(Date.now() - 86400000).toISOString()),
+    ]);
+
+    const { data: auditData } = await adminClient
       .from("audit_logs")
-      .select("id", { count: "exact", head: true })
-      .gte("created_at", new Date(Date.now() - 86400000).toISOString()),
-  ]);
+      .select("id, action, entity_type, entity_id, created_at, actor_profile_id")
+      .order("created_at", { ascending: false })
+      .limit(10);
 
-  // Últimos eventos de auditoría
-  const { data: recentAudit } = await adminClient
-    .from("audit_logs")
-    .select("id, action, entity_type, entity_id, created_at, actor_profile_id")
-    .order("created_at", { ascending: false })
-    .limit(10);
+    const { data: resultData } = await adminClient
+      .from("medical_results")
+      .select(`
+        id, title, status, created_at,
+        patient:patients(full_name)
+      `)
+      .order("created_at", { ascending: false })
+      .limit(6);
 
-  // Resultados recientes
-  const { data: recentResults } = await adminClient
-    .from("medical_results")
-    .select(`
-      id, title, status, created_at,
-      patient:patients(full_name)
-    `)
-    .order("created_at", { ascending: false })
-    .limit(6);
+    const { data: pendingData } = await adminClient
+      .from("profiles")
+      .select("id, full_name, email, created_at")
+      .eq("role", "doctor")
+      .not("id", "in", `(SELECT profile_id FROM doctors WHERE profile_id IS NOT NULL)`);
 
-  // Usuarios sin perfil de médico pero con rol doctor
-  const { data: pendingDoctors } = await adminClient
-    .from("profiles")
-    .select("id, full_name, email, created_at")
-    .eq("role", "doctor")
-    .not("id", "in", `(SELECT profile_id FROM doctors WHERE profile_id IS NOT NULL)`);
+    totalUsers = users ?? 0;
+    totalPatients = patients ?? 0;
+    totalDoctors = doctors ?? 0;
+    totalResults = results ?? 0;
+    activeLinks = links ?? 0;
+    auditToday = audits ?? 0;
+    recentAudit = auditData ?? [];
+    recentResults = (resultData ?? []) as unknown as typeof recentResults;
+    pendingDoctors = pendingData ?? [];
+  }
 
   const stats = [
-    { label: "Usuarios",      value: totalUsers ?? 0,    icon: Users,       color: "text-bios-blue",   bg: "bg-blue-50" },
-    { label: "Pacientes",     value: totalPatients ?? 0, icon: Users,       color: "text-purple-600",  bg: "bg-purple-50" },
-    { label: "Médicos",       value: totalDoctors ?? 0,  icon: Stethoscope, color: "text-teal-600",    bg: "bg-teal-50" },
-    { label: "Resultados",    value: totalResults ?? 0,  icon: FileText,    color: "text-indigo-600",  bg: "bg-indigo-50" },
-    { label: "Links activos", value: activeLinks ?? 0,   icon: Link2,       color: "text-cyan-600",    bg: "bg-cyan-50" },
-    { label: "Eventos hoy",   value: auditToday ?? 0,    icon: Activity,    color: "text-green-600",   bg: "bg-green-50" },
+    { label: "Usuarios",      value: totalUsers,    icon: Users,       color: "text-bios-blue",   bg: "bg-blue-50" },
+    { label: "Pacientes",     value: totalPatients, icon: Users,       color: "text-purple-600",  bg: "bg-purple-50" },
+    { label: "Médicos",       value: totalDoctors,  icon: Stethoscope, color: "text-teal-600",    bg: "bg-teal-50" },
+    { label: "Resultados",    value: totalResults,  icon: FileText,    color: "text-indigo-600",  bg: "bg-indigo-50" },
+    { label: "Links activos", value: activeLinks,   icon: Link2,       color: "text-cyan-600",    bg: "bg-cyan-50" },
+    { label: "Eventos hoy",   value: auditToday,    icon: Activity,    color: "text-green-600",   bg: "bg-green-50" },
   ];
 
   return (

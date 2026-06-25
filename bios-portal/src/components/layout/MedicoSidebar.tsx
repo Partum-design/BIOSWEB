@@ -30,7 +30,11 @@ export function MedicoSidebar({ profile }: MedicoSidebarProps) {
       {/* Header */}
       <div className="p-5 border-b border-white/10">
         <Link href="/" className="block mb-5">
-          <img src="/logos/bios-logo-sin-circulo.png" alt="Laboratorios BIOS" className="h-11 object-contain" />
+          <img
+            src="/logos/bios-logo-white.png"
+            alt="Laboratorios BIOS"
+            className="h-16 max-w-full object-contain"
+          />
         </Link>
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-full bg-cyan-400/20 border border-cyan-400/30 flex items-center justify-center">

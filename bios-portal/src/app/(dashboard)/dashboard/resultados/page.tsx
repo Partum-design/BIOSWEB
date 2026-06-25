@@ -1,4 +1,10 @@
 import { createClient } from "@/lib/supabase/server";
+import {
+  getDemoPatientByProfileId,
+  getDemoVisibleResultsForPatient,
+  isDemoMode,
+} from "@/lib/demo";
+import { getDemoSession } from "@/lib/demo-server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { FileText, ArrowRight, Search, Filter } from "lucide-react";
@@ -15,46 +21,78 @@ interface PageProps {
 }
 
 export default async function ResultadosPage({ searchParams }: PageProps) {
-  const supabase = createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) redirect("/login");
+  let results: {
+    id: string;
+    title: string;
+    study_type: string;
+    result_date: string;
+    status: "draft" | "published" | "sent" | "viewed" | "archived";
+    lab_branch: string | null;
+    notes_for_patient: string | null;
+    created_at: string;
+  }[] = [];
 
-  const { data: patient } = await supabase
-    .from("patients")
-    .select("id")
-    .eq("profile_id", user.id)
-    .single();
+  if (isDemoMode) {
+    const session = getDemoSession();
+    if (!session) redirect("/login");
 
-  let query = supabase
-    .from("medical_results")
-    .select("id, title, study_type, result_date, status, lab_branch, notes_for_patient, created_at")
-    .in("status", ["published", "sent", "viewed", "archived"])
-    .order("result_date", { ascending: false });
+    const patient = getDemoPatientByProfileId(session.profile.id);
+    results = patient ? getDemoVisibleResultsForPatient(patient.id) : [];
 
-  if (patient) {
-    query = query.eq("patient_id", patient.id);
+    if (searchParams.estatus) {
+      results = results.filter((result) => result.status === searchParams.estatus);
+    }
+    if (searchParams.tipo) {
+      results = results.filter((result) =>
+        result.study_type.toLowerCase().includes(searchParams.tipo!.toLowerCase())
+      );
+    }
+    if (searchParams.q) {
+      results = results.filter((result) =>
+        result.title.toLowerCase().includes(searchParams.q!.toLowerCase())
+      );
+    }
   } else {
-    // Sin registro de paciente → sin resultados
-    return (
-      <div className="animate-page-enter">
-        <h1 className="font-outfit text-2xl font-black text-bios-navy mb-6">Mis resultados</h1>
-        <EmptyState
-          icon={FileText}
-          title="Aún no tienes resultados disponibles"
-          description="Cuando tu médico registre tus resultados, aparecerán aquí automáticamente."
-        />
-      </div>
-    );
+    const supabase = createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) redirect("/login");
+
+    const { data: patient } = await supabase
+      .from("patients")
+      .select("id")
+      .eq("profile_id", user.id)
+      .single();
+
+    let query = supabase
+      .from("medical_results")
+      .select("id, title, study_type, result_date, status, lab_branch, notes_for_patient, created_at")
+      .in("status", ["published", "sent", "viewed", "archived"])
+      .order("result_date", { ascending: false });
+
+    if (patient) {
+      query = query.eq("patient_id", patient.id);
+    } else {
+      return (
+        <div className="animate-page-enter">
+          <h1 className="font-outfit text-2xl font-black text-bios-navy mb-6">Mis resultados</h1>
+          <EmptyState
+            icon={FileText}
+            title="Aún no tienes resultados disponibles"
+            description="Cuando tu médico registre tus resultados, aparecerán aquí automáticamente."
+          />
+        </div>
+      );
+    }
+
+    if (searchParams.estatus) query = query.eq("status", searchParams.estatus as ResultStatus);
+    if (searchParams.tipo)    query = query.ilike("study_type", `%${searchParams.tipo}%`);
+    if (searchParams.q)       query = query.ilike("title", `%${searchParams.q}%`);
+
+    const { data } = await query;
+    results = data ?? [];
   }
 
-  // Filtros
-  if (searchParams.estatus) query = query.eq("status", searchParams.estatus as ResultStatus);
-  if (searchParams.tipo)    query = query.ilike("study_type", `%${searchParams.tipo}%`);
-  if (searchParams.q)       query = query.ilike("title", `%${searchParams.q}%`);
-
-  const { data: results } = await query;
-
-  const totalCount = results?.length ?? 0;
+  const totalCount = results.length;
 
   const statusFilters: { value: string; label: string }[] = [
     { value: "",          label: "Todos" },

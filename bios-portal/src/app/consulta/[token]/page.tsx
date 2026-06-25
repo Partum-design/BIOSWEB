@@ -1,8 +1,15 @@
 import { createAdminClient } from "@/lib/supabase/server";
+import {
+  DEMO_PUBLIC_TOKEN,
+  demoDoctor,
+  getDemoPatientById,
+  getDemoResultById,
+  isDemoMode,
+} from "@/lib/demo";
 import { hashToken, formatDate } from "@/lib/utils";
 import { logAudit } from "@/lib/audit";
 import { PDFViewer } from "@/components/ui/PDFViewer";
-import { headers } from "next/headers";
+import { DemoResultDocument } from "@/components/demo/DemoResultDocument";
 import { AlertCircle, Clock, ShieldOff, FlaskConical, Calendar, User, Building2, ExternalLink } from "lucide-react";
 import type { Metadata } from "next";
 
@@ -37,6 +44,32 @@ interface ResultData {
 }
 
 async function verifyToken(token: string): Promise<TokenState> {
+  if (isDemoMode && token === DEMO_PUBLIC_TOKEN) {
+    const demoResult = getDemoResultById("demo-result-bh");
+    const demoPatient = demoResult ? getDemoPatientById(demoResult.patient_id) : null;
+
+    if (!demoResult) return { ok: false, reason: "not_found" };
+
+    return {
+      ok: true,
+      linkId: "demo-public-link",
+      signedUrl: null,
+      result: {
+        title: demoResult.title,
+        study_type: demoResult.study_type,
+        result_date: demoResult.result_date,
+        lab_branch: demoResult.lab_branch,
+        notes_for_patient: demoResult.notes_for_patient,
+        file_path: demoResult.file_path,
+        patient: demoPatient ? { full_name: demoPatient.full_name } : null,
+        doctor: {
+          professional_name: demoDoctor.professional_name,
+          specialty: demoDoctor.specialty,
+        },
+      },
+    };
+  }
+
   const adminClient = createAdminClient();
   const tokenHash = hashToken(token);
 
@@ -260,7 +293,9 @@ export default async function ConsultaTokenPage({
         )}
 
         {/* PDF Viewer */}
-        {signedUrl ? (
+        {isDemoMode ? (
+          <DemoResultDocument title={result.title} />
+        ) : signedUrl ? (
           <div className="bios-panel overflow-hidden">
             <div className="border-b border-bios-line px-5 py-4">
               <h2 className="font-outfit font-black text-bios-navy text-sm">Documento de resultado</h2>
