@@ -12,27 +12,25 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="stylesheet" href="../assets/multipage.css">
     <link rel="stylesheet" href="../assets/compact.css">
+    <script src="../assets/estudios-data.js" defer></script>
     <script src="../assets/site.js" defer></script>
 </head>
 <body>
     <div class="page-shell">
-        <header class="site-header">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-h-28 py-3 flex items-center justify-between">
-                <a href="../"><img src="../logos/bios-logo-white.png" alt="Laboratorios BIOS" class="h-20 lg:h-24 w-auto max-w-[min(58vw,380px)] object-contain drop-shadow-lg"></a>
-            </div>
-        </header>
+        <header class="site-header"></header>
 
         <main class="page-enter max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-14">
             <section class="grid lg:grid-cols-[0.95fr_1.05fr] gap-6 items-stretch mb-6">
                 <div class="dark-panel p-6 lg:p-8 relative overflow-hidden">
                     <span class="section-kicker !bg-pink-500/20 !border-pink-200/20 !text-pink-100 mb-5"><i data-lucide="venus" class="w-4 h-4"></i> Campaña de la mujer</span>
                     <h1 class="brand-type mobile-tight text-4xl lg:text-5xl font-black leading-none mb-4">Agenda salud preventiva</h1>
-                    <p class="text-blue-100 text-lg leading-relaxed">Consulta paquetes ginecológicos, requisitos y horarios disponibles para estudios que requieren cita.</p>
+                    <p class="text-blue-100 text-lg leading-relaxed">Colposcopías, Papanicolaou y cultivos ginecológicos con calendario fijo por unidad. Consulta requisitos y confirma tu cita por WhatsApp.</p>
                     <div class="grid sm:grid-cols-3 gap-3 mt-6">
                         <div class="metric p-4"><p class="text-2xl font-black">PAP</p><p class="text-xs uppercase font-black text-cyan-100">citología</p></div>
                         <div class="metric p-4"><p class="text-2xl font-black">COLPO</p><p class="text-xs uppercase font-black text-cyan-100">con cita</p></div>
-                        <div class="metric p-4"><p class="text-2xl font-black">IMG</p><p class="text-xs uppercase font-black text-cyan-100">mastografía</p></div>
+                        <div class="metric p-4"><p class="text-2xl font-black">5</p><p class="text-xs uppercase font-black text-cyan-100">unidades activas</p></div>
                     </div>
+                    <div id="campaign-status-banner" class="campaign-status-banner mt-6"></div>
                 </div>
                 <figure class="page-visual min-h-[340px]">
                     <img src="../assets/img/lab-women.webp" alt="Atención preventiva para mujeres en Laboratorios BIOS">
@@ -43,16 +41,32 @@
                 </figure>
             </section>
 
+            <section class="panel p-6 lg:p-8 mb-6" id="calendario">
+                <div class="flex flex-wrap items-end justify-between gap-3 mb-5">
+                    <div>
+                        <span class="section-kicker mb-3"><i data-lucide="calendar-heart" class="w-4 h-4"></i> Calendario oficial</span>
+                        <h2 class="brand-type text-3xl font-black text-[#0A1C2E]">Campaña de colposcopías — Julio y Agosto 2026</h2>
+                        <p class="text-slate-500 mt-2 max-w-2xl">Cada unidad tiene un día fijo al mes para la jornada de colposcopía. Presenta tu cita confirmada por WhatsApp y llega con la preparación indicada.</p>
+                    </div>
+                </div>
+                <div id="campaign-calendar-grid" class="campaign-calendar-grid"></div>
+                <div class="campaign-legend mt-5">
+                    <span><i class="legend-dot legend-today"></i> Hoy</span>
+                    <span><i class="legend-dot legend-next"></i> Próxima fecha</span>
+                    <span><i class="legend-dot legend-done"></i> Jornada realizada</span>
+                </div>
+            </section>
+
             <section class="grid lg:grid-cols-3 gap-4 mb-6">
                 <article class="panel p-6">
                     <i data-lucide="clipboard-check" class="w-8 h-8 text-pink-600 mb-4"></i>
                     <h2 class="brand-type text-2xl font-black text-[#0A1C2E]">Requisitos</h2>
-                    <p class="text-slate-500 mt-2">Evitar periodo menstrual, no usar óvulos ni duchas vaginales previas y confirmar indicaciones específicas al agendar.</p>
+                    <p class="text-slate-500 mt-2">Abstinencia sexual de 3 días, no usar óvulos ni duchas vaginales, no estar menstruando y aseo normal. Confirmamos indicaciones específicas al agendar.</p>
                 </article>
                 <article class="panel p-6">
                     <i data-lucide="calendar-heart" class="w-8 h-8 text-pink-600 mb-4"></i>
                     <h2 class="brand-type text-2xl font-black text-[#0A1C2E]">Agenda</h2>
-                    <p class="text-slate-500 mt-2">Colposcopía, Papanicolaou y mastografía se coordinan con horario disponible por unidad.</p>
+                    <p class="text-slate-500 mt-2">Colposcopía, Papanicolaou y cultivo vaginal se coordinan con horario disponible el día de campaña de tu unidad, o entre semana en sucursales A y B.</p>
                 </article>
                 <article class="panel p-6">
                     <i data-lucide="credit-card" class="w-8 h-8 text-pink-600 mb-4"></i>
@@ -63,41 +77,23 @@
 
             <section class="grid lg:grid-cols-[0.9fr_1.1fr] gap-4">
                 <div class="panel p-6">
-                    <span class="section-kicker mb-4"><i data-lucide="heart-pulse" class="w-4 h-4"></i> Paquetes disponibles</span>
-                    <div class="grid gap-3">
-                        <div class="rounded-lg border border-pink-100 bg-pink-50 p-4">
-                            <p class="font-black text-[#0A1C2E]">Paquete ginecológico preventivo</p>
-                            <p class="text-sm text-slate-500 mt-1">Orientado a detección oportuna y seguimiento médico.</p>
-                        </div>
-                        <div class="rounded-lg border border-pink-100 bg-pink-50 p-4">
-                            <p class="font-black text-[#0A1C2E]">Colposcopía programada</p>
-                            <p class="text-sm text-slate-500 mt-1">Requiere cita y confirmación de requisitos.</p>
-                        </div>
-                        <div class="rounded-lg border border-pink-100 bg-pink-50 p-4">
-                            <p class="font-black text-[#0A1C2E]">Mastografía</p>
-                            <p class="text-sm text-slate-500 mt-1">Disponible con indicaciones previas y horario asignado.</p>
-                        </div>
-                    </div>
+                    <span class="section-kicker mb-4"><i data-lucide="heart-pulse" class="w-4 h-4"></i> Estudios disponibles</span>
+                    <div id="women-packages" class="grid gap-3"></div>
                 </div>
 
                 <form id="woman-form" class="panel p-6 grid gap-4">
                     <input class="field" id="woman-name" type="text" placeholder="Nombre completo" required>
                     <div class="grid md:grid-cols-2 gap-4">
                         <input class="field" id="woman-phone" type="tel" placeholder="WhatsApp" required>
-                        <select class="field" id="woman-service">
-                            <option>Paquete ginecológico</option>
-                            <option>Colposcopía</option>
-                            <option>Papanicolaou</option>
-                            <option>Mastografía</option>
-                            <option>Consultar requisitos</option>
-                        </select>
+                        <select class="field" id="woman-service"></select>
                     </div>
                     <select class="field" id="woman-branch">
-                        <option>Sucursal de interés</option>
-                        <option>Plaza Cantú</option>
-                        <option>Plaza La Joya</option>
-                        <option>Las Haciendas</option>
+                        <option value="">Sucursal de interés</option>
                         <option>Tepojaco</option>
+                        <option>Tepalcapa</option>
+                        <option>Joya</option>
+                        <option>Haciendas</option>
+                        <option>Cantú</option>
                         <option>Tultepec</option>
                     </select>
                     <textarea class="field" id="woman-message" rows="4" placeholder="Horario preferido o dudas sobre requisitos"></textarea>
@@ -109,18 +105,99 @@
     </div>
 
     <script>
-        document.getElementById('woman-form').addEventListener('submit', event => {
-            event.preventDefault();
-            const name = document.getElementById('woman-name').value.trim();
-            const phone = document.getElementById('woman-phone').value.trim();
-            const service = document.getElementById('woman-service').value;
-            const branch = document.getElementById('woman-branch').value;
-            const message = document.getElementById('woman-message').value.trim();
-            const text = `Hola Laboratorios BIOS, quiero información de la campaña de la mujer.%0A%0ANombre: ${encodeURIComponent(name)}%0AWhatsApp: ${encodeURIComponent(phone)}%0AServicio: ${encodeURIComponent(service)}%0ASucursal: ${encodeURIComponent(branch)}%0ADetalles: ${encodeURIComponent(message)}`;
-            document.getElementById('woman-status').textContent = 'Abriremos WhatsApp para confirmar requisitos y agenda.';
-            window.open(`https://wa.me/5211234567890?text=${text}`, '_blank');
+        let CAMPAIGN = null;
+        const MONTH_LABELS = { 7: 'Julio', 8: 'Agosto' };
+
+        function renderCampaignBanner() {
+            const el = document.getElementById('campaign-status-banner');
+            if (!CAMPAIGN || !el) return;
+            const status = CAMPAIGN.status();
+            if (status.active && status.todayEvent) {
+                el.className = 'campaign-status-banner is-today';
+                el.innerHTML = `<i class="fa-solid fa-circle-check"></i> Hoy es la jornada de colposcopía en <strong>${status.todayEvent.branch}</strong>. Ven con tu cita confirmada.`;
+            } else if (status.active && status.nextEvent) {
+                el.className = 'campaign-status-banner is-upcoming';
+                el.innerHTML = `<i class="fa-solid fa-calendar-clock"></i> Próxima jornada: <strong>${CAMPAIGN.formatDate(status.nextEvent.date)} en ${status.nextEvent.branch}</strong>.`;
+            } else {
+                el.className = 'campaign-status-banner is-closed';
+                el.innerHTML = `<i class="fa-solid fa-calendar"></i> La campaña Julio-Agosto 2026 concluyó. Escríbenos para conocer la próxima fecha disponible.`;
+            }
+        }
+
+        function renderCampaignCalendar() {
+            const grid = document.getElementById('campaign-calendar-grid');
+            if (!CAMPAIGN || !grid) return;
+            const status = CAMPAIGN.status();
+            const now = new Date();
+            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+            grid.innerHTML = CAMPAIGN.units.map(unit => {
+                const cells = unit.dates.map(d => {
+                    const date = new Date(d.year, d.month - 1, d.day);
+                    let state = 'future';
+                    if (date.getTime() === today.getTime()) state = 'today';
+                    else if (date < today) state = 'done';
+                    else if (status.nextEvent && date.getTime() === status.nextEvent.date.getTime() && state !== 'today') state = 'next';
+                    return `
+                        <div class="campaign-date-cell state-${state}">
+                            <p class="campaign-date-month">${MONTH_LABELS[d.month]}</p>
+                            <p class="campaign-date-day">${d.day}</p>
+                            <p class="campaign-date-state">${state === 'today' ? 'Hoy' : state === 'next' ? 'Próxima' : state === 'done' ? 'Realizada' : '2026'}</p>
+                        </div>
+                    `;
+                }).join('');
+                return `
+                    <div class="campaign-unit-card">
+                        <div class="campaign-unit-head">
+                            <i data-lucide="map-pin" class="w-4 h-4"></i>
+                            <strong>${unit.branch}</strong>
+                        </div>
+                        <div class="campaign-unit-dates">${cells}</div>
+                    </div>
+                `;
+            }).join('');
+            lucide.createIcons();
+        }
+
+        function renderPackages() {
+            const women = (window.BIOS_ESTUDIOS || []).filter(item => item.cat === 'Estudios de la mujer');
+            const wrap = document.getElementById('women-packages');
+            const select = document.getElementById('woman-service');
+            if (wrap) {
+                wrap.innerHTML = women.map(item => `
+                    <div class="rounded-lg border border-pink-100 bg-pink-50 p-4 flex items-center justify-between gap-3">
+                        <div>
+                            <p class="font-black text-[#0A1C2E]">${item.n}</p>
+                            <p class="text-sm text-slate-500 mt-1">Entrega: ${item.days === 0 ? 'mismo día' : item.days + ' días hábiles'}${item.campaign ? ' · Campaña mujer' : ''}</p>
+                        </div>
+                        <strong class="text-pink-700 whitespace-nowrap">${item.price.toLocaleString('es-MX', { style: 'currency', currency: 'MXN', maximumFractionDigits: 0 })}</strong>
+                    </div>
+                `).join('');
+            }
+            if (select) {
+                select.innerHTML = women.map(item => `<option>${item.n}</option>`).join('') + '<option>Consultar requisitos</option>';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            CAMPAIGN = window.BIOS_WOMEN_CAMPAIGN;
+            document.getElementById('woman-form').addEventListener('submit', event => {
+                event.preventDefault();
+                const name = document.getElementById('woman-name').value.trim();
+                const phone = document.getElementById('woman-phone').value.trim();
+                const service = document.getElementById('woman-service').value;
+                const branch = document.getElementById('woman-branch').value;
+                const message = document.getElementById('woman-message').value.trim();
+                const text = `Hola Laboratorios BIOS, quiero información de la campaña de la mujer.%0A%0ANombre: ${encodeURIComponent(name)}%0AWhatsApp: ${encodeURIComponent(phone)}%0AServicio: ${encodeURIComponent(service)}%0ASucursal: ${encodeURIComponent(branch)}%0ADetalles: ${encodeURIComponent(message)}`;
+                document.getElementById('woman-status').textContent = 'Abriremos WhatsApp para confirmar requisitos y agenda.';
+                window.open(`https://wa.me/5211234567890?text=${text}`, '_blank');
+            });
+
+            renderCampaignBanner();
+            renderCampaignCalendar();
+            renderPackages();
+            lucide.createIcons();
         });
-        lucide.createIcons();
     </script>
 </body>
 </html>

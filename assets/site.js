@@ -39,6 +39,44 @@
         { name: 'Tultepec', label: 'Nueva', address: 'Av. Joaquín Montenegro', phone: '55-9413-2041', isNew: true },
     ];
 
+    // Calendario campañas de colposcopías JULIO-AGOSTO 2026, por unidad.
+    const WOMEN_CAMPAIGN = [
+        { branch: 'Tepojaco', dates: [{ year: 2026, month: 7, day: 6 }, { year: 2026, month: 8, day: 3 }] },
+        { branch: 'Tepalcapa', dates: [{ year: 2026, month: 7, day: 7 }, { year: 2026, month: 8, day: 4 }] },
+        { branch: 'Joya', dates: [{ year: 2026, month: 7, day: 8 }, { year: 2026, month: 8, day: 5 }] },
+        { branch: 'Haciendas', dates: [{ year: 2026, month: 7, day: 14 }, { year: 2026, month: 8, day: 10 }] },
+        { branch: 'Cantú', dates: [{ year: 2026, month: 7, day: 15 }, { year: 2026, month: 8, day: 11 }] },
+    ];
+
+    function womenCampaignEvents() {
+        const events = [];
+        WOMEN_CAMPAIGN.forEach(unit => {
+            unit.dates.forEach(d => {
+                events.push({ branch: unit.branch, date: new Date(d.year, d.month - 1, d.day) });
+            });
+        });
+        return events.sort((a, b) => a.date - b.date);
+    }
+
+    function womenCampaignStatus() {
+        const events = womenCampaignEvents();
+        if (!events.length) return null;
+        const now = new Date();
+        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        const windowStart = events[0].date;
+        const windowEnd = events[events.length - 1].date;
+        if (today < windowStart || today > windowEnd) return { active: false, events };
+        const todayEvent = events.find(e => e.date.getTime() === today.getTime());
+        const nextEvent = events.find(e => e.date >= today);
+        return { active: true, todayEvent, nextEvent, events };
+    }
+
+    const MONTH_NAMES_ES = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+
+    function formatCampaignDate(date) {
+        return `${date.getDate()} ${MONTH_NAMES_ES[date.getMonth()]}`;
+    }
+
     function basePath() {
         const cleanPath = window.location.pathname.replace(/\/+$/, '');
         const current = cleanPath.split('/').pop();
@@ -273,8 +311,14 @@
             }
         });
 
-        menuButton?.addEventListener('click', () => drawer.classList.add('active'));
-        closeButtons.forEach(button => button.addEventListener('click', () => drawer.classList.remove('active')));
+        menuButton?.addEventListener('click', () => {
+            drawer.classList.add('active');
+            document.body.classList.add('bios-scroll-lock');
+        });
+        closeButtons.forEach(button => button.addEventListener('click', () => {
+            drawer.classList.remove('active');
+            document.body.classList.remove('bios-scroll-lock');
+        }));
 
         document.addEventListener('click', (event) => {
             if (!event.target.closest('.bios-clinic-select')) clinicDropdown?.classList.remove('open');
@@ -337,11 +381,30 @@
         const ribbon = document.createElement('a');
         ribbon.className = 'bios-women-ribbon';
         ribbon.href = href('mujer/');
-        ribbon.innerHTML = `
-            <span><i class="fa-solid fa-venus"></i></span>
-            <strong>Campaña de la mujer</strong>
-            <em>Agenda y consulta requisitos</em>
-        `;
+
+        const status = womenCampaignStatus();
+        if (status && status.active) {
+            ribbon.classList.add('is-live');
+            if (status.todayEvent) {
+                ribbon.innerHTML = `
+                    <span><i class="fa-solid fa-venus"></i></span>
+                    <strong>Campaña de colposcopías: HOY en ${status.todayEvent.branch}</strong>
+                    <em>Ver requisitos y agenda</em>
+                `;
+            } else if (status.nextEvent) {
+                ribbon.innerHTML = `
+                    <span><i class="fa-solid fa-venus"></i></span>
+                    <strong>Campaña de colposcopías</strong>
+                    <em>Próxima fecha: ${formatCampaignDate(status.nextEvent.date)} en ${status.nextEvent.branch}</em>
+                `;
+            }
+        } else {
+            ribbon.innerHTML = `
+                <span><i class="fa-solid fa-venus"></i></span>
+                <strong>Campaña de la mujer</strong>
+                <em>Agenda y consulta requisitos</em>
+            `;
+        }
         document.body.appendChild(ribbon);
     }
 
@@ -403,6 +466,7 @@
             <div class="bios-preloader-deco right"><span></span><span></span><span></span></div>
         `;
         document.body.insertBefore(intro, document.body.firstChild);
+        document.body.classList.add('bios-scroll-lock');
 
         // — Particle canvas —
         const canvas = document.getElementById('bios-p-canvas');
@@ -462,6 +526,7 @@
             const finish = () => {
                 cancelAnimationFrame(raf);
                 intro.classList.add('exiting');
+                document.body.classList.remove('bios-scroll-lock');
                 intro.addEventListener('animationend', () => intro.remove(), { once: true });
             };
 
@@ -526,6 +591,13 @@
         window.addEventListener('resize', checkFooter);
         checkFooter();
     }
+
+    window.BIOS_WOMEN_CAMPAIGN = {
+        units: WOMEN_CAMPAIGN,
+        events: womenCampaignEvents,
+        status: womenCampaignStatus,
+        formatDate: formatCampaignDate,
+    };
 
     document.addEventListener('DOMContentLoaded', () => {
         applyFavicon();

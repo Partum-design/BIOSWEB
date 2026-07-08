@@ -1383,7 +1383,7 @@
                         </div>
                         <div class="flex items-center gap-3 rounded-xl bg-blue-50 border border-blue-100 px-4 py-3">
                             <i data-lucide="calendar-heart" class="w-5 h-5 text-blue-600"></i>
-                            <span class="font-black text-slate-700">Agenda por sucursal</span>
+                            <span class="font-black text-slate-700" id="promo-modal-schedule-text">Agenda por sucursal</span>
                         </div>
                     </div>
                     <div class="flex flex-col sm:flex-row gap-3">
@@ -2222,6 +2222,17 @@
             requestAnimationFrame(() => modal.classList.add('active'));
         }
 
+        document.addEventListener('DOMContentLoaded', () => {
+            const scheduleText = document.getElementById('promo-modal-schedule-text');
+            const campaign = window.BIOS_WOMEN_CAMPAIGN;
+            if (!scheduleText || !campaign) return;
+            const status = campaign.status();
+            if (status.active && status.todayEvent) {
+                scheduleText.textContent = `Hoy: jornada de colposcopía en ${status.todayEvent.branch}`;
+            } else if (status.active && status.nextEvent) {
+                scheduleText.textContent = `Próxima jornada: ${campaign.formatDate(status.nextEvent.date)} en ${status.nextEvent.branch}`;
+            }
+        });
     </script>
 </body>
 </html>

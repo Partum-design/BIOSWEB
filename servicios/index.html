@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Servicios | Laboratorios BIOS</title>
+    <title>Estudios y precios | Laboratorios BIOS</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
@@ -11,75 +11,51 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="stylesheet" href="../assets/multipage.css">
-    <script src="../assets/site.js" defer></script>
-</head>
     <link rel="stylesheet" href="../assets/compact.css">
+    <script src="../assets/site.js" defer></script>
+    <script src="../assets/estudios-data.js" defer></script>
+</head>
 <body>
     <div class="page-shell">
-        <header class="site-header">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-h-28 py-3 flex items-center justify-between gap-4">
-                <a href="../" class="flex items-center gap-3">
-                    <img src="../logos/bios-logo-white.png" alt="Laboratorios BIOS" class="h-20 lg:h-24 w-auto max-w-[min(58vw,380px)] object-contain drop-shadow-lg" onerror="this.src='https://placehold.co/260x78/0A1C2E/FFFFFF?text=Laboratorios%20BIOS'">
-                </a>
-                <nav class="hidden lg:flex items-center gap-6">
-                    <a class="nav-link" href="../">Inicio</a>
-                    <a class="nav-link active" href="../servicios/">Servicios</a>
-                    <a class="nav-link" href="../seguimiento/">Seguimiento</a>
-                    <a class="nav-link" href="../sucursales/">Sucursales</a>
-                    <a class="nav-link" href="../conocenos/">Conócenos</a>
-                    <a class="nav-link" href="../unete/">Únete</a>
-                </nav>
-                <a href="https://wa.me/5211234567890?text=Hola%20Laboratorios%20BIOS,%20quiero%20cotizar%20un%20estudio" class="primary-button hidden sm:inline-flex" target="_blank">
-                    <i data-lucide="message-circle" class="w-5 h-5"></i> Cotizar
-                </a>
-                <button class="secondary-button lg:hidden" onclick="toggleDrawer(true)" aria-label="Abrir menú">
-                    <i data-lucide="menu" class="w-5 h-5"></i>
-                </button>
-            </div>
-        </header>
-
-        <div id="drawer" class="drawer fixed inset-0 z-50 lg:hidden">
-            <div class="absolute inset-0 bg-slate-950/50" onclick="toggleDrawer(false)"></div>
-            <aside class="drawer-panel absolute right-0 top-0 h-full w-[min(86vw,360px)] bg-white p-5 shadow-2xl">
-                <div class="flex items-center justify-between mb-6">
-                    <span class="inline-flex rounded-xl bg-[#0A1C2E] px-3 py-2"><img src="../logos/bios-logo-white.png" alt="Laboratorios BIOS" class="h-12 w-auto object-contain"></span>
-                    <button class="secondary-button !min-h-10 !p-2" onclick="toggleDrawer(false)" aria-label="Cerrar menú"><i data-lucide="x" class="w-5 h-5"></i></button>
-                </div>
-                <div class="grid gap-2 font-black text-[#0A1C2E]">
-                    <a href="../" class="p-3 border rounded-lg">Inicio</a>
-                    <a href="../servicios/" class="p-3 border rounded-lg bg-blue-50">Servicios</a>
-                    <a href="../seguimiento/" class="p-3 border rounded-lg">Seguimiento</a>
-                    <a href="../sucursales/" class="p-3 border rounded-lg">Sucursales</a>
-                    <a href="../conocenos/" class="p-3 border rounded-lg">Conócenos</a>
-                    <a href="../unete/" class="p-3 border rounded-lg">Únete</a>
-                </div>
-            </aside>
-        </div>
+        <header class="site-header"></header>
 
         <main class="page-enter">
             <section class="services-section" id="especiales">
                 <div class="services-hero-grid">
                     <div class="dark-panel services-summary-card p-6 lg:p-8">
                         <span class="section-kicker !bg-white/10 !border-white/15 !text-cyan-100 mb-5"><i data-lucide="microscope" class="w-4 h-4"></i> Catálogo BIOS</span>
-                        <h1 class="brand-type mobile-tight text-4xl lg:text-5xl font-black leading-none mb-5">Estudios y paquetes</h1>
-                        <p class="text-blue-100 text-lg leading-relaxed mb-6">Busca por objetivo, categoría, preparación o por análisis incluido dentro de un perfil o paquete.</p>
+                        <h1 class="brand-type mobile-tight text-4xl lg:text-5xl font-black leading-none mb-5">Estudios y precios</h1>
+                        <p class="text-blue-100 text-lg leading-relaxed mb-6">Catálogo completo de laboratorio, gabinete, imagen y estudios especiales. Filtra por categoría, sucursal o precio y cotiza por WhatsApp en un toque.</p>
                         <div class="grid sm:grid-cols-3 gap-3">
-                            <div class="metric p-4"><p class="text-3xl font-black" id="total-services">0</p><p class="text-xs uppercase font-black text-cyan-100">visibles</p></div>
-                            <div class="metric p-4"><p class="text-3xl font-black">6</p><p class="text-xs uppercase font-black text-cyan-100">categorías</p></div>
-                            <div class="metric p-4"><p class="text-3xl font-black">WA</p><p class="text-xs uppercase font-black text-cyan-100">cotización</p></div>
+                            <div class="metric p-4"><p class="text-3xl font-black" id="total-services">0</p><p class="text-xs uppercase font-black text-cyan-100">estudios</p></div>
+                            <div class="metric p-4"><p class="text-3xl font-black" id="total-categories">0</p><p class="text-xs uppercase font-black text-cyan-100">categorías</p></div>
+                            <div class="metric p-4"><p class="text-3xl font-black">6</p><p class="text-xs uppercase font-black text-cyan-100">sucursales</p></div>
                         </div>
+                        <a href="../mujer/" class="services-campaign-callout">
+                            <span class="services-campaign-callout-icon"><i data-lucide="venus" class="w-4 h-4"></i></span>
+                            <span>
+                                <strong>Campaña de la mujer</strong>
+                                <small>Colposcopías y Papanicolaou por unidad — ver calendario</small>
+                            </span>
+                            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </a>
                     </div>
 
                     <div class="panel services-list-panel p-5 lg:p-6">
-                        <div class="grid md:grid-cols-[1fr_auto] gap-3 mb-5">
+                        <div class="grid md:grid-cols-[1fr_auto_auto] gap-3 mb-5">
                             <div class="relative">
                                 <i data-lucide="search" class="w-5 h-5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
-                                <input id="service-search" class="field pl-10" type="search" placeholder="Buscar: EGO, tiroides, mastografía...">
+                                <input id="service-search" class="field pl-10" type="search" placeholder="Buscar: EGO, tiroides, mastografía, colposcopía...">
                             </div>
+                            <select id="branch-filter" class="field md:w-48">
+                                <option value="">Todas las sucursales</option>
+                            </select>
                             <select id="sort-services" class="field md:w-52">
                                 <option value="featured">Orden recomendado</option>
                                 <option value="price-asc">Menor precio</option>
+                                <option value="price-desc">Mayor precio</option>
                                 <option value="time">Entrega rápida</option>
+                                <option value="az">A - Z</option>
                             </select>
                         </div>
                         <div id="category-tabs" class="flex flex-wrap gap-2 mb-6"></div>
@@ -88,6 +64,10 @@
                             <i data-lucide="search-x" class="w-9 h-9 mx-auto text-slate-400 mb-3"></i>
                             <p class="font-black text-[#0A1C2E]">No encontramos ese estudio.</p>
                             <p class="text-slate-500 text-sm mt-1">Pide apoyo por WhatsApp y lo ubicamos contigo.</p>
+                        </div>
+                        <div class="flex flex-col items-center gap-2 mt-6">
+                            <p id="showing-count" class="text-xs font-black uppercase tracking-wide text-slate-400"></p>
+                            <button id="load-more" class="secondary-button hidden"><i data-lucide="chevron-down" class="w-4 h-4"></i> Mostrar más estudios</button>
                         </div>
                     </div>
                 </div>
@@ -101,223 +81,148 @@
     </div>
 
     <script>
-        const services = [
-            {
-                key: 'perfil-integral',
-                name: 'Perfil Integral 27 elementos',
-                category: 'Preventivo',
-                price: 930,
-                delivery: 'Un día hábil',
-                deliveryRank: 1,
-                prep: 'Ayuno de 8 horas',
-                icon: 'heart-pulse',
-                tag: 'Más solicitado',
-                desc: 'Revisión anual para conocer indicadores generales y apoyar decisiones preventivas con tu médico.',
-                includes: ['Biometría hemática', 'Química sanguínea', 'Perfil lipídico', 'EGO', 'Examen general de orina', 'Glucosa', 'Colesterol', 'Triglicéridos']
-            },
-            {
-                key: 'perfil-tiroideo',
-                name: 'Perfil Tiroideo 3',
-                category: 'Hormonal',
-                price: 1400,
-                delivery: 'Menos de 36 horas',
-                deliveryRank: 2,
-                prep: 'Sin ayuno',
-                icon: 'activity',
-                tag: 'Alta demanda',
-                desc: 'Perfil orientado a valorar función tiroidea y dar seguimiento a alteraciones hormonales.',
-                includes: ['TSH', 'T3', 'T4', 'Tiroides']
-            },
-            {
-                key: 'perfil-hormonal',
-                name: 'Perfil Hormonal Completo',
-                category: 'Hormonal',
-                price: 1200,
-                delivery: 'Menos de 36 horas',
-                deliveryRank: 2,
-                prep: 'Ayuno sugerido',
-                icon: 'dna',
-                tag: 'Especializado',
-                desc: 'Apoya la valoración médica de ciclos, fertilidad y equilibrio endocrino.',
-                includes: ['FSH', 'LH', 'Estradiol', 'Progesterona', 'Prolactina', 'Testosterona']
-            },
-            {
-                key: 'paquete-gine-urologico',
-                name: 'Paquete Ginecológico / Urológico',
-                category: 'Especialidad',
-                price: 650,
-                delivery: 'Un día hábil',
-                deliveryRank: 1,
-                prep: 'Preparación especial',
-                icon: 'shield-check',
-                tag: 'Preventivo',
-                desc: 'Paquete enfocado en detección oportuna y orientación preventiva para mujer u hombre.',
-                includes: ['Papanicolaou', 'Colposcopía', 'Urocultivo', 'EGO', 'PSA']
-            },
-            {
-                key: 'perfil-masculino',
-                name: 'Perfil Masculino Preventivo',
-                category: 'Preventivo',
-                price: 1090,
-                delivery: 'Un día hábil',
-                deliveryRank: 1,
-                prep: 'Ayuno especial',
-                icon: 'badge-check',
-                tag: 'Recomendado',
-                desc: 'Revisión preventiva con marcadores generales y prostáticos para seguimiento médico.',
-                includes: ['PSA', 'Antígeno prostático', 'Biometría hemática', 'Química sanguínea', 'EGO']
-            },
-            {
-                key: 'mastografia',
-                name: 'Mastografía',
-                category: 'Imagen',
-                price: 400,
-                delivery: 'Entrega programada',
-                deliveryRank: 3,
-                prep: 'Sin desodorante',
-                icon: 'scan-line',
-                tag: 'Imagen',
-                desc: 'Estudio de imagen utilizado como apoyo para detección oportuna en salud mamaria.',
-                includes: ['Mastografía', 'Mama', 'Imagen']
-            },
-            {
-                key: 'electrocardiograma',
-                name: 'Electrocardiograma',
-                category: 'Gabinete',
-                price: 320,
-                delivery: 'Entrega programada',
-                deliveryRank: 3,
-                prep: 'Ropa cómoda',
-                icon: 'waveform',
-                tag: 'Gabinete',
-                desc: 'Registro de actividad eléctrica del corazón para valoración médica.',
-                includes: ['ECG', 'Ritmo cardiaco', 'Corazón']
-            },
-            {
-                key: 'ultrasonido',
-                name: 'Ultrasonido General',
-                category: 'Imagen',
-                price: 520,
-                delivery: 'Entrega programada',
-                deliveryRank: 3,
-                prep: 'Depende del estudio',
-                icon: 'scan',
-                tag: 'Disponible',
-                desc: 'Estudio de imagen que se agenda según zona anatómica y preparación requerida.',
-                includes: ['Ultrasonido', 'Abdomen', 'Pélvico', 'Imagen']
-            },
-            {
-                key: 'quimica-sanguinea',
-                name: 'Química Sanguínea',
-                category: 'Laboratorio',
-                price: 280,
-                delivery: 'Un día hábil',
-                deliveryRank: 1,
-                prep: 'Ayuno recomendado',
-                icon: 'test-tube',
-                tag: 'Básico',
-                desc: 'Conjunto de indicadores metabólicos de uso frecuente en valoración preventiva.',
-                includes: ['Glucosa', 'Urea', 'Creatinina', 'Ácido úrico', 'Colesterol', 'Triglicéridos']
-            },
-            {
-                key: 'tomografia',
-                name: 'Tomografía programada',
-                category: 'Servicios especiales',
-                price: null,
-                delivery: 'Requiere cita',
-                deliveryRank: 4,
-                prep: 'Indicaciones por confirmar',
-                icon: 'scan-face',
-                tag: 'Pago en línea',
-                desc: 'Servicio especial con agenda previa, confirmación de requisitos y opción de pago en línea.',
-                includes: ['Tomografía', 'Cita', 'Pago en línea', 'Mercado Pago', 'PayPal', 'Stripe']
-            },
-            {
-                key: 'colposcopia',
-                name: 'Colposcopía',
-                category: 'Servicios especiales',
-                price: null,
-                delivery: 'Requiere cita',
-                deliveryRank: 4,
-                prep: 'Preparación especial',
-                icon: 'calendar-heart',
-                tag: 'Campaña mujer',
-                desc: 'Estudio especial para salud de la mujer. Se agenda con requisitos previos claros.',
-                includes: ['Colposcopía', 'Papanicolaou', 'Campaña mujer', 'Pago en línea']
-            }
-        ];
-        const categories = ['Todos', ...new Set(services.map(item => item.category))];
+        let services = [];
+        const CATEGORY_ORDER = ['Laboratorio clínico', 'Rayos X', 'Ultrasonido', 'Estudios especiales', 'Salud de la mujer', 'Salud del hombre', 'COVID-19', 'Prueba de embarazo', 'Salud visual', 'Otros estudios', 'Administrativos'];
+        const ALL_BRANCHES = ['Tultepec', 'Cantú', 'Tepalcapa', 'Haciendas', 'Joya', 'Tepojaco'];
+
+        let categories = ['Todos'];
         let activeCategory = 'Todos';
+        let quickFilter = '';
+        let visibleCount = 12;
+        const PAGE_SIZE = 12;
 
         function money(value) {
-            return value.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' });
+            return value.toLocaleString('es-MX', { style: 'currency', currency: 'MXN', maximumFractionDigits: 0 });
+        }
+
+        function renderBranchFilter() {
+            const select = document.getElementById('branch-filter');
+            ALL_BRANCHES.forEach(branch => {
+                const option = document.createElement('option');
+                option.value = branch;
+                option.textContent = branch;
+                select.appendChild(option);
+            });
         }
 
         function renderTabs() {
-            document.getElementById('category-tabs').innerHTML = categories.map(category => `
-                <button class="chip ${category === activeCategory ? 'active' : ''}" onclick="setCategory('${category}')">${category}</button>
-            `).join('');
+            const counts = categories.map(category => category === 'Todos' ? services.length : services.filter(s => s.category === category).length);
+            document.getElementById('category-tabs').innerHTML = categories.map((category, i) => `
+                <button class="chip ${category === activeCategory && !quickFilter ? 'active' : ''}" onclick="setCategory('${category}')">${category} <span class="chip-count">${counts[i]}</span></button>
+            `).join('') + `
+                <button class="chip chip-quick ${quickFilter === 'destacados' ? 'active' : ''}" onclick="setQuickFilter('destacados')"><i class="fa-solid fa-star"></i> Destacados</button>
+                <button class="chip chip-quick chip-women ${quickFilter === 'campana' ? 'active' : ''}" onclick="setQuickFilter('campana')"><i class="fa-solid fa-venus"></i> Campaña mujer</button>
+            `;
         }
 
         function filteredServices() {
             const query = document.getElementById('service-search').value.trim().toLowerCase();
             const sort = document.getElementById('sort-services').value;
-            const list = services.filter(item => {
-                const matchesCategory = activeCategory === 'Todos' || item.category === activeCategory;
-                const matchesQuery = !query || `${item.name} ${item.category} ${item.prep} ${item.tag} ${item.desc} ${item.includes.join(' ')}`.toLowerCase().includes(query);
-                return matchesCategory && matchesQuery;
+            const branch = document.getElementById('branch-filter').value;
+            let list = services.filter(item => {
+                const matchesCategory = quickFilter || activeCategory === 'Todos' || item.category === activeCategory;
+                const matchesQuick = !quickFilter || (quickFilter === 'destacados' ? (item.top || item.alta) : item.campaign);
+                const matchesQuery = !query || `${item.name} ${item.category} ${item.prep} ${item.key}`.toLowerCase().includes(query);
+                const matchesBranch = !branch || item.branches.includes(branch);
+                return matchesCategory && matchesQuick && matchesQuery && matchesBranch;
             });
-            if (sort === 'price-asc') list.sort((a, b) => (a.price || 999999) - (b.price || 999999));
-            if (sort === 'time') list.sort((a, b) => a.deliveryRank - b.deliveryRank);
+            if (sort === 'price-asc') list = [...list].sort((a, b) => a.price - b.price);
+            else if (sort === 'price-desc') list = [...list].sort((a, b) => b.price - a.price);
+            else if (sort === 'time') list = [...list].sort((a, b) => a.days - b.days);
+            else if (sort === 'az') list = [...list].sort((a, b) => a.name.localeCompare(b.name, 'es'));
+            else list = [...list].sort((a, b) => (b.top - a.top) || (b.alta - a.alta) || a.name.localeCompare(b.name, 'es'));
             return list;
         }
 
+        function branchSummary(branches) {
+            if (branches.length === ALL_BRANCHES.length) return 'Todas las sucursales';
+            return branches.join(', ');
+        }
+
+        function cardBadge(item) {
+            if (item.campaign) return '<span class="service-tag service-tag-women"><i class="fa-solid fa-venus"></i> Campaña mujer</span>';
+            if (item.top) return '<span class="service-tag service-tag-top">Más pedido</span>';
+            if (item.alta) return '<span class="service-tag">Destacado</span>';
+            return `<span class="service-tag">${item.deliveryLabel}</span>`;
+        }
+
         function renderServices() {
-            const list = filteredServices();
-            document.getElementById('total-services').textContent = list.length;
-            document.getElementById('empty-state').classList.toggle('hidden', list.length !== 0);
+            const full = filteredServices();
+            const list = full.slice(0, visibleCount);
+            document.getElementById('total-services').textContent = services.length;
+            document.getElementById('total-categories').textContent = categories.length - 1;
+            document.getElementById('empty-state').classList.toggle('hidden', full.length !== 0);
             document.getElementById('service-grid').innerHTML = list.map(item => `
-                <article class="panel service-card p-5">
+                <article class="panel service-card p-5 ${item.campaign ? 'service-card-women' : ''}">
                     <div class="service-card-head">
                         <div class="service-icon"><i data-lucide="${item.icon}" class="w-6 h-6"></i></div>
-                        <span class="service-tag">${item.tag}</span>
+                        ${cardBadge(item)}
                     </div>
                     <p class="service-category">${item.category}</p>
                     <h2 class="brand-type service-title">${item.name}</h2>
                     <div class="service-meta">
-                        <div><p>Prep</p><p>${item.prep}</p></div>
-                        <div><p>Entrega</p><p>${item.delivery}</p></div>
+                        <div><p>Preparación</p><p>${item.prep}</p></div>
+                        <div><p>Entrega</p><p>${item.deliveryLabel}</p></div>
                     </div>
                     <details class="service-detail">
-                        <summary>Ver detalle e incluidos</summary>
-                        <p>${item.desc}</p>
-                        <div class="service-includes">${item.includes.map(include => `<span>${include}</span>`).join('')}</div>
-                        ${item.category === 'Servicios especiales' ? `<div class="service-payments"><i data-lucide="credit-card" class="w-4 h-4"></i> Requiere cita. Pago en línea por Mercado Pago, PayPal o Stripe al integrar backend.</div>` : ''}
+                        <summary>Sucursales disponibles</summary>
+                        <div class="service-includes">${item.branches.map(b => `<span>${b}</span>`).join('')}</div>
+                        ${item.campaign ? `<div class="service-payments"><i data-lucide="calendar-heart" class="w-4 h-4"></i> Estudio de la campaña de la mujer. <a href="../mujer/" class="underline font-black">Ver fechas por unidad</a>.</div>` : ''}
                     </details>
                     <div class="service-card-footer">
-                        <strong class="brand-type service-price">${item.price ? money(item.price) : 'Con cita'}</strong>
+                        <strong class="brand-type service-price">${money(item.price)}</strong>
                         <a class="primary-button quote-button" target="_blank" aria-label="Cotizar ${item.name}" href="https://wa.me/5211234567890?text=Hola%20Laboratorios%20BIOS,%20quiero%20cotizar%20${encodeURIComponent(item.name)}"><i data-lucide="message-circle" class="w-4 h-4"></i></a>
                     </div>
                 </article>
             `).join('');
+            document.getElementById('showing-count').textContent = full.length ? `Mostrando ${list.length} de ${full.length} estudios` : '';
+            document.getElementById('load-more').classList.toggle('hidden', list.length >= full.length);
             lucide.createIcons();
         }
 
         function setCategory(category) {
             activeCategory = category;
+            quickFilter = '';
+            visibleCount = PAGE_SIZE;
             renderTabs();
             renderServices();
         }
 
-        function toggleDrawer(open) {
-            document.getElementById('drawer').classList.toggle('open', open);
+        function setQuickFilter(filter) {
+            quickFilter = quickFilter === filter ? '' : filter;
+            visibleCount = PAGE_SIZE;
+            renderTabs();
+            renderServices();
         }
 
-        document.getElementById('service-search').addEventListener('input', renderServices);
-        document.getElementById('sort-services').addEventListener('change', renderServices);
-        renderTabs();
-        renderServices();
-        lucide.createIcons();
+        document.addEventListener('DOMContentLoaded', () => {
+            services = (window.BIOS_ESTUDIOS || []).map(item => ({
+                key: item.c,
+                name: item.n,
+                category: item.catLabel,
+                categoryRaw: item.cat,
+                icon: item.icon,
+                price: item.price,
+                days: item.days,
+                deliveryLabel: item.days === 0 ? 'Mismo día' : item.days === 1 ? '1 día hábil' : `${item.days} días hábiles`,
+                prep: item.prep,
+                branches: item.branches,
+                top: item.top,
+                alta: item.alta,
+                campaign: item.campaign
+            }));
+            categories = ['Todos', ...CATEGORY_ORDER.filter(cat => services.some(s => s.category === cat))];
+
+            document.getElementById('service-search').addEventListener('input', () => { visibleCount = PAGE_SIZE; renderServices(); });
+            document.getElementById('sort-services').addEventListener('change', () => { visibleCount = PAGE_SIZE; renderServices(); });
+            document.getElementById('branch-filter').addEventListener('change', () => { visibleCount = PAGE_SIZE; renderServices(); });
+            document.getElementById('load-more').addEventListener('click', () => { visibleCount += PAGE_SIZE; renderServices(); });
+
+            renderBranchFilter();
+            renderTabs();
+            renderServices();
+            lucide.createIcons();
+        });
     </script>
 </body>
 </html>
