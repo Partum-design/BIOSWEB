@@ -344,8 +344,8 @@
                     <h4>Pacientes</h4>
                     <a href="${href('portal/')}">Pre-registro</a>
                     <a href="${href('servicios/')}">Cotizar y agendar</a>
-                    <a href="${href('seguimiento/')}">Resultados por Folio</a>
                     <a href="${href('seguimiento/')}">Estado por folio</a>
+                    <a href="${href('portal/')}">Descargar resultados</a>
                 </div>
                 <div>
                     <h4>Empresas B2B</h4>
@@ -358,14 +358,8 @@
                     <h4>Público</h4>
                     <a href="${href('conocenos/')}">Quiénes Somos</a>
                     <a href="${href('sucursales/')}">Sucursales 360</a>
-                    <a href="${href('seguimiento/')}">Resultados por Folio</a>
-                    <a href="${href('unete/')}">Bolsa de Trabajo</a>
-                </div>
-                <div>
-                    <h4>Módulos</h4>
                     <a href="${href('mujer/')}">Campaña de la mujer</a>
-                    <a href="${href('servicios/#especiales')}">Servicios especiales</a>
-                    <a href="${href('seguimiento/')}">Resultados y archivos</a>
+                    <a href="${href('unete/')}">Bolsa de Trabajo</a>
                 </div>
             </div>
             <div class="bios-wrap footer-bottom-main">
