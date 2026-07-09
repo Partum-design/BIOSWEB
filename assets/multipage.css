@@ -58,7 +58,7 @@
 }
 
 .bios-header-body {
-    min-height: 132px;
+    min-height: 84px;
     display: grid;
     grid-template-columns: auto minmax(280px, 1fr) auto;
     align-items: center;
@@ -74,12 +74,12 @@
 }
 
 .bios-brand img {
-    height: clamp(96px, 8vw, 150px);
+    height: clamp(46px, 3.4vw, 62px);
     width: auto;
-    max-width: min(54vw, 560px);
+    max-width: min(40vw, 320px);
     display: block;
     object-fit: contain;
-    filter: drop-shadow(0 12px 28px rgba(0,0,0,0.28));
+    filter: drop-shadow(0 8px 18px rgba(0,0,0,0.28));
 }
 
 .bios-brand {
@@ -1809,7 +1809,6 @@ body {
     background: #f6f8fb;
     color: var(--bios-ink);
     font-family: Inter, sans-serif;
-    overflow-x: hidden;
 }
 
 body.bios-scroll-lock {
@@ -1887,6 +1886,32 @@ body.bios-scroll-lock {
     border: 1px solid rgba(255,255,255,0.14);
     border-radius: 8px;
     box-shadow: 0 22px 60px -34px rgba(10, 28, 46, 0.75);
+}
+
+/* Panel corto junto a un formulario largo: evita el vacío muerto al
+   fondo rellenando con un ícono fantasma en vez de estirar contenido. */
+.ghost-icon-host {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.ghost-icon-mark {
+    position: absolute;
+    right: -1.4rem;
+    bottom: -2rem;
+    width: 9.5rem;
+    height: 9.5rem;
+    color: var(--bios-blue);
+    opacity: 0.07;
+    pointer-events: none;
+}
+
+.dark-panel .ghost-icon-mark,
+.ghost-icon-mark.on-dark {
+    color: white;
+    opacity: 0.09;
 }
 
 .metric {
@@ -2009,15 +2034,15 @@ body.bios-scroll-lock {
     }
 
     .bios-header-body {
-        min-height: 98px;
+        min-height: 64px;
         display: flex;
         justify-content: space-between;
         gap: 1rem;
     }
 
     .bios-brand img {
-        height: 86px;
-        max-width: min(66vw, 300px);
+        height: 42px;
+        max-width: min(58vw, 220px);
     }
 
     .bios-menu-button {

@@ -16,7 +16,9 @@
     <link rel="stylesheet" href="../assets/multipage.css">
     <style>
         #map { min-height: 460px; border-radius: 8px; z-index: 1; }
+        .sticky-map-panel { position: sticky; top: 10.25rem; }
         @media (max-width: 767px) { #map { min-height: 340px; } }
+        @media (max-width: 1023px) { .sticky-map-panel { position: static; } }
     </style>
     <script src="../assets/site.js" defer></script>
 </head>
@@ -58,8 +60,8 @@
 
         <main class="page-enter">
             <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-14">
-                <div class="grid lg:grid-cols-[1fr_420px] gap-6">
-                    <div class="panel p-4">
+                <div class="grid lg:grid-cols-[1fr_420px] gap-6 lg:items-start">
+                    <div class="panel p-4 sticky-map-panel">
                         <div id="map"></div>
                     </div>
                     <aside class="grid gap-4 content-start">
