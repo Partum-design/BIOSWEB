@@ -79,9 +79,9 @@
             const phone = document.getElementById('doctor-phone').value.trim();
             const request = document.getElementById('doctor-request').value;
             const message = document.getElementById('doctor-message').value.trim();
-            const text = `Hola Laboratorios BIOS, soy médico y solicito contacto.%0A%0ANombre: ${encodeURIComponent(name)}%0AWhatsApp: ${encodeURIComponent(phone)}%0ASolicitud: ${encodeURIComponent(request)}%0ADetalles: ${encodeURIComponent(message)}`;
+            const text = `Hola Laboratorios BIOS, soy médico y solicito contacto.\n\nNombre: ${name}\nWhatsApp: ${phone}\nSolicitud: ${request}\nDetalles: ${message}`;
             document.getElementById('doctor-status').textContent = 'Abriremos WhatsApp para enviar tu solicitud.';
-            window.open(`https://wa.me/5211234567890?text=${text}`, '_blank');
+            window.open(`https://wa.me/5211234567890?text=${encodeURIComponent(text)}`, '_blank');
         });
         lucide.createIcons();
     </script>

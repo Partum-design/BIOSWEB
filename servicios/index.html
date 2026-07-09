@@ -110,8 +110,8 @@
             document.getElementById('category-tabs').innerHTML = categories.map((category, i) => `
                 <button class="chip ${category === activeCategory && !quickFilter ? 'active' : ''}" onclick="setCategory('${category}')">${category} <span class="chip-count">${counts[i]}</span></button>
             `).join('') + `
-                <button class="chip chip-quick ${quickFilter === 'destacados' ? 'active' : ''}" onclick="setQuickFilter('destacados')"><i class="fa-solid fa-star"></i> Destacados</button>
-                <button class="chip chip-quick chip-women ${quickFilter === 'campana' ? 'active' : ''}" onclick="setQuickFilter('campana')"><i class="fa-solid fa-venus"></i> Campaña mujer</button>
+                <button class="chip chip-quick ${quickFilter === 'destacados' ? 'active' : ''}" onclick="setQuickFilter('destacados')"><i data-lucide="star" class="w-3.5 h-3.5"></i> Destacados</button>
+                <button class="chip chip-quick chip-women ${quickFilter === 'campana' ? 'active' : ''}" onclick="setQuickFilter('campana')"><i data-lucide="venus" class="w-3.5 h-3.5"></i> Campaña mujer</button>
             `;
         }
 
@@ -140,7 +140,7 @@
         }
 
         function cardBadge(item) {
-            if (item.campaign) return '<span class="service-tag service-tag-women"><i class="fa-solid fa-venus"></i> Campaña mujer</span>';
+            if (item.campaign) return '<span class="service-tag service-tag-women"><i data-lucide="venus" class="w-3.5 h-3.5"></i> Campaña mujer</span>';
             if (item.top) return '<span class="service-tag service-tag-top">Más pedido</span>';
             if (item.alta) return '<span class="service-tag">Destacado</span>';
             return `<span class="service-tag">${item.deliveryLabel}</span>`;
@@ -171,7 +171,7 @@
                     </details>
                     <div class="service-card-footer">
                         <strong class="brand-type service-price">${money(item.price)}</strong>
-                        <a class="primary-button quote-button" target="_blank" aria-label="Cotizar ${item.name}" href="https://wa.me/5211234567890?text=Hola%20Laboratorios%20BIOS,%20quiero%20cotizar%20${encodeURIComponent(item.name)}"><i data-lucide="message-circle" class="w-4 h-4"></i></a>
+                        <a class="primary-button quote-button !bg-[#25D366]" target="_blank" aria-label="Cotizar ${item.name} por WhatsApp" href="https://wa.me/5211234567890?text=Hola%20Laboratorios%20BIOS,%20quiero%20cotizar%20${encodeURIComponent(item.name)}"><i class="fa-brands fa-whatsapp text-lg"></i></a>
                     </div>
                 </article>
             `).join('');

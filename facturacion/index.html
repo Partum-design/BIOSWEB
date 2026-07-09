@@ -228,12 +228,10 @@
 
         .field-row:last-child { margin-bottom: 0; }
         .field-row.cols-2 { grid-template-columns: 1fr 1fr; }
-        .field-row.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
         .field-row.cols-auto { grid-template-columns: 1fr auto; }
 
         @media (max-width: 540px) {
-            .field-row.cols-2,
-            .field-row.cols-3 { grid-template-columns: 1fr; }
+            .field-row.cols-2 { grid-template-columns: 1fr; }
         }
 
         .field {
@@ -651,11 +649,11 @@
             <div class="field-row cols-2">
                 <div class="field">
                     <label for="monto">Monto a facturar <span class="req">*</span></label>
-                    <input type="text" id="monto" placeholder="$0.00" inputmode="decimal">
+                    <input type="text" id="monto" placeholder="$0.00" inputmode="decimal" required>
                 </div>
                 <div class="field">
                     <label for="orden">Número de orden / folio <span class="req">*</span></label>
-                    <input type="text" id="orden" placeholder="Ej. 00123456">
+                    <input type="text" id="orden" placeholder="Ej. 00123456" required>
                 </div>
             </div>
         </div>
@@ -685,38 +683,38 @@
                 <div class="field" style="grid-column: 1 / -1;">
                     <label for="rfc">RFC <span class="req">*</span></label>
                     <input type="text" id="rfc" placeholder="XAXX010101000" maxlength="13"
-                           style="text-transform:uppercase;" autocomplete="off">
+                           style="text-transform:uppercase;" autocomplete="off" required>
                 </div>
             </div>
 
             <div class="field-row cols-2">
                 <div class="field">
                     <label for="regimen">Régimen fiscal <span class="req">*</span></label>
-                    <select id="regimen">
+                    <select id="regimen" required>
                         <option value="" disabled selected>Selecciona régimen</option>
-                        <option value="601">601 – General de Ley Personas Morales</option>
-                        <option value="603">603 – Personas Morales con Fines no Lucrativos</option>
-                        <option value="605">605 – Sueldos y Salarios e Ingresos Asimilados</option>
-                        <option value="606">606 – Arrendamiento</option>
-                        <option value="607">607 – Régimen de Enajenación o Adquisición de Bienes</option>
-                        <option value="608">608 – Demás Ingresos</option>
-                        <option value="610">610 – Residentes en el Extranjero sin EP en México</option>
-                        <option value="611">611 – Ingresos por Dividendos (socios y accionistas)</option>
-                        <option value="612">612 – Personas Físicas con Actividades Empresariales</option>
-                        <option value="614">614 – Ingresos por Intereses</option>
-                        <option value="615">615 – Régimen de los Ingresos por obtención de Premios</option>
-                        <option value="616">616 – Sin Obligaciones Fiscales</option>
-                        <option value="621">621 – Incorporación Fiscal</option>
-                        <option value="622">622 – Actividades Agrícolas, Ganaderas, Silvícolas y Pesqueras</option>
-                        <option value="623">623 – Opcional para Grupos de Sociedades</option>
-                        <option value="624">624 – Coordinados</option>
-                        <option value="625">625 – Régimen de las Actividades Empresariales con Ingresos a través de Plataformas Tecnológicas</option>
-                        <option value="626">626 – Régimen Simplificado de Confianza (RESICO)</option>
+                        <option value="601" data-persona="moral">601 – General de Ley Personas Morales</option>
+                        <option value="603" data-persona="moral">603 – Personas Morales con Fines no Lucrativos</option>
+                        <option value="605" data-persona="fisica">605 – Sueldos y Salarios e Ingresos Asimilados</option>
+                        <option value="606" data-persona="ambos">606 – Arrendamiento</option>
+                        <option value="607" data-persona="ambos">607 – Régimen de Enajenación o Adquisición de Bienes</option>
+                        <option value="608" data-persona="ambos">608 – Demás Ingresos</option>
+                        <option value="610" data-persona="ambos">610 – Residentes en el Extranjero sin EP en México</option>
+                        <option value="611" data-persona="fisica">611 – Ingresos por Dividendos (socios y accionistas)</option>
+                        <option value="612" data-persona="fisica">612 – Personas Físicas con Actividades Empresariales</option>
+                        <option value="614" data-persona="fisica">614 – Ingresos por Intereses</option>
+                        <option value="615" data-persona="fisica">615 – Régimen de los Ingresos por obtención de Premios</option>
+                        <option value="616" data-persona="fisica">616 – Sin Obligaciones Fiscales</option>
+                        <option value="621" data-persona="fisica">621 – Incorporación Fiscal</option>
+                        <option value="622" data-persona="ambos">622 – Actividades Agrícolas, Ganaderas, Silvícolas y Pesqueras</option>
+                        <option value="623" data-persona="moral">623 – Opcional para Grupos de Sociedades</option>
+                        <option value="624" data-persona="moral">624 – Coordinados</option>
+                        <option value="625" data-persona="fisica">625 – Régimen de las Actividades Empresariales con Ingresos a través de Plataformas Tecnológicas</option>
+                        <option value="626" data-persona="ambos">626 – Régimen Simplificado de Confianza (RESICO)</option>
                     </select>
                 </div>
                 <div class="field">
                     <label for="uso_cfdi">Uso de CFDI <span class="req">*</span></label>
-                    <select id="uso_cfdi">
+                    <select id="uso_cfdi" required>
                         <option value="" disabled selected>Selecciona uso</option>
                         <option value="G01">G01 – Adquisición de mercancias</option>
                         <option value="G02">G02 – Devoluciones, descuentos o bonificaciones</option>
@@ -736,11 +734,11 @@
             <div class="field-row cols-2">
                 <div class="field">
                     <label for="codigo_postal">Código postal fiscal <span class="req">*</span></label>
-                    <input type="text" id="codigo_postal" placeholder="00000" maxlength="5" inputmode="numeric">
+                    <input type="text" id="codigo_postal" placeholder="00000" maxlength="5" inputmode="numeric" required>
                 </div>
                 <div class="field">
                     <label for="forma_pago">Forma de pago <span class="req">*</span></label>
-                    <select id="forma_pago">
+                    <select id="forma_pago" required>
                         <option value="" disabled selected>Selecciona</option>
                         <option value="01">01 – Efectivo</option>
                         <option value="02">02 – Cheque nominativo</option>
@@ -763,11 +761,11 @@
             <div class="field-row cols-2">
                 <div class="field">
                     <label for="nombre">Nombre(s) <span class="req">*</span></label>
-                    <input type="text" id="nombre" placeholder="Juan">
+                    <input type="text" id="nombre" placeholder="Juan" required>
                 </div>
                 <div class="field">
                     <label for="ap_paterno">Apellido paterno <span class="req">*</span></label>
-                    <input type="text" id="ap_paterno" placeholder="Pérez">
+                    <input type="text" id="ap_paterno" placeholder="Pérez" required>
                 </div>
             </div>
 
@@ -778,7 +776,7 @@
                 </div>
                 <div class="field">
                     <label for="email">Correo para envío <span class="req">*</span></label>
-                    <input type="email" id="email" placeholder="tu@correo.com">
+                    <input type="email" id="email" placeholder="tu@correo.com" required>
                 </div>
             </div>
         </div>
@@ -796,7 +794,7 @@
                         Constancia de Situación Fiscal <span style="color:#ef4444;">*</span>
                     </label>
                     <div class="upload-area" id="upload-csf">
-                        <input type="file" id="file-csf" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx" aria-label="Cargar Constancia de Situación Fiscal">
+                        <input type="file" id="file-csf" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx" aria-label="Cargar Constancia de Situación Fiscal" required>
                         <div class="upload-icon"><i class="fa-solid fa-file-pdf"></i></div>
                         <p><span>Selecciona archivo</span></p>
                         <small>PDF, JPG, PNG, DOC · Máx 10 MB</small>
@@ -808,13 +806,18 @@
                         Comprobante de pago <span style="color:#ef4444;">*</span>
                     </label>
                     <div class="upload-area" id="upload-cp">
-                        <input type="file" id="file-cp" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx" aria-label="Cargar Comprobante de Pago">
+                        <input type="file" id="file-cp" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx" aria-label="Cargar Comprobante de Pago" required>
                         <div class="upload-icon"><i class="fa-solid fa-receipt"></i></div>
                         <p><span>Seleccionar archivo</span></p>
                         <small>PDF, JPG, PNG, DOC · Máx 10 MB</small>
                     </div>
                 </div>
             </div>
+
+            <p style="font-size:0.72rem;color:#92400e;background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:0.6rem 0.75rem;margin-top:0.75rem;line-height:1.4;">
+                <i class="fa-solid fa-circle-info" style="margin-right:0.35rem;"></i>
+                Estos archivos no se envían solos: al presionar "Enviar solicitud" se abrirá WhatsApp, y ahí mismo debes adjuntarlos en el chat.
+            </p>
         </div>
 
         <!-- SUBMIT -->
@@ -934,18 +937,28 @@
     box-shadow:0 12px 36px rgba(10,28,46,0.4);
     opacity:0; pointer-events:none;
     transition:all 0.35s cubic-bezier(0.4,0,0.2,1);
-    z-index:9999; white-space:nowrap;
-">
-    <i class="fa-solid fa-circle-check" style="color:#4ade80;"></i>
-    ¡Solicitud enviada! Recibirás tu factura pronto.
-</div>
+    z-index:9999; max-width:min(90vw,26rem); text-align:left;
+"></div>
 
 <script>
-    // Persona type toggle
+    // Persona type toggle — also filters régimen fiscal options to match
     function setPersona(tipo) {
         document.querySelectorAll('.persona-tab').forEach(t => t.classList.remove('active'));
         document.getElementById('tab-' + tipo).classList.add('active');
+
+        const select = document.getElementById('regimen');
+        if (!select) return;
+        let selectedIsVisible = false;
+        Array.from(select.options).forEach(opt => {
+            if (!opt.value) { selectedIsVisible = true; return; }
+            const persona = opt.dataset.persona;
+            const visible = persona === 'ambos' || persona === tipo;
+            opt.hidden = !visible;
+            if (visible && opt.selected) selectedIsVisible = true;
+        });
+        if (!selectedIsVisible) select.value = '';
     }
+    setPersona('fisica');
 
     // File label update
     ['file-csf', 'file-cp'].forEach(id => {
@@ -971,12 +984,65 @@
         });
     }
 
+    // Toast: reutilizable para éxito (verde) y error (rojo)
+    function showToast(message, isError) {
+        const toast = document.getElementById('toast');
+        if (!toast) return;
+        toast.style.background = isError
+            ? 'linear-gradient(135deg,#7f1d1d,#991b1b)'
+            : 'linear-gradient(135deg,#0a1c2e,#0f3460)';
+        toast.innerHTML = (isError
+            ? '<i class="fa-solid fa-triangle-exclamation" style="color:#fbbf24;flex-shrink:0;"></i> '
+            : '<i class="fa-solid fa-circle-check" style="color:#4ade80;flex-shrink:0;"></i> ') + message;
+        toast.style.opacity = '1';
+        toast.style.transform = 'translateX(-50%) translateY(0)';
+        toast.style.pointerEvents = 'auto';
+        clearTimeout(showToast._t);
+        showToast._t = setTimeout(() => {
+            toast.style.opacity = '0';
+            toast.style.transform = 'translateX(-50%) translateY(20px)';
+            toast.style.pointerEvents = 'none';
+        }, 4000);
+    }
+
+    // Campos obligatorios (marcados con * en el formulario)
+    const REQUIRED_FIELDS = [
+        ['monto', 'Monto a facturar'],
+        ['orden', 'Número de orden / folio'],
+        ['rfc', 'RFC'],
+        ['regimen', 'Régimen fiscal'],
+        ['uso_cfdi', 'Uso de CFDI'],
+        ['codigo_postal', 'Código postal fiscal'],
+        ['forma_pago', 'Forma de pago'],
+        ['nombre', 'Nombre(s)'],
+        ['ap_paterno', 'Apellido paterno'],
+        ['email', 'Correo para envío'],
+    ];
+
     // Envío real: arma la solicitud de factura y la manda por WhatsApp a BIOS.
     function submitForm() {
         const v = id => (document.getElementById(id)?.value || '').trim();
-        const rfc = v('rfc');
-        if (!rfc) { alert('Ingresa tu RFC para solicitar tu factura.'); return; }
 
+        for (const [id, label] of REQUIRED_FIELDS) {
+            if (!v(id)) {
+                document.getElementById(id)?.focus();
+                showToast(`Falta un dato obligatorio: ${label}.`, true);
+                return;
+            }
+        }
+
+        const csfFile = document.getElementById('file-csf');
+        const cpFile = document.getElementById('file-cp');
+        if (!csfFile?.files?.length) {
+            showToast('Adjunta tu Constancia de Situación Fiscal antes de enviar.', true);
+            return;
+        }
+        if (!cpFile?.files?.length) {
+            showToast('Adjunta tu comprobante de pago antes de enviar.', true);
+            return;
+        }
+
+        const rfc = v('rfc');
         const nombre = [v('nombre'), v('ap_paterno'), v('ap_materno')].filter(Boolean).join(' ');
         const lines = [
             'Hola Laboratorios BIOS, solicito mi factura (CFDI):',
@@ -990,17 +1056,7 @@
 
         window.open(`https://wa.me/5211234567890?text=${encodeURIComponent(lines.join('\n'))}`, '_blank');
 
-        const toast = document.getElementById('toast');
-        if (toast) {
-            toast.style.opacity = '1';
-            toast.style.transform = 'translateX(-50%) translateY(0)';
-            toast.style.pointerEvents = 'auto';
-            setTimeout(() => {
-                toast.style.opacity = '0';
-                toast.style.transform = 'translateX(-50%) translateY(20px)';
-                toast.style.pointerEvents = 'none';
-            }, 4000);
-        }
+        showToast('¡Solicitud enviada! Recuerda adjuntar tus archivos en el chat de WhatsApp.', false);
     }
 </script>
 </body>

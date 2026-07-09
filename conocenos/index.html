@@ -16,45 +16,13 @@
 </head>
 <body>
     <div class="page-shell">
-        <header class="site-header">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-h-28 py-3 flex items-center justify-between gap-4">
-                <a href="../"><img src="../logos/bios-logo-white.png" alt="Laboratorios BIOS" class="h-20 lg:h-24 w-auto max-w-[min(58vw,380px)] object-contain drop-shadow-lg" onerror="this.src='https://placehold.co/260x78/0A1C2E/FFFFFF?text=Laboratorios%20BIOS'"></a>
-                <nav class="hidden lg:flex items-center gap-6">
-                    <a class="nav-link" href="../">Inicio</a>
-                    <a class="nav-link" href="../servicios/">Servicios</a>
-                    <a class="nav-link" href="../seguimiento/">Seguimiento</a>
-                    <a class="nav-link" href="../sucursales/">Sucursales</a>
-                    <a class="nav-link active" href="../conocenos/">Conócenos</a>
-                    <a class="nav-link" href="../unete/">Únete</a>
-                </nav>
-                <a href="../sucursales/" class="primary-button hidden sm:inline-flex"><i data-lucide="map-pin" class="w-5 h-5"></i> Sucursales</a>
-                <button class="secondary-button lg:hidden" onclick="toggleDrawer(true)" aria-label="Abrir menú"><i data-lucide="menu" class="w-5 h-5"></i></button>
-            </div>
-        </header>
-
-        <div id="drawer" class="drawer fixed inset-0 z-50 lg:hidden">
-            <div class="absolute inset-0 bg-slate-950/50" onclick="toggleDrawer(false)"></div>
-            <aside class="drawer-panel absolute right-0 top-0 h-full w-[min(86vw,360px)] bg-white p-5 shadow-2xl">
-                <div class="flex items-center justify-between mb-6">
-                    <span class="inline-flex rounded-xl bg-[#0A1C2E] px-3 py-2"><img src="../logos/bios-logo-white.png" alt="Laboratorios BIOS" class="h-12 w-auto object-contain"></span>
-                    <button class="secondary-button !min-h-10 !p-2" onclick="toggleDrawer(false)" aria-label="Cerrar menú"><i data-lucide="x" class="w-5 h-5"></i></button>
-                </div>
-                <div class="grid gap-2 font-black text-[#0A1C2E]">
-                    <a href="../" class="p-3 border rounded-lg">Inicio</a>
-                    <a href="../servicios/" class="p-3 border rounded-lg">Servicios</a>
-                    <a href="../seguimiento/" class="p-3 border rounded-lg">Seguimiento</a>
-                    <a href="../sucursales/" class="p-3 border rounded-lg">Sucursales</a>
-                    <a href="../conocenos/" class="p-3 border rounded-lg bg-blue-50">Conócenos</a>
-                    <a href="../unete/" class="p-3 border rounded-lg">Únete</a>
-                </div>
-            </aside>
-        </div>
+        <header class="site-header"></header>
 
         <main class="page-enter">
             <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-14">
                 <div class="dark-panel p-6 lg:p-8 mb-6">
                     <span class="section-kicker !bg-white/10 !border-white/15 !text-cyan-100 mb-5"><i data-lucide="building-2" class="w-4 h-4"></i> Laboratorios BIOS</span>
-                    <div class="grid lg:grid-cols-[0.85fr_1.15fr] gap-6 items-end">
+                    <div class="grid lg:grid-cols-[0.85fr_1.15fr] gap-6 items-center">
                         <h1 class="brand-type mobile-tight text-4xl lg:text-6xl font-black leading-none">Diagnóstico con confianza</h1>
                         <p class="text-blue-100 text-lg leading-relaxed">Somos un laboratorio médico diagnóstico enfocado en análisis clínicos, gabinete e imagenología con atención clara, tecnología y procesos confiables.</p>
                     </div>
@@ -113,10 +81,6 @@
             'Pruebas Ginecológicas', 'Tomografía', 'Rayos X', 'Ultrasonidos'
         ];
         document.getElementById('specialties').innerHTML = specialties.map(item => `<span class="chip">${item}</span>`).join('');
-
-        function toggleDrawer(open) {
-            document.getElementById('drawer').classList.toggle('open', open);
-        }
 
         lucide.createIcons();
     </script>
