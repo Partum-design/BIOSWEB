@@ -31,12 +31,12 @@
     ];
 
     const branches = [
-        { name: 'Plaza Cantú', label: 'Principal', address: 'Cuautitlán Izcalli, Centro Urbano', phone: '55-1113-2754' },
-        { name: 'Plaza La Joya', label: 'Alta afluencia', address: 'Cuautitlán-Melchor Ocampo', phone: '55-5872-9277' },
-        { name: 'Las Haciendas', label: 'Cerca de ti', address: 'Av. Huehuetoca, Local D-40', phone: '55-5817-3401' },
-        { name: 'Tepalcapa', label: 'Express', address: 'Granjas de Guadalupe', phone: '55-2602-0764' },
-        { name: 'Tepojaco', label: 'Especialidad', address: 'San Sebastián', phone: '55-5391-8066' },
-        { name: 'Tultepec', label: 'Nueva', address: 'Av. Joaquín Montenegro', phone: '55-9413-2041', isNew: true },
+        { name: 'Plaza Cantú', label: 'Principal', address: 'Av. Dr. Jiménez Cantú S/N, Centro Urbano, C.P. 54700', phone: '55-1113-2754' },
+        { name: 'Plaza La Joya', label: 'Alta afluencia', address: 'Melchor Ocampo 31, Villas de Cuautitlán, C.P. 54857', phone: '55-5872-9277' },
+        { name: 'Las Haciendas', label: 'Cerca de ti', address: 'Av. Huehuetoca S/N, Ex Hacienda de San Miguel, C.P. 54715', phone: '55-5817-3401' },
+        { name: 'Tepalcapa', label: 'Express', address: 'Av. Morelos 9, Luis Echeverría, C.P. 54753', phone: '55-2602-0764' },
+        { name: 'Tepojaco', label: 'Especialidad', address: 'Av. San Sebastián 56, Ejido de San Francisco Tepojaco, C.P. 54745', phone: '55-5391-8066' },
+        { name: 'Tultepec', label: 'Nueva', address: 'Plaza Tauro, Av. Joaquín Montenegro 95, C.P. 54960', phone: '55-9413-2041', isNew: true },
     ];
 
     // Calendario campañas de colposcopías JULIO-AGOSTO 2026, por unidad.

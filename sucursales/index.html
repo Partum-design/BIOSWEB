@@ -20,7 +20,7 @@
         @media (max-width: 767px) { #map { min-height: 340px; } }
         @media (max-width: 1023px) { .sticky-map-panel { position: static; } }
     </style>
-    <script src="../assets/site.js?v=1783625058" defer></script>
+    <script src="../assets/site.js?v=1784571500" defer></script>
 </head>
 <body>
     <div class="page-shell">
@@ -64,12 +64,12 @@
 
     <script>
         const branches = [
-            { name: 'Unidad Plaza Cantú', badge: 'Principal', address: 'Av. Dr. Jiménez Cantú S/N, Plaza Cantú Centro Urbano, Cuautitlán Izcalli.', phones: ['55-1113-2754', '55-5871-9069'], lat: 19.6450, lng: -99.2150, zips: ['54700', '54710', '54720'] },
-            { name: 'Unidad Plaza La Joya', badge: 'Alta afluencia', address: 'Carr. Cuautitlán-Melchor Ocampo esq. Libramiento La Joya.', phones: ['55-5872-9277'], lat: 19.6710, lng: -99.1820, zips: ['54800', '54830', '54840'] },
-            { name: 'Unidad Plaza Las Haciendas', badge: 'Cerca de ti', address: 'Av. Huehuetoca S/N, esq. Jiménez Cantú Local D-40.', phones: ['55-5817-3401'], lat: 19.6500, lng: -99.2100, zips: ['54740', '54750', '54753'] },
-            { name: 'Unidad Tepalcapa', badge: 'Express', address: 'Av. Hidalgo #140, locales 14, 15 y 16, Granjas de Guadalupe.', phones: ['55-2602-0764'], lat: 19.6300, lng: -99.2300, zips: ['54743', '54745', '54760'] },
-            { name: 'Unidad Tepojaco', badge: 'Especialidad', address: 'Av. San Sebastián S/N casi esq. San Martín Caballero.', phones: ['55-5391-8066'], lat: 19.6900, lng: -99.2500, zips: ['54770', '54783', '54784'] },
-            { name: 'Unidad Tultepec', badge: 'Nueva', isNew: true, address: 'Av. Joaquín Montenegro S/N, esq. Av. 2 de Marzo, Tultepec.', phones: ['55-9413-2041'], lat: 19.6850, lng: -99.1280, zips: ['54960', '54963', '54964'] }
+            { name: 'Unidad Plaza Cantú', badge: 'Principal', address: 'Av. Dr. Jiménez Cantú S/N, Plaza Cantú Centro Urbano, Cuautitlán Izcalli, C.P. 54700.', phones: ['55-1113-2754', '55-5871-9069'], lat: 19.6695138, lng: -99.2095527, zips: ['54700', '54710', '54720'], mapsUrl: 'https://maps.app.goo.gl/GTkULcomJPVmWa1RA?g_st=aw' },
+            { name: 'Unidad Plaza La Joya', badge: 'Alta afluencia', address: 'Melchor Ocampo 31, Villas de Cuautitlán, Cuautitlán, C.P. 54857.', phones: ['55-5872-9277'], lat: 19.6722043, lng: -99.1661641, zips: ['54800', '54830', '54840'], mapsUrl: 'https://maps.app.goo.gl/HCTpiBdM9qtFyWeP6?g_st=aw' },
+            { name: 'Unidad Plaza Las Haciendas', badge: 'Cerca de ti', address: 'Av. Huehuetoca S/N, Ex Hacienda de San Miguel, Cuautitlán Izcalli, C.P. 54715.', phones: ['55-5817-3401'], lat: 19.6866634, lng: -99.2099739, zips: ['54740', '54750', '54753'], mapsUrl: 'https://maps.app.goo.gl/trQAczGcXq4uPTNL7?g_st=aw' },
+            { name: 'Unidad Tepalcapa', badge: 'Express', address: 'Av. Morelos 9, Luis Echeverría, Cuautitlán Izcalli, C.P. 54753.', phones: ['55-2602-0764'], lat: 19.6205274, lng: -99.2067493, zips: ['54743', '54745', '54760'], mapsUrl: 'https://maps.app.goo.gl/wfzAKYGrhj8kzFr37?g_st=aw' },
+            { name: 'Unidad Tepojaco', badge: 'Especialidad', address: 'Av. San Sebastián 56, Ejido de San Francisco Tepojaco, Cuautitlán Izcalli, C.P. 54745.', phones: ['55-5391-8066'], lat: 19.6481325, lng: -99.2585366, zips: ['54770', '54783', '54784'], mapsUrl: 'https://maps.app.goo.gl/owmpJRdZXaLPeEEJ9?g_st=aw' },
+            { name: 'Unidad Tultepec', badge: 'Nueva', isNew: true, address: 'Plaza Tauro, Av. Joaquín Montenegro 95, San Martín, Tultepec, C.P. 54960.', phones: ['55-9413-2041'], lat: 19.6736413, lng: -99.1283153, zips: ['54960', '54963', '54964'], mapsUrl: 'https://maps.app.goo.gl/NY95gD25q4Ge9czK8?g_st=aw' }
         ];
         const map = L.map('map', { scrollWheelZoom: false }).setView([19.66, -99.20], 12);
         L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', { attribution: '&copy; CARTO' }).addTo(map);
@@ -82,7 +82,7 @@
         }
 
         function mapsUrl(branch) {
-            return `https://www.google.com/maps/dir/?api=1&destination=${branch.lat},${branch.lng}&travelmode=driving`;
+            return branch.mapsUrl;
         }
 
         function popupMarkup(branch) {

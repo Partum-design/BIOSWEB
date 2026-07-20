@@ -574,7 +574,7 @@
             }
         }
     </style>
-    <script src="assets/site.js?v=1783625058" defer></script>
+    <script src="assets/site.js?v=1784571500" defer></script>
 </head>
 <body class="font-inter text-gray-800 compact-site">
 
@@ -2120,12 +2120,12 @@
            2. VERBATIM UNITS LOCATOR
            ================================================================= */
         const unitsData = [
-            { name: "UNIDAD PLAZA CANTÚ", address: "AV. DR. JIMÉNEZ CANTÚ S/N, PLAZA CANTÚ CENTRO URBANO, CUAUTITLÁN IZCALLI ESTADO DE MÉXICO, C.P. 54700", phones: ["55-1113-2754", "55-5871-9069"], lat: 19.6450, lng: -99.2150, badge: "Principal" },
-            { name: "UNIDAD PLAZA LA JOYA", address: "CARR. CUAUTITLÁN-MELCHOR OCAMPO ESQ. CON LIBRAMIENTO LA JOYA, ESTADO DE MÉXICO.", phones: ["55-5872-9277"], lat: 19.6710, lng: -99.1820, badge: "Alta afluencia" },
-            { name: "UNIDAD PLAZA LAS HACIENDAS", address: "AV. HUEHUETOCA S/N, ESQ. JIMÉNEZ CANTÚ LOCAL D-40, ESTADO DE MÉXICO.", phones: ["55-5817-3401"], lat: 19.6500, lng: -99.2100, badge: "Cerca de ti" },
-            { name: "UNIDAD TEPALCAPA", address: "AV. HIDALGO # 140, LOCALES 14, 15 Y 16 COL. GRANJAS DE GUADALUPE, ESTADO DE MÉXICO.", phones: ["55-2602-0764"], lat: 19.6300, lng: -99.2300, badge: "Express" },
-            { name: "UNIDAD TEPOJACO", address: "AV. SAN SEBASTIÁN S/N CASI ESQ. SAN MARTÍN CABALLERO, ESTADO DE MÉXICO.", phones: ["55-5391-8066"], lat: 19.6900, lng: -99.2500, badge: "Especialidad" },
-            { name: "UNIDAD TULTEPEC", address: "AV. JOAQUÍN MONTENEGRO S/N, ESQ. AV. 2 DE MARZO, TULTEPEC, ESTADO DE MÉXICO", phones: ["55-9413-2041"], lat: 19.6850, lng: -99.1280, badge: "Nueva", isNew: true }
+            { name: "UNIDAD PLAZA CANTÚ", address: "AV. DR. JIMÉNEZ CANTÚ S/N, PLAZA CANTÚ CENTRO URBANO, CUAUTITLÁN IZCALLI, ESTADO DE MÉXICO, C.P. 54700", phones: ["55-1113-2754", "55-5871-9069"], lat: 19.6695138, lng: -99.2095527, badge: "Principal", mapsUrl: "https://maps.app.goo.gl/GTkULcomJPVmWa1RA?g_st=aw" },
+            { name: "UNIDAD PLAZA LA JOYA", address: "MELCHOR OCAMPO 31, VILLAS DE CUAUTITLÁN, CUAUTITLÁN, ESTADO DE MÉXICO, C.P. 54857", phones: ["55-5872-9277"], lat: 19.6722043, lng: -99.1661641, badge: "Alta afluencia", mapsUrl: "https://maps.app.goo.gl/HCTpiBdM9qtFyWeP6?g_st=aw" },
+            { name: "UNIDAD PLAZA LAS HACIENDAS", address: "AV. HUEHUETOCA S/N, EX HACIENDA DE SAN MIGUEL, CUAUTITLÁN IZCALLI, ESTADO DE MÉXICO, C.P. 54715", phones: ["55-5817-3401"], lat: 19.6866634, lng: -99.2099739, badge: "Cerca de ti", mapsUrl: "https://maps.app.goo.gl/trQAczGcXq4uPTNL7?g_st=aw" },
+            { name: "UNIDAD TEPALCAPA", address: "AV. MORELOS 9, LUIS ECHEVERRÍA, CUAUTITLÁN IZCALLI, ESTADO DE MÉXICO, C.P. 54753", phones: ["55-2602-0764"], lat: 19.6205274, lng: -99.2067493, badge: "Express", mapsUrl: "https://maps.app.goo.gl/wfzAKYGrhj8kzFr37?g_st=aw" },
+            { name: "UNIDAD TEPOJACO", address: "AV. SAN SEBASTIÁN 56, EJIDO DE SAN FRANCISCO TEPOJACO, CUAUTITLÁN IZCALLI, ESTADO DE MÉXICO, C.P. 54745", phones: ["55-5391-8066"], lat: 19.6481325, lng: -99.2585366, badge: "Especialidad", mapsUrl: "https://maps.app.goo.gl/owmpJRdZXaLPeEEJ9?g_st=aw" },
+            { name: "UNIDAD TULTEPEC", address: "PLAZA TAURO, AV. JOAQUÍN MONTENEGRO 95, SAN MARTÍN, TULTEPEC, ESTADO DE MÉXICO, C.P. 54960", phones: ["55-9413-2041"], lat: 19.6736413, lng: -99.1283153, badge: "Nueva", isNew: true, mapsUrl: "https://maps.app.goo.gl/NY95gD25q4Ge9czK8?g_st=aw" }
         ];
 
         const map = L.map('map', { scrollWheelZoom: false }).setView([19.6600, -99.2000], 12);
@@ -2133,7 +2133,7 @@
 
         const unitsList = document.getElementById('units-list');
         function mapsUrl(unit) {
-            return `https://www.google.com/maps/dir/?api=1&destination=${unit.lat},${unit.lng}&travelmode=driving`;
+            return unit.mapsUrl;
         }
 
         function unitPopupMarkup(unit) {
