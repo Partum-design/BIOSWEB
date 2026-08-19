@@ -19,11 +19,11 @@
             --branch-ink: #071a2c;
             --branch-blue: #1769e0;
             --branch-cyan: #61e1ef;
+            --branch-sky: #e8f5ff;
             --branch-mint: #b4f3dc;
             --branch-paper: #f5f9fc;
             --branch-line: #dce8f0;
             --branch-muted: #6b7c8d;
-            --branch-yellow: #f7df3d;
             --branch-shadow: 0 24px 70px rgba(7, 26, 44, .13);
         }
 
@@ -112,7 +112,7 @@
             bottom: -.12em;
             height: .08em;
             border-radius: 99px;
-            background: var(--branch-yellow);
+            background: var(--branch-cyan);
             transform: rotate(-2deg);
         }
 
@@ -221,7 +221,7 @@
 
         .legend-item { display: inline-flex; align-items: center; gap: .45rem; }
         .legend-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--branch-blue); box-shadow: 0 0 0 3px rgba(97,225,239,.25); }
-        .legend-dot.new { background: var(--branch-yellow); box-shadow: 0 0 0 3px rgba(247,223,61,.22); }
+        .legend-dot.new { background: var(--branch-cyan); box-shadow: 0 0 0 3px rgba(97,225,239,.22); }
 
         .branches-console {
             display: flex;
@@ -280,8 +280,8 @@
         .zip-finder input { min-width: 0; border: 1px solid rgba(255,255,255,.16); border-radius: 9px; background: rgba(255,255,255,.09); color: white; padding: .85rem .9rem; font: 500 .85rem "DM Mono", monospace; outline: none; }
         .zip-finder input::placeholder { color: rgba(255,255,255,.4); }
         .zip-finder input:focus { border-color: var(--branch-cyan); box-shadow: 0 0 0 3px rgba(97,225,239,.15); }
-        .zip-finder button, .branch-route-button { border: 0; border-radius: 9px; background: var(--branch-yellow); color: var(--branch-ink); padding: 0 1rem; font-weight: 900; cursor: pointer; transition: transform .2s ease, background .2s ease; }
-        .zip-finder button:hover, .branch-route-button:hover { background: #fff06a; transform: translateY(-2px); }
+        .zip-finder button, .branch-route-button { border: 0; border-radius: 9px; background: var(--branch-blue); color: white; padding: 0 1rem; font-weight: 900; cursor: pointer; transition: transform .2s ease, background .2s ease; }
+        .zip-finder button:hover, .branch-route-button:hover { background: #0e54bd; transform: translateY(-2px); }
 
         .zip-result { margin-top: .8rem; border-left: 2px solid var(--branch-cyan); padding: .65rem .8rem; background: rgba(97,225,239,.09); color: rgba(255,255,255,.82); font-size: .78rem; line-height: 1.45; }
         .zip-result strong { display: block; color: white; font-family: Outfit, sans-serif; font-size: 1rem; }
@@ -302,7 +302,7 @@
         .branch-index { color: #9aa9b6; font-size: .63rem; }
         .branch-card h3 { margin: .3rem 0 .45rem; font-family: Outfit, sans-serif; font-size: 1.25rem; letter-spacing: -.045em; line-height: 1; }
         .branch-status { flex: 0 0 auto; border: 1px solid #cae4ee; border-radius: 999px; padding: .35rem .5rem; color: var(--branch-blue); font-size: .56rem; font-weight: 500; }
-        .branch-status.is-new { border-color: #dbd16a; color: #7d6d00; background: #fffde4; }
+        .branch-status.is-new { border-color: #9bddec; color: #11679a; background: var(--branch-sky); }
         .branch-address { max-width: 350px; margin: 0; color: var(--branch-muted); font-size: .78rem; line-height: 1.5; }
         .branch-phone { display: inline-flex; align-items: center; gap: .4rem; margin-top: .65rem; color: var(--branch-ink); font: 500 .73rem "DM Mono", monospace; }
         .branch-phone i { color: var(--branch-blue); font-size: .68rem; }
@@ -338,7 +338,7 @@
         .leaflet-control-attribution { font-size: 9px !important; }
         .bios-branch-marker { display: grid; place-items: center; width: 32px; height: 32px; border: 4px solid white; border-radius: 50% 50% 50% 0; background: var(--branch-blue); box-shadow: 0 5px 14px rgba(7,26,44,.32); color: white; transform: rotate(-45deg); }
         .bios-branch-marker i { transform: rotate(45deg); font-size: 11px; }
-        .bios-branch-marker.new { background: #c9ad00; }
+        .bios-branch-marker.new { background: #159fca; }
         .bios-leaflet-popup .leaflet-popup-content-wrapper { border-radius: 14px; box-shadow: 0 14px 35px rgba(7,26,44,.18); }
         .bios-leaflet-popup .leaflet-popup-content { margin: 16px; min-width: 210px; }
         .bios-popup-kicker { margin: 0 0 5px; color: var(--branch-blue); font: 500 10px "DM Mono", monospace; letter-spacing: .1em; text-transform: uppercase; }
@@ -366,6 +366,211 @@
             .console-top { padding-top: 1.35rem; }
             .branches-proof { grid-template-columns: 1fr; gap: 1.5rem; }
             .proof-stats { margin-top: .5rem; }
+        }
+
+        /* Scoped page lock: evita que los overrides compactos del sitio compriman esta vista. */
+        main.branches-page,
+        main.branches-page * {
+            box-sizing: border-box !important;
+        }
+
+        main.branches-page {
+            width: 100% !important;
+            max-width: none !important;
+            margin: 0 !important;
+            padding: 0 0 1px !important;
+            overflow: hidden !important;
+            background: var(--branch-paper) !important;
+        }
+
+        main.branches-page .branches-hero {
+            width: min(100% - 48px, 1180px) !important;
+            min-height: 390px !important;
+            margin: 0 auto !important;
+            padding: 78px 0 58px !important;
+            gap: 56px !important;
+            align-items: end !important;
+        }
+
+        main.branches-page .branches-title {
+            max-width: 660px !important;
+            margin: 0 !important;
+            font-size: clamp(3.3rem, 7vw, 6.9rem) !important;
+            line-height: .88 !important;
+            letter-spacing: -.08em !important;
+        }
+
+        main.branches-page .branches-intro {
+            max-width: 390px !important;
+            margin: 0 0 4px auto !important;
+            font-size: 1rem !important;
+            line-height: 1.7 !important;
+        }
+
+        main.branches-page .branches-board-wrap {
+            width: min(100% - 48px, 1180px) !important;
+            margin: 0 auto 110px !important;
+        }
+
+        main.branches-page .branches-board {
+            grid-template-columns: minmax(0, 1.5fr) minmax(360px, .82fr) !important;
+            min-height: 650px !important;
+            border-radius: 22px !important;
+            box-shadow: 0 22px 60px rgba(7, 26, 44, .14) !important;
+        }
+
+        main.branches-page .branches-map-column,
+        main.branches-page #branches-map {
+            min-height: 650px !important;
+        }
+
+        main.branches-page .console-top {
+            padding: 28px 30px 24px !important;
+            background: linear-gradient(145deg, #071a2c 0%, #0d2f58 100%) !important;
+        }
+
+        main.branches-page .console-top-row {
+            margin-bottom: 22px !important;
+        }
+
+        main.branches-page .console-top h2 {
+            margin: 0 0 9px !important;
+            font-size: 2.25rem !important;
+            line-height: .94 !important;
+        }
+
+        main.branches-page .console-top p {
+            max-width: 310px !important;
+            font-size: .82rem !important;
+            line-height: 1.55 !important;
+        }
+
+        main.branches-page .zip-finder {
+            margin-top: 22px !important;
+        }
+
+        main.branches-page .zip-finder button {
+            min-height: 42px !important;
+            padding: 0 14px !important;
+        }
+
+        main.branches-page .console-list-head {
+            min-height: 62px !important;
+            padding: 14px 30px 10px !important;
+        }
+
+        main.branches-page .branch-list {
+            max-height: 520px !important;
+            padding: 0 30px 18px !important;
+        }
+
+        main.branches-page .branch-card {
+            padding: 17px 0 18px !important;
+        }
+
+        main.branches-page .branch-card h3 {
+            margin: 5px 0 7px !important;
+            font-size: 1.12rem !important;
+            line-height: 1.05 !important;
+        }
+
+        main.branches-page .branch-address {
+            max-width: 300px !important;
+            font-size: .73rem !important;
+            line-height: 1.45 !important;
+        }
+
+        main.branches-page .branch-phone {
+            margin-top: 8px !important;
+            font-size: .68rem !important;
+        }
+
+        main.branches-page .branch-card-actions {
+            margin-top: 10px !important;
+        }
+
+        main.branches-page .branches-proof {
+            width: min(100% - 48px, 1180px) !important;
+            margin: 0 auto 110px !important;
+            gap: 64px !important;
+        }
+
+        main.branches-page .proof-title {
+            margin: 9px 0 0 !important;
+            font-size: clamp(2.25rem, 4.8vw, 4.25rem) !important;
+            line-height: .92 !important;
+        }
+
+        main.branches-page .proof-copy {
+            margin: 0 0 22px !important;
+            font-size: .88rem !important;
+            line-height: 1.65 !important;
+        }
+
+        @media (max-width: 980px) {
+            main.branches-page .branches-hero {
+                min-height: auto !important;
+                padding: 60px 0 42px !important;
+            }
+
+            main.branches-page .branches-board {
+                grid-template-columns: 1fr !important;
+            }
+
+            main.branches-page .branches-map-column,
+            main.branches-page #branches-map {
+                min-height: 500px !important;
+            }
+
+            main.branches-page .branch-list {
+                max-height: 600px !important;
+            }
+        }
+
+        @media (max-width: 640px) {
+            main.branches-page .branches-hero,
+            main.branches-page .branches-board-wrap,
+            main.branches-page .branches-proof {
+                width: calc(100% - 28px) !important;
+            }
+
+            main.branches-page .branches-hero {
+                padding: 48px 0 34px !important;
+                gap: 28px !important;
+            }
+
+            main.branches-page .branches-title {
+                font-size: clamp(3rem, 15vw, 5rem) !important;
+            }
+
+            main.branches-page .branches-intro {
+                margin: 0 !important;
+                font-size: .9rem !important;
+            }
+
+            main.branches-page .branches-board-wrap {
+                margin-bottom: 74px !important;
+            }
+
+            main.branches-page .branches-board {
+                border-radius: 18px !important;
+            }
+
+            main.branches-page .console-top,
+            main.branches-page .console-list-head,
+            main.branches-page .branch-list {
+                padding-left: 20px !important;
+                padding-right: 20px !important;
+            }
+
+            main.branches-page .console-top h2 {
+                font-size: 2rem !important;
+            }
+
+            main.branches-page .branches-proof {
+                margin-bottom: 74px !important;
+                gap: 28px !important;
+            }
         }
 
         @media (prefers-reduced-motion: reduce) {
