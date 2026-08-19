@@ -4,59 +4,438 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sucursales | Laboratorios BIOS</title>
+    <meta name="description" content="Encuentra tu unidad BIOS más cercana en Cuautitlán Izcalli, Cuautitlán y Tultepec.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="stylesheet" href="../assets/compact.css?v=1783625058">
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <link rel="stylesheet" href="../assets/multipage.css?v=1783625058">
-    <style>
-        #map { min-height: 460px; border-radius: 8px; z-index: 1; }
-        .sticky-map-panel { position: sticky; top: 10.25rem; }
-        @media (max-width: 767px) { #map { min-height: 340px; } }
-        @media (max-width: 1023px) { .sticky-map-panel { position: static; } }
-    </style>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="../assets/site.js?v=1784571500" defer></script>
+    <style>
+        :root {
+            --branch-ink: #071a2c;
+            --branch-blue: #1769e0;
+            --branch-cyan: #61e1ef;
+            --branch-mint: #b4f3dc;
+            --branch-paper: #f5f9fc;
+            --branch-line: #dce8f0;
+            --branch-muted: #6b7c8d;
+            --branch-yellow: #f7df3d;
+            --branch-shadow: 0 24px 70px rgba(7, 26, 44, .13);
+        }
+
+        .branches-page {
+            position: relative;
+            overflow: hidden;
+            background: var(--branch-paper);
+            color: var(--branch-ink);
+            isolation: isolate;
+        }
+
+        .branches-page::before {
+            content: "";
+            position: absolute;
+            inset: 0 0 auto;
+            height: 720px;
+            z-index: -1;
+            background:
+                linear-gradient(rgba(23, 105, 224, .035) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(23, 105, 224, .035) 1px, transparent 1px),
+                radial-gradient(circle at 70% 15%, rgba(97, 225, 239, .25), transparent 30%),
+                linear-gradient(180deg, #f8fcff 0%, #edf7fb 100%);
+            background-size: 36px 36px, 36px 36px, auto, auto;
+            mask-image: linear-gradient(#000 60%, transparent 100%);
+        }
+
+        .branches-hero {
+            width: min(100% - 2rem, 90rem);
+            margin: 0 auto;
+            padding: clamp(3rem, 7vw, 7.25rem) 0 clamp(2.25rem, 5vw, 4.75rem);
+            display: grid;
+            grid-template-columns: minmax(0, 1.05fr) minmax(300px, .95fr);
+            gap: clamp(2rem, 6vw, 7rem);
+            align-items: end;
+        }
+
+        .branches-eyebrow,
+        .branches-kicker,
+        .branch-index,
+        .branch-status,
+        .branch-mono {
+            font-family: "DM Mono", monospace;
+            text-transform: uppercase;
+            letter-spacing: .12em;
+        }
+
+        .branches-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: .7rem;
+            color: var(--branch-blue);
+            font-size: .72rem;
+            font-weight: 500;
+            margin-bottom: 1.45rem;
+        }
+
+        .branches-eyebrow::before {
+            content: "";
+            width: 30px;
+            height: 1px;
+            background: currentColor;
+        }
+
+        .branches-title {
+            max-width: 740px;
+            margin: 0;
+            font-family: Outfit, Inter, sans-serif;
+            font-size: clamp(3.2rem, 7vw, 7.7rem);
+            font-weight: 800;
+            letter-spacing: -.085em;
+            line-height: .86;
+        }
+
+        .branches-title em {
+            color: var(--branch-blue);
+            font-style: normal;
+            position: relative;
+            white-space: nowrap;
+        }
+
+        .branches-title em::after {
+            content: "";
+            position: absolute;
+            left: .04em;
+            right: -.02em;
+            bottom: -.12em;
+            height: .08em;
+            border-radius: 99px;
+            background: var(--branch-yellow);
+            transform: rotate(-2deg);
+        }
+
+        .branches-intro {
+            max-width: 430px;
+            margin: 0 0 .15rem auto;
+            color: var(--branch-muted);
+            font-size: clamp(1rem, 1.4vw, 1.16rem);
+            line-height: 1.65;
+        }
+
+        .branches-intro strong { color: var(--branch-ink); }
+
+        .branches-board-wrap {
+            width: min(100% - 2rem, 90rem);
+            margin: 0 auto clamp(4rem, 8vw, 8rem);
+        }
+
+        .branches-board {
+            display: grid;
+            grid-template-columns: minmax(0, 1.27fr) minmax(360px, .73fr);
+            min-height: 720px;
+            overflow: hidden;
+            border-radius: 28px;
+            background: var(--branch-ink);
+            box-shadow: var(--branch-shadow);
+        }
+
+        .branches-map-column {
+            position: relative;
+            min-height: 720px;
+            background: #dbe9e8;
+            border-right: 1px solid rgba(255, 255, 255, .12);
+        }
+
+        #branches-map {
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            background: #dbe9e8;
+        }
+
+        #branches-map::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 400;
+            box-shadow: inset 0 0 90px rgba(7, 26, 44, .22);
+        }
+
+        .branches-map-head {
+            position: absolute;
+            z-index: 500;
+            inset: 1.5rem 1.5rem auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            pointer-events: none;
+        }
+
+        .map-label {
+            display: inline-flex;
+            align-items: center;
+            gap: .6rem;
+            padding: .6rem .8rem;
+            border: 1px solid rgba(255, 255, 255, .6);
+            border-radius: 999px;
+            background: rgba(255, 255, 255, .82);
+            color: var(--branch-ink);
+            box-shadow: 0 8px 25px rgba(7, 26, 44, .12);
+            font-size: .69rem;
+            font-weight: 800;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            backdrop-filter: blur(8px);
+        }
+
+        .map-label i { color: var(--branch-blue); }
+
+        .map-coordinates {
+            padding: .7rem .85rem;
+            border-radius: 10px;
+            background: var(--branch-ink);
+            color: rgba(255,255,255,.7);
+            font-family: "DM Mono", monospace;
+            font-size: .63rem;
+            letter-spacing: .08em;
+        }
+
+        .branches-map-legend {
+            position: absolute;
+            z-index: 500;
+            left: 1.5rem;
+            bottom: 1.5rem;
+            display: flex;
+            gap: .8rem;
+            flex-wrap: wrap;
+            padding: .7rem .85rem;
+            border-radius: 12px;
+            background: rgba(7, 26, 44, .88);
+            color: white;
+            font-size: .7rem;
+            backdrop-filter: blur(8px);
+        }
+
+        .legend-item { display: inline-flex; align-items: center; gap: .45rem; }
+        .legend-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--branch-blue); box-shadow: 0 0 0 3px rgba(97,225,239,.25); }
+        .legend-dot.new { background: var(--branch-yellow); box-shadow: 0 0 0 3px rgba(247,223,61,.22); }
+
+        .branches-console {
+            display: flex;
+            min-width: 0;
+            flex-direction: column;
+            background: #fff;
+        }
+
+        .console-top {
+            padding: clamp(1.5rem, 3vw, 2.35rem);
+            background: var(--branch-ink);
+            color: white;
+        }
+
+        .console-top-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            gap: 1rem;
+            margin-bottom: 1.7rem;
+        }
+
+        .branches-kicker {
+            color: var(--branch-cyan);
+            font-size: .68rem;
+            font-weight: 500;
+        }
+
+        .console-count {
+            font-family: Outfit, sans-serif;
+            font-size: 2.9rem;
+            font-weight: 800;
+            line-height: .8;
+            letter-spacing: -.07em;
+        }
+
+        .console-top h2 {
+            max-width: 390px;
+            margin: 0 0 .55rem;
+            font-family: Outfit, sans-serif;
+            font-size: clamp(1.65rem, 3vw, 2.5rem);
+            letter-spacing: -.06em;
+            line-height: .95;
+        }
+
+        .console-top p { margin: 0; color: rgba(255,255,255,.62); font-size: .88rem; line-height: 1.6; }
+
+        .zip-finder {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: .55rem;
+            margin-top: 1.5rem;
+        }
+
+        .zip-finder label { grid-column: 1 / -1; color: rgba(255,255,255,.55); font-size: .68rem; font-weight: 600; }
+        .zip-finder input { min-width: 0; border: 1px solid rgba(255,255,255,.16); border-radius: 9px; background: rgba(255,255,255,.09); color: white; padding: .85rem .9rem; font: 500 .85rem "DM Mono", monospace; outline: none; }
+        .zip-finder input::placeholder { color: rgba(255,255,255,.4); }
+        .zip-finder input:focus { border-color: var(--branch-cyan); box-shadow: 0 0 0 3px rgba(97,225,239,.15); }
+        .zip-finder button, .branch-route-button { border: 0; border-radius: 9px; background: var(--branch-yellow); color: var(--branch-ink); padding: 0 1rem; font-weight: 900; cursor: pointer; transition: transform .2s ease, background .2s ease; }
+        .zip-finder button:hover, .branch-route-button:hover { background: #fff06a; transform: translateY(-2px); }
+
+        .zip-result { margin-top: .8rem; border-left: 2px solid var(--branch-cyan); padding: .65rem .8rem; background: rgba(97,225,239,.09); color: rgba(255,255,255,.82); font-size: .78rem; line-height: 1.45; }
+        .zip-result strong { display: block; color: white; font-family: Outfit, sans-serif; font-size: 1rem; }
+        .zip-result a { display: inline-block; margin-top: .35rem; color: var(--branch-cyan); font-size: .73rem; font-weight: 800; }
+
+        .console-list-head { display: flex; justify-content: space-between; align-items: center; gap: .75rem; padding: 1.05rem clamp(1.5rem, 3vw, 2.35rem) .75rem; border-bottom: 1px solid var(--branch-line); }
+        .console-list-head span { color: var(--branch-muted); font: 500 .68rem "DM Mono", monospace; letter-spacing: .08em; text-transform: uppercase; }
+        .branch-search { width: 140px; border: 0; border-bottom: 1px solid var(--branch-line); padding: .45rem 0; color: var(--branch-ink); font: 500 .76rem Inter, sans-serif; outline: 0; }
+        .branch-search:focus { border-color: var(--branch-blue); }
+        .branch-search::placeholder { color: #9aa9b6; }
+
+        .branch-list { overflow: auto; padding: 0 clamp(1.5rem, 3vw, 2.35rem) 1.25rem; scrollbar-width: thin; scrollbar-color: var(--branch-blue) transparent; }
+        .branch-card { position: relative; padding: 1.25rem 0 1.3rem; border-bottom: 1px solid var(--branch-line); }
+        .branch-card:last-child { border-bottom: 0; }
+        .branch-card.is-active { padding-left: .85rem; }
+        .branch-card.is-active::before { content: ""; position: absolute; top: 1.25rem; bottom: 1.3rem; left: 0; width: 3px; border-radius: 3px; background: var(--branch-blue); }
+        .branch-card-top { display: flex; align-items: start; justify-content: space-between; gap: .75rem; }
+        .branch-index { color: #9aa9b6; font-size: .63rem; }
+        .branch-card h3 { margin: .3rem 0 .45rem; font-family: Outfit, sans-serif; font-size: 1.25rem; letter-spacing: -.045em; line-height: 1; }
+        .branch-status { flex: 0 0 auto; border: 1px solid #cae4ee; border-radius: 999px; padding: .35rem .5rem; color: var(--branch-blue); font-size: .56rem; font-weight: 500; }
+        .branch-status.is-new { border-color: #dbd16a; color: #7d6d00; background: #fffde4; }
+        .branch-address { max-width: 350px; margin: 0; color: var(--branch-muted); font-size: .78rem; line-height: 1.5; }
+        .branch-phone { display: inline-flex; align-items: center; gap: .4rem; margin-top: .65rem; color: var(--branch-ink); font: 500 .73rem "DM Mono", monospace; }
+        .branch-phone i { color: var(--branch-blue); font-size: .68rem; }
+        .branch-card-actions { display: flex; align-items: center; gap: 1rem; margin-top: .8rem; }
+        .branch-focus { border: 0; padding: 0; background: none; color: var(--branch-blue); font-size: .72rem; font-weight: 800; cursor: pointer; }
+        .branch-focus i { margin-right: .3rem; }
+        .branch-route-button { display: inline-flex; align-items: center; gap: .4rem; min-height: 31px; padding: 0 .7rem; font-size: .69rem; text-decoration: none; }
+
+        .branch-empty { padding: 2rem 0; color: var(--branch-muted); font-size: .85rem; }
+
+        .branches-proof {
+            width: min(100% - 2rem, 90rem);
+            margin: 0 auto clamp(4rem, 9vw, 9rem);
+            display: grid;
+            grid-template-columns: 1.15fr .85fr;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .proof-label { color: var(--branch-blue); font: 500 .68rem "DM Mono", monospace; letter-spacing: .12em; text-transform: uppercase; }
+        .proof-title { max-width: 620px; margin: .75rem 0 0; font-family: Outfit, sans-serif; font-size: clamp(2rem, 4vw, 4.5rem); letter-spacing: -.075em; line-height: .92; }
+        .proof-title span { color: var(--branch-blue); }
+        .proof-copy { margin: 0; color: var(--branch-muted); font-size: .95rem; line-height: 1.7; }
+        .proof-stats { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--branch-line); border-bottom: 1px solid var(--branch-line); }
+        .proof-stat { padding: 1rem .8rem; border-right: 1px solid var(--branch-line); }
+        .proof-stat:last-child { border-right: 0; }
+        .proof-stat strong { display: block; color: var(--branch-blue); font: 800 clamp(1.7rem, 3vw, 2.7rem) Outfit, sans-serif; letter-spacing: -.07em; }
+        .proof-stat span { color: var(--branch-muted); font-size: .67rem; line-height: 1.3; }
+
+        .leaflet-container { font: inherit; }
+        .leaflet-control-zoom { margin: 0 1.5rem 1.5rem 0 !important; border: 0 !important; box-shadow: 0 8px 25px rgba(7,26,44,.15) !important; }
+        .leaflet-control-zoom a { width: 34px !important; height: 34px !important; border: 0 !important; color: var(--branch-ink) !important; font-weight: 800; }
+        .leaflet-control-attribution { font-size: 9px !important; }
+        .bios-branch-marker { display: grid; place-items: center; width: 32px; height: 32px; border: 4px solid white; border-radius: 50% 50% 50% 0; background: var(--branch-blue); box-shadow: 0 5px 14px rgba(7,26,44,.32); color: white; transform: rotate(-45deg); }
+        .bios-branch-marker i { transform: rotate(45deg); font-size: 11px; }
+        .bios-branch-marker.new { background: #c9ad00; }
+        .bios-leaflet-popup .leaflet-popup-content-wrapper { border-radius: 14px; box-shadow: 0 14px 35px rgba(7,26,44,.18); }
+        .bios-leaflet-popup .leaflet-popup-content { margin: 16px; min-width: 210px; }
+        .bios-popup-kicker { margin: 0 0 5px; color: var(--branch-blue); font: 500 10px "DM Mono", monospace; letter-spacing: .1em; text-transform: uppercase; }
+        .bios-popup-title { margin: 0 0 6px; color: var(--branch-ink); font: 800 18px Outfit, sans-serif; letter-spacing: -.04em; }
+        .bios-popup-address { margin: 0; color: var(--branch-muted); font-size: 12px; line-height: 1.45; }
+        .bios-popup-link { display: inline-flex; gap: 6px; align-items: center; margin-top: 12px; color: var(--branch-blue); font-size: 11px; font-weight: 800; text-decoration: none; }
+
+        @media (max-width: 980px) {
+            .branches-hero { grid-template-columns: 1fr; gap: 1.8rem; }
+            .branches-intro { margin-left: 0; }
+            .branches-board { grid-template-columns: 1fr; }
+            .branches-map-column { min-height: 530px; border-right: 0; border-bottom: 1px solid rgba(255,255,255,.12); }
+            .branch-list { max-height: 570px; }
+        }
+
+        @media (max-width: 640px) {
+            .branches-hero, .branches-board-wrap, .branches-proof { width: min(100% - 1.2rem, 90rem); }
+            .branches-title { font-size: clamp(3.25rem, 16vw, 5.3rem); }
+            .branches-board { border-radius: 20px; }
+            .branches-map-column { min-height: 460px; }
+            .branches-map-head { inset: 1rem; }
+            .branches-map-legend { left: 1rem; bottom: 1rem; }
+            .map-coordinates { display: none; }
+            .console-top, .console-list-head, .branch-list { padding-left: 1.15rem; padding-right: 1.15rem; }
+            .console-top { padding-top: 1.35rem; }
+            .branches-proof { grid-template-columns: 1fr; gap: 1.5rem; }
+            .proof-stats { margin-top: .5rem; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; }
+        }
+    </style>
 </head>
 <body>
     <div class="page-shell">
         <header class="site-header"></header>
 
-        <main class="page-enter">
-            <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-14">
-                <div class="grid lg:grid-cols-[1fr_420px] gap-6 lg:items-start">
-                    <div class="panel p-4 sticky-map-panel">
-                        <div id="map"></div>
+        <main class="branches-page page-enter">
+            <section class="branches-hero" aria-labelledby="branches-title">
+                <div>
+                    <p class="branches-eyebrow">Red BIOS · Estado de México</p>
+                    <h1 class="branches-title" id="branches-title">Tu salud<br>empieza <em>cerca.</em></h1>
+                </div>
+                <p class="branches-intro">Seis puntos de atención para acompañarte con <strong>resultados confiables, tecnología y trato humano</strong>. Encuentra la unidad que mejor se adapta a tu ruta.</p>
+            </section>
+
+            <section class="branches-board-wrap" aria-label="Mapa y directorio de sucursales">
+                <div class="branches-board">
+                    <div class="branches-map-column">
+                        <div id="branches-map" aria-label="Mapa interactivo de sucursales BIOS"></div>
+                        <div class="branches-map-head" aria-hidden="true">
+                            <span class="map-label"><i class="fa-solid fa-crosshairs"></i> Zona BIOS</span>
+                            <span class="map-coordinates">19.66° N · 99.20° O</span>
+                        </div>
+                        <div class="branches-map-legend" aria-hidden="true">
+                            <span class="legend-item"><i class="legend-dot"></i> Unidad BIOS</span>
+                            <span class="legend-item"><i class="legend-dot new"></i> Nueva unidad</span>
+                        </div>
                     </div>
-                    <aside class="grid gap-4 content-start">
-                        <div class="dark-panel p-6">
-                            <span class="section-kicker !bg-white/10 !border-white/15 !text-cyan-100 mb-5"><i data-lucide="map-pin" class="w-4 h-4"></i> Sucursales</span>
-                            <h1 class="brand-type mobile-tight text-4xl font-black leading-none mb-4">Mapa BIOS</h1>
-                            <p class="text-blue-100 leading-relaxed">Selecciona una sucursal para centrar el mapa. Tultepec aparece marcada como nueva.</p>
-                        </div>
-                        <div class="panel p-5">
-                            <span class="section-kicker mb-4"><i data-lucide="map-pinned" class="w-4 h-4"></i> Unidad cercana</span>
-                            <h2 class="brand-type text-2xl font-black text-[#0A1C2E] mb-2">Busca por código postal</h2>
-                            <p class="text-sm text-slate-500 mb-4">Ingresa tu CP para sugerir la unidad más conveniente y abrir la ruta en Google Maps.</p>
-                            <div class="grid sm:grid-cols-[1fr_auto] gap-3">
-                                <input id="zip-input" class="field" type="text" inputmode="numeric" maxlength="5" placeholder="Ej. 54700">
-                                <button id="zip-button" class="primary-button" type="button"><i data-lucide="navigation" class="w-4 h-4"></i> Detectar</button>
+
+                    <aside class="branches-console" aria-labelledby="console-title">
+                        <div class="console-top">
+                            <div class="console-top-row">
+                                <span class="branches-kicker">Directorio de unidades</span>
+                                <span class="console-count" aria-label="6 sucursales">06</span>
                             </div>
-                            <div id="zip-result" class="mt-4 hidden rounded-lg border border-blue-100 bg-blue-50 p-4"></div>
+                            <h2 id="console-title">Encuentra tu<br>punto BIOS.</h2>
+                            <p>Selecciona una unidad para verla en el mapa o abre la ruta para llegar directamente.</p>
+                            <div class="zip-finder">
+                                <label for="zip-input">¿No sabes cuál te queda más cerca?</label>
+                                <input id="zip-input" type="text" inputmode="numeric" maxlength="5" placeholder="Código postal" aria-describedby="zip-result">
+                                <button id="zip-button" type="button">Buscar <i class="fa-solid fa-arrow-right"></i></button>
+                            </div>
+                            <div id="zip-result" class="zip-result" hidden></div>
                         </div>
-                        <figure class="page-visual">
-                            <img src="../assets/img/lab-operations.webp" alt="Operación de muestras en unidad BIOS">
-                            <figcaption class="visual-caption">
-                                <p>Atención por sucursal</p>
-                                <p>Encuentra el punto BIOS más cercano.</p>
-                            </figcaption>
-                        </figure>
-                        <div id="branch-list" class="grid gap-3"></div>
+                        <div class="console-list-head">
+                            <span id="branch-list-count">Todas las unidades</span>
+                            <input id="branch-search" class="branch-search" type="search" placeholder="Filtrar unidades" aria-label="Filtrar unidades">
+                        </div>
+                        <div id="branch-list" class="branch-list"></div>
                     </aside>
+                </div>
+            </section>
+
+            <section class="branches-proof" aria-label="Cobertura de la red BIOS">
+                <div>
+                    <p class="proof-label">Una red que te acompaña</p>
+                    <h2 class="proof-title">Más cerca de lo que <span>imaginas.</span></h2>
+                </div>
+                <div>
+                    <p class="proof-copy">Desde una visita preventiva hasta un estudio especializado, nuestro equipo está listo para recibirte en la unidad que elijas.</p>
+                    <div class="proof-stats" aria-label="Datos de la red BIOS">
+                        <div class="proof-stat"><strong>06</strong><span>unidades<br>activas</span></div>
+                        <div class="proof-stat"><strong>01</strong><span>nueva unidad<br>en Tultepec</span></div>
+                        <div class="proof-stat"><strong>01</strong><span>ruta directa<br>por Google Maps</span></div>
+                    </div>
                 </div>
             </section>
         </main>
@@ -64,38 +443,56 @@
 
     <script>
         const branches = [
-            { name: 'Unidad Plaza Cantú', badge: 'Principal', address: 'Av. Dr. Jiménez Cantú S/N, Plaza Cantú Centro Urbano, Cuautitlán Izcalli, C.P. 54700.', phones: ['55-1113-2754', '55-5871-9069'], lat: 19.6695138, lng: -99.2095527, zips: ['54700', '54710', '54720'], mapsUrl: 'https://maps.app.goo.gl/GTkULcomJPVmWa1RA?g_st=aw' },
-            { name: 'Unidad Plaza La Joya', badge: 'Alta afluencia', address: 'Melchor Ocampo 31, Villas de Cuautitlán, Cuautitlán, C.P. 54857.', phones: ['55-5872-9277'], lat: 19.6722043, lng: -99.1661641, zips: ['54800', '54830', '54840'], mapsUrl: 'https://maps.app.goo.gl/HCTpiBdM9qtFyWeP6?g_st=aw' },
-            { name: 'Unidad Plaza Las Haciendas', badge: 'Cerca de ti', address: 'Av. Huehuetoca S/N, Ex Hacienda de San Miguel, Cuautitlán Izcalli, C.P. 54715.', phones: ['55-5817-3401'], lat: 19.6866634, lng: -99.2099739, zips: ['54740', '54750', '54753'], mapsUrl: 'https://maps.app.goo.gl/trQAczGcXq4uPTNL7?g_st=aw' },
-            { name: 'Unidad Tepalcapa', badge: 'Express', address: 'Av. Morelos 9, Luis Echeverría, Cuautitlán Izcalli, C.P. 54753.', phones: ['55-2602-0764'], lat: 19.6205274, lng: -99.2067493, zips: ['54743', '54745', '54760'], mapsUrl: 'https://maps.app.goo.gl/wfzAKYGrhj8kzFr37?g_st=aw' },
-            { name: 'Unidad Tepojaco', badge: 'Especialidad', address: 'Av. San Sebastián 56, Ejido de San Francisco Tepojaco, Cuautitlán Izcalli, C.P. 54745.', phones: ['55-5391-8066'], lat: 19.6481325, lng: -99.2585366, zips: ['54770', '54783', '54784'], mapsUrl: 'https://maps.app.goo.gl/owmpJRdZXaLPeEEJ9?g_st=aw' },
-            { name: 'Unidad Tultepec', badge: 'Nueva', isNew: true, address: 'Plaza Tauro, Av. Joaquín Montenegro 95, San Martín, Tultepec, C.P. 54960.', phones: ['55-9413-2041'], lat: 19.6736413, lng: -99.1283153, zips: ['54960', '54963', '54964'], mapsUrl: 'https://maps.app.goo.gl/NY95gD25q4Ge9czK8?g_st=aw' }
+            { name: 'Plaza Cantú', badge: 'Principal', address: 'Av. Dr. Jiménez Cantú S/N, Plaza Cantú Centro Urbano, Cuautitlán Izcalli, C.P. 54700.', phones: ['55-1113-2754', '55-5871-9069'], lat: 19.6695138, lng: -99.2095527, zips: ['54700', '54710', '54720'], mapsUrl: 'https://maps.app.goo.gl/GTkULcomJPVmWa1RA?g_st=aw' },
+            { name: 'Plaza La Joya', badge: 'Alta afluencia', address: 'Melchor Ocampo 31, Villas de Cuautitlán, Cuautitlán, C.P. 54857.', phones: ['55-5872-9277'], lat: 19.6722043, lng: -99.1661641, zips: ['54800', '54830', '54840'], mapsUrl: 'https://maps.app.goo.gl/HCTpiBdM9qtFyWeP6?g_st=aw' },
+            { name: 'Las Haciendas', badge: 'Cerca de ti', address: 'Av. Huehuetoca S/N, Ex Hacienda de San Miguel, Cuautitlán Izcalli, C.P. 54715.', phones: ['55-5817-3401'], lat: 19.6866634, lng: -99.2099739, zips: ['54740', '54750', '54753'], mapsUrl: 'https://maps.app.goo.gl/trQAczGcXq4uPTNL7?g_st=aw' },
+            { name: 'Tepalcapa', badge: 'Express', address: 'Av. Morelos 9, Luis Echeverría, Cuautitlán Izcalli, C.P. 54753.', phones: ['55-2602-0764'], lat: 19.6205274, lng: -99.2067493, zips: ['54743', '54745', '54760'], mapsUrl: 'https://maps.app.goo.gl/wfzAKYGrhj8kzFr37?g_st=aw' },
+            { name: 'Tepojaco', badge: 'Especialidad', address: 'Av. San Sebastián 56, Ejido de San Francisco Tepojaco, Cuautitlán Izcalli, C.P. 54745.', phones: ['55-5391-8066'], lat: 19.6481325, lng: -99.2585366, zips: ['54770', '54783', '54784'], mapsUrl: 'https://maps.app.goo.gl/owmpJRdZXaLPeEEJ9?g_st=aw' },
+            { name: 'Tultepec', badge: 'Nueva', isNew: true, address: 'Plaza Tauro, Av. Joaquín Montenegro 95, San Martín, Tultepec, C.P. 54960.', phones: ['55-9413-2041'], lat: 19.6736413, lng: -99.1283153, zips: ['54960', '54963', '54964'], mapsUrl: 'https://maps.app.goo.gl/NY95gD25q4Ge9czK8?g_st=aw' }
         ];
-        const map = L.map('map', { scrollWheelZoom: false }).setView([19.66, -99.20], 12);
+
+        const map = L.map('branches-map', { scrollWheelZoom: false, zoomControl: true }).setView([19.66, -99.20], 12);
         L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', { attribution: '&copy; CARTO' }).addTo(map);
         const markers = [];
 
+        function popupMarkup(branch) {
+            return `<div class="bios-popup-kicker">${branch.badge}</div><h3 class="bios-popup-title">Unidad ${branch.name}</h3><p class="bios-popup-address">${branch.address}</p><a class="bios-popup-link" href="${branch.mapsUrl}" target="_blank" rel="noopener"><i class="fa-solid fa-route"></i> Abrir ruta</a>`;
+        }
+
         function focusBranch(index) {
             const branch = branches[index];
-            map.flyTo([branch.lat, branch.lng], 15, { duration: 1.1 });
+            map.flyTo([branch.lat, branch.lng], 15, { duration: .8 });
             markers[index].openPopup();
+            document.querySelectorAll('.branch-card').forEach(card => card.classList.toggle('is-active', Number(card.dataset.index) === index));
         }
 
-        function mapsUrl(branch) {
-            return branch.mapsUrl;
+        branches.forEach((branch, index) => {
+            const icon = L.divIcon({ className: '', html: `<span class="bios-branch-marker ${branch.isNew ? 'new' : ''}"><i class="fa-solid fa-location-dot"></i></span>`, iconSize: [32, 42], iconAnchor: [16, 38], popupAnchor: [0, -34] });
+            const marker = L.marker([branch.lat, branch.lng], { icon }).addTo(map);
+            marker.bindPopup(popupMarkup(branch), { className: 'bios-leaflet-popup', maxWidth: 270 });
+            marker.on('click', () => renderActive(index));
+            markers.push(marker);
+        });
+
+        function renderActive(index) {
+            document.querySelectorAll('.branch-card').forEach(card => card.classList.toggle('is-active', Number(card.dataset.index) === index));
         }
 
-        function popupMarkup(branch) {
-            return `
-                <div class="bios-map-popup">
-                    <p class="bios-map-popup-kicker">${branch.badge}</p>
-                    <strong>${branch.name}</strong>
-                    <span>${branch.address}</span>
-                    <a href="${mapsUrl(branch)}" target="_blank" rel="noopener">
-                        <i class="fa-solid fa-route"></i> Ir con Google Maps
-                    </a>
-                </div>
-            `;
+        function renderBranches(query = '') {
+            const normalized = query.trim().toLowerCase();
+            const visible = branches.map((branch, index) => ({ branch, index })).filter(({ branch }) => `${branch.name} ${branch.badge} ${branch.address}`.toLowerCase().includes(normalized));
+            document.getElementById('branch-list-count').textContent = normalized ? `${visible.length} resultado${visible.length === 1 ? '' : 's'}` : 'Todas las unidades';
+            document.getElementById('branch-list').innerHTML = visible.length ? visible.map(({ branch, index }) => `
+                <article class="branch-card" data-index="${index}">
+                    <div class="branch-card-top">
+                        <div><span class="branch-index">0${index + 1} / 06</span><h3>Unidad ${branch.name}</h3></div>
+                        <span class="branch-status ${branch.isNew ? 'is-new' : ''}">${branch.badge}</span>
+                    </div>
+                    <p class="branch-address">${branch.address}</p>
+                    <span class="branch-phone"><i class="fa-solid fa-phone"></i> ${branch.phones.join(' · ')}</span>
+                    <div class="branch-card-actions"><button type="button" class="branch-focus" data-focus="${index}"><i class="fa-solid fa-location-dot"></i> Ver en mapa</button><a class="branch-route-button" href="${branch.mapsUrl}" target="_blank" rel="noopener">Ruta <i class="fa-solid fa-arrow-up-right-from-square"></i></a></div>
+                </article>`).join('') : '<p class="branch-empty">No encontramos una unidad con ese filtro.</p>';
+            document.querySelectorAll('[data-focus]').forEach(button => button.addEventListener('click', () => focusBranch(Number(button.dataset.focus))));
         }
 
         function nearestByZip(zip) {
@@ -104,62 +501,32 @@
             const numericZip = Number(zip);
             if (!Number.isFinite(numericZip)) return branches[0];
             return branches.reduce((best, branch) => {
-                const branchDistance = Math.min(...branch.zips.map(item => Math.abs(Number(item) - numericZip)));
+                const distance = Math.min(...branch.zips.map(item => Math.abs(Number(item) - numericZip)));
                 const bestDistance = Math.min(...best.zips.map(item => Math.abs(Number(item) - numericZip)));
-                return branchDistance < bestDistance ? branch : best;
+                return distance < bestDistance ? branch : best;
             }, branches[0]);
         }
 
         function detectByZip() {
-            const zip = document.getElementById('zip-input').value.replace(/\D/g, '').slice(0, 5);
+            const input = document.getElementById('zip-input');
             const result = document.getElementById('zip-result');
+            const zip = input.value.replace(/\D/g, '').slice(0, 5);
+            result.hidden = false;
             if (zip.length !== 5) {
-                result.classList.remove('hidden');
-                result.innerHTML = '<p class="font-black text-[#0A1C2E]">Ingresa un código postal de 5 dígitos.</p>';
+                result.innerHTML = '<strong>Revisa tu código postal</strong>Ingresa 5 dígitos para encontrar una unidad cercana.';
                 return;
             }
             const branch = nearestByZip(zip);
             const index = branches.indexOf(branch);
             focusBranch(index);
-            result.classList.remove('hidden');
-            result.innerHTML = `
-                <p class="text-xs uppercase tracking-[0.18em] font-black text-blue-700 mb-1">Unidad sugerida</p>
-                <h3 class="brand-type text-xl font-black text-[#0A1C2E]">${branch.name}</h3>
-                <p class="text-sm text-slate-600 mt-1">${branch.address}</p>
-                <a class="primary-button mt-3" target="_blank" rel="noopener" href="${mapsUrl(branch)}"><i data-lucide="route" class="w-4 h-4"></i> Ir con Google Maps</a>
-            `;
-            lucide.createIcons();
+            result.innerHTML = `<strong>${branch.name}</strong>${branch.address}<a href="${branch.mapsUrl}" target="_blank" rel="noopener">Abrir ruta en Google Maps →</a>`;
         }
 
-        document.getElementById('branch-list').innerHTML = branches.map((branch, index) => `
-            <article class="panel branch-route-card p-4 hover:border-blue-300 transition">
-                <button type="button" class="branch-route-main text-left" onclick="focusBranch(${index})">
-                    <div class="flex items-start justify-between gap-3 mb-2">
-                        <h2 class="brand-type text-xl font-black text-[#0A1C2E]">${branch.name}</h2>
-                        <span class="${branch.isNew ? 'bg-emerald-100 text-emerald-700 border-emerald-200' : 'bg-blue-50 text-blue-700 border-blue-100'} border rounded-full px-3 py-1 text-[10px] uppercase tracking-[0.18em] font-black">${branch.badge}</span>
-                    </div>
-                    <p class="text-sm text-slate-500 mb-3">${branch.address}</p>
-                    <div class="flex flex-wrap gap-2">${branch.phones.map(phone => `<span class="text-xs font-black bg-slate-50 border border-slate-200 rounded-full px-3 py-1">${phone}</span>`).join('')}</div>
-                </button>
-                <div class="branch-route-actions">
-                    <button type="button" class="secondary-button !min-h-10 !px-3 !py-2" onclick="focusBranch(${index})"><i data-lucide="map-pin" class="w-4 h-4"></i> Ver</button>
-                    <a class="map-route-button" target="_blank" rel="noopener" href="${mapsUrl(branch)}"><i data-lucide="route" class="w-4 h-4"></i> Ir</a>
-                </div>
-            </article>
-        `).join('');
-
-        branches.forEach((branch, index) => {
-            const marker = L.marker([branch.lat, branch.lng]).addTo(map);
-            marker.bindPopup(popupMarkup(branch), { className: 'bios-leaflet-popup', minWidth: 230 });
-            markers.push(marker);
-        });
-
+        renderBranches();
+        document.getElementById('branch-search').addEventListener('input', event => renderBranches(event.target.value));
         document.getElementById('zip-button').addEventListener('click', detectByZip);
-        document.getElementById('zip-input').addEventListener('keydown', event => {
-            if (event.key === 'Enter') detectByZip();
-        });
-
-        lucide.createIcons();
+        document.getElementById('zip-input').addEventListener('keydown', event => { if (event.key === 'Enter') detectByZip(); });
+        map.whenReady(() => setTimeout(() => map.invalidateSize(), 200));
     </script>
 </body>
 </html>
