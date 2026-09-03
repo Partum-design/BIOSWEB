@@ -39,13 +39,13 @@
         { name: 'Tultepec', label: 'Nueva', address: 'Plaza Tauro, Av. Joaquín Montenegro 95, C.P. 54960', phone: '55-9413-2041', isNew: true },
     ];
 
-    // Calendario campañas de colposcopías JULIO-AGOSTO 2026, por unidad.
+    // Calendario campañas de colposcopías SEPTIEMBRE-DICIEMBRE 2026 (2° periodo), por unidad.
     const WOMEN_CAMPAIGN = [
-        { branch: 'Tepojaco', dates: [{ year: 2026, month: 7, day: 6 }, { year: 2026, month: 8, day: 3 }] },
-        { branch: 'Tepalcapa', dates: [{ year: 2026, month: 7, day: 7 }, { year: 2026, month: 8, day: 4 }] },
-        { branch: 'Joya', dates: [{ year: 2026, month: 7, day: 8 }, { year: 2026, month: 8, day: 5 }] },
-        { branch: 'Haciendas', dates: [{ year: 2026, month: 7, day: 14 }, { year: 2026, month: 8, day: 10 }] },
-        { branch: 'Cantú', dates: [{ year: 2026, month: 7, day: 15 }, { year: 2026, month: 8, day: 11 }] },
+        { branch: 'Tepojaco', dates: [{ year: 2026, month: 9, day: 1 }, { year: 2026, month: 10, day: 2 }, { year: 2026, month: 11, day: 9 }, { year: 2026, month: 12, day: 8 }] },
+        { branch: 'Tepalcapa', dates: [{ year: 2026, month: 9, day: 2 }, { year: 2026, month: 9, day: 15 }, { year: 2026, month: 10, day: 6 }, { year: 2026, month: 10, day: 20 }, { year: 2026, month: 11, day: 3 }, { year: 2026, month: 11, day: 17 }, { year: 2026, month: 12, day: 7 }, { year: 2026, month: 12, day: 21 }] },
+        { branch: 'Joya', dates: [{ year: 2026, month: 9, day: 7 }, { year: 2026, month: 9, day: 22 }, { year: 2026, month: 10, day: 7 }, { year: 2026, month: 10, day: 21 }, { year: 2026, month: 11, day: 4 }, { year: 2026, month: 11, day: 18 }, { year: 2026, month: 12, day: 1 }, { year: 2026, month: 12, day: 15 }] },
+        { branch: 'Haciendas', dates: [{ year: 2026, month: 9, day: 8 }, { year: 2026, month: 10, day: 13 }, { year: 2026, month: 10, day: 27 }, { year: 2026, month: 11, day: 11 }, { year: 2026, month: 11, day: 25 }, { year: 2026, month: 12, day: 9 }] },
+        { branch: 'Cantú', dates: [{ year: 2026, month: 9, day: 9 }, { year: 2026, month: 9, day: 23 }, { year: 2026, month: 10, day: 8 }, { year: 2026, month: 10, day: 22 }, { year: 2026, month: 11, day: 5 }, { year: 2026, month: 11, day: 19 }, { year: 2026, month: 12, day: 3 }, { year: 2026, month: 12, day: 17 }] },
     ];
 
     function womenCampaignEvents() {

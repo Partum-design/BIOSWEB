@@ -10,10 +10,10 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <link rel="stylesheet" href="../assets/multipage.css?v=1788449540">
+    <link rel="stylesheet" href="../assets/multipage.css?v=1788453941">
     <link rel="stylesheet" href="../assets/compact.css?v=1783625058">
     <script src="../assets/estudios-data.js" defer></script>
-    <script src="../assets/site.js?v=1784571500" defer></script>
+    <script src="../assets/site.js?v=1788453941" defer></script>
 </head>
 <body>
     <div class="page-shell">
@@ -45,7 +45,7 @@
                 <div class="flex flex-wrap items-end justify-between gap-3 mb-5">
                     <div>
                         <span class="section-kicker mb-3"><i data-lucide="calendar-heart" class="w-4 h-4"></i> Calendario oficial</span>
-                        <h2 class="brand-type text-3xl font-black text-[#0A1C2E]">Campaña de colposcopías — Julio y Agosto 2026</h2>
+                        <h2 class="brand-type text-3xl font-black text-[#0A1C2E]">Campaña de colposcopías — Septiembre a Diciembre 2026</h2>
                         <p class="text-slate-500 mt-2 max-w-2xl">Cada unidad tiene un día fijo al mes para la jornada de colposcopía. Presenta tu cita confirmada por WhatsApp y llega con la preparación indicada.</p>
                     </div>
                 </div>
@@ -106,7 +106,7 @@
 
     <script>
         let CAMPAIGN = null;
-        const MONTH_LABELS = { 7: 'Julio', 8: 'Agosto' };
+        const MONTH_LABELS = { 9: 'Septiembre', 10: 'Octubre', 11: 'Noviembre', 12: 'Diciembre' };
 
         function renderCampaignBanner() {
             const el = document.getElementById('campaign-status-banner');
@@ -120,7 +120,7 @@
                 el.innerHTML = `<i class="fa-solid fa-calendar-clock"></i> Próxima jornada: <strong>${CAMPAIGN.formatDate(status.nextEvent.date)} en ${status.nextEvent.branch}</strong>.`;
             } else {
                 el.className = 'campaign-status-banner is-closed';
-                el.innerHTML = `<i class="fa-solid fa-calendar"></i> La campaña Julio-Agosto 2026 concluyó. Escríbenos para conocer la próxima fecha disponible.`;
+                el.innerHTML = `<i class="fa-solid fa-calendar"></i> La campaña Septiembre-Diciembre 2026 concluyó. Escríbenos para conocer la próxima fecha disponible.`;
             }
         }
 

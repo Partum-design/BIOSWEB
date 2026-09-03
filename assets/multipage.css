@@ -30,9 +30,7 @@
 }
 
 .bios-topbar {
-    background: #040b14;
-    color: rgba(255,255,255,0.74);
-    font-size: 0.76rem;
+    display: none;
 }
 
 .bios-topbar-inner {
