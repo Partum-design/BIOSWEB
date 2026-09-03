@@ -82,7 +82,7 @@
 
     <script>
         let services = [];
-        const CATEGORY_ORDER = ['Laboratorio clínico', 'Rayos X', 'Ultrasonido', 'Estudios especiales', 'Salud de la mujer', 'Salud del hombre', 'COVID-19', 'Prueba de embarazo', 'Salud visual', 'Otros estudios', 'Administrativos'];
+        const CATEGORY_ORDER = ['Laboratorio clínico', 'Rayos X', 'Ultrasonido', 'Tomografía', 'Estudios especiales', 'Salud de la mujer', 'Salud del hombre', 'COVID-19', 'Prueba de embarazo', 'Salud visual', 'Otros estudios', 'Administrativos'];
         const ALL_BRANCHES = ['Tultepec', 'Cantú', 'Tepalcapa', 'Haciendas', 'Joya', 'Tepojaco'];
 
         let categories = ['Todos'];
@@ -93,6 +93,10 @@
 
         function money(value) {
             return value.toLocaleString('es-MX', { style: 'currency', currency: 'MXN', maximumFractionDigits: 0 });
+        }
+
+        function priceDisplay(item) {
+            return item.price != null ? money(item.price) : (item.priceLabel || 'Consultar');
         }
 
         function renderBranchFilter() {
@@ -126,8 +130,8 @@
                 const matchesBranch = !branch || item.branches.includes(branch);
                 return matchesCategory && matchesQuick && matchesQuery && matchesBranch;
             });
-            if (sort === 'price-asc') list = [...list].sort((a, b) => a.price - b.price);
-            else if (sort === 'price-desc') list = [...list].sort((a, b) => b.price - a.price);
+            if (sort === 'price-asc') list = [...list].sort((a, b) => (a.price ?? Infinity) - (b.price ?? Infinity));
+            else if (sort === 'price-desc') list = [...list].sort((a, b) => (b.price ?? -Infinity) - (a.price ?? -Infinity));
             else if (sort === 'time') list = [...list].sort((a, b) => a.days - b.days);
             else if (sort === 'az') list = [...list].sort((a, b) => a.name.localeCompare(b.name, 'es'));
             else list = [...list].sort((a, b) => (b.top - a.top) || (b.alta - a.alta) || a.name.localeCompare(b.name, 'es'));
@@ -170,7 +174,7 @@
                         ${item.campaign ? `<div class="service-payments"><i data-lucide="calendar-heart" class="w-4 h-4"></i> Estudio de la campaña de la mujer. <a href="../mujer/" class="underline font-black">Ver fechas por unidad</a>.</div>` : ''}
                     </details>
                     <div class="service-card-footer">
-                        <strong class="brand-type service-price">${money(item.price)}</strong>
+                        <strong class="brand-type service-price">${priceDisplay(item)}</strong>
                         <a class="primary-button quote-button !bg-[#25D366]" target="_blank" aria-label="Cotizar ${item.name} por WhatsApp" href="https://wa.me/5211234567890?text=Hola%20Laboratorios%20BIOS,%20quiero%20cotizar%20${encodeURIComponent(item.name)}"><i class="fa-brands fa-whatsapp text-lg"></i></a>
                     </div>
                 </article>
@@ -203,6 +207,7 @@
                 categoryRaw: item.cat,
                 icon: item.icon,
                 price: item.price,
+                priceLabel: item.priceLabel,
                 days: item.days,
                 deliveryLabel: item.days === 0 ? 'Mismo día' : item.days === 1 ? '1 día hábil' : `${item.days} días hábiles`,
                 prep: item.prep,
