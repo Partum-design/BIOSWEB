@@ -10,7 +10,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <link rel="stylesheet" href="../assets/multipage.css?v=1788448964">
+    <link rel="stylesheet" href="../assets/multipage.css?v=1788449540">
     <link rel="stylesheet" href="../assets/compact.css?v=1783625058">
     <script src="../assets/site.js?v=1784571500" defer></script>
     <script src="../assets/estudios-data.js" defer></script>
@@ -148,7 +148,7 @@
             if (item.campaign) return '<span class="service-tag service-tag-women"><i data-lucide="venus" class="w-3.5 h-3.5"></i> Campaña mujer</span>';
             if (item.top) return '<span class="service-tag service-tag-top">Más pedido</span>';
             if (item.alta) return '<span class="service-tag">Destacado</span>';
-            return `<span class="service-tag">${item.deliveryLabel}</span>`;
+            return '';
         }
 
         function renderServices() {
@@ -160,24 +160,27 @@
             document.getElementById('service-grid').innerHTML = list.map(item => {
                 const catKey = CATEGORY_KEY[item.categoryRaw] || (item.category === 'Laboratorio clínico' ? 'lab' : 'especial');
                 return `
-                <article class="panel service-card p-5 ${item.campaign ? 'service-card-women' : ''}" data-cat="${catKey}">
+                <article class="panel service-card p-6 ${item.campaign ? 'service-card-women' : ''}" data-cat="${catKey}">
                     <div class="service-card-head">
                         <div class="service-icon"><i data-lucide="${item.icon}" class="w-6 h-6"></i></div>
-                        ${cardBadge(item)}
+                        <div class="service-badges">
+                            <span class="service-chip-mini"><i data-lucide="clock" class="w-3 h-3"></i> ${item.deliveryLabel}</span>
+                            ${cardBadge(item)}
+                        </div>
                     </div>
                     <p class="service-category">${item.category}</p>
                     <h2 class="brand-type service-title">${item.name}</h2>
-                    <div class="service-meta">
-                        <div><p>Preparación</p><p>${item.prep}</p></div>
-                        <div><p>Entrega</p><p>${item.deliveryLabel}</p></div>
-                    </div>
+                    <p class="service-prep"><span class="service-prep-label">Preparación</span>${item.prep}</p>
                     <details class="service-detail">
                         <summary>Sucursales disponibles</summary>
                         <div class="service-includes">${item.branches.map(b => `<span>${b}</span>`).join('')}</div>
                         ${item.campaign ? `<div class="service-payments"><i data-lucide="calendar-heart" class="w-4 h-4"></i> Estudio de la campaña de la mujer. <a href="../mujer/" class="underline font-black">Ver fechas por unidad</a>.</div>` : ''}
                     </details>
                     <div class="service-card-footer">
-                        <strong class="brand-type service-price">${priceDisplay(item)}</strong>
+                        <div>
+                            <p class="service-price-label">Desde</p>
+                            <strong class="brand-type service-price">${priceDisplay(item)}</strong>
+                        </div>
                         <a class="primary-button quote-button !bg-[#25D366]" target="_blank" aria-label="Cotizar ${item.name} por WhatsApp" href="https://wa.me/5211234567890?text=Hola%20Laboratorios%20BIOS,%20quiero%20cotizar%20${encodeURIComponent(item.name)}"><i class="fa-brands fa-whatsapp text-lg"></i></a>
                     </div>
                 </article>
