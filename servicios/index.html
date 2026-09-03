@@ -10,7 +10,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <link rel="stylesheet" href="../assets/multipage.css?v=1783625058">
+    <link rel="stylesheet" href="../assets/multipage.css?v=1788448964">
     <link rel="stylesheet" href="../assets/compact.css?v=1783625058">
     <script src="../assets/site.js?v=1784571500" defer></script>
     <script src="../assets/estudios-data.js" defer></script>
@@ -84,6 +84,7 @@
         let services = [];
         const CATEGORY_ORDER = ['Laboratorio clínico', 'Rayos X', 'Ultrasonido', 'Tomografía', 'Estudios especiales', 'Salud de la mujer', 'Salud del hombre', 'COVID-19', 'Prueba de embarazo', 'Salud visual', 'Otros estudios', 'Administrativos'];
         const ALL_BRANCHES = ['Tultepec', 'Cantú', 'Tepalcapa', 'Haciendas', 'Joya', 'Tepojaco'];
+        const CATEGORY_KEY = { 'Rayos X': 'xray', 'Ultrasonido': 'usg', 'Tomografía': 'tac' };
 
         let categories = ['Todos'];
         let activeCategory = 'Todos';
@@ -156,8 +157,10 @@
             document.getElementById('total-services').textContent = services.length;
             document.getElementById('total-categories').textContent = categories.length - 1;
             document.getElementById('empty-state').classList.toggle('hidden', full.length !== 0);
-            document.getElementById('service-grid').innerHTML = list.map(item => `
-                <article class="panel service-card p-5 ${item.campaign ? 'service-card-women' : ''}">
+            document.getElementById('service-grid').innerHTML = list.map(item => {
+                const catKey = CATEGORY_KEY[item.categoryRaw] || (item.category === 'Laboratorio clínico' ? 'lab' : 'especial');
+                return `
+                <article class="panel service-card p-5 ${item.campaign ? 'service-card-women' : ''}" data-cat="${catKey}">
                     <div class="service-card-head">
                         <div class="service-icon"><i data-lucide="${item.icon}" class="w-6 h-6"></i></div>
                         ${cardBadge(item)}
@@ -178,7 +181,8 @@
                         <a class="primary-button quote-button !bg-[#25D366]" target="_blank" aria-label="Cotizar ${item.name} por WhatsApp" href="https://wa.me/5211234567890?text=Hola%20Laboratorios%20BIOS,%20quiero%20cotizar%20${encodeURIComponent(item.name)}"><i class="fa-brands fa-whatsapp text-lg"></i></a>
                     </div>
                 </article>
-            `).join('');
+            `;
+            }).join('');
             document.getElementById('showing-count').textContent = full.length ? `Mostrando ${list.length} de ${full.length} estudios` : '';
             document.getElementById('load-more').classList.toggle('hidden', list.length >= full.length);
             lucide.createIcons();
