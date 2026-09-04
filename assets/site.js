@@ -80,7 +80,7 @@
     function basePath() {
         const cleanPath = window.location.pathname.replace(/\/+$/, '');
         const current = cleanPath.split('/').pop();
-        return ['servicios', 'seguimiento', 'sucursales', 'unete', 'conocenos', 'portal', 'empresas', 'medicos', 'mujer', 'facturacion'].includes(current) ? '../' : './';
+        return ['servicios', 'seguimiento', 'sucursales', 'unete', 'conocenos', 'portal', 'empresas', 'medicos', 'mujer', 'facturacion', 'aviso-privacidad', 'terminos-uso'].includes(current) ? '../' : './';
     }
 
     function href(path) {
@@ -364,6 +364,11 @@
             </div>
             <div class="bios-wrap footer-bottom-main">
                 <p>© 2026 Laboratorios BIOS. Todos los derechos reservados.</p>
+                <div class="footer-legal-links">
+                    <a href="${href('aviso-privacidad/')}">Aviso de Privacidad</a>
+                    <span aria-hidden="true">·</span>
+                    <a href="${href('terminos-uso/')}">Términos de Uso</a>
+                </div>
                 <div>Diseñado y desarrollado por <a href="https://partumdesign.com.mx" target="_blank" rel="noopener"><strong>Partum Design</strong></a></div>
             </div>
         `;

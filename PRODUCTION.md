@@ -42,7 +42,7 @@ resultados** del sitio.
 | Facebook | ✅ Puesto (perfil real) | `assets/site.js` |
 | WhatsApp / teléfono | ⚠️ Placeholder `5211234567890` | Buscar y reemplazar `5211234567890` en todo el repo cuando tengas el número real |
 | Instagram / X | ➖ Removidos (no hay) | Agregar en `assets/site.js` (footer) cuando existan |
-| Correo / aviso de privacidad | ⚠️ Apunta a `laboratoriosbios.com/aviso-privacidad` | Confirmar que esa URL exista |
+| Aviso de privacidad / Términos de uso | ✅ Publicados en `/aviso-privacidad/` y `/terminos-uso/`, enlazados en el footer | Confirmar razón social/RFC exactos y activar el correo `privacidad@bioslaboratorios.com` |
 
 > Para cambiar el WhatsApp en todo el sitio de una vez:
 > reemplaza la cadena `5211234567890` por tu número (formato internacional,

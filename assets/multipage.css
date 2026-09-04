@@ -1162,6 +1162,31 @@ body.footer-in-view .bios-women-ribbon {
     color: white;
 }
 
+.footer-legal-links {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: none !important;
+    border: none !important;
+    padding: 0 !important;
+}
+
+.footer-legal-links a {
+    display: inline !important;
+    margin: 0 !important;
+    color: rgba(255,255,255,0.6);
+    font-weight: 700;
+}
+
+.footer-legal-links a:hover {
+    color: #60a5fa;
+    transform: none;
+}
+
+.footer-legal-links span {
+    color: rgba(255,255,255,0.3);
+}
+
 .bios-reveal {
     opacity: 0;
     transform: translateY(22px);
