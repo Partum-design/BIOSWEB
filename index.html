@@ -21,8 +21,8 @@
     
     <!-- AOS Animation Library -->
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
-    <link rel="stylesheet" href="assets/multipage.css?v=1789200000" />
-    <link rel="stylesheet" href="assets/compact.css?v=1789200000" />
+    <link rel="stylesheet" href="assets/multipage.css?v=1789260000" />
+    <link rel="stylesheet" href="assets/compact.css?v=1789260000" />
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -580,9 +580,9 @@
             }
         }
     </style>
-    <script src="assets/estudios-data.js?v=1789200000" defer></script>
-    <script src="assets/search.js?v=1789200000" defer></script>
-    <script src="assets/site.js?v=1789200000" defer></script>
+    <script src="assets/estudios-data.js?v=1789260000" defer></script>
+    <script src="assets/search.js?v=1789260000" defer></script>
+    <script src="assets/site.js?v=1789260000" defer></script>
 </head>
 <body class="font-inter text-gray-800 compact-site">
 
@@ -2061,11 +2061,13 @@
                 homeIndex = window.BiosSearch.createIndex(homeCatalog, card => ({
                     key: card.key,
                     name: card.name,
-                    keywords: card.item.kw || [],
+                    aliases: card.item.kw || [],
+                    tags: card.item.tags || [],
+                    typos: card.item.typos || [],
                     category: card.category,
                     prep: card.item.prep,
                     branches: card.item.branches,
-                    boost: (card.item.top ? 12 : 0) + (card.item.alta ? 6 : 0)
+                    boost: (card.item.top ? 6 : 0) + (card.item.alta ? 3 : 0) + (card.item.pack ? 2 : 0)
                 }));
             }
         }

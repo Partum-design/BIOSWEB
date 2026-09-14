@@ -1,103 +1,283 @@
 /*
- * BiosSearch — buscador de estudios y servicios de Laboratorios BIOS.
+ * BiosSearch — buscador de estudios de Laboratorios BIOS.
  *
- * Qué resuelve:
- *   · Varios términos a la vez ("ultrasonido mama", "perfil tiroides t4").
- *     Todos los términos deben coincidir (AND); si nada coincide con todos,
- *     cae a coincidencia parcial (OR) para no dejar al paciente sin nada.
- *   · Acentos, mayúsculas y plurales: "mastografia" = "Mastografía",
- *     "riñones" = "riñón", "estudios" = "estudio".
- *   · Lenguaje de paciente: "azúcar" encuentra glucosa, "seno" encuentra
- *     mastografía, "sida" encuentra HIV. Ver SYNONYM_GROUPS.
- *   · Errores de dedo: "papanicolau", "colesteról", "ultrasonio".
- *   · Ranking por relevancia: la clave exacta gana, luego el nombre, luego
- *     los sinónimos del catálogo y al final la preparación.
+ * Implementa el "Diccionario maestro de búsqueda" (estudios/diccionario-busqueda.md).
+ * Los datos por estudio (alias directos `kw`, grupos semánticos `tags`,
+ * erratas `typos`) y la tabla global de erratas `window.BIOS_TYPOS` los
+ * genera tools/build_estudios.py; aquí vive el motor.
+ *
+ * Qué hace, por sección del diccionario:
+ *
+ *  §2 Normalización: minúsculas, sin acentos, ñ→n, puntuación unificada,
+ *     equivalencias de modalidad (rx/usg/tac), claves cortas por token
+ *     exacto (nunca substring: la clave PIE de embarazo no se activa con la
+ *     palabra "pie"), fuzzy desde 5 caracteres y prefijos desde 4.
+ *  §3 Ranking por niveles: clave exacta > nombre > alias directo > frase
+ *     coloquial > término relacionado > modalidad genérica.
+ *  §4 Erratas frecuentes, corregidas en la consulta antes de puntuar.
+ *  §5 Grupos semánticos, que puntúan bajo para no tapar a los alias.
+ *  §7 Reglas especiales: modalidad + anatomía, y desambiguaciones concretas
+ *     (PSA libre vs total, EKG de esfuerzo, TAC con/sin contraste…).
  *
  * API:
  *   const index = BiosSearch.createIndex(items);
  *   const { results, partial, tokens } = BiosSearch.search(query, index);
- *   BiosSearch.highlight(texto, tokens);       // -> HTML con <mark>
- *   BiosSearch.suggest(query, index, 4);       // -> ["Papanicolaou", ...]
+ *   BiosSearch.highlight(texto, tokens);    // -> HTML con <mark>
+ *   BiosSearch.suggest(query, index, 4);    // -> ["papanicolaou", ...]
  */
 (function (global) {
     'use strict';
 
+    /* ------------------------------------------------------------------ */
+    /* §3 Niveles de puntuación                                            */
+    /* ------------------------------------------------------------------ */
+
+    var SCORE = {
+        keyExact: 120,      // clave exacta completa
+        keyToken: 90,       // un token de una clave compuesta
+        nameExact: 110,     // nombre oficial exacto
+        namePrefix: 105,    // el término abre el nombre ("papan" -> Papanicolaou)
+        nameStart: 92,      // el término empieza una palabra del nombre
+        nameInside: 55,     // aparece a media palabra del nombre
+        alias: 95,          // alias directo / abreviatura inequívoca
+        aliasInside: 55,
+        typo: 88,           // errata documentada para ese estudio
+        fuzzyName: 78,      // fuzzy sobre el nombre
+        fuzzyAlias: 62,     // fuzzy sobre los alias
+        tagExact: 35,       // término relacionado (grupo semántico)
+        tagStart: 30,
+        category: 20,
+        branch: 16,
+        prep: 9,
+        modalityFloor: 10   // "sólo modalidad genérica"
+    };
+
+    var BONUS = {
+        phraseAlias: 95,    // la consulta completa es un alias directo
+        phraseName: 110,    // la consulta completa es el nombre oficial
+        phraseInAlias: 70,  // frase coloquial contenida en un alias
+        phraseInName: 55,
+        multiToken: 45,     // 2+ tokens directos
+        modalityMatch: 45,
+        modalitySoft: 25,   // "eco" es señal débil (§7.1)
+        modalityClash: -70
+    };
+
     var STOP_WORDS = {
         de: 1, del: 1, la: 1, el: 1, los: 1, las: 1, un: 1, una: 1, unos: 1, unas: 1,
-        y: 1, o: 1, en: 1, para: 1, con: 1, sin: 1, al: 1, por: 1, mi: 1, me: 1,
+        y: 1, o: 1, en: 1, para: 1, con: 1, al: 1, por: 1, mi: 1, me: 1,
         se: 1, que: 1, es: 1, a: 1, su: 1, sus: 1, lo: 1, le: 1, tu: 1
     };
 
-    // Cada grupo es un conjunto de términos equivalentes: escribir cualquiera
-    // de ellos también busca los demás (con menor peso que la coincidencia
-    // directa, para que el orden de resultados siga teniendo sentido).
-    var SYNONYM_GROUPS = [
-        ['tiroides', 'tiroideo', 'tsh', 't3', 't4', 'tiroxina', 'triyodotironina'],
-        ['azucar', 'glucosa', 'diabetes', 'glucemia', 'glucosilada', 'hba1c', 'diabetico'],
-        ['colesterol', 'trigliceridos', 'lipidos', 'lipidico', 'grasa'],
-        ['embarazo', 'embarazada', 'gestacion', 'prenatal', 'obstetrico', 'hcg', 'hgc', 'gravidez'],
-        ['prostata', 'prostatico', 'psa', 'antigeno'],
-        ['ultrasonido', 'usg', 'eco', 'ecografia', 'sonograma', 'ecosonograma'],
-        ['radiografia', 'rayos', 'rx', 'placa', 'tele'],
-        ['tomografia', 'tac', 'ct', 'escaner'],
-        ['mama', 'mamas', 'seno', 'senos', 'busto', 'mastografia', 'mamografia', 'mamario'],
-        ['pecho', 'costillas'],
-        ['corazon', 'cardiaco', 'cardiologico', 'ekg', 'ecg', 'electrocardiograma', 'ecocardiograma', 'electro'],
-        ['riñon', 'renal', 'creatinina', 'urea', 'nitrogeno', 'nefro'],
-        ['higado', 'hepatico', 'hepatitis', 'biliar', 'biliares'],
-        ['sangre', 'sanguinea', 'hematica', 'hemograma', 'biometria', 'bhc', 'hematologia'],
-        ['orina', 'urinario', 'urinarias', 'ego', 'urocultivo', 'uro', 'miccion'],
-        ['heces', 'excremento', 'popo', 'fecal', 'coprologico', 'coproparasitoscopico', 'parasitos'],
-        ['papanicolaou', 'papanicolau', 'pap', 'paps', 'citologia', 'cervical'],
-        ['colposcopia', 'colposcopía', 'colpo', 'cuello', 'uterino', 'matriz'],
-        ['vih', 'hiv', 'sida'],
-        ['covid', 'coronavirus', 'sarscov2', 'sars', 'influenza', 'gripe'],
-        ['vph', 'hpv', 'papiloma', 'verrugas'],
-        ['anemia', 'hierro', 'ferritina', 'hemoglobina'],
-        ['niño', 'niña', 'niños', 'bebe', 'pediatrico', 'infantil', 'escolar'],
-        ['hueso', 'huesos', 'oseo', 'osea', 'osteoporosis', 'densitometria', 'dexa'],
-        ['vista', 'visual', 'ojo', 'ojos', 'lentes', 'vision', 'optometria'],
-        ['drogas', 'antidoping', 'doping', 'toxicologico', 'abuso'],
-        ['hormonas', 'hormonal', 'fsh', 'lh', 'estradiol', 'progesterona', 'prolactina', 'testosterona'],
-        ['fertilidad', 'ovulacion', 'menopausia', 'ginecologico'],
-        ['chequeo', 'checkup', 'check', 'paquete', 'integral'],
-        ['coagulacion', 'protrombina', 'tromboplastina', 'anticoagulante'],
-        ['tiempo', 'entrega', 'urgente'],
-        ['pulmon', 'pulmones', 'torax', 'respiratorio', 'tos'],
-        ['espalda', 'columna', 'vertebras', 'vertebral'],
-        ['lumbar', 'lumbosacra', 'lumbo', 'cintura'],
-        ['cuello', 'cervical', 'nuca'],
-        ['cabeza', 'craneo', 'cerebral', 'cerebro', 'migraña'],
-        ['articulacion', 'articulaciones', 'coyuntura'],
-        ['musculo', 'muscular', 'esqueletico', 'tendon', 'blandas'],
-        ['testiculo', 'testiculos', 'testicular', 'escrotal'],
-        ['tiroiditis', 'bocio', 'nodulo'],
-        ['infeccion', 'infeccioso', 'bacterias', 'cultivo'],
-        ['garganta', 'faringeo', 'faringe', 'anginas', 'amigdalas'],
-        ['vitamina', 'vitaminas', 'deficiencia'],
-        ['insulina', 'resistencia', 'homa', 'prediabetes'],
-        ['boda', 'matrimonio', 'prenupcial'],
-        ['hombre', 'masculino', 'varon'],
-        ['mujer', 'femenino', 'femenina', 'dama'],
-        ['abdomen', 'abdominal', 'panza', 'estomago', 'vientre'],
-        ['pelvis', 'pelvico', 'pelvica', 'transvaginal', 'vaginal', 'utero', 'ovarios']
-    ];
+    /* ------------------------------------------------------------------ */
+    /* §2.6 y §7.3 Modalidades                                             */
+    /* ------------------------------------------------------------------ */
 
-    var SYNONYMS = (function () {
+    // Token de la consulta -> modalidad. Sirve para subir el estudio de la
+    // modalidad pedida y bajar el de otra modalidad de la misma zona:
+    // "rodilla rx" no debe devolver el ultrasonido de rodilla.
+    var MODALITY_WORDS = {
+        rx: ['rx', 'rayos', 'rayosx', 'radiografia', 'radiografias', 'placa', 'placas', 'tele'],
+        usg: ['usg', 'ultrasonido', 'ultrasonidos', 'ecografia', 'sonografia', 'sonograma', 'ultrason'],
+        tac: ['tac', 'tc', 'ct', 'tomografia', 'tomografias'],
+        lab: ['laboratorio', 'analisis']
+    };
+
+    // §7.1 "eco" sola es ambigua (ecocardiograma vs ecografía): empuja hacia
+    // ultrasonido, pero nunca penaliza a otra modalidad.
+    var SOFT_USG = { eco: 1, echo: 1 };
+
+    var DOC_MODALITY = {
+        'Rayos X': 'rx',
+        'Ultrasonido': 'usg',
+        'Tomografía': 'tac',
+        'Laboratorio clínico': 'lab'
+        // "Estudios especiales" queda sin modalidad: ahí viven mastografía,
+        // electrocardiograma y densitometría, que se piden con vocabulario
+        // de varias modalidades.
+    };
+
+    var MODALITY_OF_WORD = (function () {
         var map = {};
-        SYNONYM_GROUPS.forEach(function (group) {
-            group.forEach(function (term) {
-                var key = fold(term);
-                map[key] = (map[key] || []).concat(group.map(fold).filter(function (other) {
-                    return other !== key;
-                }));
-            });
+        Object.keys(MODALITY_WORDS).forEach(function (modality) {
+            MODALITY_WORDS[modality].forEach(function (word) { map[word] = modality; });
         });
         return map;
     }());
 
     /* ------------------------------------------------------------------ */
-    /* Normalización                                                       */
+    /* §5 y §7.4 Sinónimos y coloquialismos                                */
+    /* ------------------------------------------------------------------ */
+
+    // Complementan a los alias del diccionario con el habla del paciente.
+    // Cada grupo es simétrico: escribir cualquiera busca también los demás,
+    // con menos peso que una coincidencia directa.
+    var SYNONYM_GROUPS = [
+        ['azucar', 'glucosa', 'glucemia', 'diabetes'],
+        ['colesterol', 'trigliceridos', 'lipidos', 'lipidico'],
+        ['riñon', 'rinon', 'renal', 'rinones'],
+        ['higado', 'hepatico', 'biliar', 'biliares'],
+        ['sangre', 'sanguinea', 'hematica', 'hemograma', 'biometria'],
+        ['orina', 'urinario', 'urinarias', 'miccion', 'pipi'],
+        ['heces', 'excremento', 'popo', 'fecal', 'evacuacion'],
+        ['mama', 'mamas', 'seno', 'senos', 'busto', 'mamario'],
+        ['pecho', 'costillas'],
+        ['corazon', 'cardiaco', 'cardiaca', 'cardiologico', 'cardio'],
+        ['garganta', 'faringeo', 'faringe', 'anginas', 'amigdalas'],
+        ['hueso', 'huesos', 'oseo', 'osea', 'osteoporosis'],
+        ['vista', 'visual', 'ojo', 'ojos', 'lentes', 'vision'],
+        ['niño', 'nino', 'niña', 'nina', 'niños', 'ninos', 'bebe', 'pediatrico', 'infantil'],
+        ['hombre', 'masculino', 'varon'],
+        ['mujer', 'femenino', 'femenina', 'dama'],
+        ['embarazo', 'embarazada', 'gestacion', 'prenatal'],
+        ['prostata', 'prostatico'],
+        ['tiroides', 'tiroideo', 'tiroidea', 'tiroide'],
+        ['abdomen', 'abdominal', 'panza', 'estomago', 'vientre'],
+        ['cabeza', 'craneo', 'cerebral', 'cerebro'],
+        ['espalda', 'columna', 'vertebras', 'vertebral'],
+        ['lumbar', 'lumbosacra', 'lumbo', 'cintura'],
+        ['cuello', 'cervical', 'nuca'],
+        ['drogas', 'antidoping', 'doping', 'toxicologico'],
+        ['chequeo', 'checkup', 'check', 'paquete', 'integral'],
+        ['infeccion', 'infeccioso', 'bacterias', 'cultivo'],
+        ['sida', 'vih', 'hiv'],
+        ['papiloma', 'vph', 'hpv'],
+        ['covid', 'coronavirus', 'sarscov2', 'influenza', 'gripe'],
+        ['anemia', 'hierro', 'hemoglobina'],
+        ['boda', 'matrimonio', 'prenupcial'],
+        ['testiculo', 'testiculos', 'testicular', 'escrotal'],
+        ['musculo', 'muscular', 'esqueletico', 'tendon', 'blandas'],
+        ['ergometria', 'esfuerzo', 'ejercicio', 'caminadora']
+    ];
+
+    /* ------------------------------------------------------------------ */
+    /* §7.1 Desambiguaciones                                               */
+    /* ------------------------------------------------------------------ */
+
+    // Cada regla: si la consulta cumple TODOS los grupos de `when` (basta un
+    // token de cada grupo) y ninguno de `unless`, se ajusta la puntuación de
+    // las claves listadas. Los números negativos empujan hacia abajo.
+    var DISAMBIGUATION = [
+        {
+            note: 'PSA: sin "libre" manda el total; con "libre", el libre.',
+            when: [['psa', 'antigeno', 'prostatico', 'prostata'], ['libre', 'fpsa', 'free']],
+            keys: { 'PSA-LIBRE': 85, 'AG.P.': -35 }
+        },
+        {
+            note: 'PSA a secas prioriza el total.',
+            when: [['psa', 'ape']],
+            unless: ['libre', 'fpsa', 'free'],
+            keys: { 'AG.P.': 45 }
+        },
+        {
+            note: 'Electro con esfuerzo/ergometría gana al electro simple.',
+            when: [['esfuerzo', 'ejercicio', 'caminadora', 'ergometria', 'stress']],
+            keys: { 'EKG-ESF': 85, 'EKG': -30 }
+        },
+        {
+            note: 'Electro en reposo con lectura del cardiólogo.',
+            when: [['reposo', 'interpretacion', 'cardiologo', 'cardiologica']],
+            keys: { 'EKG/CARDIOLO': 85 }
+        },
+        {
+            note: '"eco" + corazón es ecocardiograma, no ecografía.',
+            when: [['eco', 'echo', 'ecografia', 'ultrasonido', 'usg'], ['corazon', 'cardiaco', 'cardiaca', 'cardio']],
+            keys: { 'ECO': 90 }
+        },
+        {
+            note: 'Rodillas comparativas requieren ambas/bilateral.',
+            when: [['rodilla', 'rodillas'], ['ambas', 'bilateral', 'comparativas', 'comparativa', 'dos']],
+            keys: { 'RODILLA-2': 85, 'RODILLA': -35 }
+        },
+        {
+            note: 'Tórax y pelvis en dos proyecciones.',
+            when: [['proyecciones', 'proyeccion', 'vistas', 'lat', 'lateral', 'pa'], ['2', 'dos', 'ambas']],
+            keys: { 'TX-2ADUL': 70, 'PELV-2A': 70 }
+        },
+        {
+            note: 'TAC con contraste vs simple.',
+            when: [['contraste', 'contrastada', 'contrastado']],
+            unless: ['sin', 'simple'],
+            keys: { 'TAC-ABDSC': 85, 'TAC-ABDIC': -30 }
+        },
+        {
+            note: 'TAC sin contraste / simple.',
+            when: [['simple', 'sin']],
+            unless: [],
+            requiresModality: 'tac',
+            keys: { 'TAC-ABDIC': 60, 'TAC.CRANS': 60, 'TAC-ABDSC': -40 }
+        },
+        {
+            note: 'HbA1c es el azúcar de 3 meses, no la glucosa simple.',
+            when: [['a1c', 'hba1c', 'glicosilada', 'glucosilada', 'glicada', 'glicohemoglobina', 'promedio', 'meses']],
+            keys: { 'HD-G': 85, 'GLU.S': -25 }
+        },
+        {
+            note: 'Embarazo cuantitativo = fracción beta.',
+            when: [['cuantitativa', 'cuantitativo', 'niveles', 'beta', 'bhcg']],
+            keys: { 'F.B.': 85, 'PIE': -25 }
+        },
+        {
+            note: 'Embarazo en sangre/suero cualitativo.',
+            when: [['embarazo', 'hcg', 'gch'], ['sangre', 'suero', 'cualitativa', 'cualitativo']],
+            unless: ['cuantitativa', 'cuantitativo', 'niveles', 'orina'],
+            keys: { 'PIE': 70 }
+        },
+        {
+            note: 'Embarazo en orina / prueba casera.',
+            when: [['embarazo', 'hcg', 'gch'], ['orina', 'casera', 'tira', 'farmacia']],
+            keys: { 'PIE-O': 80, 'PIE': -25 }
+        },
+        {
+            note: 'La clave PIE es embarazo; con rayos X se habla del pie.',
+            when: [['pie', 'pies'], ['rx', 'rayos', 'rayosx', 'radiografia', 'placa']],
+            keys: { 'PIE-ADULTO': 85, 'PIE': -100 }
+        },
+        {
+            note: 'Resistencia a la insulina vs insulina sola.',
+            when: [['resistencia', 'homa']],
+            keys: { 'IR-HOMA': 85, 'INSULI': -25 }
+        },
+        {
+            note: 'Tipo/grupo sanguíneo y factor Rh.',
+            when: [['tipo', 'grupo', 'factor', 'rh'], ['sangre', 'sanguineo', 'sanguinea', 'rh', 'positivo', 'negativo']],
+            keys: { 'GPORH': 90 }
+        },
+        {
+            note: 'Mama: mamografía es rayos X; USG mamario es ultrasonido.',
+            when: [['mama', 'mamas', 'seno', 'senos', 'mamario'], ['ultrasonido', 'usg', 'eco', 'ecografia']],
+            keys: { 'USG-GM': 80, 'MASTO': -25 }
+        },
+        {
+            note: 'Mama con mamografía/rayos X.',
+            when: [['mamografia', 'mastografia', 'mamograma']],
+            keys: { 'MASTO': 80 }
+        },
+        {
+            note: 'Tiroides por imagen gana a las pruebas de sangre.',
+            when: [['tiroides', 'tiroideo', 'tiroide'], ['ultrasonido', 'usg', 'eco', 'ecografia', 'nodulo', 'nodulos']],
+            keys: { 'USG-TIRO': 85 }
+        },
+        {
+            note: 'Perfil tiroideo completo.',
+            when: [['tiroideo', 'tiroides', 'tiroide'], ['completo', 'amplio']],
+            keys: { 'PTIR-3': 45 }
+        },
+        {
+            note: 'Glucosa simple cuando no se pide el promedio de 3 meses.',
+            when: [['glucosa', 'glucemia', 'azucar']],
+            unless: ['a1c', 'hba1c', 'glicosilada', 'glucosilada', 'meses', 'promedio'],
+            keys: { 'GLU.S': 45 }
+        },
+        {
+            note: 'Coagulación genérica muestra TP y TPT.',
+            when: [['coagulacion', 'coagular']],
+            keys: { 'TP': 45, 'TPT': 45 }
+        }
+    ];
+
+    /* ------------------------------------------------------------------ */
+    /* §2 Normalización                                                    */
     /* ------------------------------------------------------------------ */
 
     // Minúsculas sin acentos conservando la longitud, para poder mapear
@@ -112,8 +292,8 @@
         return out;
     }
 
-    // Quita el plural más común del español para que "estudios" y "estudio",
-    // o "riñones" y "riñon", se traten igual.
+    // §7.4 Plural del español, para tratar igual "riñón"/"riñones" y
+    // "estudio"/"estudios".
     function stem(word) {
         if (word.length > 5 && /(es)$/.test(word)) return word.slice(0, -2);
         if (word.length > 3 && /[^s]s$/.test(word)) return word.slice(0, -1);
@@ -141,6 +321,10 @@
         return spans;
     }
 
+    function phraseOf(text) {
+        return words(text).join(' ');
+    }
+
     function levenshtein(a, b, max) {
         if (Math.abs(a.length - b.length) > max) return max + 1;
         var previous = [];
@@ -163,9 +347,26 @@
         return previous[b.length];
     }
 
+    var SYNONYMS = (function () {
+        var map = {};
+        SYNONYM_GROUPS.forEach(function (group) {
+            var folded = group.map(fold);
+            folded.forEach(function (term) {
+                map[term] = (map[term] || []).concat(folded.filter(function (other) {
+                    return other !== term;
+                }));
+            });
+        });
+        return map;
+    }());
+
     /* ------------------------------------------------------------------ */
     /* Tokens de la consulta                                               */
     /* ------------------------------------------------------------------ */
+
+    function typoTable() {
+        return global.BIOS_TYPOS || {};
+    }
 
     function tokenize(query) {
         var raw = wordSpans(query);
@@ -175,27 +376,44 @@
         // ("perfil tiroideo 3", "química de 6").
         var solid = useful.filter(function (span) { return span.term.length > 1 || /[0-9]/.test(span.term); });
         var list = (solid.length ? solid : useful.length ? useful : raw).slice(0, 8);
+        var typos = typoTable();
+
         return list.map(function (span) {
             var term = span.term;
             var root = stem(term);
             var variants = {};
             variants[term] = 1;
             variants[root] = 1;
-            (SYNONYMS[term] || SYNONYMS[root] || []).forEach(function (synonym) {
+
+            // §4 Erratas frecuentes: la forma correcta se busca igual que si
+            // el paciente la hubiera escrito bien.
+            var corrected = typos[term] || typos[root];
+            if (corrected) {
+                variants[corrected] = 1;
+                variants[stem(corrected)] = 1;
+            }
+
+            var base = corrected || term;
+            (SYNONYMS[base] || SYNONYMS[stem(base)] || SYNONYMS[term] || SYNONYMS[root] || []).forEach(function (synonym) {
                 // Sin el guard, la raíz de un sinónimo ("mamas" -> "mama")
                 // degradaría el término que el paciente sí escribió.
-                if (!variants[synonym]) variants[synonym] = 2;   // 2 = por sinónimo
+                if (!variants[synonym]) variants[synonym] = 2;
                 if (!variants[stem(synonym)]) variants[stem(synonym)] = 2;
             });
+
             return {
                 term: term,
-                raw: span.raw,          // como lo escribió el paciente
+                raw: span.raw,              // como lo escribió el paciente
                 root: root,
+                corrected: corrected || '',
+                modality: MODALITY_OF_WORD[base] || MODALITY_OF_WORD[term] || '',
+                soft: Boolean(SOFT_USG[term]),
                 variants: Object.keys(variants).map(function (value) {
                     return { value: value, weight: variants[value] === 2 ? 0.55 : 1 };
                 }),
-                // Tolerancia a errores de dedo según qué tan larga sea la palabra.
-                fuzzy: term.length >= 7 ? 2 : term.length >= 4 ? 1 : 0
+                // §2.8 fuzzy: distancia 1 desde 5 caracteres, distancia 2
+                // sólo desde 8. Nunca para T3, T4, TP, LH, RH, PSA, EGO…
+                fuzzy: term.length >= 8 ? 2 : term.length >= 5 ? 1 : 0
             };
         });
     }
@@ -208,45 +426,18 @@
         return {
             key: item.c != null ? item.c : (item.key || ''),
             name: item.n != null ? item.n : (item.name || ''),
-            keywords: item.kw || item.keywords || item.includes || [],
+            aliases: item.kw || item.keywords || item.includes || [],
+            tags: item.tags || [],
+            typos: item.typos || [],
             category: item.catLabel || item.category || '',
             prep: item.prep || '',
             branches: item.branches || [],
-            boost: (item.top ? 12 : 0) + (item.alta ? 6 : 0) + (item.pack ? 4 : 0)
+            // Prioridad comercial. Va en rango corto a propósito: la posición
+            // en el catálogo (`demand`) ya carga la popularidad, y un empujón
+            // grande aquí haría que un paquete muy pedido le ganara al
+            // estudio que el paciente nombró ("papan" -> Papanicolaou).
+            boost: (item.top ? 6 : 0) + (item.alta ? 3 : 0) + (item.pack ? 2 : 0)
         };
-    }
-
-    function createIndex(items, adapter) {
-        var read = adapter || defaultAdapter;
-        var docs = (items || []).map(function (item) {
-            var fields = read(item);
-            var name = fold(fields.name);
-            var key = fold(fields.key);
-            var keywords = fold((fields.keywords || []).join(' · '));
-            var category = fold(fields.category);
-            var prep = fold(fields.prep);
-            var branches = fold((fields.branches || []).join(' '));
-            return {
-                item: item,
-                boost: fields.boost || 0,
-                nameLength: name.length,
-                name: name,
-                key: key,
-                keywords: keywords,
-                category: category,
-                prep: prep,
-                branches: branches,
-                // Vocabulario del documento: sirve para el modo tolerante a
-                // errores y para las sugerencias "¿quisiste decir...?".
-                // Se separa el del nombre para que "ultrasonio" pese más en
-                // "Ultrasonido Renal" que en un estudio que solo lo menciona.
-                nameVocabulary: unique(words(fields.name).concat(words(fields.key))),
-                keywordVocabulary: unique(
-                    words((fields.keywords || []).join(' ')).concat(words(fields.category))
-                )
-            };
-        });
-        return { docs: docs, items: items || [] };
     }
 
     function unique(list) {
@@ -260,12 +451,61 @@
         return out;
     }
 
+    function createIndex(items, adapter) {
+        var read = adapter || defaultAdapter;
+        var total = (items || []).length;
+        var docs = (items || []).map(function (item, position) {
+            var fields = read(item);
+            var aliases = (fields.aliases || []).map(phraseOf).filter(Boolean);
+            var keyTokens = words(fields.key);
+            var keyFull = keyTokens.join(' ');
+            var name = phraseOf(fields.name);
+
+            return {
+                item: item,
+                boost: fields.boost || 0,
+                // El Excel "Top 100 estudios" viene ordenado por demanda, así
+                // que la posición en el catálogo es un buen desempate cuando
+                // varios estudios coinciden igual de bien ("tiroide" empata
+                // perfiles, TSH, T3 y T4).
+                demand: total ? 1 - position / total : 0,
+                nameLength: name.length,
+                name: name,
+                key: fold(fields.key),
+                keyFull: keyFull,
+                keyTokens: keyTokens,
+                // §7.1 Una clave de 2–4 caracteres sólo puede coincidir por
+                // igualdad exacta, nunca por substring.
+                shortKey: keyFull.replace(/\s/g, '').length <= 4,
+                aliases: aliases,
+                aliasText: aliases.join(' · '),
+                tagSet: (fields.tags || []).map(fold),
+                tagText: (fields.tags || []).map(fold).join(' · '),
+                typoText: (fields.typos || []).map(fold).join(' · '),
+                category: fold(fields.category),
+                modality: DOC_MODALITY[fields.category] || '',
+                prep: fold(fields.prep),
+                branches: fold((fields.branches || []).join(' ')),
+                // Vocabulario para el modo tolerante a errores y para las
+                // sugerencias "¿quisiste decir...?". Separado porque un error
+                // sobre el nombre pesa más que sobre un alias.
+                nameVocabulary: unique(words(fields.name).concat(keyTokens)),
+                aliasVocabulary: unique(
+                    words(aliases.join(' '))
+                        .concat(words((fields.typos || []).join(' ')))
+                        .concat(words(fields.category))
+                )
+            };
+        });
+        return { docs: docs, items: items || [] };
+    }
+
     /* ------------------------------------------------------------------ */
     /* Puntuación                                                          */
     /* ------------------------------------------------------------------ */
 
-    // Coincidencia al inicio de una palabra ("mama" dentro de "mamario"),
-    // que vale más que una coincidencia a media palabra.
+    // Coincidencia al inicio de una palabra: cubre también los prefijos de
+    // §2.9 ("papan" encuentra "papanicolaou").
     function hasWordStart(haystack, needle) {
         var at = haystack.indexOf(needle);
         while (at !== -1) {
@@ -276,13 +516,22 @@
     }
 
     // minLength evita el ruido a media palabra: sin él "sida" encontraría
-    // "den(sida)d" y "bebe" saldría en todo estudio cuyo ayuno dice "beber".
-    function scoreField(haystack, needle, exactScore, startScore, containsScore, minLength) {
+    // "den(sida)d" y "nino" saldría en todo estudio "feme(nino)".
+    function scoreField(haystack, needle, exactScore, startScore, insideScore, minLength) {
         if (!haystack || !needle) return 0;
         if (exactScore && haystack === needle) return exactScore;
         if (haystack.indexOf(needle) === -1) return 0;
         if (hasWordStart(haystack, needle)) return startScore;
-        return needle.length >= (minLength || 0) ? containsScore : 0;
+        return needle.length >= (minLength || 0) ? insideScore : 0;
+    }
+
+    function scoreKey(doc, value) {
+        if (!doc.keyFull) return 0;
+        if (value === doc.keyFull || (doc.keyTokens.length === 1 && value === doc.keyTokens[0])) {
+            return SCORE.keyExact;
+        }
+        if (doc.shortKey) return 0;              // §7.1 nada de substrings
+        return doc.keyTokens.indexOf(value) !== -1 ? SCORE.keyToken : 0;
     }
 
     function fuzzyScore(vocabulary, token, ceiling) {
@@ -305,26 +554,95 @@
             var value = variant.value;
             if (value.length < 2 && !/[0-9]/.test(value)) return;
             var score = Math.max(
-                scoreField(doc.key, value, 130, 72, 40, 4),
-                scoreField(doc.name, value, 115, 70, 42, 5),
-                scoreField(doc.keywords, value, 0, 38, 24, 5),
-                scoreField(doc.category, value, 0, 22, 14, 5),
-                scoreField(doc.branches, value, 0, 16, 0, 99),
-                // La preparación es el campo más ruidoso: solo cuenta para
-                // términos largos, pegados al inicio de palabra ("ayuno") y
-                // escritos tal cual — nunca por sinónimo.
-                variant.weight === 1 && value.length >= 5 ? scoreField(doc.prep, value, 0, 9, 0, 99) : 0
+                scoreKey(doc, value),
+                // El estudio cuyo nombre ABRE con lo escrito es mejor respuesta
+                // que aquel que sólo lo menciona: "papan" es Papanicolaou
+                // antes que "Colposcopia, Papanicolaou y C. Vaginal".
+                doc.name.indexOf(value) === 0 && doc.name !== value
+                    ? SCORE.namePrefix
+                    : scoreField(doc.name, value, SCORE.nameExact, SCORE.nameStart, SCORE.nameInside, 5),
+                scoreField(doc.aliasText, value, 0, SCORE.alias, SCORE.aliasInside, 5),
+                scoreField(doc.typoText, value, 0, SCORE.typo, 0, 99),
+                doc.tagSet.indexOf(value) !== -1 ? SCORE.tagExact
+                    : scoreField(doc.tagText, value, 0, SCORE.tagStart, 0, 99),
+                scoreField(doc.category, value, 0, SCORE.category, 0, 99),
+                scoreField(doc.branches, value, 0, SCORE.branch, 0, 99),
+                // La preparación es el campo más ruidoso: sólo cuenta para
+                // términos largos, al inicio de palabra y escritos tal cual.
+                variant.weight === 1 && value.length >= 5
+                    ? scoreField(doc.prep, value, 0, SCORE.prep, 0, 99) : 0
             );
             best = Math.max(best, score * variant.weight);
         });
+
+        // §3 "sólo modalidad genérica": que `ultrasonido` a secas siga
+        // recuperando los ultrasonidos aunque no toque nombre ni alias.
+        if (token.modality && doc.modality === token.modality) {
+            best = Math.max(best, SCORE.modalityFloor);
+        }
+
         if (best > 0 || !token.fuzzy) return best;
 
         // Nada coincidió literalmente: probamos tolerando errores de dedo.
         return Math.max(
-            fuzzyScore(doc.nameVocabulary, token, 58),
-            fuzzyScore(doc.keywordVocabulary, token, 30)
+            fuzzyScore(doc.nameVocabulary, token, SCORE.fuzzyName),
+            fuzzyScore(doc.aliasVocabulary, token, SCORE.fuzzyAlias)
         );
     }
+
+    /* ------------------------------------------------------------------ */
+    /* §7.1 y §7.3 Contexto: modalidad y desambiguación                    */
+    /* ------------------------------------------------------------------ */
+
+    function queryContext(tokens, query) {
+        var present = {};
+        tokens.forEach(function (token) {
+            present[token.term] = 1;
+            present[token.root] = 1;
+            if (token.corrected) present[token.corrected] = 1;
+        });
+        // Los números y palabras que tokenize descarta siguen importando para
+        // las reglas ("2 proyecciones", "sin contraste").
+        words(query).forEach(function (word) { present[word] = 1; });
+
+        var modalities = {};
+        var soft = false;
+        tokens.forEach(function (token) {
+            if (token.modality) modalities[token.modality] = 1;
+            if (token.soft) soft = true;
+        });
+
+        return { has: present, modalities: modalities, soft: soft };
+    }
+
+    function contextScore(doc, context) {
+        var score = 0;
+        var asked = Object.keys(context.modalities);
+
+        if (asked.length && doc.modality) {
+            if (context.modalities[doc.modality]) score += BONUS.modalityMatch;
+            // Conflicto de modalidad (§3): la misma zona en otra técnica.
+            else score += BONUS.modalityClash;
+        }
+        if (context.soft && doc.modality === 'usg') score += BONUS.modalitySoft;
+
+        var key = doc.item && (doc.item.c || doc.item.key);
+        DISAMBIGUATION.forEach(function (rule) {
+            if (rule.keys[key] === undefined) return;
+            if (rule.requiresModality && !context.modalities[rule.requiresModality]) return;
+            var satisfied = rule.when.every(function (group) {
+                return group.some(function (word) { return context.has[word]; });
+            });
+            if (!satisfied) return;
+            if (rule.unless && rule.unless.some(function (word) { return context.has[word]; })) return;
+            score += rule.keys[key];
+        });
+        return score;
+    }
+
+    /* ------------------------------------------------------------------ */
+    /* Búsqueda                                                            */
+    /* ------------------------------------------------------------------ */
 
     function search(query, index, options) {
         var settings = options || {};
@@ -332,35 +650,54 @@
         var docs = (index && index.docs) || [];
 
         if (!tokens.length) {
-            var all = docs.map(function (doc) { return { item: doc.item, score: doc.boost, matched: 0 }; });
-            return { results: sortResults(all, docs), partial: false, tokens: [], total: all.length };
+            var all = docs.map(function (doc) { return { item: doc.item, score: doc.boost, matched: 0, doc: doc }; });
+            return { results: sortResults(all), partial: false, tokens: [], total: all.length };
         }
 
-        var phrase = fold(String(query || '').trim()).replace(/\s+/g, ' ');
+        var context = queryContext(tokens, query);
+        var phrase = phraseOf(query);
         var strict = [];
         var loose = [];
 
         docs.forEach(function (doc) {
             var total = 0;
             var matched = 0;
+            var direct = 0;
             tokens.forEach(function (token) {
                 var score = scoreToken(doc, token);
-                if (score > 0) {
-                    matched++;
-                    total += score;
-                }
+                if (score <= 0) return;
+                matched++;
+                total += score;
+                if (score >= SCORE.alias) direct++;
             });
-            if (!matched) return;
 
-            var score = total / tokens.length + doc.boost;
-            if (phrase.length > 2 && hasWordStart(doc.name, phrase)) score += 55;
-            if (phrase.length > 2 && doc.name.indexOf(phrase) === 0) score += 25;
-            // Entre dos nombres que coinciden, gana el más corto y directo.
-            score += Math.max(0, 24 - doc.nameLength / 3);
+            var score = matched ? total / tokens.length : 0;
+            var bonus = contextScore(doc, context);
+            // Sin ninguna coincidencia propia, el contexto por sí solo no
+            // debe inventar un resultado.
+            if (!matched && bonus <= 0) return;
+
+            score += bonus + doc.boost;
+
+            // §3 frase completa: nombre oficial, alias directo o coloquial.
+            if (phrase.length > 2) {
+                if (doc.name === phrase) score += BONUS.phraseName;
+                else if (doc.aliases.indexOf(phrase) !== -1) score += BONUS.phraseAlias;
+                else if (hasWordStart(doc.aliasText, phrase)) score += BONUS.phraseInAlias;
+                else if (hasWordStart(doc.name, phrase)) score += BONUS.phraseInName;
+            }
+            if (direct >= 2) score += BONUS.multiToken;
+            // Desempates, en rangos pequeños para no tapar ninguna señal
+            // real: primero el estudio más pedido, luego el nombre más corto
+            // y directo.
+            score += doc.demand * 14;
+            score += Math.max(0, 6 - doc.nameLength / 12);
+
+            if (score <= 0) return;
 
             var entry = { item: doc.item, score: score, matched: matched, doc: doc };
             if (matched === tokens.length) strict.push(entry);
-            else loose.push(entry);
+            else if (matched > 0) loose.push(entry);
         });
 
         var partial = strict.length === 0 && loose.length > 0;
@@ -368,20 +705,20 @@
         // Con varios términos, mostramos primero los que cumplen todos y
         // debajo los parciales, para no esconder resultados útiles.
         if (!partial && settings.includePartial && loose.length) {
-            chosen = chosen.concat(sortResults(loose, docs).map(function (result) {
+            chosen = chosen.concat(sortResults(loose).map(function (result) {
                 return { item: result.item, score: result.score - 1000, matched: result.matched };
             }));
         }
 
         return {
-            results: sortResults(chosen, docs, partial),
+            results: sortResults(chosen, partial),
             partial: partial,
             tokens: tokens,
             total: chosen.length
         };
     }
 
-    function sortResults(entries, docs, byMatchCount) {
+    function sortResults(entries, byMatchCount) {
         return entries.slice().sort(function (a, b) {
             if (byMatchCount && b.matched !== a.matched) return b.matched - a.matched;
             if (b.score !== a.score) return b.score - a.score;
@@ -407,7 +744,7 @@
         tokens.forEach(function (token) {
             var tolerance = Math.max(2, Math.ceil(token.term.length / 3));
             docs.forEach(function (doc) {
-                doc.nameVocabulary.concat(doc.keywordVocabulary).forEach(function (word) {
+                doc.nameVocabulary.concat(doc.aliasVocabulary).forEach(function (word) {
                     if (Math.abs(word.length - token.term.length) > tolerance) return;
                     var distance = levenshtein(token.term, word, tolerance);
                     if (distance > tolerance) return;
