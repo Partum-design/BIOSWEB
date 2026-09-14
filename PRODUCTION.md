@@ -7,7 +7,13 @@ Estado general del sistema y lo que falta para quedar 100% en vivo.
 ## Lo que ya está listo
 
 - **Sitio de marketing** (raíz): 11 páginas, header/footer global unificado,
-  responsive móvil/escritorio, animaciones, favicon, enlaces sin subrayado.
+  responsive móvil/escritorio, animaciones, enlaces sin subrayado.
+- **Favicon de marca** (`assets/favicon.svg` + PNG + `favicon.ico` + manifest):
+  el símbolo BIOS sobre una pastilla azul, visible en pestañas claras y
+  oscuras. Se regenera con `python3 tools/build_favicon.py`.
+- **Buscador** (`assets/search.js`): varios términos a la vez, sinónimos de
+  paciente, acentos, plurales y errores de dedo. Vive en el encabezado (y en
+  el menú móvil), en la portada y en el catálogo, sobre los mismos datos.
 - **Rastreo / Seguimiento:** sin datos de ejemplo. El folio conecta por
   WhatsApp con la sucursal y los resultados se consultan en el portal.
 - **Backend Supabase** ("Bios Web"): tablas, RLS, storage privado y
@@ -35,7 +41,28 @@ Cuando el portal tenga URL, actualízala en **un solo lugar**:
 Esa constante alimenta los botones **Iniciar sesión / Crear cuenta / Mis
 resultados** del sitio.
 
-## 3) Datos de contacto reales
+## 3) Catálogo de estudios
+
+La fuente de verdad es **`estudios/Top 100 estudios.xlsx`**. Su columna
+**Descripción** son los sinónimos con los que el paciente busca cada estudio
+(«azúcar» para glucosa, «seno» para mastografía): entre más completa, mejor
+encuentra el buscador.
+
+Cuando cambie el Excel:
+
+```bash
+python3 tools/build_estudios.py     # regenera assets/estudios-data.js
+```
+
+Lo que **no** viene del Excel vive en las tablas de `tools/build_estudios.py`:
+estudios destacados (`TOP`, `ALTA`), campaña de la mujer (`CAMPAIGN`),
+sinónimos extra (`EXTRA_KEYWORDS`) y correcciones de categoría
+(`CATEGORY_FIX`, hoy solo `GLU.S`, que en el Excel está como rayos X).
+
+> Después de regenerar, sube el número de `?v=` de los `<script>`/`<link>`
+> en los `.html` para romper la caché del navegador.
+
+## 4) Datos de contacto reales
 
 | Dato | Estado | Dónde cambiarlo |
 |------|--------|-----------------|
@@ -48,7 +75,7 @@ resultados** del sitio.
 > reemplaza la cadena `5211234567890` por tu número (formato internacional,
 > sin signos: `52` + 10 dígitos) en todos los archivos `.html` y `.js`.
 
-## 4) Supabase — configuración de Auth (tras desplegar el portal)
+## 5) Supabase — configuración de Auth (tras desplegar el portal)
 
 En **Authentication → URL Configuration**:
 - **Site URL:** la URL del portal.
@@ -59,19 +86,19 @@ En **Authentication → URL Configuration**:
 update public.profiles set role = 'admin' where email = 'tu-correo@dominio.com';
 ```
 
-## 5) Dominio propio (opcional, recomendado)
+## 6) Dominio propio (opcional, recomendado)
 
 - Sitio: `laboratoriosbios.com` → proyecto Vercel `biosweb`.
 - Portal: `portal.laboratoriosbios.com` → proyecto Vercel del portal.
   (Y actualizar `PORTAL_URL` y `NEXT_PUBLIC_SITE_URL` con ese dominio.)
 
-## 6) Rendimiento (recomendado antes de mucho tráfico)
+## 7) Rendimiento (recomendado antes de mucho tráfico)
 
 - El sitio usa **Tailwind por CDN** (cómodo, pero más lento y con un warning
   en consola). Para producción de alto tráfico conviene compilar Tailwind a un
   CSS estático. No es bloqueante: el sitio funciona bien así.
 
-## 7) Antes de publicar — pruebas rápidas
+## 8) Antes de publicar — pruebas rápidas
 
 - [ ] Logo e imágenes cargan en las 11 páginas.
 - [ ] El intro/loader y el popup salen **solo en la primera visita** de la sesión.
@@ -79,6 +106,9 @@ update public.profiles set role = 'admin' where email = 'tu-correo@dominio.com';
 - [ ] "Iniciar sesión / Crear cuenta" llevan al portal desplegado.
 - [ ] Registro de un usuario de prueba en el portal funciona.
 - [ ] Revisar móvil (iPhone/Android) y escritorio.
+- [ ] Buscar «ultrasonido mama», «azúcar» y «papanicolau» (con falta de
+      ortografía) y confirmar que devuelven lo esperado.
+- [ ] Ver el favicon en una pestaña clara y en una oscura.
 
 ---
 

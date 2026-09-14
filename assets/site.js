@@ -17,7 +17,9 @@
         { label: 'Contrataciones', path: 'unete/', icon: 'fa-briefcase' },
     ];
 
-    const services = [
+    // Respaldo del buscador: solo se usa si assets/estudios-data.js no cargó.
+    // El catálogo real (103 estudios con sinónimos) vive en ese archivo.
+    const fallbackServices = [
         { name: 'Perfil Integral 27 elementos', category: 'Preventivo', price: '$930', time: 'Un día hábil', icon: 'fa-heart-pulse', includes: ['biometría hemática', 'química sanguínea', 'perfil lipídico', 'EGO', 'examen general de orina', 'glucosa', 'colesterol', 'triglicéridos'] },
         { name: 'Perfil Tiroideo 3', category: 'Hormonal', price: '$1,400', time: 'Menos de 36 horas', icon: 'fa-chart-line', includes: ['TSH', 'T3', 'T4', 'tiroides'] },
         { name: 'Perfil Hormonal Completo', category: 'Hormonal', price: '$1,200', time: 'Menos de 36 horas', icon: 'fa-dna', includes: ['FSH', 'LH', 'estradiol', 'progesterona', 'prolactina', 'testosterona'] },
@@ -122,14 +124,43 @@
         });
     }
 
-    // Favicon de marca (usa el logo BIOS) — aplica a todas las páginas.
+    // Favicon de marca — aplica a todas las páginas.
+    //
+    // Antes se usaba el logotipo blanco en PNG y desaparecía en cualquier
+    // pestaña de fondo claro. Ahora se usa el símbolo BIOS (globo + pulso)
+    // dentro de una pastilla azul con degradado: el contraste vive dentro
+    // del icono, así que se ve igual en tema claro, oscuro o de alto
+    // contraste. El SVG manda donde hay soporte y los PNG cubren el resto.
     function applyFavicon() {
-        if (document.querySelector('link[rel="icon"]:not([data-default])')) return;
-        const link = document.createElement('link');
-        link.rel = 'icon';
-        link.type = 'image/png';
-        link.href = logoSrc();
-        document.head.appendChild(link);
+        const base = basePath();
+        const icons = [
+            { rel: 'icon', type: 'image/svg+xml', href: `${base}assets/favicon.svg`, sizes: 'any' },
+            { rel: 'icon', type: 'image/png', href: `${base}assets/favicon-32.png`, sizes: '32x32' },
+            { rel: 'icon', type: 'image/png', href: `${base}assets/favicon-16.png`, sizes: '16x16' },
+            { rel: 'apple-touch-icon', href: `${base}assets/apple-touch-icon.png`, sizes: '180x180' },
+            { rel: 'manifest', href: `${base}site.webmanifest` },
+        ];
+
+        // Barremos los favicons previos (incluido el logo blanco viejo) para
+        // que ningún navegador se quede con el que ya no queremos.
+        document.querySelectorAll('link[rel~="icon"], link[rel="apple-touch-icon"], link[rel="manifest"]')
+            .forEach(link => link.remove());
+
+        icons.forEach(icon => {
+            const link = document.createElement('link');
+            Object.keys(icon).forEach(attribute => link.setAttribute(attribute, icon[attribute]));
+            document.head.appendChild(link);
+        });
+
+        // Color de la barra del navegador en Android y de la pestaña en
+        // Safari, para que el icono no quede flotando sobre un gris genérico.
+        let theme = document.querySelector('meta[name="theme-color"]');
+        if (!theme) {
+            theme = document.createElement('meta');
+            theme.name = 'theme-color';
+            document.head.appendChild(theme);
+        }
+        theme.content = '#0A1C2E';
     }
 
     function renderHeader() {
@@ -199,6 +230,12 @@
                     </div>
                     <button type="button" class="bios-mobile-close" aria-label="Cerrar menú"><i class="fa-solid fa-xmark"></i></button>
                 </div>
+                <div class="bios-mobile-search">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input id="mobile-service-search" type="search" autocomplete="off" enterkeyhint="search"
+                           placeholder="Busca un estudio: tiroides, EGO, ultrasonido...">
+                    <div id="mobile-service-results" class="bios-mobile-results"></div>
+                </div>
                 <div class="bios-mobile-links">${mobileNavMarkup()}</div>
                 <a href="https://wa.me/5211234567890?text=Hola%20Laboratorios%20BIOS,%20quiero%20informes" target="_blank" class="bios-mobile-whatsapp">
                     <i class="fa-brands fa-whatsapp"></i> WhatsApp Laboratorios BIOS
@@ -232,35 +269,228 @@
         `;
     }
 
-    function renderSearchResults(query = '') {
-        const panel = document.getElementById('global-service-results');
-        if (!panel) return;
+    /* ------------------------------------------------------------------
+     * Buscador global (encabezado y menú móvil)
+     *
+     * Corre sobre el catálogo real de estudios y usa BiosSearch, así que
+     * acepta varios términos ("ultrasonido mama"), sinónimos de paciente
+     * ("azúcar" -> glucosa), acentos y errores de dedo. Antes comparaba la
+     * consulta completa contra una lista fija de diez servicios, por lo que
+     * escribir dos palabras casi siempre devolvía cero.
+     * ------------------------------------------------------------------ */
 
+    const CATEGORY_ICONS = {
+        'Laboratorio clínico': 'fa-vial',
+        'Rayos X': 'fa-x-ray',
+        'Ultrasonido': 'fa-wave-square',
+        'Tomografía': 'fa-circle-notch',
+        'Estudios especiales': 'fa-star-of-life',
+    };
+
+    const SEARCH_LIMIT = 7;
+    let searchIndexCache = null;
+
+    function searchIndex() {
+        if (searchIndexCache) return searchIndexCache;
+        const catalog = window.BIOS_ESTUDIOS;
+        if (!window.BiosSearch || !catalog || !catalog.length) return null;
+        searchIndexCache = window.BiosSearch.createIndex(catalog);
+        return searchIndexCache;
+    }
+
+    function money(value) {
+        return value.toLocaleString('es-MX', { style: 'currency', currency: 'MXN', maximumFractionDigits: 0 });
+    }
+
+    function priceLabel(item) {
+        return item.price != null ? money(item.price) : (item.priceLabel || 'Consultar');
+    }
+
+    function deliveryLabel(days) {
+        if (days === 0) return 'Mismo día';
+        if (days === 1) return '1 día hábil';
+        return `${days} días hábiles`;
+    }
+
+    function catalogHref(query) {
+        return `${href('servicios/')}${query ? `?q=${encodeURIComponent(query)}` : ''}`;
+    }
+
+    // Cuando el estudio salió por un sinónimo y no por su nombre, lo decimos:
+    // así el paciente entiende por qué "seno" trajo "Mastografía".
+    function matchNote(item, tokens) {
+        if (!tokens || !tokens.length || !window.BiosSearch) return '';
+        const fold = window.BiosSearch.fold;
+        const name = fold(`${item.n} ${item.c}`);
+        const literals = tokens
+            .map(token => token.variants.filter(variant => variant.weight === 1 && variant.value.length > 2))
+            .filter(list => list.length);
+        const missing = literals.filter(list => !list.some(variant => name.indexOf(variant.value) !== -1));
+        if (!missing.length) return '';
+        const hit = (item.kw || []).find(keyword => {
+            const folded = fold(keyword);
+            return missing.some(list => list.some(variant => folded.indexOf(variant.value) !== -1));
+        });
+        return hit ? `también se busca como “${window.BiosSearch.escapeHtml(hit)}”` : '';
+    }
+
+    function searchResultMarkup(item, tokens, index) {
+        const highlight = window.BiosSearch ? window.BiosSearch.highlight : (text => text);
+        const note = matchNote(item, tokens);
+        const icon = CATEGORY_ICONS[item.catLabel] || 'fa-flask-vial';
+        return `
+            <a class="search-result" role="option" id="search-option-${index}" data-index="${index}" href="${catalogHref(item.n)}">
+                <span class="search-result-icon"><i class="fa-solid ${icon}"></i></span>
+                <span>
+                    <strong>${highlight(item.n, tokens)}</strong>
+                    <small>${item.catLabel} · ${deliveryLabel(item.days)}${note ? ` · ${note}` : ''}</small>
+                </span>
+                <b>${priceLabel(item)}</b>
+            </a>
+        `;
+    }
+
+    // Respaldo con la lista fija, por si el catálogo no cargó.
+    function fallbackMarkup(query) {
         const normalized = query.trim().toLowerCase();
-        const list = services.filter(service => {
-            const haystack = `${service.name} ${service.category} ${service.price} ${service.time} ${(service.includes || []).join(' ')}`.toLowerCase();
+        const list = fallbackServices.filter(service => {
+            const haystack = `${service.name} ${service.category} ${(service.includes || []).join(' ')}`.toLowerCase();
             return !normalized || haystack.includes(normalized);
-        }).slice(0, 6);
+        }).slice(0, SEARCH_LIMIT);
+        return list.map((service, index) => `
+            <a class="search-result" role="option" id="search-option-${index}" data-index="${index}" href="${catalogHref(service.name)}">
+                <span class="search-result-icon"><i class="fa-solid ${service.icon}"></i></span>
+                <span><strong>${service.name}</strong><small>${service.category} · ${service.time}</small></span>
+                <b>${service.price}</b>
+            </a>
+        `).join('');
+    }
+
+    function emptyMarkup(query, index) {
+        const suggestions = index && window.BiosSearch
+            ? window.BiosSearch.suggest(query, index, 4)
+            : [];
+        return `
+            ${suggestions.length ? `
+                <div class="search-suggestions">
+                    <span>¿Quisiste decir?</span>
+                    ${suggestions.map(word => `<button type="button" class="search-suggestion" data-suggestion="${word}">${word}</button>`).join('')}
+                </div>
+            ` : ''}
+            <a class="search-result empty" href="https://wa.me/5211234567890?text=${encodeURIComponent(`Hola Laboratorios BIOS, busco el estudio "${query}" y no lo encuentro en la página.`)}" target="_blank" rel="noopener">
+                <span class="search-result-icon"><i class="fa-brands fa-whatsapp"></i></span>
+                <span><strong>No encontramos ese estudio</strong><small>Escríbenos y lo ubicamos contigo</small></span>
+            </a>
+        `;
+    }
+
+    function renderSearchResults(query = '', panel = document.getElementById('global-service-results')) {
+        if (!panel) return;
+        const index = searchIndex();
+        const trimmed = String(query || '').trim();
+
+        if (!index) {
+            panel.innerHTML = `
+                <div class="bios-panel-title">${trimmed ? 'Coincidencias' : 'Servicios populares'}</div>
+                ${fallbackMarkup(trimmed)}
+                <a class="bios-panel-link" href="${catalogHref(trimmed)}"><i class="fa-solid fa-microscope"></i> Abrir catálogo completo</a>
+            `;
+            return;
+        }
+
+        const found = window.BiosSearch.search(trimmed, index);
+        const list = found.results.slice(0, SEARCH_LIMIT);
+        const heading = !trimmed
+            ? 'Los más pedidos'
+            : found.partial
+                ? `${found.total} coincidencia${found.total === 1 ? '' : 's'} parcial${found.total === 1 ? '' : 'es'}`
+                : `${found.total} coincidencia${found.total === 1 ? '' : 's'}`;
 
         panel.innerHTML = `
-            <div class="bios-panel-title">${normalized ? `${list.length} coincidencias` : 'Servicios populares'}</div>
-            ${list.length ? list.map(service => `
-                <a class="search-result" href="${href('servicios/')}">
-                    <span class="search-result-icon"><i class="fa-solid ${service.icon}"></i></span>
-                    <span>
-                        <strong>${service.name}</strong>
-                        <small>${service.category} · ${service.time}${normalized && (service.includes || []).some(item => item.toLowerCase().includes(normalized)) ? ' · incluye coincidencia' : ''}</small>
-                    </span>
-                    <b>${service.price}</b>
-                </a>
-            `).join('') : `
-                <a class="search-result empty" href="https://wa.me/5211234567890?text=Hola%20Laboratorios%20BIOS,%20no%20encuentro%20un%20estudio" target="_blank">
-                    <span class="search-result-icon"><i class="fa-brands fa-whatsapp"></i></span>
-                    <span><strong>No encontramos ese estudio</strong><small>Escríbenos y lo ubicamos contigo</small></span>
-                </a>
-            `}
-            <a class="bios-panel-link" href="${href('servicios/')}"><i class="fa-solid fa-microscope"></i> Abrir catálogo completo</a>
+            <div class="bios-panel-title">${heading}</div>
+            ${found.partial ? '<p class="search-note">No hay estudios con todos los términos; mostramos los que coinciden con alguno.</p>' : ''}
+            ${list.length
+                ? list.map((result, position) => searchResultMarkup(result.item, found.tokens, position)).join('')
+                : emptyMarkup(trimmed, index)}
+            <a class="bios-panel-link" href="${catalogHref(trimmed)}">
+                <i class="fa-solid fa-microscope"></i>
+                ${trimmed && found.total > list.length ? `Ver los ${found.total} resultados en el catálogo` : 'Abrir catálogo completo'}
+            </a>
         `;
+    }
+
+    // Enlaza un par input + panel. Se usa dos veces: encabezado de escritorio
+    // y menú móvil (donde antes no había buscador).
+    function setupSearchBox(input, panel) {
+        if (!input || !panel) return;
+        let active = -1;
+
+        const options = () => Array.from(panel.querySelectorAll('.search-result[data-index]'));
+
+        const setActive = (next) => {
+            const list = options();
+            if (!list.length) { active = -1; return; }
+            active = (next + list.length) % list.length;
+            list.forEach((option, position) => option.classList.toggle('is-active', position === active));
+            input.setAttribute('aria-activedescendant', list[active].id);
+            list[active].scrollIntoView({ block: 'nearest' });
+        };
+
+        const refresh = () => {
+            active = -1;
+            input.removeAttribute('aria-activedescendant');
+            renderSearchResults(input.value, panel);
+        };
+
+        const open = () => { refresh(); panel.classList.add('open'); input.setAttribute('aria-expanded', 'true'); };
+        const close = () => { panel.classList.remove('open'); input.setAttribute('aria-expanded', 'false'); };
+
+        input.setAttribute('role', 'combobox');
+        input.setAttribute('aria-autocomplete', 'list');
+        input.setAttribute('aria-expanded', 'false');
+        input.setAttribute('aria-controls', panel.id);
+        panel.setAttribute('role', 'listbox');
+
+        input.addEventListener('focus', open);
+        input.addEventListener('input', () => { refresh(); panel.classList.add('open'); });
+
+        input.addEventListener('keydown', (event) => {
+            if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+                event.preventDefault();
+                if (!panel.classList.contains('open')) open();
+                setActive(active + (event.key === 'ArrowDown' ? 1 : -1));
+                return;
+            }
+            if (event.key === 'Escape') { close(); input.blur(); return; }
+            if (event.key !== 'Enter') return;
+            event.preventDefault();
+            const list = options();
+            // Enter abre el resultado marcado; sin marca, lleva el texto tal
+            // cual al catálogo, que repite ahí la misma búsqueda.
+            window.location.href = active >= 0 && list[active]
+                ? list[active].href
+                : catalogHref(input.value.trim());
+        });
+
+        panel.addEventListener('click', (event) => {
+            const suggestion = event.target.closest('.search-suggestion');
+            if (!suggestion) return;
+            event.preventDefault();
+            input.value = suggestion.dataset.suggestion;
+            input.focus();
+            refresh();
+        });
+
+        panel.addEventListener('mousemove', (event) => {
+            const option = event.target.closest('.search-result[data-index]');
+            if (option) setActive(Number(option.dataset.index));
+        });
+
+        document.addEventListener('click', (event) => {
+            if (!panel.contains(event.target) && event.target !== input) close();
+        });
+
+        renderSearchResults('', panel);
     }
 
     function bindHeaderInteractions(drawer) {
@@ -273,7 +503,11 @@
         const savedClinic = localStorage.getItem('bios_selected_clinic');
 
         renderClinicDropdown();
-        renderSearchResults();
+        setupSearchBox(search, searchPanel);
+        setupSearchBox(
+            drawer.querySelector('#mobile-service-search'),
+            drawer.querySelector('#mobile-service-results')
+        );
         if (savedClinic) {
             document.getElementById('clinic-button-label').textContent = savedClinic;
         }
@@ -293,23 +527,7 @@
             clinicDropdown.classList.remove('open');
         });
 
-        search?.addEventListener('focus', () => {
-            renderSearchResults(search.value);
-            searchPanel.classList.add('open');
-            clinicDropdown?.classList.remove('open');
-        });
-
-        search?.addEventListener('input', () => {
-            renderSearchResults(search.value);
-            searchPanel.classList.add('open');
-        });
-
-        search?.addEventListener('keydown', (event) => {
-            if (event.key === 'Enter') {
-                event.preventDefault();
-                window.location.href = href('servicios/');
-            }
-        });
+        search?.addEventListener('focus', () => clinicDropdown?.classList.remove('open'));
 
         menuButton?.addEventListener('click', () => {
             drawer.classList.add('active');
@@ -322,7 +540,6 @@
 
         document.addEventListener('click', (event) => {
             if (!event.target.closest('.bios-clinic-select')) clinicDropdown?.classList.remove('open');
-            if (!event.target.closest('.bios-global-search')) searchPanel?.classList.remove('open');
         });
     }
 

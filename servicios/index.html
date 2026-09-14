@@ -3,6 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg" sizes="any">
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon-16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png">
+    <link rel="manifest" href="../site.webmanifest">
+    <meta name="theme-color" content="#0A1C2E">
     <title>Estudios y precios | Laboratorios BIOS</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -10,10 +16,11 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <link rel="stylesheet" href="../assets/multipage.css?v=1788545205">
-    <link rel="stylesheet" href="../assets/compact.css?v=1783625058">
-    <script src="../assets/site.js?v=1788545205" defer></script>
-    <script src="../assets/estudios-data.js" defer></script>
+    <link rel="stylesheet" href="../assets/multipage.css?v=1789200000">
+    <link rel="stylesheet" href="../assets/compact.css?v=1789200000">
+    <script src="../assets/estudios-data.js?v=1789200000" defer></script>
+    <script src="../assets/search.js?v=1789200000" defer></script>
+    <script src="../assets/site.js?v=1789200000" defer></script>
 </head>
 <body>
     <div class="page-shell">
@@ -45,25 +52,34 @@
                         <div class="grid md:grid-cols-[1fr_auto_auto] gap-3 mb-5">
                             <div class="relative">
                                 <i data-lucide="search" class="w-5 h-5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
-                                <input id="service-search" class="field pl-10" type="search" placeholder="Buscar: EGO, tiroides, mastografía, colposcopía...">
+                                <input id="service-search" class="field pl-10 pr-10" type="search" autocomplete="off" enterkeyhint="search"
+                                       placeholder="Busca varios términos: ultrasonido mama, tiroides, azúcar...">
+                                <button type="button" id="clear-search" class="search-clear hidden" aria-label="Limpiar búsqueda">
+                                    <i data-lucide="x" class="w-4 h-4"></i>
+                                </button>
                             </div>
                             <select id="branch-filter" class="field md:w-48">
                                 <option value="">Todas las sucursales</option>
                             </select>
                             <select id="sort-services" class="field md:w-52">
-                                <option value="featured">Orden recomendado</option>
+                                <option value="relevance">Más relevante</option>
                                 <option value="price-asc">Menor precio</option>
                                 <option value="price-desc">Mayor precio</option>
                                 <option value="time">Entrega rápida</option>
                                 <option value="az">A - Z</option>
                             </select>
                         </div>
+                        <div id="search-meta" class="search-meta hidden"></div>
                         <div id="category-tabs" class="flex flex-wrap gap-2 mb-6"></div>
                         <div id="service-grid" class="service-grid"></div>
                         <div id="empty-state" class="hidden panel p-6 text-center mt-4">
                             <i data-lucide="search-x" class="w-9 h-9 mx-auto text-slate-400 mb-3"></i>
                             <p class="font-black text-[#0A1C2E]">No encontramos ese estudio.</p>
-                            <p class="text-slate-500 text-sm mt-1">Pide apoyo por WhatsApp y lo ubicamos contigo.</p>
+                            <p id="empty-hint" class="text-slate-500 text-sm mt-1">Pide apoyo por WhatsApp y lo ubicamos contigo.</p>
+                            <div id="empty-suggestions" class="empty-suggestions"></div>
+                            <a id="empty-whatsapp" class="primary-button !bg-[#25D366] mt-4 inline-flex" target="_blank" rel="noopener" href="https://wa.me/5211234567890">
+                                <i class="fa-brands fa-whatsapp text-lg"></i> Pregúntanos por WhatsApp
+                            </a>
                         </div>
                         <div class="flex flex-col items-center gap-2 mt-6">
                             <p id="showing-count" class="text-xs font-black uppercase tracking-wide text-slate-400"></p>
@@ -81,7 +97,18 @@
     </div>
 
     <script>
+        /* Catálogo de estudios.
+         *
+         * La búsqueda corre sobre BiosSearch (assets/search.js): acepta
+         * varios términos a la vez, sinónimos de paciente, acentos y errores
+         * de dedo, y ordena por relevancia. Antes era un `includes()` de la
+         * frase completa contra nombre + categoría + preparación, así que
+         * "ultrasonido mama" no devolvía nada y "azúcar" tampoco.
+         */
         let services = [];
+        let searchIndex = null;
+        let activeTokens = [];
+
         const CATEGORY_ORDER = ['Laboratorio clínico', 'Rayos X', 'Ultrasonido', 'Tomografía', 'Estudios especiales', 'Salud de la mujer', 'Salud del hombre', 'COVID-19', 'Prueba de embarazo', 'Salud visual', 'Otros estudios', 'Administrativos'];
         const ALL_BRANCHES = ['Tultepec', 'Cantú', 'Tepalcapa', 'Haciendas', 'Joya', 'Tepojaco'];
         const CATEGORY_KEY = { 'Rayos X': 'xray', 'Ultrasonido': 'usg', 'Tomografía': 'tac' };
@@ -100,6 +127,22 @@
             return item.price != null ? money(item.price) : (item.priceLabel || 'Consultar');
         }
 
+        function searchInput() {
+            return document.getElementById('service-search');
+        }
+
+        function currentQuery() {
+            return searchInput().value.trim();
+        }
+
+        function escapeHtml(text) {
+            return window.BiosSearch ? window.BiosSearch.escapeHtml(text) : String(text);
+        }
+
+        function markup(text) {
+            return window.BiosSearch ? window.BiosSearch.highlight(text, activeTokens) : escapeHtml(text);
+        }
+
         function renderBranchFilter() {
             const select = document.getElementById('branch-filter');
             ALL_BRANCHES.forEach(branch => {
@@ -110,32 +153,52 @@
             });
         }
 
-        function renderTabs() {
-            const counts = categories.map(category => category === 'Todos' ? services.length : services.filter(s => s.category === category).length);
-            document.getElementById('category-tabs').innerHTML = categories.map((category, i) => `
-                <button class="chip ${category === activeCategory && !quickFilter ? 'active' : ''}" onclick="setCategory('${category}')">${category} <span class="chip-count">${counts[i]}</span></button>
-            `).join('') + `
-                <button class="chip chip-quick ${quickFilter === 'destacados' ? 'active' : ''}" onclick="setQuickFilter('destacados')"><i data-lucide="star" class="w-3.5 h-3.5"></i> Destacados</button>
-                <button class="chip chip-quick chip-women ${quickFilter === 'campana' ? 'active' : ''}" onclick="setQuickFilter('campana')"><i data-lucide="venus" class="w-3.5 h-3.5"></i> Campaña mujer</button>
-            `;
+        /* ---------------------------------------------------------------
+         * Filtrado
+         *
+         * `matchingServices` aplica búsqueda + sucursal + filtro rápido, pero
+         * NO la categoría: con esa lista se cuentan las pestañas, para que
+         * digan cuántos resultados hay en cada una de la búsqueda actual.
+         * --------------------------------------------------------------- */
+        let lastSearch = { partial: false, total: 0, query: '' };
+        let matchingPool = [];
+
+        function recomputeMatches() {
+            const query = currentQuery();
+            const branch = document.getElementById('branch-filter').value;
+
+            let list;
+            if (query && searchIndex) {
+                const found = window.BiosSearch.search(query, searchIndex);
+                activeTokens = found.tokens;
+                lastSearch = { partial: found.partial, total: found.total, query: query };
+                list = found.results.map(result => result.item);
+            } else {
+                activeTokens = [];
+                lastSearch = { partial: false, total: 0, query: '' };
+                list = services.slice();
+            }
+
+            matchingPool = list.filter(item => {
+                const matchesQuick = !quickFilter || (quickFilter === 'destacados' ? (item.top || item.alta) : item.campaign);
+                const matchesBranch = !branch || item.branches.includes(branch);
+                return matchesQuick && matchesBranch;
+            });
         }
 
         function filteredServices() {
-            const query = document.getElementById('service-search').value.trim().toLowerCase();
             const sort = document.getElementById('sort-services').value;
-            const branch = document.getElementById('branch-filter').value;
-            let list = services.filter(item => {
-                const matchesCategory = quickFilter || activeCategory === 'Todos' || item.category === activeCategory;
-                const matchesQuick = !quickFilter || (quickFilter === 'destacados' ? (item.top || item.alta) : item.campaign);
-                const matchesQuery = !query || `${item.name} ${item.category} ${item.prep} ${item.key}`.toLowerCase().includes(query);
-                const matchesBranch = !branch || item.branches.includes(branch);
-                return matchesCategory && matchesQuick && matchesQuery && matchesBranch;
+            let list = matchingPool.filter(item => {
+                return quickFilter || activeCategory === 'Todos' || item.category === activeCategory;
             });
+
             if (sort === 'price-asc') list = [...list].sort((a, b) => (a.price ?? Infinity) - (b.price ?? Infinity));
             else if (sort === 'price-desc') list = [...list].sort((a, b) => (b.price ?? -Infinity) - (a.price ?? -Infinity));
             else if (sort === 'time') list = [...list].sort((a, b) => a.days - b.days);
             else if (sort === 'az') list = [...list].sort((a, b) => a.name.localeCompare(b.name, 'es'));
-            else list = [...list].sort((a, b) => (b.top - a.top) || (b.alta - a.alta) || a.name.localeCompare(b.name, 'es'));
+            // "Más relevante" respeta el orden que devolvió el buscador; sin
+            // búsqueda activa, cae al orden recomendado de siempre.
+            else if (!currentQuery()) list = [...list].sort((a, b) => (b.top - a.top) || (b.alta - a.alta) || a.name.localeCompare(b.name, 'es'));
             return list;
         }
 
@@ -151,12 +214,108 @@
             return '';
         }
 
+        // Por qué salió este estudio, cuando no fue por su nombre: "seno" trae
+        // Mastografía gracias a los sinónimos del catálogo, y conviene decirlo.
+        function matchReason(item) {
+            if (!activeTokens.length || !window.BiosSearch) return '';
+            const fold = window.BiosSearch.fold;
+            const visible = fold(`${item.name} ${item.key} ${item.category}`);
+            const missing = activeTokens
+                .map(token => token.variants.filter(variant => variant.weight === 1 && variant.value.length > 2))
+                .filter(list => list.length && !list.some(variant => visible.indexOf(variant.value) !== -1));
+            if (!missing.length) return '';
+            const hit = (item.keywords || []).find(keyword => {
+                const folded = fold(keyword);
+                return missing.some(list => list.some(variant => folded.indexOf(variant.value) !== -1));
+            });
+            return hit ? `<p class="service-match"><i data-lucide="sparkles" class="w-3.5 h-3.5"></i> También se busca como <strong>${markup(hit)}</strong></p>` : '';
+        }
+
+        /* ---------------------------------------------------------------
+         * Estado de la búsqueda: términos activos, aviso de coincidencia
+         * parcial y atajo para limpiar.
+         * --------------------------------------------------------------- */
+        function renderSearchMeta() {
+            const meta = document.getElementById('search-meta');
+            const query = currentQuery();
+            document.getElementById('clear-search').classList.toggle('hidden', !query);
+
+            if (!query) {
+                meta.classList.add('hidden');
+                meta.innerHTML = '';
+                return;
+            }
+
+            const terms = activeTokens.map(token => token.raw || token.term);
+            meta.classList.remove('hidden');
+            meta.innerHTML = `
+                <div class="search-meta-terms">
+                    <span class="search-meta-label">Buscando</span>
+                    ${terms.map(term => `
+                        <button type="button" class="search-term" data-term="${escapeHtml(term)}" title="Quitar “${escapeHtml(term)}”">
+                            ${escapeHtml(term)} <i data-lucide="x" class="w-3 h-3"></i>
+                        </button>
+                    `).join('')}
+                    <button type="button" class="search-term search-term-clear" data-clear="1">Limpiar todo</button>
+                </div>
+                ${lastSearch.partial ? `
+                    <p class="search-meta-note">
+                        <i data-lucide="info" class="w-3.5 h-3.5"></i>
+                        Ningún estudio tiene todos los términos: te mostramos los que coinciden con alguno.
+                    </p>
+                ` : ''}
+            `;
+        }
+
+        function renderTabs() {
+            const pool = matchingPool;
+            const counts = categories.map(category => category === 'Todos'
+                ? pool.length
+                : pool.filter(item => item.category === category).length);
+
+            document.getElementById('category-tabs').innerHTML = categories.map((category, i) => `
+                <button class="chip ${category === activeCategory && !quickFilter ? 'active' : ''} ${counts[i] ? '' : 'chip-empty'}" onclick="setCategory('${category}')">${category} <span class="chip-count">${counts[i]}</span></button>
+            `).join('') + `
+                <button class="chip chip-quick ${quickFilter === 'destacados' ? 'active' : ''}" onclick="setQuickFilter('destacados')"><i data-lucide="star" class="w-3.5 h-3.5"></i> Destacados</button>
+                <button class="chip chip-quick chip-women ${quickFilter === 'campana' ? 'active' : ''}" onclick="setQuickFilter('campana')"><i data-lucide="venus" class="w-3.5 h-3.5"></i> Campaña mujer</button>
+            `;
+        }
+
+        function renderEmptyState() {
+            const query = currentQuery();
+            const hint = document.getElementById('empty-hint');
+            const box = document.getElementById('empty-suggestions');
+            const whatsapp = document.getElementById('empty-whatsapp');
+
+            whatsapp.href = 'https://wa.me/5211234567890?text=' + encodeURIComponent(
+                query
+                    ? `Hola Laboratorios BIOS, busco el estudio "${query}" y no lo encuentro en la página.`
+                    : 'Hola Laboratorios BIOS, necesito ayuda para encontrar un estudio.'
+            );
+
+            const suggestions = query && searchIndex ? window.BiosSearch.suggest(query, searchIndex, 5) : [];
+            hint.textContent = query
+                ? (suggestions.length
+                    ? 'Prueba con otro término o revisa si alguno de estos es el que buscas.'
+                    : 'Prueba con menos palabras o pídenos apoyo por WhatsApp.')
+                : 'Ajusta los filtros de categoría o sucursal.';
+
+            box.innerHTML = suggestions.length
+                ? `<span class="empty-suggestions-label">¿Quisiste decir?</span>` +
+                  suggestions.map(word => `<button type="button" class="search-suggestion" data-suggestion="${escapeHtml(word)}">${escapeHtml(word)}</button>`).join('')
+                : '';
+        }
+
         function renderServices() {
             const full = filteredServices();
             const list = full.slice(0, visibleCount);
+            const query = currentQuery();
+
             document.getElementById('total-services').textContent = services.length;
             document.getElementById('total-categories').textContent = categories.length - 1;
             document.getElementById('empty-state').classList.toggle('hidden', full.length !== 0);
+            if (!full.length) renderEmptyState();
+
             document.getElementById('service-grid').innerHTML = list.map(item => {
                 const catKey = CATEGORY_KEY[item.categoryRaw] || (item.category === 'Laboratorio clínico' ? 'lab' : 'especial');
                 return `
@@ -169,8 +328,9 @@
                         </div>
                     </div>
                     <p class="service-category">${item.category}</p>
-                    <h2 class="brand-type service-title">${item.name}</h2>
-                    <p class="service-prep"><span class="service-prep-label">Preparación</span>${item.prep}</p>
+                    <h2 class="brand-type service-title">${markup(item.name)}</h2>
+                    ${matchReason(item)}
+                    <p class="service-prep"><span class="service-prep-label">Preparación</span>${escapeHtml(item.prep)}</p>
                     <details class="service-detail">
                         <summary>Sucursales disponibles</summary>
                         <div class="service-includes">${item.branches.map(b => `<span>${b}</span>`).join('')}</div>
@@ -181,29 +341,56 @@
                             <p class="service-price-label">Desde</p>
                             <strong class="brand-type service-price">${priceDisplay(item)}</strong>
                         </div>
-                        <a class="primary-button quote-button !bg-[#25D366]" target="_blank" aria-label="Cotizar ${item.name} por WhatsApp" href="https://wa.me/5211234567890?text=Hola%20Laboratorios%20BIOS,%20quiero%20cotizar%20${encodeURIComponent(item.name)}"><i class="fa-brands fa-whatsapp text-lg"></i></a>
+                        <a class="primary-button quote-button !bg-[#25D366]" target="_blank" aria-label="Cotizar ${escapeHtml(item.name)} por WhatsApp" href="https://wa.me/5211234567890?text=Hola%20Laboratorios%20BIOS,%20quiero%20cotizar%20${encodeURIComponent(item.name)}"><i class="fa-brands fa-whatsapp text-lg"></i></a>
                     </div>
                 </article>
             `;
             }).join('');
-            document.getElementById('showing-count').textContent = full.length ? `Mostrando ${list.length} de ${full.length} estudios` : '';
+
+            document.getElementById('showing-count').textContent = full.length
+                ? `Mostrando ${list.length} de ${full.length} ${full.length === 1 ? 'estudio' : 'estudios'}${query ? ` para “${query}”` : ''}`
+                : '';
             document.getElementById('load-more').classList.toggle('hidden', list.length >= full.length);
             lucide.createIcons();
+        }
+
+        function refresh() {
+            visibleCount = PAGE_SIZE;
+            recomputeMatches();
+            renderSearchMeta();
+            renderTabs();
+            renderServices();
         }
 
         function setCategory(category) {
             activeCategory = category;
             quickFilter = '';
-            visibleCount = PAGE_SIZE;
-            renderTabs();
-            renderServices();
+            refresh();
         }
 
         function setQuickFilter(filter) {
             quickFilter = quickFilter === filter ? '' : filter;
-            visibleCount = PAGE_SIZE;
-            renderTabs();
-            renderServices();
+            refresh();
+        }
+
+        // La búsqueda vive en la URL: así el buscador del encabezado puede
+        // mandar aquí "?q=ultrasonido mama" y el enlace se puede compartir.
+        function syncUrl() {
+            const query = currentQuery();
+            const url = new URL(window.location.href);
+            if (query) url.searchParams.set('q', query);
+            else url.searchParams.delete('q');
+            window.history.replaceState({}, '', url);
+        }
+
+        function runSearch() {
+            refresh();
+            syncUrl();
+        }
+
+        function setQuery(value) {
+            searchInput().value = value;
+            runSearch();
         }
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -218,21 +405,55 @@
                 days: item.days,
                 deliveryLabel: item.days === 0 ? 'Mismo día' : item.days === 1 ? '1 día hábil' : `${item.days} días hábiles`,
                 prep: item.prep,
+                keywords: item.kw || [],
                 branches: item.branches,
+                pack: item.pack,
                 top: item.top,
                 alta: item.alta,
                 campaign: item.campaign
             }));
             categories = ['Todos', ...CATEGORY_ORDER.filter(cat => services.some(s => s.category === cat))];
+            if (window.BiosSearch) searchIndex = window.BiosSearch.createIndex(services);
 
-            document.getElementById('service-search').addEventListener('input', () => { visibleCount = PAGE_SIZE; renderServices(); });
-            document.getElementById('sort-services').addEventListener('change', () => { visibleCount = PAGE_SIZE; renderServices(); });
-            document.getElementById('branch-filter').addEventListener('change', () => { visibleCount = PAGE_SIZE; renderServices(); });
-            document.getElementById('load-more').addEventListener('click', () => { visibleCount += PAGE_SIZE; renderServices(); });
+            const input = searchInput();
+            input.addEventListener('input', runSearch);
+            input.addEventListener('keydown', event => {
+                if (event.key === 'Escape') setQuery('');
+            });
+            document.getElementById('clear-search').addEventListener('click', () => {
+                setQuery('');
+                input.focus();
+            });
+            document.getElementById('sort-services').addEventListener('change', refresh);
+            document.getElementById('branch-filter').addEventListener('change', refresh);
+            document.getElementById('load-more').addEventListener('click', () => {
+                visibleCount += PAGE_SIZE;
+                renderServices();
+            });
+
+            // Quitar un término suelto de una búsqueda de varias palabras.
+            document.getElementById('search-meta').addEventListener('click', event => {
+                const clear = event.target.closest('[data-clear]');
+                if (clear) return setQuery('');
+                const chip = event.target.closest('.search-term');
+                if (!chip) return;
+                const remaining = activeTokens
+                    .map(token => token.raw || token.term)
+                    .filter(term => term !== chip.dataset.term);
+                setQuery(remaining.join(' '));
+            });
+
+            document.getElementById('empty-suggestions').addEventListener('click', event => {
+                const suggestion = event.target.closest('.search-suggestion');
+                if (suggestion) setQuery(suggestion.dataset.suggestion);
+            });
 
             renderBranchFilter();
-            renderTabs();
-            renderServices();
+
+            const initial = new URLSearchParams(window.location.search).get('q');
+            if (initial) input.value = initial;
+            refresh();
+            if (initial) input.focus();
             lucide.createIcons();
         });
     </script>

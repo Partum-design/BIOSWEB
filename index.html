@@ -3,6 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" sizes="any">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+    <link rel="manifest" href="site.webmanifest">
+    <meta name="theme-color" content="#0A1C2E">
     <title>Laboratorios BIOS | Excelencia y Precisión</title>
     
     <!-- Google Fonts -->
@@ -15,8 +21,8 @@
     
     <!-- AOS Animation Library -->
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
-    <link rel="stylesheet" href="assets/multipage.css?v=1788545205" />
-    <link rel="stylesheet" href="assets/compact.css?v=1783625058" />
+    <link rel="stylesheet" href="assets/multipage.css?v=1789200000" />
+    <link rel="stylesheet" href="assets/compact.css?v=1789200000" />
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -574,7 +580,9 @@
             }
         }
     </style>
-    <script src="assets/site.js?v=1788545205" defer></script>
+    <script src="assets/estudios-data.js?v=1789200000" defer></script>
+    <script src="assets/search.js?v=1789200000" defer></script>
+    <script src="assets/site.js?v=1789200000" defer></script>
 </head>
 <body class="font-inter text-gray-800 compact-site">
 
@@ -829,13 +837,14 @@
                                 <i data-lucide="sliders-horizontal" class="w-6 h-6"></i>
                             </div>
                         </div>
-                        <label class="block mb-5">
+                        <label class="block mb-4">
                             <span class="sr-only">Buscar tu servicio</span>
                             <div class="relative">
                                 <i data-lucide="search" class="w-5 h-5 text-gray-400 absolute left-4 top-1/2 -translate-y-1/2"></i>
-                                <input id="service-search" type="search" placeholder="Busca tu propio servicio..." class="w-full pl-12 pr-4 py-4 rounded-2xl border border-gray-200 bg-white/90 text-[#0A1C2E] font-medium outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition">
+                                <input id="service-search" type="search" autocomplete="off" enterkeyhint="search" placeholder="Busca en los 103 estudios: tiroides, ultrasonido mama..." class="w-full pl-12 pr-4 py-4 rounded-2xl border border-gray-200 bg-white/90 text-[#0A1C2E] font-medium outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition">
                             </div>
                         </label>
+                        <p id="service-search-status" class="text-sm font-bold text-gray-500 mb-4"></p>
                         <div class="flex flex-wrap items-center gap-3 mb-5">
                             <a href="https://wa.me/5211234567890?text=Hola%20Laboratorios%20BIOS,%20quiero%20informes%20sobre%20un%20servicio" target="_blank" class="magnetic-action inline-flex items-center gap-2 px-4 py-3 rounded-2xl bg-[#25D366] text-white font-black text-sm shadow-lg shadow-green-500/20 hover:-translate-y-0.5 transition">
                                 <i data-lucide="message-circle" class="w-4 h-4"></i> WhatsApp informes
@@ -845,11 +854,7 @@
                             </a>
                         </div>
                         <div id="service-filters" class="flex flex-wrap gap-3">
-                            <button class="service-chip active px-5 py-3 rounded-2xl border border-gray-200 bg-white text-[#0A1C2E] font-black text-sm transition-all hover:-translate-y-1" data-filter="Todos" onclick="filterServices('Todos', this)">Todos</button>
-                            <button class="service-chip px-5 py-3 rounded-2xl border border-gray-200 bg-white text-[#0A1C2E] font-black text-sm transition-all hover:-translate-y-1" data-filter="Preventivo" onclick="filterServices('Preventivo', this)">Preventivo</button>
-                            <button class="service-chip px-5 py-3 rounded-2xl border border-gray-200 bg-white text-[#0A1C2E] font-black text-sm transition-all hover:-translate-y-1" data-filter="Hormonal" onclick="filterServices('Hormonal', this)">Hormonal</button>
-                            <button class="service-chip px-5 py-3 rounded-2xl border border-gray-200 bg-white text-[#0A1C2E] font-black text-sm transition-all hover:-translate-y-1" data-filter="Imagen" onclick="filterServices('Imagen', this)">Imagen</button>
-                            <button class="service-chip px-5 py-3 rounded-2xl border border-gray-200 bg-white text-[#0A1C2E] font-black text-sm transition-all hover:-translate-y-1" data-filter="Especialidad" onclick="filterServices('Especialidad', this)">Especialidad</button>
+                            <!-- Las categorías se generan desde el catálogo real. -->
                         </div>
                     </div>
                 </div>
@@ -857,6 +862,11 @@
                 <!-- Services Grid Layout -->
                 <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 items-stretch" id="bento-container">
                     <!-- Script injects cards here -->
+                </div>
+                <div class="mt-8 text-center">
+                    <a id="see-all-services" href="servicios/" class="inline-flex items-center gap-2 px-6 py-4 rounded-2xl bg-[#0A1C2E] text-white font-black shadow-lg hover:-translate-y-0.5 transition">
+                        <i data-lucide="microscope" class="w-5 h-5"></i> Ver el catálogo completo
+                    </a>
                 </div>
                 <div id="services-empty" class="hidden mt-6 rounded-[2rem] p-8 border border-gray-200 service-empty shadow-xl">
                     <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
@@ -1971,37 +1981,155 @@
         });
 
         /* =================================================================
-           1. SERVICES BLOCKS DATA
+           1. SERVICIOS DESTACADOS — se arman desde el catálogo real
+
+           Antes esta sección tenía seis tarjetas escritas a mano, con precios
+           que ya no coincidían con el catálogo (Mastografía a $400 cuando
+           cuesta $450) y una búsqueda que solo miraba esas seis. Ahora las
+           tarjetas y el buscador salen de window.BIOS_ESTUDIOS, así que los
+           103 estudios son buscables desde la portada y los precios no se
+           pueden desfasar.
            ================================================================= */
-        const servicesData = [
-            { name: "PERFIL INTEGRAL 27 ELEMENTOS", price: "930.00", desc: "Revisión preventiva de salud general. Incluye biometría hemática, química sanguínea, perfil lipídico y EGO.", prep: "Ayuno 8 horas", time: "Un día hábil", size: "lg", delay: 100, category: "Preventivo", icon: "heart-pulse", tag: "Más solicitado" },
-            { name: "PERFIL TIROIDEO 3", price: "1,400.00", desc: "Panel para valorar función tiroidea y orientar seguimiento médico.", prep: "Sin ayuno", time: "Menos de 36 horas", size: "normal", delay: 200, category: "Hormonal", icon: "activity", tag: "Alta demanda" },
-            { name: "PERFIL HORMONAL COMPLETO", price: "1,200.00", desc: "Análisis endocrinológico para apoyar valoración de fertilidad y ciclos.", prep: "Ayuno sugerido", time: "Menos de 36 horas", size: "normal", delay: 300, category: "Hormonal", icon: "dna", tag: "Especializado" },
-            { name: "PAQUETE GINECOLÓGICO / UROLÓGICO", price: "650.00", desc: "Paquete preventivo para detección oportuna y seguimiento médico.", prep: "Preparación especial", time: "Un día hábil", size: "wide", delay: 100, category: "Especialidad", icon: "shield-check", tag: "Preventivo" },
-            { name: "PERFIL MASCULINO PREVENTIVO", price: "1,090.00", desc: "Revisión especializada que incluye Antígeno Prostático Específico (PSA).", prep: "Ayuno especial", time: "Un día hábil", size: "normal", delay: 200, category: "Preventivo", icon: "badge-check", tag: "Recomendado" },
-            { name: "MASTOGRAFÍA", price: "400.00", desc: "Estudio de imagen para apoyo en detección oportuna.", prep: "Sin desodorante", time: "Entrega programada", size: "normal", delay: 300, category: "Imagen", icon: "scan-line", tag: "Imagen" }
-        ];
+        const HOME_CARD_LIMIT = 6;
+        const HOME_ICONS = {
+            'test-tube-diagonal': 'test-tube-diagonal',
+            'scan-line': 'scan-line',
+            'radar': 'radar',
+            'scan': 'scan',
+            'sparkles': 'sparkles'
+        };
 
         const bentoContainer = document.getElementById('bento-container');
         const serviceEmpty = document.getElementById('services-empty');
         const serviceSearch = document.getElementById('service-search');
+        const serviceStatus = document.getElementById('service-search-status');
+        const seeAllLink = document.getElementById('see-all-services');
         let currentServiceFilter = 'Todos';
         let currentServiceSearch = '';
+        let homeCatalog = [];
+        let homeIndex = null;
+
+        function homeMoney(item) {
+            if (item.price == null) return item.priceLabel || 'Consultar';
+            return item.price.toLocaleString('es-MX', { maximumFractionDigits: 0 });
+        }
+
+        function homeDelivery(days) {
+            if (days === 0) return 'Mismo día';
+            if (days === 1) return 'Un día hábil';
+            return `${days} días hábiles`;
+        }
+
+        // La preparación completa no cabe en la tarjeta: nos quedamos con la
+        // primera indicación, que es la que decide si el paciente puede venir.
+        function homePrep(prep) {
+            const first = String(prep || '').split(/(?<=\.)\s+/)[0] || 'Sin preparación especial';
+            const clean = first.replace(/\.$/, '');
+            return clean.length > 52 ? `${clean.slice(0, 49).trim()}…` : clean;
+        }
+
+        function homeTag(item) {
+            if (item.campaign) return 'Campaña mujer';
+            if (item.top) return 'Más pedido';
+            if (item.alta) return 'Destacado';
+            if (item.pack) return 'Paquete';
+            return item.catLabel;
+        }
+
+        function homeDescription(item) {
+            const synonyms = (item.kw || []).slice(0, 3).join(' · ');
+            return synonyms || `${item.catLabel} disponible en ${item.branches.length} sucursales.`;
+        }
+
+        function buildHomeCatalog() {
+            homeCatalog = (window.BIOS_ESTUDIOS || []).map(item => ({
+                item: item,
+                name: item.n,
+                key: item.c,
+                price: homeMoney(item),
+                desc: homeDescription(item),
+                prep: homePrep(item.prep),
+                time: homeDelivery(item.days),
+                category: item.catLabel,
+                icon: HOME_ICONS[item.icon] || 'activity',
+                tag: homeTag(item),
+                // Paquetes y estudios más pedidos son los que encabezan la
+                // portada; el resto del catálogo se alcanza buscando.
+                featured: Boolean(item.top || item.alta || item.pack)
+            }));
+            if (window.BiosSearch && homeCatalog.length) {
+                homeIndex = window.BiosSearch.createIndex(homeCatalog, card => ({
+                    key: card.key,
+                    name: card.name,
+                    keywords: card.item.kw || [],
+                    category: card.category,
+                    prep: card.item.prep,
+                    branches: card.item.branches,
+                    boost: (card.item.top ? 12 : 0) + (card.item.alta ? 6 : 0)
+                }));
+            }
+        }
+
+        function renderServiceFilters() {
+            const holder = document.getElementById('service-filters');
+            if (!holder) return;
+            const order = ['Laboratorio clínico', 'Rayos X', 'Ultrasonido', 'Tomografía', 'Estudios especiales'];
+            const present = order.filter(category => homeCatalog.some(card => card.category === category));
+            holder.innerHTML = ['Todos', ...present].map(category => `
+                <button class="service-chip ${category === currentServiceFilter ? 'active' : ''} px-5 py-3 rounded-2xl border border-gray-200 bg-white text-[#0A1C2E] font-black text-sm transition-all hover:-translate-y-1" data-filter="${category}">${category}</button>
+            `).join('');
+            holder.querySelectorAll('.service-chip').forEach(chip => {
+                chip.addEventListener('click', () => window.filterServices(chip.dataset.filter, chip));
+            });
+        }
+
+        function homeMatches(search) {
+            const query = String(search || '').trim();
+            if (!query || !homeIndex) {
+                return { cards: homeCatalog.slice(), tokens: [], partial: false, total: homeCatalog.length, query: '' };
+            }
+            const found = window.BiosSearch.search(query, homeIndex);
+            return {
+                cards: found.results.map(result => result.item),
+                tokens: found.tokens,
+                partial: found.partial,
+                total: found.total,
+                query: query
+            };
+        }
 
         function renderServices(filter = currentServiceFilter, search = currentServiceSearch) {
             currentServiceFilter = filter;
             currentServiceSearch = search;
-            const normalizedSearch = search.trim().toLowerCase();
-            const visibleServices = servicesData.filter(s => {
-                const matchesFilter = filter === 'Todos' || s.category === filter;
-                const haystack = `${s.name} ${s.desc} ${s.category} ${s.tag}`.toLowerCase();
-                const matchesSearch = !normalizedSearch || haystack.includes(normalizedSearch);
-                return matchesFilter && matchesSearch;
-            });
+            if (!bentoContainer) return;
 
-            if (serviceEmpty) {
-                serviceEmpty.classList.toggle('hidden', visibleServices.length !== 0);
+            const found = homeMatches(search);
+            const inCategory = found.cards.filter(card => filter === 'Todos' || card.category === filter);
+            // Sin búsqueda mostramos los destacados; con búsqueda, el orden que
+            // devolvió el buscador (por relevancia).
+            // Sin búsqueda: destacados primero, conservando el orden del
+            // catálogo, que ya viene ordenado por demanda en el Excel.
+            const ordered = found.query
+                ? inCategory
+                : [...inCategory].sort((a, b) => b.featured - a.featured);
+            const visibleServices = ordered.slice(0, HOME_CARD_LIMIT);
+
+            if (seeAllLink) {
+                seeAllLink.href = found.query ? `servicios/?q=${encodeURIComponent(found.query)}` : 'servicios/';
+                seeAllLink.classList.toggle('hidden', ordered.length === 0);
             }
+
+            if (serviceStatus) {
+                if (!found.query && filter === 'Todos') {
+                    serviceStatus.textContent = `${homeCatalog.length} estudios en catálogo · te mostramos los más pedidos.`;
+                } else if (!ordered.length) {
+                    serviceStatus.textContent = 'Sin coincidencias con esos términos.';
+                } else {
+                    serviceStatus.textContent = `${ordered.length} ${ordered.length === 1 ? 'coincidencia' : 'coincidencias'}${found.partial ? ' parciales' : ''}${ordered.length > HOME_CARD_LIMIT ? ` · mostramos ${HOME_CARD_LIMIT}` : ''}.`;
+                }
+            }
+
+            if (serviceEmpty) serviceEmpty.classList.toggle('hidden', visibleServices.length !== 0);
 
             if (!visibleServices.length) {
                 bentoContainer.innerHTML = '';
@@ -2010,8 +2138,10 @@
                 return;
             }
 
-            bentoContainer.innerHTML = visibleServices.map(s => {
-            const featured = s.size === 'lg';
+            const mark = text => window.BiosSearch ? window.BiosSearch.highlight(text, found.tokens) : text;
+
+            bentoContainer.innerHTML = visibleServices.map((s, position) => {
+            const featured = position === 0 && !found.query;
             const cardShell = featured
                 ? 'bento-card-dark text-white shadow-2xl border border-white/10'
                 : 'bg-white border border-gray-100 shadow-xl';
@@ -2022,7 +2152,7 @@
             const chipBg = featured ? 'bg-white/10 text-white/90 border border-white/10' : 'bg-gray-50 text-gray-700 border border-gray-100';
 
             return `
-                <div class="bento-card interactive-depth premium-surface ${cardShell} rounded-[2rem] p-6 md:p-7 flex flex-col justify-between min-h-[320px]" data-aos="fade-up" data-aos-delay="${s.delay}">
+                <div class="bento-card interactive-depth premium-surface ${cardShell} rounded-[2rem] p-6 md:p-7 flex flex-col justify-between min-h-[320px]" data-aos="fade-up" data-aos-delay="${100 + position * 60}">
                     <div class="flex items-start justify-between gap-4">
                         <div class="w-14 h-14 rounded-2xl ${iconBg} flex items-center justify-center shrink-0 shadow-sm">
                             <i data-lucide="${s.icon}" class="w-7 h-7"></i>
@@ -2031,9 +2161,9 @@
                     </div>
                     <div class="mt-5">
                         <p class="text-[11px] uppercase tracking-[0.28em] font-black ${featured ? 'text-blue-200' : 'text-gray-400'} mb-3">${s.category}</p>
-                        <h3 class="font-outfit font-black text-3xl md:text-[2rem] ${titleColor} leading-[1.02] tracking-tight">${s.name}</h3>
+                        <h3 class="font-outfit font-black text-2xl md:text-[1.75rem] ${titleColor} leading-[1.06] tracking-tight">${mark(s.name)}</h3>
                     </div>
-                    <p class="${textColor} text-base leading-relaxed mt-4 max-w-[34ch]">${s.desc}</p>
+                    <p class="${textColor} text-sm leading-relaxed mt-4 max-w-[38ch]">${mark(s.desc)}</p>
                     <div class="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <div class="${chipBg} rounded-2xl px-4 py-3">
                             <p class="text-[11px] uppercase tracking-[0.22em] font-black ${featured ? 'text-white/60' : 'text-gray-400'} mb-1">Prep</p>
@@ -2047,7 +2177,7 @@
                     <div class="mt-6 flex items-center justify-between gap-4">
                         <div>
                             <p class="text-[11px] uppercase tracking-[0.24em] font-black ${featured ? 'text-blue-200' : 'text-gray-400'} mb-1">Desde</p>
-                            <p class="font-black text-4xl ${priceColor}">$${s.price}</p>
+                            <p class="font-black text-4xl ${priceColor}">${s.item.price == null ? '' : '$'}${s.price}</p>
                         </div>
                         <a href="https://wa.me/5211234567890?text=Hola%20Laboratorios%20BIOS,%20quiero%20informes%20sobre%20${encodeURIComponent(s.name)}" target="_blank" class="magnetic-action inline-flex items-center gap-2 px-4 py-3 rounded-2xl ${featured ? 'bg-white text-[#0A1C2E]' : 'bg-[#0A1C2E] text-white'} font-black text-sm shadow-lg transition hover:-translate-y-0.5">
                             <i data-lucide="message-circle" class="w-4 h-4"></i> Informes
@@ -2069,25 +2199,32 @@
             if (window.AOS) AOS.refreshHard();
         }
 
-        renderServices();
-
         window.filterServices = function(filter, activeButton) {
             document.querySelectorAll('.service-chip').forEach(item => item.classList.remove('active'));
             if (activeButton) activeButton.classList.add('active');
             renderServices(filter, currentServiceSearch);
         };
 
-        document.querySelectorAll('.service-chip').forEach(chip => {
-            chip.addEventListener('click', () => {
-                window.filterServices(chip.dataset.filter, chip);
-            });
-        });
-
         if (serviceSearch) {
             serviceSearch.addEventListener('input', (event) => {
                 renderServices(currentServiceFilter, event.target.value);
             });
+            // Enter lleva la misma búsqueda al catálogo completo.
+            serviceSearch.addEventListener('keydown', (event) => {
+                if (event.key !== 'Enter') return;
+                event.preventDefault();
+                const query = serviceSearch.value.trim();
+                window.location.href = query ? `servicios/?q=${encodeURIComponent(query)}` : 'servicios/';
+            });
         }
+
+        // estudios-data.js y search.js van con defer: corren después de que
+        // se parsea el HTML, así que el catálogo solo está listo aquí.
+        document.addEventListener('DOMContentLoaded', () => {
+            buildHomeCatalog();
+            renderServiceFilters();
+            renderServices();
+        });
 
         /* =================================================================
            2. STUDY TRACKER LOGIC
