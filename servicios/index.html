@@ -45,7 +45,7 @@
                         <div class="grid md:grid-cols-[1fr_auto_auto] gap-3 mb-5">
                             <div class="relative">
                                 <i data-lucide="search" class="w-5 h-5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
-                                <input id="service-search" class="field pl-10" type="search" placeholder="Buscar: EGO, tiroides, mastografía, colposcopía...">
+                                <input id="service-search" class="field pl-10" type="search" placeholder="Buscar: BH, EGO, PSA, tiroides, mastografía...">
                             </div>
                             <select id="branch-filter" class="field md:w-48">
                                 <option value="">Todas las sucursales</option>
@@ -127,7 +127,7 @@
             let list = services.filter(item => {
                 const matchesCategory = quickFilter || activeCategory === 'Todos' || item.category === activeCategory;
                 const matchesQuick = !quickFilter || (quickFilter === 'destacados' ? (item.top || item.alta) : item.campaign);
-                const matchesQuery = !query || `${item.name} ${item.category} ${item.prep} ${item.key}`.toLowerCase().includes(query);
+                const matchesQuery = !query || `${item.name} ${item.category} ${item.prep} ${item.key} ${item.syn || ''}`.toLowerCase().includes(query);
                 const matchesBranch = !branch || item.branches.includes(branch);
                 return matchesCategory && matchesQuick && matchesQuery && matchesBranch;
             });
@@ -168,7 +168,7 @@
                             ${cardBadge(item)}
                         </div>
                     </div>
-                    <p class="service-category">${item.category}</p>
+                    <p class="service-category">${item.category}${item.key && !item.key.includes('+') ? ` <span class="service-code">${item.key}</span>` : ''}</p>
                     <h2 class="brand-type service-title">${item.name}</h2>
                     <p class="service-prep"><span class="service-prep-label">Preparación</span>${item.prep}</p>
                     <details class="service-detail">
@@ -210,6 +210,7 @@
             services = (window.BIOS_ESTUDIOS || []).map(item => ({
                 key: item.c,
                 name: item.n,
+                syn: item.syn,
                 category: item.catLabel,
                 categoryRaw: item.cat,
                 icon: item.icon,

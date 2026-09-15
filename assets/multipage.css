@@ -1581,6 +1581,21 @@ body.footer-in-view .bios-women-ribbon {
     text-transform: uppercase;
 }
 
+.service-code {
+    display: inline-block;
+    margin-left: 0.3rem;
+    padding: 0.1rem 0.45rem;
+    border-radius: 6px;
+    background: #f1f5f9;
+    color: #64748b;
+    font-family: 'DM Mono', ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+    font-size: 0.64rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-transform: none;
+    vertical-align: middle;
+}
+
 .service-title {
     color: #0a1c2e;
     font-size: clamp(1.3rem, 1.35vw, 1.75rem);
