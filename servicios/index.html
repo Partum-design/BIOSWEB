@@ -136,6 +136,7 @@
             else if (sort === 'time') list = [...list].sort((a, b) => a.days - b.days);
             else if (sort === 'az') list = [...list].sort((a, b) => a.name.localeCompare(b.name, 'es'));
             else list = [...list].sort((a, b) => (b.top - a.top) || (b.alta - a.alta) || a.name.localeCompare(b.name, 'es'));
+            list = [...list].sort((a, b) => (b.isPackage - a.isPackage));
             return list;
         }
 
@@ -181,7 +182,7 @@
                             <p class="service-price-label">Desde</p>
                             <strong class="brand-type service-price">${priceDisplay(item)}</strong>
                         </div>
-                        <a class="primary-button quote-button !bg-[#25D366]" target="_blank" aria-label="Cotizar ${item.name} por WhatsApp" href="https://wa.me/5211234567890?text=Hola%20Laboratorios%20BIOS,%20quiero%20cotizar%20${encodeURIComponent(item.name)}"><i class="fa-brands fa-whatsapp text-lg"></i></a>
+                        <a class="primary-button quote-button !bg-[#25D366]" target="_blank" aria-label="Cotizar ${item.name} por WhatsApp" href="https://wa.me/525537285981?text=Hola%20Laboratorios%20BIOS,%20quiero%20cotizar%20${encodeURIComponent(item.name)}"><i class="fa-brands fa-whatsapp text-lg"></i></a>
                     </div>
                 </article>
             `;
@@ -221,7 +222,8 @@
                 branches: item.branches,
                 top: item.top,
                 alta: item.alta,
-                campaign: item.campaign
+                campaign: item.campaign,
+                isPackage: item.isPackage
             }));
             categories = ['Todos', ...CATEGORY_ORDER.filter(cat => services.some(s => s.category === cat))];
 

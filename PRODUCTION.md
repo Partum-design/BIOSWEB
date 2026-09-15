@@ -40,12 +40,12 @@ resultados** del sitio.
 | Dato | Estado | Dónde cambiarlo |
 |------|--------|-----------------|
 | Facebook | ✅ Puesto (perfil real) | `assets/site.js` |
-| WhatsApp / teléfono | ⚠️ Placeholder `5211234567890` | Buscar y reemplazar `5211234567890` en todo el repo cuando tengas el número real |
+| WhatsApp / teléfono | ✅ Puesto: `55 3728 5981` (`525537285981`) | Usado en todos los botones de WhatsApp del sitio, incluyendo estudios |
 | Instagram / X | ➖ Removidos (no hay) | Agregar en `assets/site.js` (footer) cuando existan |
 | Aviso de privacidad / Términos de uso | ✅ Publicados en `/aviso-privacidad/` y `/terminos-uso/`, enlazados en el footer | Confirmar razón social/RFC exactos y activar el correo `privacidad@bioslaboratorios.com` |
 
 > Para cambiar el WhatsApp en todo el sitio de una vez:
-> reemplaza la cadena `5211234567890` por tu número (formato internacional,
+> reemplaza la cadena `525537285981` por tu número (formato internacional,
 > sin signos: `52` + 10 dígitos) en todos los archivos `.html` y `.js`.
 
 ## 4) Supabase — configuración de Auth (tras desplegar el portal)

@@ -183,7 +183,7 @@ export default async function DashboardPage() {
           <p className="text-xs text-gray-500 mt-0.5">Contáctanos por WhatsApp para cualquier duda sobre tus resultados.</p>
         </div>
         <a
-          href="https://wa.me/5211234567890?text=Hola%20Laboratorios%20BIOS,%20tengo%20una%20pregunta%20sobre%20mis%20resultados"
+          href="https://wa.me/525537285981?text=Hola%20Laboratorios%20BIOS,%20tengo%20una%20pregunta%20sobre%20mis%20resultados"
           target="_blank"
           rel="noopener noreferrer"
           className="flex-shrink-0 bios-btn-primary text-sm"
