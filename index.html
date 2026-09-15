@@ -497,17 +497,17 @@
 
         /* Promo modal — compacto en móvil (antes ocupaba casi toda la pantalla) */
         @media (max-width: 640px) {
-            #promo-modal { padding: 0.85rem; }
-            #promo-modal .modal-content { border-radius: 1.25rem; max-height: 88vh; overflow-y: auto; }
-            #promo-modal .grid > div:first-child { min-height: 128px !important; }
-            #promo-modal .grid > div:last-child { padding: 1.15rem !important; }
-            #promo-modal h3 { font-size: 1.45rem !important; line-height: 1.12 !important; margin-bottom: 0.55rem !important; }
-            #promo-modal .grid > div:last-child > p:first-child { margin-bottom: 0.55rem !important; }
-            #promo-modal p.text-base { font-size: 0.88rem !important; line-height: 1.5 !important; margin-bottom: 0.85rem !important; }
-            #promo-modal .grid.gap-2 { gap: 0.5rem !important; margin-bottom: 1rem !important; }
-            #promo-modal .grid.gap-2 .px-4 { padding: 0.55rem 0.8rem !important; }
-            #promo-modal .grid.gap-2 span { font-size: 0.82rem !important; }
-            #promo-modal a[class*="py-3"] { padding-top: 0.7rem !important; padding-bottom: 0.7rem !important; }
+            #promo-modal, #holiday-modal { padding: 0.85rem; }
+            #promo-modal .modal-content, #holiday-modal .modal-content { border-radius: 1.25rem; max-height: 88vh; overflow-y: auto; }
+            #promo-modal .grid > div:first-child, #holiday-modal .grid > div:first-child { min-height: 128px !important; }
+            #promo-modal .grid > div:last-child, #holiday-modal .grid > div:last-child { padding: 1.15rem !important; }
+            #promo-modal h3, #holiday-modal h3 { font-size: 1.45rem !important; line-height: 1.12 !important; margin-bottom: 0.55rem !important; }
+            #promo-modal .grid > div:last-child > p:first-child, #holiday-modal .grid > div:last-child > p:first-child { margin-bottom: 0.55rem !important; }
+            #promo-modal p.text-base, #holiday-modal p.text-base { font-size: 0.88rem !important; line-height: 1.5 !important; margin-bottom: 0.85rem !important; }
+            #promo-modal .grid.gap-2, #holiday-modal .grid.gap-2 { gap: 0.5rem !important; margin-bottom: 1rem !important; }
+            #promo-modal .grid.gap-2 .px-4, #holiday-modal .grid.gap-2 .px-4 { padding: 0.55rem 0.8rem !important; }
+            #promo-modal .grid.gap-2 span, #holiday-modal .grid.gap-2 span { font-size: 0.82rem !important; }
+            #promo-modal a[class*="py-3"], #holiday-modal a[class*="py-3"] { padding-top: 0.7rem !important; padding-bottom: 0.7rem !important; }
         }
 
         /* Mobile Off Canvas */
@@ -1398,6 +1398,48 @@
         </div>
     </div>
 
+    <div id="holiday-modal" class="modal-overlay fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-[#06111d]/68 backdrop-blur-md">
+        <div class="modal-content bg-white rounded-[1.75rem] shadow-[0_28px_70px_-28px_rgba(0,0,0,0.62)] max-w-2xl w-full relative overflow-hidden border border-blue-100">
+            <button onclick="closeHolidayModal()" class="absolute top-4 right-4 w-10 h-10 bg-white text-slate-700 rounded-full flex items-center justify-center hover:bg-slate-50 transition z-20 shadow-sm border border-slate-200" aria-label="Cerrar">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+
+            <div class="grid md:grid-cols-[0.82fr_1.18fr]">
+                <div class="relative min-h-[220px] bg-[#0A1C2E] overflow-hidden">
+                    <img src="assets/img/lab-operations.webp" class="absolute inset-0 w-full h-full object-cover opacity-90" alt="Sucursales Laboratorios BIOS">
+                    <div class="absolute inset-0 bg-gradient-to-br from-[#0A1C2E]/82 via-blue-950/58 to-cyan-950/34"></div>
+                    <div class="absolute left-5 top-5 inline-flex items-center gap-2 px-3 py-2 rounded-full bg-white/92 text-blue-700 font-black text-[11px] uppercase tracking-[0.16em]">
+                        <i data-lucide="calendar-clock" class="w-4 h-4"></i> Aviso
+                    </div>
+                </div>
+
+                <div class="p-6 md:p-7">
+                    <p class="text-[11px] uppercase tracking-[0.24em] text-blue-600 font-black mb-3">Horario especial</p>
+                    <h3 class="font-outfit text-3xl md:text-4xl font-black text-[#0A1C2E] leading-none mb-4">15 y 16 de septiembre</h3>
+                    <p class="text-slate-600 text-base leading-relaxed mb-5">Así vamos a laborar en nuestras sucursales durante esas fechas.</p>
+                    <div class="grid gap-2 mb-6">
+                        <div class="flex items-center gap-3 rounded-xl bg-blue-50 border border-blue-100 px-4 py-3">
+                            <i data-lucide="check-circle-2" class="w-5 h-5 text-blue-600"></i>
+                            <span class="font-black text-slate-700">15 de septiembre: horario normal en todas las sucursales</span>
+                        </div>
+                        <div class="flex items-center gap-3 rounded-xl bg-cyan-50 border border-cyan-100 px-4 py-3">
+                            <i data-lucide="map-pin" class="w-5 h-5 text-cyan-700"></i>
+                            <span class="font-black text-slate-700">16 de septiembre: solo Plaza Cantú y Plaza La Joya, de 8:00 a 16:00 hrs</span>
+                        </div>
+                    </div>
+                    <div class="flex flex-col sm:flex-row gap-3">
+                        <a href="#sucursales" onclick="closeHolidayModal()" class="flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-[#0A1C2E] text-white font-black hover:-translate-y-0.5 transition">
+                            <i data-lucide="arrow-right" class="w-4 h-4"></i> Ver sucursales
+                        </a>
+                        <a href="https://wa.me/5211234567890?text=Hola%20Laboratorios%20BIOS,%20tengo%20una%20duda%20sobre%20el%20horario%20del%2015%20y%2016%20de%20septiembre" target="_blank" class="flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-[#25D366] text-white font-black hover:-translate-y-0.5 transition">
+                            <i class="fa-brands fa-whatsapp"></i> WhatsApp
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Scripts Data & Logic -->
     <script>
         lucide.createIcons();
@@ -2224,9 +2266,32 @@
            4. PROMO MODAL LOGIC
            ================================================================= */
         const modal = document.getElementById('promo-modal');
+        const holidayModal = document.getElementById('holiday-modal');
+
+        // Segundo pop-up: aviso de horario 15-16 de septiembre. Solo se
+        // muestra dentro de esas fechas y una vez por sesión; después del
+        // 16 de septiembre deja de aparecer solo, sin requerir otro cambio.
+        function showHolidayModalIfDue() {
+            if (!holidayModal || sessionStorage.getItem('bios_holiday_modal_viewed')) return;
+            const today = new Date();
+            const start = new Date(2026, 8, 15);
+            const end = new Date(2026, 8, 16, 23, 59, 59);
+            if (today < start || today > end) return;
+            sessionStorage.setItem('bios_holiday_modal_viewed', 'true');
+            requestAnimationFrame(() => holidayModal.classList.add('active'));
+        }
+
+        window.closeHolidayModal = () => {
+            holidayModal.classList.remove('active');
+            sessionStorage.setItem('bios_holiday_modal_viewed', 'true');
+        };
+
         window.closePromoModal = () => {
             modal.classList.remove('active');
             sessionStorage.setItem('bios_promo_viewed', 'true');
+            // Deja que la transición de cierre termine antes de abrir el
+            // segundo pop-up, para que no se sientan encimados.
+            setTimeout(showHolidayModalIfDue, 420);
         };
 
         if(modal && !sessionStorage.getItem('bios_promo_viewed')) {
@@ -2235,6 +2300,10 @@
             sessionStorage.setItem('bios_promo_viewed', 'true');
             requestAnimationFrame(() => document.body.classList.add('promo-ready'));
             requestAnimationFrame(() => modal.classList.add('active'));
+        } else {
+            // El pop-up de la mujer ya se vio en esta sesión: muestra
+            // directamente el segundo, si aplica.
+            showHolidayModalIfDue();
         }
 
         document.addEventListener('DOMContentLoaded', () => {
