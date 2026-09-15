@@ -122,13 +122,14 @@
         });
     }
 
-    // Favicon de marca (usa el logo BIOS) — aplica a todas las páginas.
+    // Favicon de marca (usa el ícono BIOS) — aplica a todas las páginas que no
+    // traigan ya el <link rel="icon"> explícito en el <head>.
     function applyFavicon() {
-        if (document.querySelector('link[rel="icon"]:not([data-default])')) return;
+        if (document.querySelector('link[rel="icon"]')) return;
         const link = document.createElement('link');
         link.rel = 'icon';
         link.type = 'image/png';
-        link.href = logoSrc();
+        link.href = `${basePath()}assets/img/favicon/favicon-32x32.png?v=1789486345`;
         document.head.appendChild(link);
     }
 
