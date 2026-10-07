@@ -2343,3 +2343,72 @@ footer a:hover,
 .bios-mobile-link:hover {
     text-shadow: 0 0 0.45px currentColor;
 }
+
+/* Buscador difuso: sugerencias y resaltado */
+.search-hint {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: -0.5rem 0 1.25rem;
+    padding: 0.7rem 0.95rem;
+    border-radius: 12px;
+    background: #eff6ff;
+    border: 1px solid #dbeafe;
+    color: #1e3a5f;
+    font-size: 0.9rem;
+}
+
+.search-hint.hidden {
+    display: none;
+}
+
+.search-hint svg {
+    flex-shrink: 0;
+    color: #2563eb;
+}
+
+.search-hint-link {
+    color: #1d4ed8;
+    font-weight: 900;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.search-result mark {
+    background: #fef08a;
+    color: inherit;
+    border-radius: 3px;
+    padding: 0 1px;
+}
+
+.search-result.is-active {
+    background: #eff6ff;
+}
+
+.search-suggest {
+    display: block;
+    padding: 0 1rem 0.6rem;
+    color: #475569;
+    font-size: 0.82rem;
+}
+
+.search-suggest button {
+    color: #1d4ed8;
+    font-weight: 900;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+/* Contacto en el footer */
+.footer-contact-main {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    margin-top: 1.1rem;
+    color: rgba(255,255,255,0.85);
+    font-weight: 800;
+}
+
+.footer-contact-main i {
+    color: #7dd3fc;
+}

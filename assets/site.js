@@ -27,7 +27,7 @@
         { name: 'Electrocardiograma', category: 'Gabinete', price: '$320', time: 'Entrega programada', icon: 'fa-wave-square', includes: ['ECG', 'ritmo cardiaco', 'gabinete'] },
         { name: 'Ultrasonido General', category: 'Imagen', price: '$520', time: 'Entrega programada', icon: 'fa-display', includes: ['ultrasonido', 'abdomen', 'pélvico', 'imagen'] },
         { name: 'Química Sanguínea', category: 'Laboratorio', price: '$280', time: 'Un día hábil', icon: 'fa-vial', includes: ['glucosa', 'urea', 'creatinina', 'ácido úrico', 'colesterol', 'triglicéridos'] },
-        { name: 'Tomografía programada', category: 'Servicios especiales', price: 'Con cita', time: 'Requiere agenda', icon: 'fa-notes-medical', includes: ['tomografía', 'pago en línea', 'cita'] },
+        { name: 'Tomografía programada', category: 'Servicios especiales', price: 'Con cita', time: 'Requiere agenda', icon: 'fa-notes-medical', includes: ['tomografía', 'tac', 'cita'] },
     ];
 
     const branches = [
@@ -80,7 +80,7 @@
     function basePath() {
         const cleanPath = window.location.pathname.replace(/\/+$/, '');
         const current = cleanPath.split('/').pop();
-        return ['servicios', 'seguimiento', 'sucursales', 'unete', 'conocenos', 'portal', 'empresas', 'medicos', 'mujer', 'facturacion', 'aviso-privacidad', 'terminos-uso'].includes(current) ? '../' : './';
+        return ['servicios', 'seguimiento', 'sucursales', 'unete', 'conocenos', 'portal', 'empresas', 'medicos', 'mujer', 'facturacion', 'aviso-privacidad', 'terminos-uso', 'agenda'].includes(current) ? '../' : './';
     }
 
     function href(path) {
@@ -232,35 +232,104 @@
         `;
     }
 
+    function escapeHtml(text) {
+        return String(text).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    }
+
+    // Carga bajo demanda el catálogo y el buscador difuso si la página no los trae.
+    let searchDepsPromise = null;
+    function ensureSearchDeps() {
+        if (window.BIOS_ESTUDIOS && window.BiosSearch) return Promise.resolve();
+        if (searchDepsPromise) return searchDepsPromise;
+        const load = src => new Promise(resolve => {
+            const script = document.createElement('script');
+            script.src = src;
+            script.onload = resolve;
+            script.onerror = resolve;
+            document.head.appendChild(script);
+        });
+        searchDepsPromise = Promise.all([
+            window.BIOS_ESTUDIOS ? null : load(href('assets/estudios-data.js')),
+            window.BiosSearch ? null : load(href('assets/bios-search.js?v=2')),
+        ]);
+        return searchDepsPromise;
+    }
+
+    function catalogHref(query) {
+        return query ? `${href('servicios/')}?q=${encodeURIComponent(query)}` : href('servicios/');
+    }
+
+    function highlight(name, query) {
+        const normalize = window.BiosSearch?.normalize;
+        if (!normalize || !query) return escapeHtml(name);
+        const terms = normalize(query).split(' ').filter(t => t.length >= 2);
+        return name.split(/(\s+)/).map(word => {
+            const plain = normalize(word);
+            const hit = plain && terms.some(t => plain.startsWith(t.slice(0, Math.max(3, Math.min(t.length, 4)))));
+            return hit ? `<mark>${escapeHtml(word)}</mark>` : escapeHtml(word);
+        }).join('');
+    }
+
+    function catalogResults(query) {
+        const data = window.BIOS_ESTUDIOS;
+        if (!data || !window.BiosSearch) return null;
+        const toView = item => ({
+            name: item.n,
+            category: item.catLabel,
+            time: item.days === 0 ? 'Mismo día' : item.days === 1 ? '1 día hábil' : `${item.days} días hábiles`,
+            price: item.price != null ? `$${item.price.toLocaleString('es-MX')}` : (item.priceLabel || 'Consultar'),
+            icon: item.icon,
+            lucide: true,
+        });
+        if (!query) return { list: data.filter(item => item.top).slice(0, 6).map(toView), fuzzy: false, suggestion: '' };
+        const results = window.BiosSearch.searchCatalog(query);
+        return {
+            list: results.slice(0, 7).map(r => toView(r.item)),
+            total: results.length,
+            fuzzy: results.length > 0 && results.every(r => !r.exact),
+            suggestion: window.BiosSearch.suggestCatalog(query),
+        };
+    }
+
     function renderSearchResults(query = '') {
         const panel = document.getElementById('global-service-results');
         if (!panel) return;
 
-        const normalized = query.trim().toLowerCase();
-        const list = services.filter(service => {
-            const haystack = `${service.name} ${service.category} ${service.price} ${service.time} ${(service.includes || []).join(' ')}`.toLowerCase();
-            return !normalized || haystack.includes(normalized);
-        }).slice(0, 6);
+        const trimmed = query.trim();
+        let view = catalogResults(trimmed);
+        if (!view) {
+            const normalized = trimmed.toLowerCase();
+            const list = services.filter(service => {
+                const haystack = `${service.name} ${service.category} ${service.price} ${service.time} ${(service.includes || []).join(' ')}`.toLowerCase();
+                return !normalized || haystack.includes(normalized);
+            }).slice(0, 6);
+            view = { list, total: list.length, fuzzy: false, suggestion: '' };
+        }
+        const { list, fuzzy, suggestion } = view;
+        const title = !trimmed ? 'Estudios más pedidos' : fuzzy ? `${view.total} resultados parecidos` : `${view.total} coincidencias`;
+        const whatsappText = encodeURIComponent(`Hola Laboratorios BIOS, no encuentro el estudio: ${trimmed}`);
 
         panel.innerHTML = `
-            <div class="bios-panel-title">${normalized ? `${list.length} coincidencias` : 'Servicios populares'}</div>
+            <div class="bios-panel-title">${title}</div>
+            ${suggestion && trimmed ? `<span class="search-suggest">¿Quisiste decir <button type="button" data-suggest="${escapeHtml(suggestion)}">${escapeHtml(suggestion)}</button>?</span>` : ''}
             ${list.length ? list.map(service => `
-                <a class="search-result" href="${href('servicios/')}">
-                    <span class="search-result-icon"><i class="fa-solid ${service.icon}"></i></span>
+                <a class="search-result" href="${catalogHref(trimmed ? service.name : '')}">
+                    <span class="search-result-icon">${service.lucide ? `<i data-lucide="${service.icon}" class="w-5 h-5"></i>` : `<i class="fa-solid ${service.icon}"></i>`}</span>
                     <span>
-                        <strong>${service.name}</strong>
-                        <small>${service.category} · ${service.time}${normalized && (service.includes || []).some(item => item.toLowerCase().includes(normalized)) ? ' · incluye coincidencia' : ''}</small>
+                        <strong>${highlight(service.name, trimmed)}</strong>
+                        <small>${service.category} · ${service.time}</small>
                     </span>
                     <b>${service.price}</b>
                 </a>
             `).join('') : `
-                <a class="search-result empty" href="https://wa.me/5211234567890?text=Hola%20Laboratorios%20BIOS,%20no%20encuentro%20un%20estudio" target="_blank">
+                <a class="search-result empty" href="https://wa.me/5211234567890?text=${whatsappText}" target="_blank" rel="noopener">
                     <span class="search-result-icon"><i class="fa-brands fa-whatsapp"></i></span>
                     <span><strong>No encontramos ese estudio</strong><small>Escríbenos y lo ubicamos contigo</small></span>
                 </a>
             `}
-            <a class="bios-panel-link" href="${href('servicios/')}"><i class="fa-solid fa-microscope"></i> Abrir catálogo completo</a>
+            <a class="bios-panel-link" href="${catalogHref(trimmed)}"><i class="fa-solid fa-microscope"></i> ${trimmed && list.length ? 'Ver todos los resultados' : 'Abrir catálogo completo'}</a>
         `;
+        if (window.lucide) window.lucide.createIcons({ root: panel });
     }
 
     function bindHeaderInteractions(drawer) {
@@ -293,21 +362,47 @@
             clinicDropdown.classList.remove('open');
         });
 
-        search?.addEventListener('focus', () => {
+        let activeResult = -1;
+        const resultLinks = () => [...searchPanel.querySelectorAll('.search-result')];
+        const refreshSearch = () => {
+            activeResult = -1;
             renderSearchResults(search.value);
+        };
+
+        search?.addEventListener('focus', () => {
+            ensureSearchDeps().then(refreshSearch);
+            refreshSearch();
             searchPanel.classList.add('open');
             clinicDropdown?.classList.remove('open');
         });
 
         search?.addEventListener('input', () => {
-            renderSearchResults(search.value);
+            refreshSearch();
             searchPanel.classList.add('open');
         });
 
+        searchPanel?.addEventListener('click', (event) => {
+            const suggestion = event.target.closest('[data-suggest]');
+            if (!suggestion) return;
+            event.preventDefault();
+            search.value = suggestion.dataset.suggest;
+            refreshSearch();
+            search.focus();
+        });
+
         search?.addEventListener('keydown', (event) => {
-            if (event.key === 'Enter') {
+            const links = resultLinks();
+            if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+                if (!links.length) return;
                 event.preventDefault();
-                window.location.href = href('servicios/');
+                activeResult = (activeResult + (event.key === 'ArrowDown' ? 1 : -1) + links.length) % links.length;
+                links.forEach((link, i) => link.classList.toggle('is-active', i === activeResult));
+                links[activeResult].scrollIntoView({ block: 'nearest' });
+            } else if (event.key === 'Escape') {
+                searchPanel.classList.remove('open');
+            } else if (event.key === 'Enter') {
+                event.preventDefault();
+                window.location.href = links[activeResult]?.href || catalogHref(search.value.trim());
             }
         });
 
@@ -338,7 +433,9 @@
                     <div class="footer-socials-main">
                         <a href="https://www.facebook.com/profile.php?id=100083030297472" target="_blank" rel="noopener" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
                         <a href="https://wa.me/5211234567890" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+                        <a href="mailto:bios@bioslaboratorios.com" aria-label="Correo electrónico"><i class="fa-solid fa-envelope"></i></a>
                     </div>
+                    <a class="footer-contact-main" href="mailto:bios@bioslaboratorios.com"><i class="fa-solid fa-envelope"></i> bios@bioslaboratorios.com</a>
                 </div>
                 <div>
                     <h4>Pacientes</h4>
@@ -518,7 +615,7 @@
             const fill    = document.getElementById('bios-p-fill');
             const countEl = document.getElementById('bios-p-count');
             const statusEl = document.getElementById('bios-p-status');
-            const stages = ['Iniciando...', 'Módulos clínicos', 'Catálogo de estudios', 'Sucursales en línea', 'Listo'];
+            const stages = ['Iniciando...', 'Módulos clínicos', 'Catálogo de estudios', 'Sucursales', 'Listo'];
             const DURATION = 1900;
             const t0 = performance.now();
 

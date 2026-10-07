@@ -15,7 +15,7 @@
     
     <!-- AOS Animation Library -->
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
-    <link rel="stylesheet" href="assets/multipage.css?v=1788545205" />
+    <link rel="stylesheet" href="assets/multipage.css?v=1791400000" />
     <link rel="stylesheet" href="assets/compact.css?v=1783625058" />
 
     <!-- Tailwind CSS -->
@@ -574,7 +574,9 @@
             }
         }
     </style>
-    <script src="assets/site.js?v=1788545205" defer></script>
+    <script src="assets/estudios-data.js" defer></script>
+    <script src="assets/bios-search.js?v=2" defer></script>
+    <script src="assets/site.js?v=1791400000" defer></script>
 </head>
 <body class="font-inter text-gray-800 compact-site">
 
@@ -833,9 +835,10 @@
                             <span class="sr-only">Buscar tu servicio</span>
                             <div class="relative">
                                 <i data-lucide="search" class="w-5 h-5 text-gray-400 absolute left-4 top-1/2 -translate-y-1/2"></i>
-                                <input id="service-search" type="search" placeholder="Busca tu propio servicio..." class="w-full pl-12 pr-4 py-4 rounded-2xl border border-gray-200 bg-white/90 text-[#0A1C2E] font-medium outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition">
+                                <input id="service-search" type="search" autocomplete="off" placeholder="Busca tu estudio: orina, azúcar, ultrasonido..." class="w-full pl-12 pr-4 py-4 rounded-2xl border border-gray-200 bg-white/90 text-[#0A1C2E] font-medium outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition">
                             </div>
                         </label>
+                        <div id="home-search-results" class="hidden mb-5 rounded-2xl border border-blue-100 bg-blue-50/60 p-3"></div>
                         <div class="flex flex-wrap items-center gap-3 mb-5">
                             <a href="https://wa.me/5211234567890?text=Hola%20Laboratorios%20BIOS,%20quiero%20informes%20sobre%20un%20servicio" target="_blank" class="magnetic-action inline-flex items-center gap-2 px-4 py-3 rounded-2xl bg-[#25D366] text-white font-black text-sm shadow-lg shadow-green-500/20 hover:-translate-y-0.5 transition">
                                 <i data-lucide="message-circle" class="w-4 h-4"></i> WhatsApp informes
@@ -1988,16 +1991,64 @@
         let currentServiceFilter = 'Todos';
         let currentServiceSearch = '';
 
+        // Búsqueda difusa (assets/bios-search.js): tolera errores de escritura y sinónimos.
+        let featuredIndex = null;
+        function featuredSearch(query) {
+            if (!window.BiosSearch) return null;
+            featuredIndex = featuredIndex || window.BiosSearch.createIndex(servicesData, s => [
+                { text: s.name, weight: 1 },
+                { text: s.category, weight: 0.9 },
+                { text: s.desc, weight: 0.8 },
+                { text: s.tag, weight: 0.6 },
+            ]);
+            return new Set(window.BiosSearch.search(featuredIndex, query).map(r => r.item));
+        }
+
+        function escapeHtml(text) {
+            return String(text).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+        }
+
+        // Resultados del catálogo completo (103 estudios) debajo del buscador.
+        function renderHomeCatalogResults(query) {
+            const box = document.getElementById('home-search-results');
+            if (!box) return;
+            const trimmed = query.trim();
+            if (!trimmed || !window.BiosSearch || !window.BIOS_ESTUDIOS) {
+                box.classList.add('hidden');
+                box.innerHTML = '';
+                return;
+            }
+            const results = window.BiosSearch.searchCatalog(trimmed);
+            const suggestion = window.BiosSearch.suggestCatalog(trimmed);
+            const link = q => `servicios/?q=${encodeURIComponent(q)}`;
+            box.innerHTML = results.length ? `
+                <p class="text-[11px] uppercase tracking-[0.22em] font-black text-blue-700 mb-2 px-1">${results.length} en el catálogo${results.every(r => !r.exact) ? ' · parecidos' : ''}</p>
+                <div class="flex flex-col gap-1">
+                    ${results.slice(0, 4).map(r => `
+                        <a href="${link(r.item.n)}" class="flex items-center justify-between gap-3 rounded-xl bg-white px-3 py-2.5 border border-white hover:border-blue-200 transition">
+                            <span class="min-w-0"><strong class="block text-sm text-[#0A1C2E] truncate">${escapeHtml(r.item.n)}</strong><small class="text-xs text-gray-500">${escapeHtml(r.item.catLabel)}</small></span>
+                            <span class="text-sm font-black text-blue-600 shrink-0">${r.item.price != null ? '$' + r.item.price.toLocaleString('es-MX') : 'Consultar'}</span>
+                        </a>`).join('')}
+                </div>
+                <a href="${link(trimmed)}" class="mt-2 inline-flex items-center gap-1 px-1 text-sm font-black text-blue-700 hover:underline">Ver los ${results.length} resultados →</a>
+            ` : `
+                <p class="text-sm text-[#0A1C2E] px-1">No encontramos “${escapeHtml(trimmed)}”.${suggestion ? ` ¿Quisiste decir <a class="font-black text-blue-700 underline" href="${link(suggestion)}">${escapeHtml(suggestion)}</a>?` : ''}</p>
+            `;
+            box.classList.remove('hidden');
+        }
+
         function renderServices(filter = currentServiceFilter, search = currentServiceSearch) {
             currentServiceFilter = filter;
             currentServiceSearch = search;
             const normalizedSearch = search.trim().toLowerCase();
+            const fuzzyHits = normalizedSearch ? featuredSearch(search) : null;
             const visibleServices = servicesData.filter(s => {
                 const matchesFilter = filter === 'Todos' || s.category === filter;
                 const haystack = `${s.name} ${s.desc} ${s.category} ${s.tag}`.toLowerCase();
-                const matchesSearch = !normalizedSearch || haystack.includes(normalizedSearch);
+                const matchesSearch = !normalizedSearch || (fuzzyHits ? fuzzyHits.has(s) : haystack.includes(normalizedSearch));
                 return matchesFilter && matchesSearch;
             });
+            renderHomeCatalogResults(search);
 
             if (serviceEmpty) {
                 serviceEmpty.classList.toggle('hidden', visibleServices.length !== 0);
