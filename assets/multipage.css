@@ -962,7 +962,6 @@
 
 .bios-main-footer a:hover {
     color: #60a5fa;
-    transform: translateX(2px);
 }
 
 .bios-main-footer .footer-socials-main a:hover {
@@ -1189,13 +1188,13 @@ body.footer-in-view .bios-women-ribbon {
 
 .bios-reveal {
     opacity: 0;
-    transform: translateY(22px);
+    transform: translateY(16px);
 }
 
 .bios-reveal.is-visible {
     opacity: 1;
-    transform: translateY(0);
-    transition: opacity 540ms cubic-bezier(0.22, 1, 0.36, 1), transform 540ms cubic-bezier(0.22, 1, 0.36, 1);
+    transform: none;
+    transition: opacity 480ms cubic-bezier(0.22, 1, 0.36, 1), transform 480ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .bios-reveal-delay-1 { transition-delay: 80ms !important; }
@@ -2041,18 +2040,12 @@ body.bios-scroll-lock {
 }
 
 .page-enter {
-    animation: pageEnter 520ms ease both;
+    animation: pageEnter 360ms ease both;
 }
 
 @keyframes pageEnter {
-    from {
-        opacity: 0;
-        transform: translateY(12px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
 .drawer {
@@ -2078,7 +2071,6 @@ body.bios-scroll-lock {
 @media (max-width: 767px) {
     .bios-topbar,
     .bios-secondary-nav,
-    .bios-clinic-select,
     .bios-global-search,
     .bios-appointment-button,
     .bios-icon-button {
@@ -2088,13 +2080,78 @@ body.bios-scroll-lock {
     .bios-header-body {
         min-height: 64px;
         display: flex;
+        flex-wrap: wrap;
+        align-items: center;
         justify-content: space-between;
-        gap: 1rem;
+        gap: 0.6rem;
+    }
+
+    .bios-brand-group {
+        gap: 0.6rem;
+        flex: 1 1 auto;
+        min-width: 0;
     }
 
     .bios-brand img {
-        height: 42px;
-        max-width: min(58vw, 220px);
+        height: 38px;
+        max-width: 120px;
+    }
+
+    .bios-clinic-select {
+        position: static;
+        min-width: 0;
+    }
+
+    .bios-clinic-button {
+        min-height: 40px;
+        max-width: 100%;
+        padding: 0 0.75rem;
+        font-size: 0.8rem;
+        gap: 0.45rem;
+    }
+
+    #clinic-button-label {
+        max-width: 26vw;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .bios-clinic-caret {
+        display: none;
+    }
+
+    .bios-floating-panel.clinic-panel {
+        position: fixed;
+        top: 70px;
+        left: 0.75rem;
+        right: 0.75rem;
+        width: auto;
+        max-height: calc(100dvh - 90px);
+    }
+
+    .bios-search-toggle {
+        display: inline-flex;
+    }
+
+    .bios-main-header.search-open .bios-global-search {
+        display: block;
+        order: 10;
+        flex: 1 0 100%;
+        max-width: none;
+        padding-bottom: 0.6rem;
+    }
+
+    .bios-main-header.search-open .search-panel {
+        position: fixed;
+        top: 124px;
+        left: 0.75rem;
+        right: 0.75rem;
+        width: auto;
+        max-height: calc(100dvh - 140px);
+    }
+
+    .bios-main-header.search-open .bios-search-toggle {
+        background: rgba(255,255,255,0.18);
     }
 
     .bios-menu-button {
@@ -2127,10 +2184,28 @@ body.bios-scroll-lock {
         gap: 1rem;
     }
 
-    .bios-clinic-select,
     .bios-appointment-button span,
     .bios-secondary-link i {
         display: none;
+    }
+
+    .bios-brand-group {
+        gap: 0.75rem;
+    }
+
+    .bios-clinic-button {
+        padding: 0 0.8rem;
+    }
+
+    #clinic-button-label {
+        max-width: 120px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .bios-appointment-button {
+        width: 44px;
+        padding: 0;
     }
 
     .bios-secondary-inner {
@@ -2411,4 +2486,548 @@ footer a:hover,
 
 .footer-contact-main i {
     color: #7dd3fc;
+}
+
+/* ════════════════════════════════════════════════════════════
+   AJUSTES DE INTERFAZ — espaciados, header, sucursal y avisos
+   ════════════════════════════════════════════════════════════ */
+
+/* Header: la búsqueda queda centrada entre marca y acciones */
+.bios-global-search {
+    justify-self: center;
+}
+
+.bios-clinic-button.has-branch {
+    border-color: rgba(125,211,252,0.45);
+    background: rgba(56,189,248,0.14);
+}
+
+.bios-clinic-button .fa-location-dot {
+    color: #7dd3fc;
+}
+
+.bios-clinic-caret {
+    font-size: 0.7rem;
+    opacity: 0.7;
+    transition: transform 0.2s ease;
+}
+
+.bios-clinic-button[aria-expanded="true"] .bios-clinic-caret {
+    transform: rotate(180deg);
+}
+
+.bios-search-toggle {
+    display: none;
+    width: 40px;
+    height: 40px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.12);
+    background: rgba(255,255,255,0.08);
+    color: white;
+    cursor: pointer;
+    transition: background 0.15s ease;
+}
+
+.bios-menu-button {
+    width: 40px;
+    min-height: 40px;
+    box-shadow: none;
+}
+
+@media (max-width: 767px) {
+    .bios-search-toggle { display: inline-flex; }
+    .bios-header-actions { gap: 0.5rem; }
+}
+
+/* Paneles flotantes: barra de scroll fina sin pegarse al contenido */
+.bios-floating-panel {
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e1 transparent;
+    overscroll-behavior: contain;
+}
+
+.bios-floating-panel::-webkit-scrollbar { width: 8px; }
+.bios-floating-panel::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 8px; border: 2px solid white; }
+
+/* Panel de sucursales */
+.clinic-panel {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    width: min(92vw, 460px);
+}
+
+.clinic-panel-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.85rem 1rem 0.35rem;
+}
+
+.clinic-panel-head .bios-panel-title {
+    padding: 0;
+}
+
+.clinic-locate {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    min-height: 34px;
+    padding: 0 0.8rem;
+    border-radius: 999px;
+    border: 1px solid #bfdbfe;
+    background: #eff6ff;
+    color: #1d4ed8;
+    font-size: 0.76rem;
+    font-weight: 900;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.clinic-locate:hover {
+    background: #dbeafe;
+    border-color: #93c5fd;
+}
+
+.clinic-panel-note {
+    margin: 0;
+    padding: 0 1rem 0.7rem;
+    color: #64748b;
+    font-size: 0.76rem;
+    line-height: 1.4;
+}
+
+.clinic-options {
+    overflow-y: auto;
+    flex: 1 1 auto;
+    min-height: 0;
+    padding: 0 0.5rem;
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e1 transparent;
+}
+
+.clinic-options .clinic-option {
+    border-top: 0;
+    border-radius: 12px;
+    margin-bottom: 0.25rem;
+    padding: 0.75rem;
+    gap: 0.8rem;
+}
+
+.clinic-option-text {
+    min-width: 0;
+}
+
+.clinic-option.is-selected {
+    background: #eff6ff;
+    box-shadow: inset 0 0 0 1.5px #93c5fd;
+}
+
+.clinic-option.is-selected .clinic-option-icon {
+    background: #2563eb;
+    color: white;
+}
+
+.clinic-option b {
+    white-space: nowrap;
+    align-self: start;
+    margin-top: 0.15rem;
+}
+
+.clinic-option b.near {
+    color: #047857;
+    background: #d1fae5;
+}
+
+.clinic-km {
+    color: #2563eb;
+    font-weight: 900;
+}
+
+.clinic-panel-foot {
+    display: flex;
+    gap: 0.5rem;
+    padding: 0.6rem 0.75rem 0.75rem;
+    border-top: 1px solid #f1f5f9;
+}
+
+.clinic-panel-foot .bios-panel-link {
+    flex: 1 1 0;
+    margin: 0;
+    min-height: 42px;
+    font-size: 0.84rem;
+}
+
+.clinic-clear {
+    flex: 1 1 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    min-height: 42px;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    background: white;
+    color: #0a1c2e;
+    font-size: 0.84rem;
+    font-weight: 900;
+    cursor: pointer;
+    transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.clinic-clear:hover {
+    border-color: #93c5fd;
+    background: #f8fbff;
+}
+
+/* Resultados del buscador fuera de la sucursal elegida */
+.search-elsewhere {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: calc(100% - 1.5rem);
+    margin: 0.5rem 0.75rem 0;
+    padding: 0.6rem 0.75rem;
+    border-radius: 10px;
+    background: #f8fafc;
+    border: 1px dashed #cbd5e1;
+    color: #475569;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-align: left;
+    cursor: pointer;
+}
+
+.search-elsewhere u {
+    color: #1d4ed8;
+    text-decoration: none;
+    font-weight: 900;
+}
+
+/* Aviso flotante (ubicación, sucursal) */
+.bios-toast {
+    position: fixed;
+    top: 150px;
+    right: clamp(1rem, 3vw, 2rem);
+    z-index: 9500;
+    width: min(380px, calc(100vw - 2rem));
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 0.8rem;
+    align-items: start;
+    padding: 1rem;
+    border-radius: 16px;
+    background: white;
+    color: #0a1c2e;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 24px 60px -24px rgba(10,28,46,0.45);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-8px);
+    transition: opacity 0.22s ease, transform 0.22s ease, visibility 0.22s ease;
+}
+
+.bios-toast.is-open {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+}
+
+.bios-toast-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #eff6ff;
+    color: #2563eb;
+}
+
+.bios-toast-icon.is-loading i {
+    animation: bios-locate-pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes bios-locate-pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(0.82); opacity: 0.55; }
+}
+
+.bios-toast-body {
+    min-width: 0;
+}
+
+.bios-toast-body strong {
+    display: block;
+    font-size: 0.92rem;
+    font-weight: 900;
+    line-height: 1.25;
+}
+
+.bios-toast-body p {
+    margin: 0.25rem 0 0;
+    color: #64748b;
+    font-size: 0.8rem !important;
+    line-height: 1.45 !important;
+}
+
+.bios-toast-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.7rem;
+}
+
+.bios-toast-actions button {
+    min-height: 34px;
+    padding: 0 0.85rem;
+    border-radius: 10px;
+    background: #0a1c2e;
+    color: white;
+    font-size: 0.78rem;
+    font-weight: 900;
+    cursor: pointer;
+}
+
+.bios-toast-close {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    color: #94a3b8;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+.bios-toast-close:hover {
+    background: #f1f5f9;
+    color: #0a1c2e;
+}
+
+@media (max-width: 767px) {
+    .bios-toast {
+        top: auto;
+        bottom: 5.5rem;
+        left: 0.75rem;
+        right: 0.75rem;
+        width: auto;
+        transform: translateY(8px);
+    }
+}
+
+/* Aviso de campaña: se compacta al bajar para no tapar contenido */
+.bios-women-ribbon strong,
+.bios-women-ribbon em {
+    transition: opacity 0.18s ease;
+}
+
+body.bios-scrolled .bios-women-ribbon {
+    grid-template-columns: auto;
+    column-gap: 0;
+    padding: 0.45rem;
+    min-height: 0;
+}
+
+body.bios-scrolled .bios-women-ribbon strong,
+body.bios-scrolled .bios-women-ribbon em {
+    display: none;
+}
+
+body.bios-scrolled .bios-women-ribbon span {
+    grid-row: auto;
+}
+
+@media (max-width: 640px) {
+    body.bios-scrolled .bios-women-ribbon {
+        right: auto;
+    }
+}
+
+/* Métricas de los encabezados: siempre en 3 columnas compactas */
+.dark-panel .grid:has(> .metric) {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 0.6rem !important;
+}
+
+.metric {
+    min-width: 0;
+    padding: 0.75rem 0.85rem !important;
+}
+
+.metric p:last-child {
+    margin-top: 0.15rem;
+    font-size: 0.6rem !important;
+    letter-spacing: 0;
+    line-height: 1.25 !important;
+    hyphens: none;
+    word-break: normal;
+}
+
+.services-summary-card .metric {
+    padding: 0.7rem 0.6rem !important;
+}
+
+/* Catálogo: tarjetas de igual altura con el precio siempre abajo */
+.service-grid {
+    align-items: stretch;
+}
+
+.service-card-footer {
+    margin-top: auto;
+}
+
+.service-detail {
+    margin-bottom: 1.1rem;
+}
+
+.service-tag,
+.service-chip-mini {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    white-space: nowrap;
+}
+
+.service-badges {
+    max-width: none;
+    flex: 1 1 auto;
+}
+
+#category-tabs {
+    row-gap: 0.55rem;
+}
+
+.services-list-panel .field {
+    text-overflow: ellipsis;
+}
+
+.branch-hint {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem 0.75rem;
+    margin: -0.25rem 0 1.1rem;
+    padding: 0.7rem 0.95rem;
+    border-radius: 12px;
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    color: #14532d;
+    font-size: 0.86rem;
+}
+
+.branch-hint.hidden {
+    display: none;
+}
+
+.branch-hint svg {
+    flex-shrink: 0;
+    color: #16a34a;
+}
+
+.branch-hint span {
+    flex: 1 1 14rem;
+}
+
+.branch-hint button {
+    min-height: 32px;
+    padding: 0 0.8rem;
+    border-radius: 999px;
+    border: 1px solid #86efac;
+    background: white;
+    color: #166534;
+    font-size: 0.78rem;
+    font-weight: 900;
+    cursor: pointer;
+}
+
+/* Campaña de la mujer */
+.campaign-status-banner span {
+    min-width: 0;
+}
+
+.women-package {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.9rem;
+    padding: 0.9rem 1rem;
+    border-radius: 10px;
+    border: 1px solid #fce7f3;
+    background: #fdf2f8;
+}
+
+.women-branch-note {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    margin: 0 0 0.25rem;
+    color: #9d174d;
+    font-size: 0.84rem;
+}
+
+.campaign-date-month {
+    margin: 0;
+}
+
+.campaign-date-state {
+    letter-spacing: 0.02em;
+    font-size: 0.56rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Footer: correo como enlace en línea con su ícono */
+.bios-main-footer .footer-contact-main {
+    display: inline-flex;
+    margin: 1.25rem 0 0;
+}
+
+/* Botones de página: el contenido nunca toca el borde */
+.primary-button,
+.secondary-button {
+    white-space: nowrap;
+}
+
+@media (max-width: 767px) {
+    .page-shell main.page-enter {
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+    }
+
+    .services-list-panel .grid.md\:grid-cols-\[1fr_auto_auto\] {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .services-list-panel .grid.md\:grid-cols-\[1fr_auto_auto\] > .relative {
+        grid-column: 1 / -1;
+    }
+
+    .primary-button,
+    .secondary-button {
+        white-space: normal;
+        text-align: center;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .bios-reveal { opacity: 1 !important; transform: none !important; }
+    .page-enter { animation: none !important; }
+}
+
+/* Con un panel del header abierto, los flotantes no estorban */
+body:has(.bios-floating-panel.open) .bios-whatsapp-float,
+body:has(.bios-floating-panel.open) .bios-women-ribbon,
+body:has(.bios-floating-panel.open) .bios-toast {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+/* Formularios en panel: los campos no se estiran si la columna vecina es más alta */
+form.panel.grid {
+    align-content: start;
 }

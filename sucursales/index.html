@@ -11,9 +11,9 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="stylesheet" href="../assets/compact.css?v=1783625058">
-    <link rel="stylesheet" href="../assets/multipage.css?v=1791500000">
+    <link rel="stylesheet" href="../assets/multipage.css?v=1791600000">
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="../assets/site.js?v=1791500000" defer></script>
+    <script src="../assets/site.js?v=1791600000" defer></script>
     <style>
         :root {
             --branch-ink: #071a2c;
@@ -310,6 +310,15 @@
         .branch-focus { border: 0; padding: 0; background: none; color: var(--branch-blue); font-size: .72rem; font-weight: 800; cursor: pointer; }
         .branch-focus i { margin-right: .3rem; }
         .branch-route-button { display: inline-flex; align-items: center; gap: .4rem; min-height: 31px; padding: 0 .7rem; font-size: .69rem; text-decoration: none; }
+
+        .geo-button { width: 100%; min-height: 42px; margin-top: .55rem; display: inline-flex; align-items: center; justify-content: center; gap: .5rem; border: 1px solid rgba(97,225,239,.35); border-radius: 9px; background: rgba(97,225,239,.1); color: white; font-weight: 800; font-size: .8rem; cursor: pointer; transition: background .2s ease, border-color .2s ease; }
+        .geo-button:hover { background: rgba(97,225,239,.18); border-color: var(--branch-cyan); }
+        .geo-button i { color: var(--branch-cyan); }
+        .branch-km { display: inline-flex; align-items: center; gap: .3rem; margin-left: .5rem; padding: .2rem .45rem; border-radius: 999px; background: var(--branch-sky); color: #11679a; font: 600 .62rem Inter, sans-serif; vertical-align: middle; }
+        .branch-pick { margin-left: auto; border: 1px solid var(--branch-line); border-radius: 9px; background: white; color: var(--branch-ink); min-height: 31px; padding: 0 .7rem; font-size: .69rem; font-weight: 800; cursor: pointer; transition: border-color .2s ease, background .2s ease; }
+        .branch-pick:hover { border-color: var(--branch-blue); }
+        .branch-pick.is-picked { background: var(--branch-ink); border-color: var(--branch-ink); color: white; cursor: default; }
+        .branch-card-actions { flex-wrap: wrap; }
 
         .branch-empty { padding: 2rem 0; color: var(--branch-muted); font-size: .85rem; }
 
@@ -618,6 +627,7 @@
                                 <input id="zip-input" type="text" inputmode="numeric" maxlength="5" placeholder="Código postal" aria-describedby="zip-result">
                                 <button id="zip-button" type="button">Buscar <i class="fa-solid fa-arrow-right"></i></button>
                             </div>
+                            <button id="geo-button" type="button" class="geo-button"><i class="fa-solid fa-location-crosshairs"></i> Usar mi ubicación</button>
                             <div id="zip-result" class="zip-result" hidden></div>
                         </div>
                         <div class="console-list-head">
@@ -657,7 +667,8 @@
         ];
 
         const map = L.map('branches-map', { scrollWheelZoom: false, zoomControl: true }).setView([19.66, -99.20], 12);
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', { attribution: '&copy; CARTO' }).addTo(map);
+        L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', { attribution: 'Tiles &copy; Esri', maxZoom: 16 }).addTo(map);
+        L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Reference/MapServer/tile/{z}/{y}/{x}', { maxZoom: 16 }).addTo(map);
         const markers = [];
 
         function popupMarkup(branch) {
@@ -683,21 +694,38 @@
             document.querySelectorAll('.branch-card').forEach(card => card.classList.toggle('is-active', Number(card.dataset.index) === index));
         }
 
-        function renderBranches(query = '') {
+        // Distancia desde la ubicación del usuario (si la compartió) y sucursal elegida.
+        const shared = () => window.BIOS_BRANCHES;
+        function kmTo(branch) {
+            const match = shared() && shared().list.find(item => item.name === branch.name);
+            return match ? shared().distance(match) : null;
+        }
+        function isPicked(branch) {
+            const current = shared() && shared().selected();
+            return !!current && current.name === branch.name;
+        }
+
+        function renderBranches(query = document.getElementById('branch-search').value) {
             const normalized = query.trim().toLowerCase();
-            const visible = branches.map((branch, index) => ({ branch, index })).filter(({ branch }) => `${branch.name} ${branch.badge} ${branch.address}`.toLowerCase().includes(normalized));
+            let visible = branches.map((branch, index) => ({ branch, index, km: kmTo(branch) })).filter(({ branch }) => `${branch.name} ${branch.badge} ${branch.address}`.toLowerCase().includes(normalized));
+            if (visible.some(item => item.km != null)) visible = visible.sort((a, b) => a.km - b.km);
             document.getElementById('branch-list-count').textContent = normalized ? `${visible.length} resultado${visible.length === 1 ? '' : 's'}` : 'Todas las unidades';
-            document.getElementById('branch-list').innerHTML = visible.length ? visible.map(({ branch, index }) => `
+            document.getElementById('branch-list').innerHTML = visible.length ? visible.map(({ branch, index, km }) => `
                 <article class="branch-card" data-index="${index}">
                     <div class="branch-card-top">
                         <div><span class="branch-index">0${index + 1} / 06</span><h3>Unidad ${branch.name}</h3></div>
                         <span class="branch-status ${branch.isNew ? 'is-new' : ''}">${branch.badge}</span>
                     </div>
                     <p class="branch-address">${branch.address}</p>
-                    <span class="branch-phone"><i class="fa-solid fa-phone"></i> ${branch.phones.join(' · ')}</span>
-                    <div class="branch-card-actions"><button type="button" class="branch-focus" data-focus="${index}"><i class="fa-solid fa-location-dot"></i> Ver en mapa</button><a class="branch-route-button" href="${branch.mapsUrl}" target="_blank" rel="noopener">Ruta <i class="fa-solid fa-arrow-up-right-from-square"></i></a></div>
+                    <span class="branch-phone"><i class="fa-solid fa-phone"></i> ${branch.phones.join(' · ')}${km != null ? `<span class="branch-km"><i class="fa-solid fa-person-walking"></i> ${shared().formatKm(km)}</span>` : ''}</span>
+                    <div class="branch-card-actions"><button type="button" class="branch-focus" data-focus="${index}"><i class="fa-solid fa-location-dot"></i> Ver en mapa</button><a class="branch-route-button" href="${branch.mapsUrl}" target="_blank" rel="noopener">Ruta <i class="fa-solid fa-arrow-up-right-from-square"></i></a>${shared() ? `<button type="button" class="branch-pick ${isPicked(branch) ? 'is-picked' : ''}" data-pick="${index}">${isPicked(branch) ? '<i class="fa-solid fa-check"></i> Mi sucursal' : 'Elegir'}</button>` : ''}</div>
                 </article>`).join('') : '<p class="branch-empty">No encontramos una unidad con ese filtro.</p>';
             document.querySelectorAll('[data-focus]').forEach(button => button.addEventListener('click', () => focusBranch(Number(button.dataset.focus))));
+            document.querySelectorAll('[data-pick]').forEach(button => button.addEventListener('click', () => {
+                const branch = branches[Number(button.dataset.pick)];
+                shared().set(branch.name);
+                focusBranch(Number(button.dataset.pick));
+            }));
         }
 
         function nearestByZip(zip) {
@@ -731,6 +759,17 @@
         document.getElementById('branch-search').addEventListener('input', event => renderBranches(event.target.value));
         document.getElementById('zip-button').addEventListener('click', detectByZip);
         document.getElementById('zip-input').addEventListener('keydown', event => { if (event.key === 'Enter') detectByZip(); });
+        document.getElementById('geo-button').addEventListener('click', () => shared() && shared().locate());
+        document.addEventListener('bios:branchchange', () => renderBranches());
+        // site.js se carga con defer: al estar listo, se repinta con distancias y sucursal elegida.
+        document.addEventListener('DOMContentLoaded', () => renderBranches());
+        document.addEventListener('bios:location', event => {
+            renderBranches();
+            const nearest = branches.findIndex(branch => branch.name === event.detail.nearest.name);
+            if (nearest >= 0) focusBranch(nearest);
+            const location = event.detail.location;
+            L.circleMarker([location.lat, location.lng], { radius: 8, color: '#ffffff', weight: 3, fillColor: '#1769e0', fillOpacity: 1 }).addTo(map).bindTooltip('Tú estás aquí');
+        });
         map.whenReady(() => setTimeout(() => map.invalidateSize(), 200));
     </script>
 </body>

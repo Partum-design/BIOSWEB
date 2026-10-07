@@ -29,13 +29,193 @@
     ];
 
     const branches = [
-        { name: 'Plaza Cantú', label: 'Principal', address: 'Av. Dr. Jiménez Cantú S/N, Centro Urbano, C.P. 54700', phone: '55-1113-2754' },
-        { name: 'Plaza La Joya', label: 'Alta afluencia', address: 'Melchor Ocampo 31, Villas de Cuautitlán, C.P. 54857', phone: '55-5872-9277' },
-        { name: 'Las Haciendas', label: 'Cerca de ti', address: 'Av. Huehuetoca S/N, Ex Hacienda de San Miguel, C.P. 54715', phone: '55-5817-3401' },
-        { name: 'Tepalcapa', label: 'Express', address: 'Av. Morelos 9, Luis Echeverría, C.P. 54753', phone: '55-2602-0764' },
-        { name: 'Tepojaco', label: 'Especialidad', address: 'Av. San Sebastián 56, Ejido de San Francisco Tepojaco, C.P. 54745', phone: '55-5391-8066' },
-        { name: 'Tultepec', label: 'Nueva', address: 'Plaza Tauro, Av. Joaquín Montenegro 95, C.P. 54960', phone: '55-9413-2041', isNew: true },
+        { key: 'Cantú', name: 'Plaza Cantú', label: 'Principal', address: 'Av. Dr. Jiménez Cantú S/N, Centro Urbano, C.P. 54700', phone: '55-1113-2754', lat: 19.6695138, lng: -99.2095527 },
+        { key: 'Joya', name: 'Plaza La Joya', label: 'Alta afluencia', address: 'Melchor Ocampo 31, Villas de Cuautitlán, C.P. 54857', phone: '55-5872-9277', lat: 19.6722043, lng: -99.1661641 },
+        { key: 'Haciendas', name: 'Las Haciendas', label: 'Cerca de ti', address: 'Av. Huehuetoca S/N, Ex Hacienda de San Miguel, C.P. 54715', phone: '55-5817-3401', lat: 19.6866634, lng: -99.2099739 },
+        { key: 'Tepalcapa', name: 'Tepalcapa', label: 'Express', address: 'Av. Morelos 9, Luis Echeverría, C.P. 54753', phone: '55-2602-0764', lat: 19.6205274, lng: -99.2067493 },
+        { key: 'Tepojaco', name: 'Tepojaco', label: 'Especialidad', address: 'Av. San Sebastián 56, Ejido de San Francisco Tepojaco, C.P. 54745', phone: '55-5391-8066', lat: 19.6481325, lng: -99.2585366 },
+        { key: 'Tultepec', name: 'Tultepec', label: 'Nueva', address: 'Plaza Tauro, Av. Joaquín Montenegro 95, C.P. 54960', phone: '55-9413-2041', lat: 19.6736413, lng: -99.1283153, isNew: true },
     ];
+
+    // ── Sucursal elegida y ubicación del usuario ────────────────────────
+    // La sucursal elegida filtra los estudios que se muestran en todo el sitio
+    // (cada estudio trae en BIOS_ESTUDIOS las sucursales donde se realiza).
+    const STORE = { branch: 'bios_selected_clinic', location: 'bios_user_location', asked: 'bios_geo_asked' };
+
+    function storeGet(key) {
+        try { return localStorage.getItem(key); } catch (e) { return null; }
+    }
+
+    function storeSet(key, value) {
+        try {
+            if (value == null) localStorage.removeItem(key);
+            else localStorage.setItem(key, value);
+        } catch (e) { /* almacenamiento bloqueado: la selección dura solo esta visita */ }
+    }
+
+    let memoryBranch = storeGet(STORE.branch);
+
+    function selectedBranch() {
+        return branches.find(branch => branch.name === memoryBranch) || null;
+    }
+
+    function userLocation() {
+        try {
+            const data = JSON.parse(storeGet(STORE.location) || 'null');
+            return data && Number.isFinite(data.lat) && Number.isFinite(data.lng) ? data : null;
+        } catch (e) { return null; }
+    }
+
+    function distanceKm(from, to) {
+        const rad = deg => deg * Math.PI / 180;
+        const dLat = rad(to.lat - from.lat);
+        const dLng = rad(to.lng - from.lng);
+        const h = Math.sin(dLat / 2) ** 2 + Math.cos(rad(from.lat)) * Math.cos(rad(to.lat)) * Math.sin(dLng / 2) ** 2;
+        return 6371 * 2 * Math.asin(Math.sqrt(h));
+    }
+
+    function branchDistance(branch) {
+        const location = userLocation();
+        return location ? distanceKm(location, branch) : null;
+    }
+
+    function formatKm(km) {
+        if (km == null) return '';
+        return km < 1 ? `${Math.round(km * 1000)} m` : `${km.toFixed(km < 10 ? 1 : 0)} km`;
+    }
+
+    function branchesByDistance() {
+        const location = userLocation();
+        if (!location) return [...branches];
+        return [...branches].sort((a, b) => distanceKm(location, a) - distanceKm(location, b));
+    }
+
+    function setBranch(name) {
+        const branch = branches.find(item => item.name === name) || null;
+        memoryBranch = branch ? branch.name : null;
+        storeSet(STORE.branch, memoryBranch);
+        updateClinicLabel();
+        renderClinicDropdown();
+        const search = document.getElementById('global-service-search');
+        if (search) renderSearchResults(search.value);
+        document.dispatchEvent(new CustomEvent('bios:branchchange', { detail: { branch } }));
+        return branch;
+    }
+
+    // Pide la ubicación al navegador y elige la sucursal más cercana.
+    function locateUser({ auto = false } = {}) {
+        storeSet(STORE.asked, '1');
+        if (!('geolocation' in navigator)) {
+            if (!auto) showToast({ icon: 'fa-location-crosshairs', title: 'Tu navegador no comparte ubicación', text: 'Elige tu sucursal manualmente.', actions: [{ label: 'Elegir sucursal', run: openClinicDropdown }] });
+            return Promise.resolve(null);
+        }
+        showToast({ icon: 'fa-location-crosshairs', title: 'Buscando tu sucursal más cercana…', text: 'Permite el acceso a tu ubicación para mostrarte los estudios disponibles cerca de ti.', loading: true, persist: true });
+        return new Promise(resolve => {
+            navigator.geolocation.getCurrentPosition(position => {
+                const location = { lat: position.coords.latitude, lng: position.coords.longitude, t: Date.now() };
+                storeSet(STORE.location, JSON.stringify(location));
+                const nearest = branchesByDistance()[0];
+                const current = selectedBranch();
+                document.dispatchEvent(new CustomEvent('bios:location', { detail: { location, nearest } }));
+                if (auto && current && current.name !== nearest.name) {
+                    // Ya había elegido una sucursal: se respeta, solo sugerimos la más cercana.
+                    renderClinicDropdown();
+                    showToast({ icon: 'fa-location-dot', title: `Tu sucursal más cercana es ${nearest.name}`, text: `A ${formatKm(branchDistance(nearest))} de ti. Sigues viendo ${current.name}.`, actions: [{ label: `Cambiar a ${nearest.name}`, run: () => setBranch(nearest.name) }] });
+                } else {
+                    setBranch(nearest.name);
+                    showToast({ icon: 'fa-location-dot', title: `Sucursal más cercana: ${nearest.name}`, text: `A ${formatKm(branchDistance(nearest))} de ti. Te mostramos los estudios disponibles ahí.`, actions: [{ label: 'Cambiar', run: openClinicDropdown }] });
+                }
+                resolve(nearest);
+            }, () => {
+                showToast({ icon: 'fa-location-dot', title: 'No pudimos obtener tu ubicación', text: 'Elige tu sucursal para ver los estudios disponibles en ella.', actions: [{ label: 'Elegir sucursal', run: openClinicDropdown }] });
+                resolve(null);
+            }, { enableHighAccuracy: false, timeout: 12000, maximumAge: 10 * 60 * 1000 });
+        });
+    }
+
+    // Al entrar: pide la ubicación una sola vez por navegador. Si ya la
+    // concedió antes, la actualiza en silencio.
+    function scheduleAutoLocate() {
+        if (!('geolocation' in navigator) || !window.isSecureContext) return;
+        const run = () => {
+            if (!storeGet(STORE.asked)) {
+                locateUser({ auto: true });
+                return;
+            }
+            if (navigator.permissions && navigator.permissions.query) {
+                navigator.permissions.query({ name: 'geolocation' }).then(status => {
+                    if (status.state !== 'granted') return;
+                    navigator.geolocation.getCurrentPosition(position => {
+                        storeSet(STORE.location, JSON.stringify({ lat: position.coords.latitude, lng: position.coords.longitude, t: Date.now() }));
+                        if (!selectedBranch()) setBranch(branchesByDistance()[0].name);
+                        else renderClinicDropdown();
+                    }, () => {}, { timeout: 12000, maximumAge: 30 * 60 * 1000 });
+                }).catch(() => {});
+            }
+        };
+        // Espera a que termine la intro del logo para no encimar el aviso.
+        const intro = document.querySelector('.bios-preloader');
+        if (!intro) { setTimeout(run, 500); return; }
+        const observer = new MutationObserver(() => {
+            if (!document.body.contains(intro)) {
+                observer.disconnect();
+                setTimeout(run, 300);
+            }
+        });
+        observer.observe(document.body, { childList: true });
+    }
+
+    // ── Aviso flotante (toast) ──────────────────────────────────────────
+    let toastTimer = null;
+    function showToast({ icon, title, text, actions = [], loading = false, persist = false }) {
+        let toast = document.getElementById('bios-toast');
+        if (!toast) {
+            toast = document.createElement('div');
+            toast.id = 'bios-toast';
+            toast.className = 'bios-toast';
+            toast.setAttribute('role', 'status');
+            toast.setAttribute('aria-live', 'polite');
+            document.body.appendChild(toast);
+        }
+        toast.innerHTML = `
+            <span class="bios-toast-icon ${loading ? 'is-loading' : ''}"><i class="fa-solid ${icon}"></i></span>
+            <div class="bios-toast-body">
+                <strong>${escapeHtml(title)}</strong>
+                ${text ? `<p>${escapeHtml(text)}</p>` : ''}
+                ${actions.length ? `<div class="bios-toast-actions">${actions.map((action, i) => `<button type="button" data-toast-action="${i}">${escapeHtml(action.label)}</button>`).join('')}</div>` : ''}
+            </div>
+            <button type="button" class="bios-toast-close" aria-label="Cerrar aviso"><i class="fa-solid fa-xmark"></i></button>
+        `;
+        toast.querySelector('.bios-toast-close').addEventListener('click', hideToast);
+        toast.querySelectorAll('[data-toast-action]').forEach(button => button.addEventListener('click', event => {
+            event.stopPropagation();
+            hideToast();
+            actions[Number(button.dataset.toastAction)].run();
+        }));
+        requestAnimationFrame(() => toast.classList.add('is-open'));
+        clearTimeout(toastTimer);
+        if (!persist) toastTimer = setTimeout(hideToast, 9000);
+    }
+
+    function hideToast() {
+        clearTimeout(toastTimer);
+        document.getElementById('bios-toast')?.classList.remove('is-open');
+    }
+
+    window.BIOS_BRANCHES = {
+        list: branches,
+        selected: selectedBranch,
+        set: setBranch,
+        locate: () => locateUser(),
+        distance: branchDistance,
+        formatKm,
+        byDistance: branchesByDistance,
+        // ¿El estudio se realiza en la sucursal elegida? (sin sucursal elegida, todos aplican)
+        offers: item => {
+            const branch = selectedBranch();
+            return !branch || !item || !item.branches || item.branches.includes(branch.key);
+        },
+    };
 
     // Calendario campañas de colposcopías SEPTIEMBRE-DICIEMBRE 2026 (2° periodo), por unidad.
     const WOMEN_CAMPAIGN = [
@@ -150,10 +330,10 @@
                         <img id="global-logo" data-bios-logo src="${logoSrc()}" alt="Laboratorios BIOS" onerror="this.src='https://placehold.co/260x78/0A1C2E/FFF?text=Laboratorios%20BIOS'">
                     </a>
                     <div class="bios-clinic-select">
-                        <button type="button" id="clinic-button" class="bios-clinic-button">
+                        <button type="button" id="clinic-button" class="bios-clinic-button" aria-haspopup="true" aria-expanded="false" aria-controls="clinic-dropdown">
                             <i class="fa-solid fa-location-dot"></i>
-                            <span id="clinic-button-label">Seleccionar Sucursal</span>
-                            <i class="fa-solid fa-chevron-down"></i>
+                            <span id="clinic-button-label">Elige tu sucursal</span>
+                            <i class="fa-solid fa-chevron-down bios-clinic-caret"></i>
                         </button>
                         <div id="clinic-dropdown" class="bios-floating-panel clinic-panel"></div>
                     </div>
@@ -167,8 +347,9 @@
                 </div>
 
                 <div class="bios-header-actions">
+                    <button type="button" id="bios-search-toggle" class="bios-search-toggle" aria-label="Buscar estudios" aria-expanded="false"><i class="fa-solid fa-magnifying-glass"></i></button>
                     <a href="https://wa.me/5211234567890?text=Hola%20Laboratorios%20BIOS,%20quiero%20agendar%20una%20cita" target="_blank" class="bios-appointment-button">
-                        <i class="fa-brands fa-whatsapp"></i> Agendar Cita
+                        <i class="fa-brands fa-whatsapp"></i> <span>Agendar cita</span>
                     </a>
                     <button type="button" id="bios-menu-button" class="bios-menu-button" aria-label="Abrir menú">
                         <i class="fa-solid fa-bars"></i>
@@ -208,24 +389,58 @@
         applyLogo();
     }
 
+    function updateClinicLabel() {
+        const label = document.getElementById('clinic-button-label');
+        if (!label) return;
+        const branch = selectedBranch();
+        label.textContent = branch ? branch.name : 'Elige tu sucursal';
+        document.getElementById('clinic-button')?.classList.toggle('has-branch', !!branch);
+    }
+
+    function openClinicDropdown() {
+        const panel = document.getElementById('clinic-dropdown');
+        if (!panel) return;
+        renderClinicDropdown();
+        document.getElementById('global-service-results')?.classList.remove('open');
+        panel.classList.add('open');
+        document.getElementById('clinic-button')?.setAttribute('aria-expanded', 'true');
+    }
+
     function renderClinicDropdown() {
         const panel = document.getElementById('clinic-dropdown');
         if (!panel) return;
+        const current = selectedBranch();
+        const location = userLocation();
+        const list = branchesByDistance();
 
         panel.innerHTML = `
-            <div class="bios-panel-title">Sucursales disponibles</div>
-            ${branches.map(branch => `
-                <button type="button" class="clinic-option" data-clinic="${branch.name}">
-                    <span class="clinic-option-icon"><i class="fa-solid fa-location-dot"></i></span>
-                    <span>
-                        <strong>${branch.name}</strong>
-                        <small>${branch.address}</small>
-                        <em>${branch.phone}</em>
-                    </span>
-                    <b class="${branch.isNew ? 'new' : ''}">${branch.label}</b>
+            <div class="clinic-panel-head">
+                <div class="bios-panel-title">${location ? 'Cerca de ti' : 'Elige tu sucursal'}</div>
+                <button type="button" class="clinic-locate" data-locate>
+                    <i class="fa-solid fa-location-crosshairs"></i> ${location ? 'Actualizar ubicación' : 'Usar mi ubicación'}
                 </button>
-            `).join('')}
-            <a class="bios-panel-link" href="${href('sucursales/')}"><i class="fa-solid fa-map-location-dot"></i> Ver mapa completo</a>
+            </div>
+            <p class="clinic-panel-note">Te mostramos solo los estudios disponibles en la sucursal que elijas.</p>
+            <div class="clinic-options">
+                ${list.map((branch, i) => {
+                    const km = location ? formatKm(distanceKm(location, branch)) : '';
+                    const active = current && current.name === branch.name;
+                    return `
+                    <button type="button" class="clinic-option ${active ? 'is-selected' : ''}" data-clinic="${branch.name}" aria-pressed="${active}">
+                        <span class="clinic-option-icon"><i class="fa-solid ${active ? 'fa-check' : 'fa-location-dot'}"></i></span>
+                        <span class="clinic-option-text">
+                            <strong>${branch.name}</strong>
+                            <small>${branch.address}</small>
+                            <em>${branch.phone}${km ? ` · <span class="clinic-km">${km}</span>` : ''}</em>
+                        </span>
+                        <b class="${location && i === 0 ? 'near' : branch.isNew ? 'new' : ''}">${location && i === 0 ? 'Más cercana' : branch.label}</b>
+                    </button>`;
+                }).join('')}
+            </div>
+            <div class="clinic-panel-foot">
+                ${current ? '<button type="button" class="clinic-clear" data-clinic-clear><i class="fa-solid fa-layer-group"></i> Ver estudios de todas</button>' : ''}
+                <a class="bios-panel-link" href="${href('sucursales/')}"><i class="fa-solid fa-map-location-dot"></i> Ver mapa</a>
+            </div>
         `;
     }
 
@@ -247,7 +462,7 @@
         });
         searchDepsPromise = Promise.all([
             window.BIOS_ESTUDIOS ? null : load(href('assets/estudios-data.js')),
-            window.BiosSearch ? null : load(href('assets/bios-search.js?v=2')),
+            window.BiosSearch ? null : load(href('assets/bios-search.js?v=3')),
         ]);
         return searchDepsPromise;
     }
@@ -278,11 +493,14 @@
             icon: item.icon,
             lucide: true,
         });
-        if (!query) return { list: data.filter(item => item.top).slice(0, 6).map(toView), fuzzy: false, suggestion: '' };
-        const results = window.BiosSearch.searchCatalog(query);
+        const offers = window.BIOS_BRANCHES.offers;
+        if (!query) return { list: data.filter(item => item.top && offers(item)).slice(0, 6).map(toView), fuzzy: false, suggestion: '' };
+        const all = window.BiosSearch.searchCatalog(query);
+        const results = all.filter(r => offers(r.item));
         return {
             list: results.slice(0, 7).map(r => toView(r.item)),
             total: results.length,
+            elsewhere: all.length - results.length,
             fuzzy: results.length > 0 && results.every(r => !r.exact),
             suggestion: window.BiosSearch.suggestCatalog(query),
         };
@@ -303,7 +521,10 @@
             view = { list, total: list.length, fuzzy: false, suggestion: '' };
         }
         const { list, fuzzy, suggestion } = view;
-        const title = !trimmed ? 'Estudios más pedidos' : fuzzy ? `${view.total} resultados parecidos` : `${view.total} coincidencias`;
+        const branch = selectedBranch();
+        const where = branch ? ` en ${branch.name}` : '';
+        const title = !trimmed ? `Más pedidos${where}` : fuzzy ? `${view.total} parecidos${where}` : `${view.total} ${view.total === 1 ? 'coincidencia' : 'coincidencias'}${where}`;
+        const elsewhere = view.elsewhere ? `<button type="button" class="search-elsewhere" data-clinic-clear-search><i class="fa-solid fa-circle-info"></i> ${view.elsewhere} ${view.elsewhere === 1 ? 'estudio más disponible' : 'estudios más disponibles'} en otras sucursales · <u>ver todas</u></button>` : '';
         const whatsappText = encodeURIComponent(`Hola Laboratorios BIOS, no encuentro el estudio: ${trimmed}`);
 
         panel.innerHTML = `
@@ -321,9 +542,10 @@
             `).join('') : `
                 <a class="search-result empty" href="https://wa.me/5211234567890?text=${whatsappText}" target="_blank" rel="noopener">
                     <span class="search-result-icon"><i class="fa-brands fa-whatsapp"></i></span>
-                    <span><strong>No encontramos ese estudio</strong><small>Escríbenos y lo ubicamos contigo</small></span>
+                    <span><strong>${view.elsewhere ? `No está disponible${where}` : 'No encontramos ese estudio'}</strong><small>Escríbenos y lo ubicamos contigo</small></span>
                 </a>
             `}
+            ${elsewhere}
             <a class="bios-panel-link" href="${catalogHref(trimmed)}"><i class="fa-solid fa-microscope"></i> ${trimmed && list.length ? 'Ver todos los resultados' : 'Abrir catálogo completo'}</a>
         `;
         if (window.lucide) window.lucide.createIcons({ root: panel });
@@ -336,27 +558,51 @@
         const searchPanel = document.getElementById('global-service-results');
         const menuButton = document.getElementById('bios-menu-button');
         const closeButtons = drawer.querySelectorAll('.bios-mobile-backdrop, .bios-mobile-close');
-        const savedClinic = localStorage.getItem('bios_selected_clinic');
+        const header = document.querySelector('.bios-main-header');
+        const searchToggle = document.getElementById('bios-search-toggle');
 
         renderClinicDropdown();
         renderSearchResults();
-        if (savedClinic) {
-            document.getElementById('clinic-button-label').textContent = savedClinic;
-        }
+        updateClinicLabel();
+
+        const closeClinic = () => {
+            clinicDropdown?.classList.remove('open');
+            clinicButton?.setAttribute('aria-expanded', 'false');
+        };
 
         clinicButton?.addEventListener('click', (event) => {
             event.stopPropagation();
-            clinicDropdown.classList.toggle('open');
-            searchPanel?.classList.remove('open');
+            if (clinicDropdown.classList.contains('open')) closeClinic();
+            else openClinicDropdown();
         });
 
         clinicDropdown?.addEventListener('click', (event) => {
+            event.stopPropagation();
+            if (event.target.closest('[data-locate]')) {
+                closeClinic();
+                locateUser();
+                return;
+            }
+            if (event.target.closest('[data-clinic-clear]')) {
+                setBranch(null);
+                closeClinic();
+                showToast({ icon: 'fa-layer-group', title: 'Mostrando estudios de todas las sucursales', text: 'Elige una sucursal cuando quieras ver solo lo disponible ahí.' });
+                return;
+            }
             const option = event.target.closest('.clinic-option');
             if (!option) return;
-            const clinic = option.dataset.clinic;
-            localStorage.setItem('bios_selected_clinic', clinic);
-            document.getElementById('clinic-button-label').textContent = clinic;
-            clinicDropdown.classList.remove('open');
+            const branch = setBranch(option.dataset.clinic);
+            closeClinic();
+            if (branch) showToast({ icon: 'fa-location-dot', title: `Sucursal: ${branch.name}`, text: 'Te mostramos los estudios disponibles en esta sucursal.' });
+        });
+
+        searchToggle?.addEventListener('click', (event) => {
+            event.stopPropagation();
+            const open = header.classList.toggle('search-open');
+            searchToggle.setAttribute('aria-expanded', String(open));
+            closeClinic();
+            if (open) search?.focus();
+            else searchPanel?.classList.remove('open');
         });
 
         let activeResult = -1;
@@ -370,7 +616,7 @@
             ensureSearchDeps().then(refreshSearch);
             refreshSearch();
             searchPanel.classList.add('open');
-            clinicDropdown?.classList.remove('open');
+            closeClinic();
         });
 
         search?.addEventListener('input', () => {
@@ -379,6 +625,12 @@
         });
 
         searchPanel?.addEventListener('click', (event) => {
+            if (event.target.closest('[data-clinic-clear-search]')) {
+                event.preventDefault();
+                setBranch(null);
+                search.focus();
+                return;
+            }
             const suggestion = event.target.closest('[data-suggest]');
             if (!suggestion) return;
             event.preventDefault();
@@ -397,6 +649,7 @@
                 links[activeResult].scrollIntoView({ block: 'nearest' });
             } else if (event.key === 'Escape') {
                 searchPanel.classList.remove('open');
+                search.blur();
             } else if (event.key === 'Enter') {
                 event.preventDefault();
                 window.location.href = links[activeResult]?.href || catalogHref(search.value.trim());
@@ -413,7 +666,7 @@
         }));
 
         document.addEventListener('click', (event) => {
-            if (!event.target.closest('.bios-clinic-select')) clinicDropdown?.classList.remove('open');
+            if (!event.target.closest('.bios-clinic-select')) closeClinic();
             if (!event.target.closest('.bios-global-search')) searchPanel?.classList.remove('open');
         });
     }
@@ -638,34 +891,55 @@
         }
     }
 
+    // Aparición suave de bloques al hacer scroll. Solo anima bloques de primer
+    // nivel (no tarjetas anidadas), no toca lo que ya está en pantalla al cargar
+    // y limpia la clase al terminar para que los hover de cada elemento
+    // conserven su propia transición (antes quedaban con retraso).
     function setupRevealAnimations() {
-        const targets = document.querySelectorAll('.panel, .dark-panel, .page-visual, .image-strip img, section');
-        if (!('IntersectionObserver' in window)) {
-            targets.forEach(target => target.classList.add('is-visible'));
-            return;
-        }
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('is-visible');
-                    observer.unobserve(entry.target);
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) return;
+        const candidates = [...document.querySelectorAll('main > section, main > div > section, main > .grid > *, main > section > .grid > *, .page-visual, .image-strip')];
+        const targets = candidates.filter(el => !candidates.some(other => other !== el && other.contains(el)));
+        const fold = window.innerHeight * 0.92;
 
-                    // stagger direct children in grids
-                    const gridChildren = entry.target.querySelectorAll(':scope > .grid > *, :scope > div > .grid > *');
-                    gridChildren.forEach((child, i) => {
-                        if (!child.classList.contains('bios-reveal')) {
-                            child.style.transitionDelay = `${i * 55}ms`;
-                            child.classList.add('bios-reveal');
-                            requestAnimationFrame(() => child.classList.add('is-visible'));
-                        }
-                    });
-                }
+        const settle = el => {
+            el.classList.add('is-visible');
+            const done = () => {
+                el.classList.remove('bios-reveal', 'is-visible');
+                el.style.removeProperty('transition-delay');
+            };
+            el.addEventListener('transitionend', done, { once: true });
+            setTimeout(done, 900);
+        };
+
+        const observer = new IntersectionObserver(entries => {
+            let batch = 0;
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) return;
+                observer.unobserve(entry.target);
+                entry.target.style.transitionDelay = `${Math.min(batch++, 4) * 70}ms`;
+                settle(entry.target);
             });
-        }, { threshold: 0.06 });
-        targets.forEach(target => {
-            target.classList.add('bios-reveal');
-            observer.observe(target);
+        }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+        targets.forEach(el => {
+            if (el.getBoundingClientRect().top < fold) return;
+            el.classList.add('bios-reveal');
+            observer.observe(el);
         });
+    }
+
+    // En pantallas chicas el aviso de campaña se compacta al bajar para no
+    // tapar el contenido; vuelve a expandirse al regresar arriba.
+    function setupRibbonCompact() {
+        let ticking = false;
+        const update = () => {
+            ticking = false;
+            document.body.classList.toggle('bios-scrolled', window.scrollY > 260);
+        };
+        window.addEventListener('scroll', () => {
+            if (!ticking) { ticking = true; requestAnimationFrame(update); }
+        }, { passive: true });
+        update();
     }
 
     function setupFloatingVisibility() {
@@ -698,7 +972,9 @@
         renderFooter();
         renderFloatingActions();
         renderLogoIntro();
+        scheduleAutoLocate();
         setupRevealAnimations();
+        setupRibbonCompact();
         setupFloatingVisibility();
     });
 })();

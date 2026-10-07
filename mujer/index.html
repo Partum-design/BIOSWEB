@@ -10,10 +10,10 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <link rel="stylesheet" href="../assets/multipage.css?v=1791500000">
+    <link rel="stylesheet" href="../assets/multipage.css?v=1791600000">
     <link rel="stylesheet" href="../assets/compact.css?v=1783625058">
     <script src="../assets/estudios-data.js" defer></script>
-    <script src="../assets/site.js?v=1791500000" defer></script>
+    <script src="../assets/site.js?v=1791600000" defer></script>
 </head>
 <body>
     <div class="page-shell">
@@ -81,7 +81,7 @@
                     <div id="women-packages" class="grid gap-3"></div>
                 </div>
 
-                <form id="woman-form" class="panel p-6 grid gap-4">
+                <form id="woman-form" class="panel p-6 grid gap-4 content-start self-start lg:sticky lg:top-40">
                     <input class="field" id="woman-name" type="text" placeholder="Nombre completo" required>
                     <div class="grid md:grid-cols-2 gap-4">
                         <input class="field" id="woman-phone" type="tel" placeholder="WhatsApp" required>
@@ -106,7 +106,7 @@
 
     <script>
         let CAMPAIGN = null;
-        const MONTH_LABELS = { 9: 'Septiembre', 10: 'Octubre', 11: 'Noviembre', 12: 'Diciembre' };
+        const MONTH_LABELS = { 9: 'Sep', 10: 'Oct', 11: 'Nov', 12: 'Dic' };
 
         function renderCampaignBanner() {
             const el = document.getElementById('campaign-status-banner');
@@ -114,13 +114,13 @@
             const status = CAMPAIGN.status();
             if (status.active && status.todayEvent) {
                 el.className = 'campaign-status-banner is-today';
-                el.innerHTML = `<i class="fa-solid fa-circle-check"></i> Hoy es la jornada de colposcopía en <strong>${status.todayEvent.branch}</strong>. Ven con tu cita confirmada.`;
+                el.innerHTML = `<i class="fa-solid fa-circle-check"></i><span>Hoy es la jornada de colposcopía en <strong>${status.todayEvent.branch}</strong>. Ven con tu cita confirmada.</span>`;
             } else if (status.active && status.nextEvent) {
                 el.className = 'campaign-status-banner is-upcoming';
-                el.innerHTML = `<i class="fa-solid fa-calendar-clock"></i> Próxima jornada: <strong>${CAMPAIGN.formatDate(status.nextEvent.date)} en ${status.nextEvent.branch}</strong>.`;
+                el.innerHTML = `<i class="fa-solid fa-calendar-day"></i><span>Próxima jornada: <strong>${CAMPAIGN.formatDate(status.nextEvent.date)} en ${status.nextEvent.branch}</strong>.</span>`;
             } else {
                 el.className = 'campaign-status-banner is-closed';
-                el.innerHTML = `<i class="fa-solid fa-calendar"></i> La campaña Septiembre-Diciembre 2026 concluyó. Escríbenos para conocer la próxima fecha disponible.`;
+                el.innerHTML = `<i class="fa-solid fa-calendar"></i><span>La campaña Septiembre-Diciembre 2026 concluyó. Escríbenos para conocer la próxima fecha disponible.</span>`;
             }
         }
 
@@ -159,24 +159,38 @@
             lucide.createIcons();
         }
 
+        // Estudios para la mujer, filtrados por la sucursal elegida en el header.
+        const WOMEN_PATTERN = /papanicolaou|colposcop|vaginal|mastograf|mamario|transvaginal|vph|obstetric|hormonal completo femenino|ginecolog/i;
+
         function renderPackages() {
-            const women = (window.BIOS_ESTUDIOS || []).filter(item => item.cat === 'Estudios de la mujer');
+            const all = (window.BIOS_ESTUDIOS || []).filter(item => item.campaign || WOMEN_PATTERN.test(item.n));
+            const branches = window.BIOS_BRANCHES;
+            const branch = branches && branches.selected();
+            const women = branches ? all.filter(branches.offers) : all;
             const wrap = document.getElementById('women-packages');
             const select = document.getElementById('woman-service');
+            const money = value => value != null ? value.toLocaleString('es-MX', { style: 'currency', currency: 'MXN', maximumFractionDigits: 0 }) : 'Consultar';
+            const days = item => item.days === 0 ? 'mismo día' : item.days === 1 ? '1 día hábil' : `${item.days} días hábiles`;
             if (wrap) {
-                wrap.innerHTML = women.map(item => `
-                    <div class="rounded-lg border border-pink-100 bg-pink-50 p-4 flex items-center justify-between gap-3">
-                        <div>
-                            <p class="font-black text-[#0A1C2E]">${item.n}</p>
-                            <p class="text-sm text-slate-500 mt-1">Entrega: ${item.days === 0 ? 'mismo día' : item.days + ' días hábiles'}${item.campaign ? ' · Campaña mujer' : ''}</p>
+                const note = branch
+                    ? `<p class="women-branch-note"><i data-lucide="map-pin" class="w-4 h-4"></i> Disponibles en <strong>${branch.name}</strong>${all.length > women.length ? ` · ${all.length - women.length} más en otras sucursales` : ''}</p>`
+                    : '';
+                wrap.innerHTML = note + (women.length ? women.map(item => `
+                    <div class="women-package">
+                        <div class="min-w-0">
+                            <p class="font-black text-[#0A1C2E]">${item.n.replace(/\s+/g, ' ')}</p>
+                            <p class="text-sm text-slate-500 mt-1">Entrega: ${days(item)}${item.campaign ? ' · Campaña mujer' : ''}</p>
                         </div>
-                        <strong class="text-pink-700 whitespace-nowrap">${item.price.toLocaleString('es-MX', { style: 'currency', currency: 'MXN', maximumFractionDigits: 0 })}</strong>
+                        <strong class="text-pink-700 whitespace-nowrap">${money(item.price)}</strong>
                     </div>
-                `).join('');
+                `).join('') : '<p class="text-slate-500">Esta sucursal no realiza estudios de la campaña. Elige otra sucursal en el menú superior.</p>');
             }
             if (select) {
-                select.innerHTML = women.map(item => `<option>${item.n}</option>`).join('') + '<option>Consultar requisitos</option>';
+                select.innerHTML = women.map(item => `<option>${item.n.replace(/\s+/g, ' ')}</option>`).join('') + '<option>Consultar requisitos</option>';
             }
+            const branchSelect = document.getElementById('woman-branch');
+            if (branchSelect && branch) branchSelect.value = branch.key;
+            if (window.lucide) lucide.createIcons();
         }
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -196,6 +210,7 @@
             renderCampaignBanner();
             renderCampaignCalendar();
             renderPackages();
+            document.addEventListener('bios:branchchange', renderPackages);
             lucide.createIcons();
         });
     </script>

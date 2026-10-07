@@ -15,7 +15,7 @@
     
     <!-- AOS Animation Library -->
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
-    <link rel="stylesheet" href="assets/multipage.css?v=1791500000" />
+    <link rel="stylesheet" href="assets/multipage.css?v=1791600000" />
     <link rel="stylesheet" href="assets/compact.css?v=1783625058" />
 
     <!-- Tailwind CSS -->
@@ -575,8 +575,8 @@
         }
     </style>
     <script src="assets/estudios-data.js" defer></script>
-    <script src="assets/bios-search.js?v=2" defer></script>
-    <script src="assets/site.js?v=1791500000" defer></script>
+    <script src="assets/bios-search.js?v=3" defer></script>
+    <script src="assets/site.js?v=1791600000" defer></script>
 </head>
 <body class="font-inter text-gray-800 compact-site">
 
@@ -1903,11 +1903,12 @@
                 box.innerHTML = '';
                 return;
             }
-            const results = window.BiosSearch.searchCatalog(trimmed);
+            const offers = window.BIOS_BRANCHES ? window.BIOS_BRANCHES.offers : () => true;
+            const results = window.BiosSearch.searchCatalog(trimmed).filter(r => offers(r.item));
             const suggestion = window.BiosSearch.suggestCatalog(trimmed);
             const link = q => `servicios/?q=${encodeURIComponent(q)}`;
             box.innerHTML = results.length ? `
-                <p class="text-[11px] uppercase tracking-[0.22em] font-black text-blue-700 mb-2 px-1">${results.length} en el catálogo${results.every(r => !r.exact) ? ' · parecidos' : ''}</p>
+                <p class="text-[11px] uppercase tracking-[0.22em] font-black text-blue-700 mb-2 px-1">${results.length} en ${window.BIOS_BRANCHES && window.BIOS_BRANCHES.selected() ? window.BIOS_BRANCHES.selected().name : 'el catálogo'}${results.every(r => !r.exact) ? ' · parecidos' : ''}</p>
                 <div class="flex flex-col gap-1">
                     ${results.slice(0, 4).map(r => `
                         <a href="${link(r.item.n)}" class="flex items-center justify-between gap-3 rounded-xl bg-white px-3 py-2.5 border border-white hover:border-blue-200 transition">
@@ -2024,6 +2025,7 @@
                 renderServices(currentServiceFilter, event.target.value);
             });
         }
+        document.addEventListener('bios:branchchange', () => renderHomeCatalogResults(currentServiceSearch));
 
         /* =================================================================
            2. VERBATIM UNITS LOCATOR
@@ -2038,7 +2040,8 @@
         ];
 
         const map = L.map('map', { scrollWheelZoom: false }).setView([19.6600, -99.2000], 12);
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', { attribution: '&copy; CARTO' }).addTo(map);
+        L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', { attribution: 'Tiles &copy; Esri', maxZoom: 16 }).addTo(map);
+        L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Reference/MapServer/tile/{z}/{y}/{x}', { maxZoom: 16 }).addTo(map);
 
         const unitsList = document.getElementById('units-list');
         function mapsUrl(unit) {

@@ -10,11 +10,11 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <link rel="stylesheet" href="../assets/multipage.css?v=1791500000">
+    <link rel="stylesheet" href="../assets/multipage.css?v=1791600000">
     <link rel="stylesheet" href="../assets/compact.css?v=1783625058">
-    <script src="../assets/site.js?v=1791500000" defer></script>
+    <script src="../assets/site.js?v=1791600000" defer></script>
     <script src="../assets/estudios-data.js" defer></script>
-    <script src="../assets/bios-search.js?v=2" defer></script>
+    <script src="../assets/bios-search.js?v=3" defer></script>
 </head>
 <body>
     <div class="page-shell">
@@ -48,7 +48,7 @@
                                 <i data-lucide="search" class="w-5 h-5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
                                 <input id="service-search" class="field pl-10" type="search" placeholder="Buscar: EGO, tiroides, mastografía, colposcopía...">
                             </div>
-                            <select id="branch-filter" class="field md:w-48">
+                            <select id="branch-filter" class="field md:w-56" aria-label="Sucursal">
                                 <option value="">Todas las sucursales</option>
                             </select>
                             <select id="sort-services" class="field md:w-52">
@@ -60,6 +60,7 @@
                             </select>
                         </div>
                         <div id="category-tabs" class="flex flex-wrap gap-2 mb-6"></div>
+                        <div id="branch-hint" class="branch-hint hidden"></div>
                         <div id="search-hint" class="search-hint hidden"></div>
                         <div id="service-grid" class="service-grid"></div>
                         <div id="empty-state" class="hidden panel p-6 text-center mt-4">
@@ -103,19 +104,39 @@
             return item.price != null ? money(item.price) : (item.priceLabel || 'Consultar');
         }
 
+        // El filtro de sucursal está sincronizado con la sucursal elegida en el header.
         function renderBranchFilter() {
             const select = document.getElementById('branch-filter');
-            ALL_BRANCHES.forEach(branch => {
+            const list = window.BIOS_BRANCHES ? window.BIOS_BRANCHES.list : ALL_BRANCHES.map(key => ({ key, name: key }));
+            list.forEach(branch => {
                 const option = document.createElement('option');
-                option.value = branch;
-                option.textContent = branch;
+                option.value = branch.key;
+                option.textContent = branch.name;
                 select.appendChild(option);
             });
+            syncBranchFilter();
+        }
+
+        function syncBranchFilter() {
+            const branch = window.BIOS_BRANCHES && window.BIOS_BRANCHES.selected();
+            document.getElementById('branch-filter').value = branch ? branch.key : '';
+        }
+
+        function renderBranchHint() {
+            const hint = document.getElementById('branch-hint');
+            const key = document.getElementById('branch-filter').value;
+            if (!key) { hint.classList.add('hidden'); hint.innerHTML = ''; return; }
+            const branch = window.BIOS_BRANCHES ? window.BIOS_BRANCHES.list.find(b => b.key === key) : { name: key };
+            const missing = services.filter(item => !item.branches.includes(key)).length;
+            hint.innerHTML = `<i data-lucide="map-pin" class="w-4 h-4"></i><span>Estudios disponibles en <strong>${branch.name}</strong>${missing ? ` · ${missing} ${missing === 1 ? 'estudio se realiza' : 'estudios se realizan'} en otras sucursales` : ''}</span><button type="button" data-branch-all>Ver todas</button>`;
+            hint.classList.remove('hidden');
         }
 
         function renderTabs() {
-            const counts = categories.map(category => category === 'Todos' ? services.length : services.filter(s => s.category === category).length);
-            document.getElementById('category-tabs').innerHTML = categories.map((category, i) => `
+            const key = document.getElementById('branch-filter').value;
+            const pool = key ? services.filter(s => s.branches.includes(key)) : services;
+            const counts = categories.map(category => category === 'Todos' ? pool.length : pool.filter(s => s.category === category).length);
+            document.getElementById('category-tabs').innerHTML = categories.map((category, i) => counts[i] === 0 && category !== activeCategory ? '' : `
                 <button class="chip ${category === activeCategory && !quickFilter ? 'active' : ''}" onclick="setCategory('${category}')">${category} <span class="chip-count">${counts[i]}</span></button>
             `).join('') + `
                 <button class="chip chip-quick ${quickFilter === 'destacados' ? 'active' : ''}" onclick="setQuickFilter('destacados')"><i data-lucide="star" class="w-3.5 h-3.5"></i> Destacados</button>
@@ -183,6 +204,7 @@
             document.getElementById('total-categories').textContent = categories.length - 1;
             document.getElementById('empty-state').classList.toggle('hidden', full.length !== 0);
             renderSearchHint(full.length);
+            renderBranchHint();
             document.getElementById('service-grid').innerHTML = list.map(item => {
                 const catKey = CATEGORY_KEY[item.categoryRaw] || (item.category === 'Laboratorio clínico' ? 'lab' : 'especial');
                 return `
@@ -286,7 +308,21 @@
                 renderServices();
             });
             document.getElementById('sort-services').addEventListener('change', () => { visibleCount = PAGE_SIZE; renderServices(); });
-            document.getElementById('branch-filter').addEventListener('change', () => { visibleCount = PAGE_SIZE; renderServices(); });
+            document.getElementById('branch-filter').addEventListener('change', event => {
+                const key = event.target.value;
+                const branch = window.BIOS_BRANCHES && window.BIOS_BRANCHES.list.find(b => b.key === key);
+                if (window.BIOS_BRANCHES) window.BIOS_BRANCHES.set(branch ? branch.name : null);
+                else { visibleCount = PAGE_SIZE; renderTabs(); renderServices(); }
+            });
+            document.addEventListener('bios:branchchange', () => {
+                syncBranchFilter();
+                visibleCount = PAGE_SIZE;
+                renderTabs();
+                renderServices();
+            });
+            document.getElementById('branch-hint').addEventListener('click', event => {
+                if (event.target.closest('[data-branch-all]') && window.BIOS_BRANCHES) window.BIOS_BRANCHES.set(null);
+            });
             document.getElementById('load-more').addEventListener('click', () => { visibleCount += PAGE_SIZE; renderServices(); });
 
             renderBranchFilter();

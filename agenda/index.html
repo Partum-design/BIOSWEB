@@ -13,7 +13,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@700;800;900&display=swap" rel="stylesheet">
     <script src="../assets/estudios-data.js" defer></script>
-    <script src="../assets/bios-search.js?v=2" defer></script>
+    <script src="../assets/bios-search.js?v=3" defer></script>
     <style>
         :root {
             --page-bg: #0A1C2E;
@@ -803,6 +803,11 @@
             session++;
             closeSheet();
             state = { step: 'menu', cart: [], mode: null };
+            // Si ya eligió sucursal en el sitio, se usa al agendar (si ofrece sus estudios).
+            try {
+                const saved = BRANCHES.find(b => b.name === localStorage.getItem('bios_selected_clinic'));
+                if (saved) state.presetBranch = saved.key;
+            } catch (e) { /* sin almacenamiento */ }
             lastSide = null;
             queue = Promise.resolve();
             chat.innerHTML = `
