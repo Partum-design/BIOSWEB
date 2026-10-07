@@ -300,13 +300,13 @@
         });
     }
 
-    // Favicon de marca (usa el logo BIOS) — aplica a todas las páginas.
+    // Favicon de marca (emblema globo con latido) — respaldo si la página no lo declara.
     function applyFavicon() {
         if (document.querySelector('link[rel="icon"]:not([data-default])')) return;
         const link = document.createElement('link');
         link.rel = 'icon';
         link.type = 'image/png';
-        link.href = logoSrc();
+        link.href = `${basePath()}assets/favicon/favicon-192.png`;
         document.head.appendChild(link);
     }
 
