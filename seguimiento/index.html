@@ -1,99 +1,15 @@
 <!DOCTYPE html>
-<html lang="es" class="scroll-smooth">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Seguimiento | Laboratorios BIOS</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <link rel="stylesheet" href="../assets/multipage.css?v=1791400000">
-    <link rel="stylesheet" href="../assets/compact.css?v=1783625058">
-    <script src="../assets/site.js?v=1791400000" defer></script>
+    <meta name="robots" content="noindex">
+    <title>Laboratorios BIOS</title>
+    <link rel="canonical" href="../">
+    <meta http-equiv="refresh" content="0; url=../">
+    <script>window.location.replace('../');</script>
 </head>
 <body>
-    <div class="page-shell">
-        <header class="site-header"></header>
-
-        <main class="page-enter">
-            <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-14">
-                <div class="grid lg:grid-cols-[420px_1fr] gap-6 items-start">
-                    <aside class="dark-panel p-6 lg:p-8">
-                        <span class="section-kicker !bg-white/10 !border-white/15 !text-cyan-100 mb-5"><i data-lucide="list-checks" class="w-4 h-4"></i> Estado de tu estudio</span>
-                        <h1 class="brand-type mobile-tight text-4xl font-black leading-none mb-4">Consulta tu estudio</h1>
-                        <p class="text-blue-100 text-sm mb-5">Escribe el folio de tu orden y te conectamos por WhatsApp con tu sucursal para confirmar el avance. Tus resultados los ves y descargas en el portal.</p>
-                        <form id="tracker-form" class="grid gap-3 mb-3">
-                            <input id="folio-input" class="field" type="text" placeholder="Folio de tu orden (opcional)">
-                            <button class="primary-button !bg-[#25D366]" type="submit"><i class="fa-brands fa-whatsapp"></i> Consultar por WhatsApp</button>
-                        </form>
-                        <a href="../portal/" class="primary-button !bg-white !text-[#0A1C2E] w-full"><i data-lucide="log-in" class="w-5 h-5"></i> Entrar al portal</a>
-                        <div class="metric p-5 mt-5">
-                            <div class="flex items-start gap-3">
-                                <i data-lucide="shield-check" class="w-5 h-5 text-cyan-200 mt-0.5 shrink-0"></i>
-                                <p class="text-blue-100 text-sm">Tus resultados son privados. Por WhatsApp solo confirmamos el avance; el PDF se descarga de forma segura desde el portal.</p>
-                            </div>
-                        </div>
-                    </aside>
-
-                    <div class="grid gap-5">
-                        <figure class="page-visual">
-                            <img src="../assets/img/lab-hero.webp" alt="Seguimiento de análisis clínicos BIOS">
-                            <figcaption class="visual-caption">
-                                <p>Proceso transparente</p>
-                                <p>Conoce las cuatro etapas por las que pasa tu estudio.</p>
-                            </figcaption>
-                        </figure>
-
-                        <div class="panel p-5 lg:p-6">
-                            <h2 class="brand-type text-2xl font-black text-[#0A1C2E] mb-4">Así avanza tu estudio</h2>
-                            <div class="grid sm:grid-cols-2 xl:grid-cols-4 gap-4">
-                                <article class="panel p-5"><div class="w-11 h-11 rounded-lg bg-blue-600 text-white flex items-center justify-center mb-4"><i data-lucide="package-check" class="w-6 h-6"></i></div><p class="brand-type text-xl font-black text-[#0A1C2E]">01 · Recepción</p><p class="text-sm text-slate-500 mt-1">Validamos tu orden y folio en sucursal.</p></article>
-                                <article class="panel p-5"><div class="w-11 h-11 rounded-lg bg-cyan-600 text-white flex items-center justify-center mb-4"><i data-lucide="flask-conical" class="w-6 h-6"></i></div><p class="brand-type text-xl font-black text-[#0A1C2E]">02 · Análisis</p><p class="text-sm text-slate-500 mt-1">Procesamos tu muestra o imagen.</p></article>
-                                <article class="panel p-5"><div class="w-11 h-11 rounded-lg bg-indigo-600 text-white flex items-center justify-center mb-4"><i data-lucide="badge-check" class="w-6 h-6"></i></div><p class="brand-type text-xl font-black text-[#0A1C2E]">03 · Validación</p><p class="text-sm text-slate-500 mt-1">Un especialista revisa y valida.</p></article>
-                                <article class="panel p-5"><div class="w-11 h-11 rounded-lg bg-emerald-600 text-white flex items-center justify-center mb-4"><i data-lucide="circle-check" class="w-6 h-6"></i></div><p class="brand-type text-xl font-black text-[#0A1C2E]">04 · Entrega</p><p class="text-sm text-slate-500 mt-1">Liberamos tu resultado en el portal.</p></article>
-                            </div>
-                        </div>
-
-                        <div class="grid lg:grid-cols-2 gap-5">
-                            <div class="panel p-5">
-                                <h3 class="brand-type text-2xl font-black text-[#0A1C2E] mb-3">Ver tus resultados</h3>
-                                <p class="text-slate-500 text-sm mb-4">Cuando tu resultado se libera, entra al portal con tu cuenta para verlo y descargarlo en PDF de forma segura.</p>
-                                <a class="primary-button" href="../portal/"><i data-lucide="folder-open" class="w-5 h-5"></i> Ir al portal de pacientes</a>
-                            </div>
-                            <div class="panel p-5">
-                                <h3 class="brand-type text-2xl font-black text-[#0A1C2E] mb-3">¿Necesitas ayuda?</h3>
-                                <div class="grid gap-3">
-                                    <a class="primary-button !bg-[#25D366]" target="_blank" rel="noopener" href="https://wa.me/5211234567890?text=Hola%20Laboratorios%20BIOS,%20quiero%20ayuda%20con%20mi%20estudio"><i class="fa-brands fa-whatsapp"></i> Ayuda por WhatsApp</a>
-                                    <a class="secondary-button" href="../sucursales/"><i data-lucide="map-pin" class="w-5 h-5"></i> Ver sucursales</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </main>
-    </div>
-
-    <script>
-        // Consulta de estado por folio → WhatsApp (sin datos de ejemplo).
-        // Los resultados reales se consultan en el portal de pacientes.
-        const trackerForm = document.getElementById('tracker-form');
-        if (trackerForm) {
-            trackerForm.addEventListener('submit', (event) => {
-                event.preventDefault();
-                const input = document.getElementById('folio-input');
-                const folio = (input ? input.value : '').trim();
-                const msg = folio
-                    ? `Hola Laboratorios BIOS, quiero consultar el estado de mi estudio. Folio: ${folio}`
-                    : 'Hola Laboratorios BIOS, quiero consultar el estado de mi estudio.';
-                window.open(`https://wa.me/5211234567890?text=${encodeURIComponent(msg)}`, '_blank');
-            });
-        }
-
-        lucide.createIcons();
-    </script>
+    <p><a href="../">Ir a Laboratorios BIOS</a></p>
 </body>
 </html>

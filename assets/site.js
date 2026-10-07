@@ -3,14 +3,12 @@
         { key: 'inicio', label: 'Inicio', path: './', icon: 'fa-house' },
         { key: 'servicios', label: 'Servicios', path: 'servicios/', icon: 'fa-flask-vial' },
         { key: 'mujer', label: 'Mujer', path: 'mujer/', icon: 'fa-venus' },
-        { key: 'seguimiento', label: 'Seguimiento', path: 'seguimiento/', icon: 'fa-list-check' },
         { key: 'sucursales', label: 'Sucursales', path: 'sucursales/', icon: 'fa-location-dot' },
         { key: 'conocenos', label: 'Conócenos', path: 'conocenos/', icon: 'fa-building' },
         { key: 'unete', label: 'Únete a nosotros', path: 'unete/', icon: 'fa-briefcase' },
     ];
 
     const quickRoutes = [
-        { label: 'Portal Pacientes', path: 'portal/', icon: 'fa-user' },
         { label: 'Empresas B2B', path: 'empresas/', icon: 'fa-building-user' },
         { label: 'Médicos', path: 'medicos/', icon: 'fa-user-doctor' },
         { label: 'Facturación', path: 'empresas/#facturacion', icon: 'fa-file-invoice-dollar' },
@@ -80,7 +78,7 @@
     function basePath() {
         const cleanPath = window.location.pathname.replace(/\/+$/, '');
         const current = cleanPath.split('/').pop();
-        return ['servicios', 'seguimiento', 'sucursales', 'unete', 'conocenos', 'portal', 'empresas', 'medicos', 'mujer', 'facturacion', 'aviso-privacidad', 'terminos-uso', 'agenda'].includes(current) ? '../' : './';
+        return ['servicios', 'sucursales', 'unete', 'conocenos', 'empresas', 'medicos', 'mujer', 'facturacion', 'aviso-privacidad', 'terminos-uso', 'agenda'].includes(current) ? '../' : './';
     }
 
     function href(path) {
@@ -169,7 +167,6 @@
                 </div>
 
                 <div class="bios-header-actions">
-                    <a href="${href('seguimiento/')}" class="bios-icon-button" aria-label="Seguimiento"><i class="fa-solid fa-list-check"></i></a>
                     <a href="https://wa.me/5211234567890?text=Hola%20Laboratorios%20BIOS,%20quiero%20agendar%20una%20cita" target="_blank" class="bios-appointment-button">
                         <i class="fa-brands fa-whatsapp"></i> Agendar Cita
                     </a>
@@ -181,7 +178,7 @@
             <div class="bios-secondary-nav">
                 <div class="bios-wrap bios-secondary-inner">
                     ${navMarkup()}
-                    <a class="bios-profile-tab" href="${href('portal/')}"><i class="fa-solid fa-shield-heart"></i> Perfil Prevención</a>
+                    <a class="bios-profile-tab" href="${href('servicios/')}"><i class="fa-solid fa-shield-heart"></i> Perfil Prevención</a>
                 </div>
             </div>
         `;
@@ -439,10 +436,10 @@
                 </div>
                 <div>
                     <h4>Pacientes</h4>
-                    <a href="${href('portal/')}">Pre-registro</a>
+                    <a href="${href('servicios/')}">Catálogo de estudios</a>
                     <a href="${href('servicios/')}">Cotizar y agendar</a>
-                    <a href="${href('seguimiento/')}">Estado por folio</a>
-                    <a href="${href('portal/')}">Descargar resultados</a>
+                    <a href="${href('sucursales/')}">Sucursales y horarios</a>
+                    <a href="https://wa.me/5211234567890?text=Hola%20Laboratorios%20BIOS,%20quiero%20agendar%20una%20cita" target="_blank" rel="noopener">Agendar por WhatsApp</a>
                 </div>
                 <div>
                     <h4>Empresas B2B</h4>

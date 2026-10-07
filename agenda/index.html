@@ -639,7 +639,6 @@
             { id: 'prep', title: 'Preparación para mi estudio', desc: 'Ayuno, muestras e indicaciones', keys: 'preparacion ayuno indicaciones requisitos' },
             { id: 'sucursales', title: 'Sucursales y teléfonos', desc: 'Direcciones de nuestras 6 unidades', keys: 'sucursales sucursal direccion ubicacion telefono donde' },
             { id: 'mujer', title: 'Campaña de la mujer', desc: 'Papanicolaou y colposcopía', keys: 'mujer campana papanicolaou colposcopia' },
-            { id: 'folio', title: 'Estado de mi estudio', desc: 'Seguimiento con tu folio', keys: 'folio estado seguimiento resultado' },
             { id: 'asesor', title: 'Hablar con un asesor', desc: 'Te atiende una persona', keys: 'asesor persona humano ayuda hablar' },
         ];
 
@@ -1080,21 +1079,6 @@
             });
         }
 
-        function askFolio() {
-            state.step = 'folio';
-            bot('Escribe el *folio* de tu orden (viene en tu ticket) 🧾');
-        }
-
-        function showFolio(folio) {
-            state.step = 'after';
-            bot(`🔎 Folio *${folio.toUpperCase()}*\n\n✅ Muestra recibida\n⏳ En proceso en laboratorio\n\n_Dato de demostración._ Cuando tu resultado esté listo te avisamos por este medio.`, {
-                buttons: [
-                    { id: 'asesor', label: 'Hablar con un asesor', icon: 'fa-solid fa-headset' },
-                    { id: 'menu', label: 'Menú principal', icon: 'fa-solid fa-bars' },
-                ],
-            });
-        }
-
         function showAdvisor() {
             state.step = 'after';
             bot('Con gusto te atiende una persona del equipo 🙋‍♀️\nHorario de atención: lunes a sábado.', {
@@ -1116,7 +1100,6 @@
                 case 'prep': return askStudy('prep');
                 case 'sucursales': return showBranches();
                 case 'mujer': return showWomen();
-                case 'folio': return askFolio();
                 case 'asesor': return showAdvisor();
                 case 'popular': return showPopular();
                 case 'categories': return showCategories();
@@ -1167,7 +1150,6 @@
                 state.name = text.trim().replace(/\s+/g, ' ').replace(/(^|\s)(\p{L})/gu, (m, sp, c) => sp + c.toUpperCase());
                 return showSummary();
             }
-            if (state.step === 'folio') return showFolio(text.trim());
 
             if (state.step === 'menu' || state.step === 'after' || state.step === 'done' || state.step === 'branches-info') {
                 const n = Number(plain);

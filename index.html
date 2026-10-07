@@ -15,7 +15,7 @@
     
     <!-- AOS Animation Library -->
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
-    <link rel="stylesheet" href="assets/multipage.css?v=1791400000" />
+    <link rel="stylesheet" href="assets/multipage.css?v=1791500000" />
     <link rel="stylesheet" href="assets/compact.css?v=1783625058" />
 
     <!-- Tailwind CSS -->
@@ -576,7 +576,7 @@
     </style>
     <script src="assets/estudios-data.js" defer></script>
     <script src="assets/bios-search.js?v=2" defer></script>
-    <script src="assets/site.js?v=1791400000" defer></script>
+    <script src="assets/site.js?v=1791500000" defer></script>
 </head>
 <body class="font-inter text-gray-800 compact-site">
 
@@ -634,7 +634,6 @@
                     Accesos Frecuentes <i data-lucide="chevron-down" class="w-4 h-4 text-gray-400 group-hover:text-blue-600 transition"></i>
                 </div>
                 <a href="conocenos/" class="py-4 hover:text-blue-600 transition">Conócenos</a>
-                <a href="seguimiento/" class="py-4 hover:text-blue-600 transition">Seguimiento</a>
                 <a href="sucursales/" class="py-4 hover:text-blue-600 transition">Sucursales</a>
                 <a href="mujer/" class="py-4 hover:text-pink-600 transition"><i data-lucide="venus" class="w-4 h-4 inline-block mr-1 text-pink-500"></i> Mujer</a>
                 <a href="unete/" class="py-4 hover:text-blue-600 transition">Únete a nosotros</a>
@@ -669,9 +668,6 @@
                     <a href="conocenos/" class="mobile-drawer-link rounded-2xl border border-gray-200 px-4 py-4 font-black text-[#0A1C2E] flex items-center justify-between hover:border-blue-300 hover:bg-blue-50 transition">
                         Conócenos <i data-lucide="arrow-right" class="w-5 h-5 text-blue-500"></i>
                     </a>
-                    <a href="seguimiento/" class="mobile-drawer-link rounded-2xl border border-gray-200 px-4 py-4 font-black text-[#0A1C2E] flex items-center justify-between hover:border-blue-300 hover:bg-blue-50 transition">
-                        Seguimiento <i data-lucide="arrow-right" class="w-5 h-5 text-blue-500"></i>
-                    </a>
                     <a href="sucursales/" class="mobile-drawer-link rounded-2xl border border-gray-200 px-4 py-4 font-black text-[#0A1C2E] flex items-center justify-between hover:border-blue-300 hover:bg-blue-50 transition">
                         Sucursales <i data-lucide="arrow-right" class="w-5 h-5 text-blue-500"></i>
                     </a>
@@ -697,7 +693,6 @@
                 <div class="rounded-[2rem] border border-gray-200 p-5 bg-gray-50">
                     <p class="text-[10px] uppercase tracking-[0.35em] text-gray-400 font-black mb-3">Accesos rápidos</p>
                     <div class="grid gap-2 text-sm font-bold text-[#0A1C2E]">
-                        <a href="portal/" class="rounded-xl px-3 py-3 bg-white border border-gray-200">Portal Pacientes</a>
                         <a href="empresas/" class="rounded-xl px-3 py-3 bg-white border border-gray-200">Empresas B2B</a>
                         <a href="medicos/" class="rounded-xl px-3 py-3 bg-white border border-gray-200">Médicos</a>
                     </div>
@@ -808,8 +803,8 @@
                                             <p class="text-[9px] sm:text-[10px] text-blue-100 font-bold uppercase">paquetes</p>
                                         </div>
                                         <div class="service-feature-stat rounded-2xl p-3 text-center">
-                                            <p class="text-xl sm:text-2xl font-black text-white leading-none">Estado</p>
-                                            <p class="text-[9px] sm:text-[10px] text-blue-100 font-bold uppercase">por folio</p>
+                                            <p class="text-xl sm:text-2xl font-black text-white leading-none">6</p>
+                                            <p class="text-[9px] sm:text-[10px] text-blue-100 font-bold uppercase">sucursales</p>
                                         </div>
                                         <div class="service-feature-stat rounded-2xl p-3 text-center">
                                             <p class="text-xl sm:text-2xl font-black text-white leading-none">$400</p>
@@ -1021,115 +1016,6 @@
         </section>
 
         <!-- ==========================================
-             TRACKER DE ESTUDIOS
-             ========================================== -->
-        <section id="seguimiento" class="py-20 bg-white relative overflow-hidden">
-            <div class="absolute inset-0 pointer-events-none">
-                <div class="absolute -right-24 top-8 w-80 h-80 rounded-full blur-3xl bg-blue-100/70"></div>
-                <div class="absolute left-0 bottom-0 w-[30rem] h-[30rem] rounded-full blur-3xl bg-cyan-100/60"></div>
-            </div>
-            <div class="max-w-[96rem] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                <div class="mb-14 text-center" data-aos="fade-down">
-                    <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 border border-blue-100 text-blue-600 font-black text-xs uppercase tracking-[0.28em] shadow-sm mb-5">
-                        <i data-lucide="list-checks" class="w-4 h-4"></i> Estado por folio
-                    </span>
-                    <h2 class="font-outfit text-4xl md:text-5xl font-black text-[#0A1C2E] mb-4 tracking-tight">Sigue tus estudios paso a paso</h2>
-                    <p class="text-gray-600 text-lg md:text-xl font-medium max-w-3xl mx-auto">Consulta el estado de tu muestra por folio y conoce el siguiente paso sin mostrar cuentas regresivas.</p>
-                </div>
-
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
-                    <div class="lg:col-span-5 interactive-depth premium-surface bg-[#0A1C2E] rounded-[2.5rem] p-6 md:p-8 text-white shadow-[0_30px_80px_-30px_rgba(10,28,46,0.7)] relative overflow-hidden" data-aos="fade-right">
-                        <div class="absolute inset-0 opacity-80">
-                            <div class="absolute -right-12 -top-12 w-44 h-44 rounded-full blur-3xl bg-blue-500/45"></div>
-                            <div class="absolute left-4 bottom-0 w-36 h-36 rounded-full blur-3xl bg-cyan-400/25"></div>
-                        </div>
-                        <div class="relative z-10">
-                            <p class="text-[10px] uppercase tracking-[0.32em] text-blue-200 font-black mb-2">Consulta tu estudio</p>
-                            <h3 class="font-outfit text-3xl md:text-4xl font-black leading-tight mb-4">Conoce el avance de tu estudio.</h3>
-                            <p class="text-blue-100/90 text-base md:text-lg leading-relaxed mb-6">Escribe el folio de tu orden y te conectamos por WhatsApp con tu sucursal para confirmar el avance. Para ver y descargar tus resultados, entra al portal de pacientes.</p>
-
-                            <form id="tracker-form" class="space-y-4">
-                                <label class="block">
-                                    <span class="sr-only">Folio</span>
-                                    <div class="relative">
-                                        <i data-lucide="hash" class="w-5 h-5 text-blue-200 absolute left-4 top-1/2 -translate-y-1/2"></i>
-                                        <input id="tracker-input" type="text" placeholder="Folio de tu orden (opcional)" class="w-full rounded-2xl bg-white/10 border border-white/15 text-white placeholder:text-white/45 pl-12 pr-4 py-4 outline-none focus:ring-2 focus:ring-cyan-300 focus:border-cyan-300 transition">
-                                    </div>
-                                </label>
-                                <div class="flex flex-col sm:flex-row gap-3">
-                                    <button type="submit" class="flex-1 inline-flex items-center justify-center gap-2 px-5 py-4 rounded-2xl bg-[#25D366] text-white font-black shadow-lg hover:-translate-y-0.5 transition">
-                                        <i class="fa-brands fa-whatsapp"></i> Consultar estado
-                                    </button>
-                                    <a href="portal/" class="flex-1 inline-flex items-center justify-center gap-2 px-5 py-4 rounded-2xl bg-white text-[#0A1C2E] font-black hover:-translate-y-0.5 transition">
-                                        <i data-lucide="log-in" class="w-5 h-5"></i> Entrar al portal
-                                    </a>
-                                </div>
-                            </form>
-
-                            <div class="mt-6 rounded-[1.75rem] bg-white/10 border border-white/10 p-5">
-                                <div class="flex items-start gap-3">
-                                    <i data-lucide="shield-check" class="w-5 h-5 text-cyan-200 mt-0.5 shrink-0"></i>
-                                    <p class="text-sm text-blue-100/85 leading-relaxed">Tus resultados son privados. En el portal los consultas y descargas en PDF de forma segura; por WhatsApp solo confirmamos el avance de tu estudio.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="lg:col-span-7 interactive-depth premium-surface bg-gray-50 rounded-[2.5rem] p-6 md:p-8 border border-gray-100 shadow-xl" data-aos="fade-left">
-                        <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-8">
-                            <div>
-                                <p class="text-[10px] uppercase tracking-[0.32em] text-gray-400 font-black mb-2">Proceso transparente</p>
-                                <h3 class="font-outfit text-3xl md:text-4xl font-black text-[#0A1C2E]">Así avanza tu estudio</h3>
-                            </div>
-                            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-gray-200 text-gray-600 font-black text-xs uppercase tracking-[0.22em] shadow-sm">
-                                <i data-lucide="list-checks" class="w-4 h-4 text-blue-500"></i> 4 etapas
-                            </div>
-                        </div>
-
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                            <div class="rounded-[2rem] bg-[#0A1C2E] text-white p-6 relative overflow-hidden">
-                                <div class="absolute inset-0 opacity-70">
-                                    <div class="absolute -right-6 -top-6 w-32 h-32 rounded-full blur-3xl bg-cyan-400/30"></div>
-                                </div>
-                                <div class="relative z-10">
-                                    <p class="text-[10px] uppercase tracking-[0.28em] text-cyan-200 font-black mb-2">Tu tranquilidad</p>
-                                    <p class="font-outfit text-3xl md:text-4xl font-black leading-none">Claridad en cada paso</p>
-                                    <p class="text-blue-100/80 mt-3 text-sm">Desde que recibimos tu muestra hasta que liberamos tu resultado.</p>
-                                </div>
-                            </div>
-                            <div class="rounded-[2rem] bg-white border border-gray-200 p-6 flex flex-col justify-between">
-                                <div>
-                                    <p class="text-[10px] uppercase tracking-[0.28em] text-gray-400 font-black mb-2">¿Tu resultado está listo?</p>
-                                    <p class="text-[#0A1C2E] font-bold">Cuando se libera, lo consultas y descargas en el portal de pacientes.</p>
-                                </div>
-                                <a href="portal/" class="inline-flex items-center gap-2 px-4 py-2.5 mt-4 rounded-xl bg-[#0A1C2E] text-white font-black text-sm hover:-translate-y-0.5 transition self-start"><i data-lucide="folder-open" class="w-4 h-4"></i> Ver mis resultados</a>
-                            </div>
-                        </div>
-
-                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-                            <div class="rounded-[1.5rem] bg-blue-50 border border-blue-100 p-5">
-                                <p class="text-[10px] uppercase tracking-[0.22em] text-blue-500 font-black mb-2">01 · Recepción</p>
-                                <p class="font-black text-[#0A1C2E]">Validamos tu solicitud y el folio.</p>
-                            </div>
-                            <div class="rounded-[1.5rem] bg-cyan-50 border border-cyan-100 p-5">
-                                <p class="text-[10px] uppercase tracking-[0.22em] text-cyan-600 font-black mb-2">02 · Análisis</p>
-                                <p class="font-black text-[#0A1C2E]">Procesamos tus muestras o imagen.</p>
-                            </div>
-                            <div class="rounded-[1.5rem] bg-indigo-50 border border-indigo-100 p-5">
-                                <p class="text-[10px] uppercase tracking-[0.22em] text-indigo-500 font-black mb-2">03 · Validación</p>
-                                <p class="font-black text-[#0A1C2E]">Un especialista revisa y valida.</p>
-                            </div>
-                            <div class="rounded-[1.5rem] bg-emerald-50 border border-emerald-100 p-5">
-                                <p class="text-[10px] uppercase tracking-[0.22em] text-emerald-600 font-black mb-2">04 · Entrega</p>
-                                <p class="font-black text-[#0A1C2E]">Liberamos tu resultado en el portal.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ==========================================
              ÚNETE A NOSOTROS
              ========================================== -->
         <section id="unete" class="py-20 bg-[#06111d] relative overflow-hidden">
@@ -1302,10 +1188,9 @@
                 <div>
                     <h4 class="text-white font-black tracking-wide mb-6 text-lg">Pacientes</h4>
                     <ul class="space-y-4 text-sm font-medium">
-                        <li><a href="portal/" class="hover:text-blue-400 transition">Pre-registro</a></li>
+                        <li><a href="servicios/" class="hover:text-blue-400 transition">Catálogo de estudios</a></li>
                         <li><a href="servicios/" class="hover:text-blue-400 transition">Cotizar y agendar</a></li>
-                        <li><a href="seguimiento/" class="hover:text-blue-400 transition">Estado por folio</a></li>
-                        <li><a href="portal/" class="hover:text-blue-400 transition">Descargar resultados</a></li>
+                        <li><a href="sucursales/" class="hover:text-blue-400 transition">Sucursales y horarios</a></li>
                     </ul>
                 </div>
 
@@ -1324,7 +1209,7 @@
                     <ul class="space-y-4 text-sm font-medium">
                         <li><a href="conocenos/" class="hover:text-blue-400 transition">Quiénes Somos</a></li>
                         <li><a href="sucursales/" class="hover:text-blue-400 transition">Sucursales 360</a></li>
-                        <li><a href="seguimiento/" class="hover:text-blue-400 transition">Resultados por Folio</a></li>
+                        <li><a href="mujer/" class="hover:text-blue-400 transition">Campaña de la mujer</a></li>
                         <li><a href="unete/" class="hover:text-blue-400 transition">Bolsa de Trabajo</a></li>
                     </ul>
                 </div>
@@ -2137,24 +2022,6 @@
         if (serviceSearch) {
             serviceSearch.addEventListener('input', (event) => {
                 renderServices(currentServiceFilter, event.target.value);
-            });
-        }
-
-        /* =================================================================
-           2. STUDY TRACKER LOGIC
-           ================================================================= */
-        // Consulta de estado por folio → WhatsApp con la sucursal.
-        // (Sin datos de ejemplo: los resultados reales viven en el portal.)
-        const trackerForm = document.getElementById('tracker-form');
-        if (trackerForm) {
-            trackerForm.addEventListener('submit', (event) => {
-                event.preventDefault();
-                const input = document.getElementById('tracker-input');
-                const folio = (input ? input.value : '').trim();
-                const msg = folio
-                    ? `Hola Laboratorios BIOS, quiero consultar el estado de mi estudio. Folio: ${folio}`
-                    : 'Hola Laboratorios BIOS, quiero consultar el estado de mi estudio.';
-                window.open(`https://wa.me/5211234567890?text=${encodeURIComponent(msg)}`, '_blank');
             });
         }
 
