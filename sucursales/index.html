@@ -14,10 +14,10 @@
     <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <link rel="stylesheet" href="../assets/compact.css?v=1783625058">
-    <link rel="stylesheet" href="../assets/multipage.css?v=1791600000">
+    <link rel="stylesheet" href="../assets/compact.css?v=20261007">
+    <link rel="stylesheet" href="../assets/multipage.css?v=20261007">
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="../assets/site.js?v=1791600000" defer></script>
+    <script src="../assets/site.js?v=20261007" defer></script>
     <style>
         :root {
             --branch-ink: #071a2c;
@@ -97,7 +97,7 @@
             font-family: Outfit, Inter, sans-serif;
             font-size: clamp(3.2rem, 7vw, 7.7rem);
             font-weight: 800;
-            letter-spacing: -.085em;
+            letter-spacing: -.035em;
             line-height: .86;
         }
 
@@ -259,7 +259,7 @@
             font-size: 2.9rem;
             font-weight: 800;
             line-height: .8;
-            letter-spacing: -.07em;
+            letter-spacing: -.03em;
         }
 
         .console-top h2 {
@@ -267,7 +267,7 @@
             margin: 0 0 .55rem;
             font-family: Outfit, sans-serif;
             font-size: clamp(1.65rem, 3vw, 2.5rem);
-            letter-spacing: -.06em;
+            letter-spacing: -.025em;
             line-height: .95;
         }
 
@@ -304,7 +304,7 @@
         .branch-card.is-active::before { content: ""; position: absolute; top: 1.25rem; bottom: 1.3rem; left: 0; width: 3px; border-radius: 3px; background: var(--branch-blue); }
         .branch-card-top { display: flex; align-items: start; justify-content: space-between; gap: .75rem; }
         .branch-index { color: #9aa9b6; font-size: .63rem; }
-        .branch-card h3 { margin: .3rem 0 .45rem; font-family: Outfit, sans-serif; font-size: 1.25rem; letter-spacing: -.045em; line-height: 1; }
+        .branch-card h3 { margin: .3rem 0 .45rem; font-family: Outfit, sans-serif; font-size: 1.25rem; letter-spacing: -.015em; line-height: 1; }
         .branch-status { flex: 0 0 auto; border: 1px solid #cae4ee; border-radius: 999px; padding: .35rem .5rem; color: var(--branch-blue); font-size: .56rem; font-weight: 500; }
         .branch-status.is-new { border-color: #9bddec; color: #11679a; background: var(--branch-sky); }
         .branch-address { max-width: 350px; margin: 0; color: var(--branch-muted); font-size: .78rem; line-height: 1.5; }
@@ -336,13 +336,13 @@
         }
 
         .proof-label { color: var(--branch-blue); font: 500 .68rem "DM Mono", monospace; letter-spacing: .12em; text-transform: uppercase; }
-        .proof-title { max-width: 620px; margin: .75rem 0 0; font-family: Outfit, sans-serif; font-size: clamp(2rem, 4vw, 4.5rem); letter-spacing: -.075em; line-height: .92; }
+        .proof-title { max-width: 620px; margin: .75rem 0 0; font-family: Outfit, sans-serif; font-size: clamp(2rem, 4vw, 4.5rem); letter-spacing: -.03em; line-height: .92; }
         .proof-title span { color: var(--branch-blue); }
         .proof-copy { margin: 0; color: var(--branch-muted); font-size: .95rem; line-height: 1.7; }
         .proof-stats { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--branch-line); border-bottom: 1px solid var(--branch-line); }
         .proof-stat { padding: 1rem .8rem; border-right: 1px solid var(--branch-line); }
         .proof-stat:last-child { border-right: 0; }
-        .proof-stat strong { display: block; color: var(--branch-blue); font: 800 clamp(1.7rem, 3vw, 2.7rem) Outfit, sans-serif; letter-spacing: -.07em; }
+        .proof-stat strong { display: block; color: var(--branch-blue); font: 800 clamp(1.7rem, 3vw, 2.7rem) Outfit, sans-serif; letter-spacing: -.03em; }
         .proof-stat span { color: var(--branch-muted); font-size: .67rem; line-height: 1.3; }
 
         .leaflet-container { font: inherit; }
@@ -355,7 +355,7 @@
         .bios-leaflet-popup .leaflet-popup-content-wrapper { border-radius: 14px; box-shadow: 0 14px 35px rgba(7,26,44,.18); }
         .bios-leaflet-popup .leaflet-popup-content { margin: 16px; min-width: 210px; }
         .bios-popup-kicker { margin: 0 0 5px; color: var(--branch-blue); font: 500 10px "DM Mono", monospace; letter-spacing: .1em; text-transform: uppercase; }
-        .bios-popup-title { margin: 0 0 6px; color: var(--branch-ink); font: 800 18px Outfit, sans-serif; letter-spacing: -.04em; }
+        .bios-popup-title { margin: 0 0 6px; color: var(--branch-ink); font: 800 18px Outfit, sans-serif; letter-spacing: -.015em; }
         .bios-popup-address { margin: 0; color: var(--branch-muted); font-size: 12px; line-height: 1.45; }
         .bios-popup-link { display: inline-flex; gap: 6px; align-items: center; margin-top: 12px; color: var(--branch-blue); font-size: 11px; font-weight: 800; text-decoration: none; }
 
@@ -410,7 +410,7 @@
             margin: 0 !important;
             font-size: clamp(3.3rem, 7vw, 6.9rem) !important;
             line-height: .88 !important;
-            letter-spacing: -.08em !important;
+            letter-spacing: -.035em !important;
         }
 
         main.branches-page .branches-intro {
@@ -590,6 +590,7 @@
             *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; }
         }
     </style>
+    <link rel="stylesheet" href="../assets/polish.css?v=20261007">
 </head>
 <body>
     <div class="page-shell">

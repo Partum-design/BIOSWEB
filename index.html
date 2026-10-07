@@ -19,8 +19,8 @@
     
     <!-- AOS Animation Library -->
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
-    <link rel="stylesheet" href="assets/multipage.css?v=1791600000" />
-    <link rel="stylesheet" href="assets/compact.css?v=1783625058" />
+    <link rel="stylesheet" href="assets/multipage.css?v=20261007" />
+    <link rel="stylesheet" href="assets/compact.css?v=20261007" />
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -75,14 +75,7 @@
         body { overflow-x: hidden; background-color: #f8fafc; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        main p:not(.no-justify):not([class*="uppercase"]):not([class*="tracking-"]),
-        footer p:not(.no-justify):not([class*="uppercase"]):not([class*="tracking-"]) {
-            text-align: justify;
-            text-wrap: pretty;
-        }
-        .text-center p:not(.no-justify):not([class*="uppercase"]):not([class*="tracking-"]) {
-            text-align-last: center;
-        }
+        main p, footer p { text-wrap: pretty; }
 
         @keyframes gradientFlow {
             0%, 100% { background-position: 0% 50%; }
@@ -427,11 +420,7 @@
         }
 
         @media (max-width: 767px) {
-            main p:not(.no-justify):not([class*="uppercase"]):not([class*="tracking-"]),
-            footer p:not(.no-justify):not([class*="uppercase"]):not([class*="tracking-"]) {
-                hyphens: auto;
-                line-height: 1.65;
-            }
+            main p, footer p { line-height: 1.65; }
             .hero-signal::after {
                 width: 150px;
                 bottom: -14px;
@@ -580,7 +569,8 @@
     </style>
     <script src="assets/estudios-data.js" defer></script>
     <script src="assets/bios-search.js?v=3" defer></script>
-    <script src="assets/site.js?v=1791600000" defer></script>
+    <script src="assets/site.js?v=20261007" defer></script>
+    <link rel="stylesheet" href="assets/polish.css?v=20261007">
 </head>
 <body class="font-inter text-gray-800 compact-site">
 
@@ -719,7 +709,7 @@
             <canvas id="hero-particles" class="hero-particles z-[1]"></canvas>
             <div class="hero-reactive-light absolute inset-0 z-[2] pointer-events-none"></div>
 
-            <div class="relative z-10 max-w-[96rem] mx-auto px-4 sm:px-6 lg:px-8 w-full" data-aos="fade-up" data-aos-duration="1000">
+            <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full" data-aos="fade-up" data-aos-duration="1000">
                 <div class="hero-reactive-panel relative max-w-5xl mx-auto text-center px-2 py-10 md:py-12">
                     <span class="inline-flex items-center gap-3 text-blue-100 text-sm font-black tracking-widest uppercase mb-7">
                         <span class="w-10 h-px hero-kicker-line"></span>
@@ -767,7 +757,7 @@
             <div class="mesh-accent left-10 top-[38%] w-[240px] h-[240px]" style="background: radial-gradient(circle, rgba(16,185,129,0.35) 0%, rgba(16,185,129,0.10) 40%, transparent 70%);"></div>
             <div class="mesh-accent right-[20%] bottom-8 w-[280px] h-[280px]" style="background: radial-gradient(circle, rgba(14,165,233,0.28) 0%, rgba(14,165,233,0.08) 38%, transparent 72%);"></div>
 
-            <div class="max-w-[96rem] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                 <div class="text-center mb-20" data-aos="fade-up">
                     <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-blue-600 text-white shadow-xl mb-6 shadow-blue-500/30">
                         <i data-lucide="activity" class="w-8 h-8"></i>
@@ -885,7 +875,7 @@
                 <div class="absolute w-[34rem] h-[34rem] rounded-full filter blur-[120px] bottom-[-16rem] right-[-4rem] bg-cyan-400/16"></div>
             </div>
 
-            <div class="relative z-10 max-w-[96rem] mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="tech-three-panel interactive-depth premium-surface relative min-h-[420px] md:min-h-[460px] rounded-[2rem] border border-white/20 overflow-hidden px-5 py-10 md:px-10 md:py-14 text-center" data-aos="zoom-in" data-aos-duration="1000">
                     <canvas id="tech-three-canvas" class="tech-three-canvas"></canvas>
                     <div class="absolute inset-0 z-[3] bg-[radial-gradient(circle_at_center,rgba(7,24,39,0.12)_0%,rgba(7,24,39,0.5)_76%)] pointer-events-none"></div>
@@ -932,7 +922,7 @@
              DYNAMIC VISION & MISSION (Animated Scroll)
              ========================================== -->
         <section id="vision" class="py-20 relative bg-white border-t border-gray-100">
-            <div class="max-w-[96rem] mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-24">
                     <!-- Visión -->
@@ -990,7 +980,7 @@
                 <div class="absolute -left-28 top-10 w-80 h-80 rounded-full blur-3xl bg-blue-200/50"></div>
                 <div class="absolute right-0 bottom-0 w-[28rem] h-[28rem] rounded-full blur-3xl bg-cyan-200/40"></div>
             </div>
-            <div class="max-w-[96rem] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                 <div class="mb-14 text-center" data-aos="fade-down">
                     <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-blue-100 text-blue-600 font-black text-xs uppercase tracking-[0.28em] shadow-sm mb-5">
                         <i data-lucide="map-pin" class="w-4 h-4"></i> Mapa de sucursales
@@ -1027,7 +1017,7 @@
                 <div class="absolute -left-24 top-0 w-[30rem] h-[30rem] rounded-full blur-3xl bg-blue-600/25"></div>
                 <div class="absolute right-0 bottom-0 w-[26rem] h-[26rem] rounded-full blur-3xl bg-cyan-400/18"></div>
             </div>
-            <div class="max-w-[96rem] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                 <div class="mb-14 text-center" data-aos="fade-down">
                     <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/10 text-cyan-100 font-black text-xs uppercase tracking-[0.28em] shadow-sm mb-5">
                         <i data-lucide="briefcase" class="w-4 h-4"></i> Talento BIOS
@@ -1869,9 +1859,9 @@
             { name: "PERFIL INTEGRAL 27 ELEMENTOS", price: "930.00", desc: "Revisión preventiva de salud general. Incluye biometría hemática, química sanguínea, perfil lipídico y EGO.", prep: "Ayuno 8 horas", time: "Un día hábil", size: "lg", delay: 100, category: "Preventivo", icon: "heart-pulse", tag: "Más solicitado" },
             { name: "PERFIL TIROIDEO 3", price: "1,400.00", desc: "Panel para valorar función tiroidea y orientar seguimiento médico.", prep: "Sin ayuno", time: "Menos de 36 horas", size: "normal", delay: 200, category: "Hormonal", icon: "activity", tag: "Alta demanda" },
             { name: "PERFIL HORMONAL COMPLETO", price: "1,200.00", desc: "Análisis endocrinológico para apoyar valoración de fertilidad y ciclos.", prep: "Ayuno sugerido", time: "Menos de 36 horas", size: "normal", delay: 300, category: "Hormonal", icon: "dna", tag: "Especializado" },
-            { name: "PAQUETE GINECOLÓGICO / UROLÓGICO", price: "650.00", desc: "Paquete preventivo para detección oportuna y seguimiento médico.", prep: "Preparación especial", time: "Un día hábil", size: "wide", delay: 100, category: "Especialidad", icon: "shield-check", tag: "Preventivo" },
+            { name: "PAQUETE GINECOLÓGICO / UROLÓGICO", price: "650.00", desc: "Paquete preventivo para detección oportuna y seguimiento médico.", prep: "Preparación especial", time: "Un día hábil", size: "wide", delay: 100, category: "Especialidad", icon: "shield-check", tag: "Preventivo", catalog: "Colposcopia, Papanicolaou y C. Vaginal" },
             { name: "PERFIL MASCULINO PREVENTIVO", price: "1,090.00", desc: "Revisión especializada que incluye Antígeno Prostático Específico (PSA).", prep: "Ayuno especial", time: "Un día hábil", size: "normal", delay: 200, category: "Preventivo", icon: "badge-check", tag: "Recomendado" },
-            { name: "MASTOGRAFÍA", price: "400.00", desc: "Estudio de imagen para apoyo en detección oportuna.", prep: "Sin desodorante", time: "Entrega programada", size: "normal", delay: 300, category: "Imagen", icon: "scan-line", tag: "Imagen" }
+            { name: "MASTOGRAFÍA", price: "400.00", desc: "Estudio de imagen para apoyo en detección oportuna.", prep: "Sin desodorante", time: "Entrega programada", size: "normal", delay: 300, category: "Imagen", icon: "scan-line", tag: "Imagen", catalog: "Mastografia" }
         ];
 
         const bentoContainer = document.getElementById('bento-container');
@@ -1927,12 +1917,31 @@
             box.classList.remove('hidden');
         }
 
+        function renderBranchNote(hidden) {
+            let note = document.getElementById('home-branch-note');
+            const branch = window.BIOS_BRANCHES && window.BIOS_BRANCHES.selected();
+            if (!hidden || !branch) { note?.remove(); return; }
+            if (!note) {
+                note = document.createElement('p');
+                note.id = 'home-branch-note';
+                note.className = 'home-branch-note';
+                bentoContainer.parentNode.insertBefore(note, bentoContainer);
+            }
+            note.innerHTML = `<i class="fa-solid fa-location-dot"></i><span>Mostrando lo disponible en <strong>${escapeHtml(branch.name)}</strong> · ${hidden} ${hidden === 1 ? 'paquete se realiza' : 'paquetes se realizan'} en otras sucursales.</span> <button type="button" data-home-all>Ver todas</button>`;
+            note.querySelector('[data-home-all]').addEventListener('click', () => window.BIOS_BRANCHES.set(null));
+        }
+
         function renderServices(filter = currentServiceFilter, search = currentServiceSearch) {
             currentServiceFilter = filter;
             currentServiceSearch = search;
             const normalizedSearch = search.trim().toLowerCase();
             const fuzzyHits = normalizedSearch ? featuredSearch(search) : null;
-            const visibleServices = servicesData.filter(s => {
+            // Solo los paquetes que se realizan en la sucursal elegida.
+            const offers = window.BIOS_BRANCHES ? window.BIOS_BRANCHES.offers : () => true;
+            const catalogItem = s => (s.catalog && window.BIOS_ESTUDIOS) ? window.BIOS_ESTUDIOS.find(item => item.n === s.catalog) : null;
+            const inBranch = servicesData.filter(s => offers(catalogItem(s)));
+            renderBranchNote(servicesData.length - inBranch.length);
+            const visibleServices = inBranch.filter(s => {
                 const matchesFilter = filter === 'Todos' || s.category === filter;
                 const haystack = `${s.name} ${s.desc} ${s.category} ${s.tag}`.toLowerCase();
                 const matchesSearch = !normalizedSearch || (fuzzyHits ? fuzzyHits.has(s) : haystack.includes(normalizedSearch));
@@ -2029,7 +2038,9 @@
                 renderServices(currentServiceFilter, event.target.value);
             });
         }
-        document.addEventListener('bios:branchchange', () => renderHomeCatalogResults(currentServiceSearch));
+        document.addEventListener('bios:branchchange', () => renderServices());
+        // El catálogo (estudios-data.js) carga con defer: se vuelve a filtrar al tenerlo.
+        document.addEventListener('DOMContentLoaded', () => renderServices());
 
         /* =================================================================
            2. VERBATIM UNITS LOCATOR

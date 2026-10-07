@@ -104,7 +104,6 @@
 
     // Pide la ubicación al navegador y elige la sucursal más cercana.
     function locateUser({ auto = false } = {}) {
-        storeSet(STORE.asked, '1');
         if (!('geolocation' in navigator)) {
             if (!auto) showToast({ icon: 'fa-location-crosshairs', title: 'Tu navegador no comparte ubicación', text: 'Elige tu sucursal manualmente.', actions: [{ label: 'Elegir sucursal', run: openClinicDropdown }] });
             return Promise.resolve(null);
@@ -133,25 +132,39 @@
         });
     }
 
-    // Al entrar: pide la ubicación una sola vez por navegador. Si ya la
-    // concedió antes, la actualiza en silencio.
+    // Al entrar: pide la ubicación mientras el permiso siga sin responderse
+    // (una vez por visita, para no insistir en cada página). Si ya se concedió,
+    // la actualiza en silencio; si se negó, no vuelve a preguntar y queda el
+    // selector manual de sucursal.
     function scheduleAutoLocate() {
         if (!('geolocation' in navigator) || !window.isSecureContext) return;
+        const askedThisVisit = () => {
+            try { return sessionStorage.getItem(STORE.asked) === '1'; } catch (e) { return false; }
+        };
+        const ask = () => {
+            if (askedThisVisit()) return;
+            try { sessionStorage.setItem(STORE.asked, '1'); } catch (e) { /* sin sessionStorage: se pregunta igual */ }
+            locateUser({ auto: true });
+        };
+        const refreshSilently = () => {
+            navigator.geolocation.getCurrentPosition(position => {
+                storeSet(STORE.location, JSON.stringify({ lat: position.coords.latitude, lng: position.coords.longitude, t: Date.now() }));
+                if (selectedBranch()) { renderClinicDropdown(); return; }
+                const nearest = setBranch(branchesByDistance()[0].name);
+                showToast({ icon: 'fa-location-dot', title: `Sucursal más cercana: ${nearest.name}`, text: `A ${formatKm(branchDistance(nearest))} de ti. Te mostramos los estudios disponibles ahí.`, actions: [{ label: 'Cambiar', run: openClinicDropdown }] });
+            }, () => {}, { timeout: 12000, maximumAge: 30 * 60 * 1000 });
+        };
         const run = () => {
-            if (!storeGet(STORE.asked)) {
-                locateUser({ auto: true });
+            if (!navigator.permissions || !navigator.permissions.query) {
+                // Safari antiguo: sin forma de saber el estado, se pregunta si aún no hay ubicación.
+                if (!userLocation()) ask();
+                else refreshSilently();
                 return;
             }
-            if (navigator.permissions && navigator.permissions.query) {
-                navigator.permissions.query({ name: 'geolocation' }).then(status => {
-                    if (status.state !== 'granted') return;
-                    navigator.geolocation.getCurrentPosition(position => {
-                        storeSet(STORE.location, JSON.stringify({ lat: position.coords.latitude, lng: position.coords.longitude, t: Date.now() }));
-                        if (!selectedBranch()) setBranch(branchesByDistance()[0].name);
-                        else renderClinicDropdown();
-                    }, () => {}, { timeout: 12000, maximumAge: 30 * 60 * 1000 });
-                }).catch(() => {});
-            }
+            navigator.permissions.query({ name: 'geolocation' }).then(status => {
+                if (status.state === 'granted') refreshSilently();
+                else if (status.state === 'prompt') ask();
+            }).catch(() => { if (!userLocation()) ask(); });
         };
         // Espera a que termine la intro del logo para no encimar el aviso.
         const intro = document.querySelector('.bios-preloader');
@@ -267,8 +280,12 @@
     }
 
     function activeKey() {
+        // Empresas, Médicos, Facturación y las páginas legales no están en el
+        // menú: ahí no se marca ninguna pestaña (antes se marcaba "Inicio").
         const current = window.location.pathname;
-        return routes.find(route => current.includes(`/${route.key}/`))?.key || 'inicio';
+        const match = routes.find(route => route.key !== 'inicio' && current.includes(`/${route.key}/`));
+        if (match) return match.key;
+        return basePath() === './' ? 'inicio' : null;
     }
 
     function navMarkup() {
@@ -734,7 +751,7 @@
             if (status.todayEvent) {
                 ribbon.innerHTML = `
                     <span><i class="fa-solid fa-venus"></i></span>
-                    <strong>Campaña de colposcopías: HOY en ${status.todayEvent.branch}</strong>
+                    <strong>Colposcopías hoy en ${status.todayEvent.branch}</strong>
                     <em>Ver requisitos y agenda</em>
                 `;
             } else if (status.nextEvent) {

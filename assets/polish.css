@@ -1,0 +1,302 @@
+/* ════════════════════════════════════════════════════════════
+   BIOS · Ajustes finales de interfaz (se carga al último en todas
+   las páginas). Corrige alineación, espaciado y jerarquía sin
+   cambiar el diseño: íconos centrados, números y etiquetas
+   legibles, botones con aire y textos que no se cortan.
+   ════════════════════════════════════════════════════════════ */
+
+/* ── Portada: la línea bajo el título no cruza el párrafo ──── */
+main .hero-signal {
+    margin-bottom: 2.1rem !important;
+}
+
+/* ── Texto: sin justificado ni cortes con guion ─────────────── */
+main p,
+footer p {
+    hyphens: manual;
+    -webkit-hyphens: manual;
+}
+
+/* ── Ancho de contenido homogéneo ───────────────────────────── */
+.services-section {
+    width: min(100% - clamp(2rem, 6vw, 4rem), 80rem) !important;
+}
+
+/* ── Íconos y números dentro de círculos/cuadros: centrados ── */
+main :is(.rounded-full, .rounded-xl, .rounded-2xl, .rounded-lg)[class*="w-"][class*="h-"].flex.items-center.justify-center {
+    flex-shrink: 0;
+    line-height: 1;
+}
+
+main .flex.items-start > span.rounded-full[class*="w-"][class*="h-"] {
+    aspect-ratio: 1;
+}
+
+/* Pasos numerados alineados con la primera línea del texto */
+main .flex.items-start.gap-3 > span.rounded-full + p {
+    padding-top: 0.3rem;
+}
+
+/* ── Etiquetas en mayúsculas: interletrado legible ──────────── */
+main [class*="tracking-[0.2"],
+main [class*="tracking-[0.3"],
+main [class*="tracking-[0.4"] {
+    letter-spacing: 0.14em !important;
+}
+
+/* ── Insignias y chips: nunca en dos renglones ──────────────── */
+main :is(.branch-status, .section-kicker, .hero-band),
+main span.rounded-full[class*="uppercase"] {
+    white-space: nowrap;
+}
+
+/* ── Contadores (número + etiqueta) ─────────────────────────── */
+#service-feature-visual .service-feature-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    min-width: 0;
+    padding: 0.85rem 0.4rem !important;
+}
+
+#service-feature-visual .service-feature-stat p:first-child {
+    font-size: clamp(1.15rem, 1.7vw, 1.45rem) !important;
+    line-height: 1 !important;
+}
+
+#service-feature-visual .service-feature-stat p:last-child {
+    font-size: 0.58rem !important;
+    line-height: 1.2 !important;
+    letter-spacing: 0.03em !important;
+    max-width: 100%;
+    white-space: nowrap;
+}
+
+#service-feature-visual .grid.grid-cols-3 {
+    gap: 0.4rem !important;
+}
+
+.tech-metric-card p:first-child {
+    font-size: clamp(1.35rem, 2.2vw, 1.75rem) !important;
+    line-height: 1 !important;
+}
+
+.tech-metric-card p:last-child {
+    font-size: 0.66rem !important;
+    letter-spacing: 0.16em !important;
+}
+
+.metric {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.3rem;
+}
+
+.metric p:first-child {
+    font-size: clamp(1.05rem, 1.6vw, 1.3rem) !important;
+    line-height: 1.05 !important;
+}
+
+.metric p:last-child {
+    margin-top: 0 !important;
+    font-size: 0.58rem !important;
+    letter-spacing: 0.06em !important;
+    overflow-wrap: anywhere;
+}
+
+/* ── Mujer: nota de sucursal en un solo flujo de texto ──────── */
+.women-branch-note {
+    display: block !important;
+    line-height: 1.5;
+}
+
+.women-branch-note svg,
+.women-branch-note i {
+    display: inline-block;
+    width: 1rem;
+    height: 1rem;
+    margin-right: 0.3rem;
+    vertical-align: -0.2rem;
+}
+
+/* ── Calendario de campaña: texto completo en cada fecha ────── */
+.campaign-date-cell {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.15rem;
+}
+
+.campaign-date-cell p {
+    margin: 0 !important;
+    white-space: nowrap;
+    overflow: visible !important;
+    text-overflow: clip !important;
+}
+
+.campaign-date-month,
+.campaign-date-state {
+    font-size: 0.6rem !important;
+    letter-spacing: 0.04em !important;
+}
+
+@media (max-width: 640px) {
+    .campaign-date-state {
+        font-size: 0.5rem !important;
+        letter-spacing: 0.01em !important;
+    }
+}
+
+.campaign-date-day {
+    font-size: 1.5rem !important;
+    line-height: 1.1 !important;
+}
+
+/* ── Mapa de la portada: insignias sin tapar el zoom ────────── */
+#sucursales .leaflet-top.leaflet-left {
+    top: auto;
+    bottom: 0;
+}
+
+#sucursales .leaflet-top.leaflet-left .leaflet-control {
+    margin: 0 0 14px 14px;
+}
+
+/* ── Botones contiguos: misma altura y separación ───────────── */
+main :is(.hero-actions, .flex.flex-wrap) > :is(a, button)[class*="button"] {
+    min-height: 44px;
+}
+
+main .hero-actions {
+    gap: 0.75rem !important;
+}
+
+/* ── Aviso flotante de campaña: un renglón por línea ────────── */
+.bios-women-ribbon strong,
+.bios-women-ribbon em {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* ── Movimiento: transiciones cortas y sin saltos ───────────── */
+.bento-card {
+    transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s ease, border-color 0.3s ease !important;
+}
+
+.bento-card:hover {
+    transform: translateY(-4px) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* ── Móvil ─────────────────────────────────────────────────── */
+@media (max-width: 640px) {
+    main h1,
+    main h2,
+    main h3 {
+        overflow-wrap: break-word;
+    }
+
+    /* Botones del hero: con aire a los lados, no pegados al borde */
+    #inicio .flex.flex-col > a {
+        width: 100%;
+    }
+}
+
+/* ── Portada: aviso de paquetes filtrados por sucursal ──────── */
+.home-branch-note {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 0.75rem;
+    margin: 0 0 1.25rem !important;
+    padding: 0.75rem 1rem;
+    border: 1px solid #bbf7d0;
+    border-radius: 14px;
+    background: #f0fdf4;
+    color: #14532d;
+    font-size: 0.86rem !important;
+    line-height: 1.45 !important;
+}
+
+.home-branch-note > i {
+    color: #16a34a;
+}
+
+.home-branch-note > span {
+    flex: 1 1 16rem;
+    min-width: 0;
+}
+
+.home-branch-note button {
+    flex-shrink: 0;
+    padding: 0.4rem 0.85rem;
+    border: 1px solid #86efac;
+    border-radius: 999px;
+    background: #fff;
+    color: #166534;
+    font-size: 0.78rem;
+    font-weight: 800;
+    transition: background-color 0.2s ease;
+}
+
+.home-branch-note button:hover {
+    background: #dcfce7;
+}
+
+/* ── Mujer: aviso de jornada separado de las métricas ───────── */
+.campaign-status-banner {
+    margin-top: 0.85rem !important;
+}
+
+/* ── Pie de página alineado con el contenido ────────────────── */
+.bios-main-footer .bios-wrap {
+    width: min(100% - clamp(2rem, 6vw, 4rem), 80rem);
+}
+
+/* ── Únete: botones del encabezado iguales y métricas en fila ─ */
+.page-shell .hero-actions :is(.primary-button, .ghost-button) {
+    min-height: 46px !important;
+    padding: 0.7rem 1.2rem !important;
+    border-radius: 12px !important;
+    font-size: 0.86rem !important;
+}
+
+@media (min-width: 768px) {
+    .careers-hero .hero-stat-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+/* ── Sucursales: zoom del mapa abajo a la derecha (no tapa la etiqueta) */
+.branches-page .leaflet-top.leaflet-left {
+    top: auto;
+    bottom: 1.25rem;
+    left: auto;
+    right: 0;
+}
+
+/* ── Etiquetas de sección: al ancho de su texto ─────────────── */
+.section-kicker {
+    align-self: flex-start;
+    width: fit-content;
+    max-width: 100%;
+}
+
+/* ── Índice de páginas legales: espacio tras el número ──────── */
+.chip {
+    word-spacing: 0.12em;
+}
