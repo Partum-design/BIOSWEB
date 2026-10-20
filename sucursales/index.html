@@ -663,12 +663,12 @@
 
     <script>
         const branches = [
-            { name: 'Plaza Cantú', badge: 'Principal', address: 'Av. Dr. Jiménez Cantú S/N, Plaza Cantú Centro Urbano, Cuautitlán Izcalli, C.P. 54700.', phones: ['55-1113-2754', '55-5871-9069'], lat: 19.6695138, lng: -99.2095527, zips: ['54700', '54710', '54720'], mapsUrl: 'https://maps.app.goo.gl/GTkULcomJPVmWa1RA?g_st=aw' },
-            { name: 'Plaza La Joya', badge: 'Alta afluencia', address: 'Melchor Ocampo 31, Villas de Cuautitlán, Cuautitlán, C.P. 54857.', phones: ['55-5872-9277'], lat: 19.6722043, lng: -99.1661641, zips: ['54800', '54830', '54840'], mapsUrl: 'https://maps.app.goo.gl/HCTpiBdM9qtFyWeP6?g_st=aw' },
-            { name: 'Las Haciendas', badge: 'Cerca de ti', address: 'Av. Huehuetoca S/N, Ex Hacienda de San Miguel, Cuautitlán Izcalli, C.P. 54715.', phones: ['55-5817-3401'], lat: 19.6866634, lng: -99.2099739, zips: ['54740', '54750', '54753'], mapsUrl: 'https://maps.app.goo.gl/trQAczGcXq4uPTNL7?g_st=aw' },
-            { name: 'Tepalcapa', badge: 'Express', address: 'Av. Morelos 9, Luis Echeverría, Cuautitlán Izcalli, C.P. 54753.', phones: ['55-2602-0764'], lat: 19.6205274, lng: -99.2067493, zips: ['54743', '54745', '54760'], mapsUrl: 'https://maps.app.goo.gl/wfzAKYGrhj8kzFr37?g_st=aw' },
-            { name: 'Tepojaco', badge: 'Especialidad', address: 'Av. San Sebastián 56, Ejido de San Francisco Tepojaco, Cuautitlán Izcalli, C.P. 54745.', phones: ['55-5391-8066'], lat: 19.6481325, lng: -99.2585366, zips: ['54770', '54783', '54784'], mapsUrl: 'https://maps.app.goo.gl/owmpJRdZXaLPeEEJ9?g_st=aw' },
-            { name: 'Tultepec', badge: 'Nueva', isNew: true, address: 'Plaza Tauro, Av. Joaquín Montenegro 95, San Martín, Tultepec, C.P. 54960.', phones: ['55-9413-2041'], lat: 19.6736413, lng: -99.1283153, zips: ['54960', '54963', '54964'], mapsUrl: 'https://maps.app.goo.gl/NY95gD25q4Ge9czK8?g_st=aw' }
+            { name: 'Plaza Cantú', badge: '', address: 'Av. Dr. Jiménez Cantú S/N, Plaza Cantú Centro Urbano, Cuautitlán Izcalli, C.P. 54700.', phones: ['55-1113-2754', '55-5871-9069'], lat: 19.6695138, lng: -99.2095527, zips: ['54700', '54710', '54720'], mapsUrl: 'https://maps.app.goo.gl/GTkULcomJPVmWa1RA?g_st=aw' },
+            { name: 'Plaza La Joya', badge: '', address: 'Melchor Ocampo 31, Villas de Cuautitlán, Cuautitlán, C.P. 54857.', phones: ['55-5872-9277'], lat: 19.6722043, lng: -99.1661641, zips: ['54800', '54830', '54840'], mapsUrl: 'https://maps.app.goo.gl/HCTpiBdM9qtFyWeP6?g_st=aw' },
+            { name: 'Las Haciendas', badge: '', address: 'Av. Huehuetoca S/N, Ex Hacienda de San Miguel, Cuautitlán Izcalli, C.P. 54715.', phones: ['55-5817-3401'], lat: 19.6866634, lng: -99.2099739, zips: ['54740', '54750', '54753'], mapsUrl: 'https://maps.app.goo.gl/trQAczGcXq4uPTNL7?g_st=aw' },
+            { name: 'Tepalcapa', badge: '', address: 'Av. Morelos 9, Luis Echeverría, Cuautitlán Izcalli, C.P. 54753.', phones: ['55-2602-0764'], lat: 19.6205274, lng: -99.2067493, zips: ['54743', '54745', '54760'], mapsUrl: 'https://maps.app.goo.gl/wfzAKYGrhj8kzFr37?g_st=aw' },
+            { name: 'Tepojaco', badge: '', address: 'Av. San Sebastián 56, Ejido de San Francisco Tepojaco, Cuautitlán Izcalli, C.P. 54745.', phones: ['55-5391-8066'], lat: 19.6481325, lng: -99.2585366, zips: ['54770', '54783', '54784'], mapsUrl: 'https://maps.app.goo.gl/owmpJRdZXaLPeEEJ9?g_st=aw' },
+            { name: 'Tultepec', badge: 'Nueva sucursal', isNew: true, address: 'Plaza Tauro, Av. Joaquín Montenegro 95, San Martín, Tultepec, C.P. 54960.', phones: ['55-9413-2041'], lat: 19.6736413, lng: -99.1283153, zips: ['54960', '54963', '54964'], mapsUrl: 'https://maps.app.goo.gl/NY95gD25q4Ge9czK8?g_st=aw' }
         ];
 
         const map = L.map('branches-map', { scrollWheelZoom: false, zoomControl: true }).setView([19.66, -99.20], 12);
@@ -677,7 +677,7 @@
         const markers = [];
 
         function popupMarkup(branch) {
-            return `<div class="bios-popup-kicker">${branch.badge}</div><h3 class="bios-popup-title">Unidad ${branch.name}</h3><p class="bios-popup-address">${branch.address}</p><a class="bios-popup-link" href="${branch.mapsUrl}" target="_blank" rel="noopener"><i class="fa-solid fa-route"></i> Abrir ruta</a>`;
+            return `${branch.badge ? `<div class="bios-popup-kicker">${branch.badge}</div>` : ''}<h3 class="bios-popup-title">Unidad ${branch.name}</h3><p class="bios-popup-address">${branch.address}</p><a class="bios-popup-link" href="${branch.mapsUrl}" target="_blank" rel="noopener"><i class="fa-solid fa-route"></i> Abrir ruta</a>`;
         }
 
         function focusBranch(index) {
@@ -719,7 +719,7 @@
                 <article class="branch-card" data-index="${index}">
                     <div class="branch-card-top">
                         <div><span class="branch-index">0${index + 1} / 06</span><h3>Unidad ${branch.name}</h3></div>
-                        <span class="branch-status ${branch.isNew ? 'is-new' : ''}">${branch.badge}</span>
+                        ${branch.badge ? `<span class="branch-status ${branch.isNew ? 'is-new' : ''}">${branch.badge}</span>` : ''}
                     </div>
                     <p class="branch-address">${branch.address}</p>
                     <span class="branch-phone"><i class="fa-solid fa-phone"></i> ${branch.phones.join(' · ')}${km != null ? `<span class="branch-km"><i class="fa-solid fa-person-walking"></i> ${shared().formatKm(km)}</span>` : ''}</span>

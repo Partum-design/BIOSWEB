@@ -2046,12 +2046,12 @@
            2. VERBATIM UNITS LOCATOR
            ================================================================= */
         const unitsData = [
-            { name: "UNIDAD PLAZA CANTÚ", address: "AV. DR. JIMÉNEZ CANTÚ S/N, PLAZA CANTÚ CENTRO URBANO, CUAUTITLÁN IZCALLI, ESTADO DE MÉXICO, C.P. 54700", phones: ["55-1113-2754", "55-5871-9069"], lat: 19.6695138, lng: -99.2095527, badge: "Principal", mapsUrl: "https://maps.app.goo.gl/GTkULcomJPVmWa1RA?g_st=aw" },
-            { name: "UNIDAD PLAZA LA JOYA", address: "MELCHOR OCAMPO 31, VILLAS DE CUAUTITLÁN, CUAUTITLÁN, ESTADO DE MÉXICO, C.P. 54857", phones: ["55-5872-9277"], lat: 19.6722043, lng: -99.1661641, badge: "Alta afluencia", mapsUrl: "https://maps.app.goo.gl/HCTpiBdM9qtFyWeP6?g_st=aw" },
-            { name: "UNIDAD PLAZA LAS HACIENDAS", address: "AV. HUEHUETOCA S/N, EX HACIENDA DE SAN MIGUEL, CUAUTITLÁN IZCALLI, ESTADO DE MÉXICO, C.P. 54715", phones: ["55-5817-3401"], lat: 19.6866634, lng: -99.2099739, badge: "Cerca de ti", mapsUrl: "https://maps.app.goo.gl/trQAczGcXq4uPTNL7?g_st=aw" },
-            { name: "UNIDAD TEPALCAPA", address: "AV. MORELOS 9, LUIS ECHEVERRÍA, CUAUTITLÁN IZCALLI, ESTADO DE MÉXICO, C.P. 54753", phones: ["55-2602-0764"], lat: 19.6205274, lng: -99.2067493, badge: "Express", mapsUrl: "https://maps.app.goo.gl/wfzAKYGrhj8kzFr37?g_st=aw" },
-            { name: "UNIDAD TEPOJACO", address: "AV. SAN SEBASTIÁN 56, EJIDO DE SAN FRANCISCO TEPOJACO, CUAUTITLÁN IZCALLI, ESTADO DE MÉXICO, C.P. 54745", phones: ["55-5391-8066"], lat: 19.6481325, lng: -99.2585366, badge: "Especialidad", mapsUrl: "https://maps.app.goo.gl/owmpJRdZXaLPeEEJ9?g_st=aw" },
-            { name: "UNIDAD TULTEPEC", address: "PLAZA TAURO, AV. JOAQUÍN MONTENEGRO 95, SAN MARTÍN, TULTEPEC, ESTADO DE MÉXICO, C.P. 54960", phones: ["55-9413-2041"], lat: 19.6736413, lng: -99.1283153, badge: "Nueva", isNew: true, mapsUrl: "https://maps.app.goo.gl/NY95gD25q4Ge9czK8?g_st=aw" }
+            { name: "UNIDAD PLAZA CANTÚ", address: "AV. DR. JIMÉNEZ CANTÚ S/N, PLAZA CANTÚ CENTRO URBANO, CUAUTITLÁN IZCALLI, ESTADO DE MÉXICO, C.P. 54700", phones: ["55-1113-2754", "55-5871-9069"], lat: 19.6695138, lng: -99.2095527, badge: "", mapsUrl: "https://maps.app.goo.gl/GTkULcomJPVmWa1RA?g_st=aw" },
+            { name: "UNIDAD PLAZA LA JOYA", address: "MELCHOR OCAMPO 31, VILLAS DE CUAUTITLÁN, CUAUTITLÁN, ESTADO DE MÉXICO, C.P. 54857", phones: ["55-5872-9277"], lat: 19.6722043, lng: -99.1661641, badge: "", mapsUrl: "https://maps.app.goo.gl/HCTpiBdM9qtFyWeP6?g_st=aw" },
+            { name: "UNIDAD PLAZA LAS HACIENDAS", address: "AV. HUEHUETOCA S/N, EX HACIENDA DE SAN MIGUEL, CUAUTITLÁN IZCALLI, ESTADO DE MÉXICO, C.P. 54715", phones: ["55-5817-3401"], lat: 19.6866634, lng: -99.2099739, badge: "", mapsUrl: "https://maps.app.goo.gl/trQAczGcXq4uPTNL7?g_st=aw" },
+            { name: "UNIDAD TEPALCAPA", address: "AV. MORELOS 9, LUIS ECHEVERRÍA, CUAUTITLÁN IZCALLI, ESTADO DE MÉXICO, C.P. 54753", phones: ["55-2602-0764"], lat: 19.6205274, lng: -99.2067493, badge: "", mapsUrl: "https://maps.app.goo.gl/wfzAKYGrhj8kzFr37?g_st=aw" },
+            { name: "UNIDAD TEPOJACO", address: "AV. SAN SEBASTIÁN 56, EJIDO DE SAN FRANCISCO TEPOJACO, CUAUTITLÁN IZCALLI, ESTADO DE MÉXICO, C.P. 54745", phones: ["55-5391-8066"], lat: 19.6481325, lng: -99.2585366, badge: "", mapsUrl: "https://maps.app.goo.gl/owmpJRdZXaLPeEEJ9?g_st=aw" },
+            { name: "UNIDAD TULTEPEC", address: "PLAZA TAURO, AV. JOAQUÍN MONTENEGRO 95, SAN MARTÍN, TULTEPEC, ESTADO DE MÉXICO, C.P. 54960", phones: ["55-9413-2041"], lat: 19.6736413, lng: -99.1283153, badge: "Nueva sucursal", isNew: true, mapsUrl: "https://maps.app.goo.gl/NY95gD25q4Ge9czK8?g_st=aw" }
         ];
 
         const map = L.map('map', { scrollWheelZoom: false }).setView([19.6600, -99.2000], 12);
@@ -2066,7 +2066,7 @@
         function unitPopupMarkup(unit) {
             return `
                 <div class="bios-map-popup">
-                    <p class="bios-map-popup-kicker">${unit.isNew ? 'Nueva' : unit.badge}</p>
+                    ${unit.badge ? `<p class="bios-map-popup-kicker">${unit.badge}</p>` : ''}
                     <strong>${unit.name}</strong>
                     <span>${unit.address}</span>
                     <a href="${mapsUrl(unit)}" target="_blank" rel="noopener">
@@ -2080,7 +2080,7 @@
             <div class="interactive-depth premium-surface bg-white border border-gray-100 p-6 rounded-[2rem] cursor-pointer hover:bg-blue-50 hover:border-blue-300 transition-all shadow-sm hover:shadow-md group" onclick="focusUnit(${i})">
                 <div class="flex items-start justify-between gap-3 mb-2">
                     <h4 class="font-outfit font-black text-xl text-[#0A1C2E] group-hover:text-blue-700">${u.name}</h4>
-                    <span class="px-3 py-1 rounded-full ${u.isNew ? 'bg-emerald-100 text-emerald-700 border-emerald-200' : 'bg-blue-50 text-blue-700 border-blue-100'} border text-[10px] font-black uppercase tracking-[0.22em]">${u.isNew ? 'Nueva' : u.badge}</span>
+                    ${u.badge ? `<span class="px-3 py-1 rounded-full ${u.isNew ? 'bg-emerald-100 text-emerald-700 border-emerald-200' : 'bg-blue-50 text-blue-700 border-blue-100'} border text-[10px] font-black uppercase tracking-[0.22em]">${u.badge}</span>` : ''}
                 </div>
                 <p class="text-sm text-gray-500 font-medium leading-relaxed mb-4">${u.address}</p>
                 <div class="flex flex-wrap gap-2">

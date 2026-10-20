@@ -29,12 +29,12 @@
     ];
 
     const branches = [
-        { key: 'Cantú', name: 'Plaza Cantú', label: 'Principal', address: 'Av. Dr. Jiménez Cantú S/N, Centro Urbano, C.P. 54700', phone: '55-1113-2754', lat: 19.6695138, lng: -99.2095527 },
-        { key: 'Joya', name: 'Plaza La Joya', label: 'Alta afluencia', address: 'Melchor Ocampo 31, Villas de Cuautitlán, C.P. 54857', phone: '55-5872-9277', lat: 19.6722043, lng: -99.1661641 },
-        { key: 'Haciendas', name: 'Las Haciendas', label: 'Cerca de ti', address: 'Av. Huehuetoca S/N, Ex Hacienda de San Miguel, C.P. 54715', phone: '55-5817-3401', lat: 19.6866634, lng: -99.2099739 },
-        { key: 'Tepalcapa', name: 'Tepalcapa', label: 'Express', address: 'Av. Morelos 9, Luis Echeverría, C.P. 54753', phone: '55-2602-0764', lat: 19.6205274, lng: -99.2067493 },
-        { key: 'Tepojaco', name: 'Tepojaco', label: 'Especialidad', address: 'Av. San Sebastián 56, Ejido de San Francisco Tepojaco, C.P. 54745', phone: '55-5391-8066', lat: 19.6481325, lng: -99.2585366 },
-        { key: 'Tultepec', name: 'Tultepec', label: 'Nueva', address: 'Plaza Tauro, Av. Joaquín Montenegro 95, C.P. 54960', phone: '55-9413-2041', lat: 19.6736413, lng: -99.1283153, isNew: true },
+        { key: 'Cantú', name: 'Plaza Cantú', label: '', address: 'Av. Dr. Jiménez Cantú S/N, Centro Urbano, C.P. 54700', phone: '55-1113-2754', lat: 19.6695138, lng: -99.2095527 },
+        { key: 'Joya', name: 'Plaza La Joya', label: '', address: 'Melchor Ocampo 31, Villas de Cuautitlán, C.P. 54857', phone: '55-5872-9277', lat: 19.6722043, lng: -99.1661641 },
+        { key: 'Haciendas', name: 'Las Haciendas', label: '', address: 'Av. Huehuetoca S/N, Ex Hacienda de San Miguel, C.P. 54715', phone: '55-5817-3401', lat: 19.6866634, lng: -99.2099739 },
+        { key: 'Tepalcapa', name: 'Tepalcapa', label: '', address: 'Av. Morelos 9, Luis Echeverría, C.P. 54753', phone: '55-2602-0764', lat: 19.6205274, lng: -99.2067493 },
+        { key: 'Tepojaco', name: 'Tepojaco', label: '', address: 'Av. San Sebastián 56, Ejido de San Francisco Tepojaco, C.P. 54745', phone: '55-5391-8066', lat: 19.6481325, lng: -99.2585366 },
+        { key: 'Tultepec', name: 'Tultepec', label: 'Nueva sucursal', address: 'Plaza Tauro, Av. Joaquín Montenegro 95, C.P. 54960', phone: '55-9413-2041', lat: 19.6736413, lng: -99.1283153, isNew: true },
     ];
 
     // ── Sucursal elegida y ubicación del usuario ────────────────────────
@@ -450,7 +450,7 @@
                             <small>${branch.address}</small>
                             <em>${branch.phone}${km ? ` · <span class="clinic-km">${km}</span>` : ''}</em>
                         </span>
-                        <b class="${location && i === 0 ? 'near' : branch.isNew ? 'new' : ''}">${location && i === 0 ? 'Más cercana' : branch.label}</b>
+                        ${(location && i === 0) || branch.label ? `<b class="${location && i === 0 ? 'near' : branch.isNew ? 'new' : ''}">${location && i === 0 ? 'Más cercana' : branch.label}</b>` : ''}
                     </button>`;
                 }).join('')}
             </div>
