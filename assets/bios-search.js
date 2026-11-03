@@ -234,6 +234,9 @@
             { text: item.c, weight: 0.97 },
             { text: item.catLabel, weight: 0.9 },
             { text: item.prep, weight: 0.6 },
+            // Sinónimos de la columna Descripción del Excel y estudios incluidos en paquetes.
+            { text: item.k || '', weight: 0.68 },
+            { text: (item.inc || []).join(' '), weight: 0.62 },
         ]);
         return catalogIndex;
     }

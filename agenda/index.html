@@ -15,8 +15,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@700;800;900&display=swap" rel="stylesheet">
-    <script src="../assets/estudios-data.js" defer></script>
-    <script src="../assets/bios-search.js?v=3" defer></script>
+    <script src="../assets/estudios-data.js?v=20261103" defer></script>
+    <script src="../assets/bios-search.js?v=4" defer></script>
     <style>
         :root {
             --page-bg: #0A1C2E;
@@ -818,6 +818,9 @@
                 <div class="notice"><i class="fa-solid fa-lock"></i> Demo de agenda BIOS. Las citas no se registran en el sistema; al final puedes enviarla por WhatsApp.</div>
             `;
             bot('¡Hola! 👋 Soy el asistente de *Laboratorios BIOS*.\nTe ayudo a cotizar y agendar tus estudios en pocos pasos.');
+            // Desde la página de un estudio: /agenda/?estudio=CLAVE lo agrega directo a la cita.
+            const preset = session === 1 ? byCode(new URLSearchParams(window.location.search).get('estudio') || '') : null;
+            if (preset) return addToCart(preset);
             showMenu('¿Qué te gustaría hacer hoy?');
         }
 
@@ -880,10 +883,23 @@
             });
         }
 
+        // Muestra todos los estudios de la categoría, agrupados por letra inicial.
         function showCategory(cat) {
-            const items = catalog().filter(item => item.catLabel === cat);
-            bot(`Estudios de *${cat}*:`, {
-                list: { button: 'Ver estudios', title: cat, sections: [{ title: cat, rows: studyRows(items.slice(0, 30)) }] },
+            const items = catalog()
+                .filter(item => item.catLabel === cat)
+                .sort((a, b) => a.n.localeCompare(b.n, 'es', { sensitivity: 'base' }));
+            const groups = new Map();
+            items.forEach(item => {
+                const letter = norm(item.n).charAt(0).toUpperCase() || '#';
+                const key = /[A-Z]/.test(letter) ? letter : '#';
+                if (!groups.has(key)) groups.set(key, []);
+                groups.get(key).push(item);
+            });
+            const sections = items.length > 15
+                ? [...groups].map(([letter, list]) => ({ title: letter, rows: studyRows(list) }))
+                : [{ title: cat, rows: studyRows(items) }];
+            bot(`Estos son los *${items.length}* estudios de *${cat}* 👇\nTambién puedes escribir el nombre para encontrarlo más rápido.`, {
+                list: { button: 'Ver estudios', title: cat, sections },
             });
         }
 
@@ -902,12 +918,12 @@
             }
             if (state.mode === 'cotizar') {
                 state.step = 'after';
-                const days = item.days === 0 ? 'Mismo día' : item.days === 1 ? '1 día hábil' : `${item.days} días hábiles`;
+                const days = item.dl || 'Consultar entrega';
                 bot(`💰 Cotización`, {
                     card: `
                         <div class="card-row"><span>${escapeHtml(name)}</span><span>${money(item.price)}</span></div>
                         <div class="card-row"><span>Entrega</span><span>${days}</span></div>
-                        <div class="card-row"><span>Sucursales</span><span>${item.branches.length === 6 ? 'Todas' : item.branches.length}</span></div>
+                        <div class="card-row"><span>Sucursales</span><span>${item.chk ? 'Confirmar con sucursal' : item.branches.length === 6 ? 'Todas' : item.branches.length}</span></div>
                     `,
                     buttons: [
                         { id: 'book:' + item.c, label: 'Agendar este estudio', icon: 'fa-regular fa-calendar-check' },

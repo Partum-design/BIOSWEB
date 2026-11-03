@@ -1,0 +1,6 @@
+data/
+scripts/
+*.xlsx
+.claude/
+.vscode/
+.playwright-cli/

@@ -269,9 +269,11 @@
     }
 
     function basePath() {
+        // Las páginas generadas (estudios/) declaran su ruta base.
+        if (window.BIOS_BASE) return window.BIOS_BASE;
         const cleanPath = window.location.pathname.replace(/\/+$/, '');
         const current = cleanPath.split('/').pop();
-        return ['servicios', 'sucursales', 'unete', 'conocenos', 'empresas', 'medicos', 'mujer', 'facturacion', 'aviso-privacidad', 'terminos-uso', 'agenda'].includes(current) ? '../' : './';
+        return ['servicios', 'sucursales', 'unete', 'conocenos', 'empresas', 'medicos', 'mujer', 'facturacion', 'aviso-privacidad', 'terminos-uso', 'agenda', 'estudios'].includes(current) ? '../' : './';
     }
 
     function href(path) {
@@ -478,8 +480,8 @@
             document.head.appendChild(script);
         });
         searchDepsPromise = Promise.all([
-            window.BIOS_ESTUDIOS ? null : load(href('assets/estudios-data.js')),
-            window.BiosSearch ? null : load(href('assets/bios-search.js?v=3')),
+            window.BIOS_ESTUDIOS ? null : load(href('assets/estudios-data.js?v=20261103')),
+            window.BiosSearch ? null : load(href('assets/bios-search.js?v=4')),
         ]);
         return searchDepsPromise;
     }
@@ -505,7 +507,8 @@
         const toView = item => ({
             name: item.n,
             category: item.catLabel,
-            time: item.days === 0 ? 'Mismo día' : item.days === 1 ? '1 día hábil' : `${item.days} días hábiles`,
+            time: item.dl || 'Consultar entrega',
+            url: href(`estudios/${item.s}/`),
             price: item.price != null ? `$${item.price.toLocaleString('es-MX')}` : (item.priceLabel || 'Consultar'),
             icon: item.icon,
             lucide: true,
@@ -548,7 +551,7 @@
             <div class="bios-panel-title">${title}</div>
             ${suggestion && trimmed ? `<span class="search-suggest">¿Quisiste decir <button type="button" data-suggest="${escapeHtml(suggestion)}">${escapeHtml(suggestion)}</button>?</span>` : ''}
             ${list.length ? list.map(service => `
-                <a class="search-result" href="${catalogHref(trimmed ? service.name : '')}">
+                <a class="search-result" href="${service.url || catalogHref(trimmed ? service.name : '')}">
                     <span class="search-result-icon">${service.lucide ? `<i data-lucide="${service.icon}" class="w-5 h-5"></i>` : `<i class="fa-solid ${service.icon}"></i>`}</span>
                     <span>
                         <strong>${highlight(service.name, trimmed)}</strong>

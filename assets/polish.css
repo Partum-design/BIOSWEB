@@ -300,3 +300,7 @@ main .hero-actions {
 .chip {
     word-spacing: 0.12em;
 }
+
+/* Títulos de tarjetas en /servicios enlazan a la página de cada estudio */
+.service-title a { color: inherit; text-decoration: none; }
+.service-title a:hover { text-decoration: underline; text-underline-offset: 3px; }

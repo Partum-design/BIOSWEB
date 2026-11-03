@@ -567,9 +567,9 @@
             }
         }
     </style>
-    <script src="assets/estudios-data.js" defer></script>
-    <script src="assets/bios-search.js?v=3" defer></script>
-    <script src="assets/site.js?v=20261007" defer></script>
+    <script src="assets/estudios-data.js?v=20261103" defer></script>
+    <script src="assets/bios-search.js?v=4" defer></script>
+    <script src="assets/site.js?v=20261103" defer></script>
     <link rel="stylesheet" href="assets/polish.css?v=20261007">
 </head>
 <body class="font-inter text-gray-800 compact-site">
@@ -1859,9 +1859,9 @@
             { name: "PERFIL INTEGRAL 27 ELEMENTOS", price: "930.00", desc: "Revisión preventiva de salud general. Incluye biometría hemática, química sanguínea, perfil lipídico y EGO.", prep: "Ayuno 8 horas", time: "Un día hábil", size: "lg", delay: 100, category: "Preventivo", icon: "heart-pulse", tag: "Más solicitado" },
             { name: "PERFIL TIROIDEO 3", price: "1,400.00", desc: "Panel para valorar función tiroidea y orientar seguimiento médico.", prep: "Sin ayuno", time: "Menos de 36 horas", size: "normal", delay: 200, category: "Hormonal", icon: "activity", tag: "Alta demanda" },
             { name: "PERFIL HORMONAL COMPLETO", price: "1,200.00", desc: "Análisis endocrinológico para apoyar valoración de fertilidad y ciclos.", prep: "Ayuno sugerido", time: "Menos de 36 horas", size: "normal", delay: 300, category: "Hormonal", icon: "dna", tag: "Especializado" },
-            { name: "PAQUETE GINECOLÓGICO / UROLÓGICO", price: "650.00", desc: "Paquete preventivo para detección oportuna y seguimiento médico.", prep: "Preparación especial", time: "Un día hábil", size: "wide", delay: 100, category: "Especialidad", icon: "shield-check", tag: "Preventivo", catalog: "Colposcopia, Papanicolaou y C. Vaginal" },
+            { name: "PAQUETE GINECOLÓGICO / UROLÓGICO", price: "650.00", desc: "Paquete preventivo para detección oportuna y seguimiento médico.", prep: "Preparación especial", time: "Un día hábil", size: "wide", delay: 100, category: "Especialidad", icon: "shield-check", tag: "Preventivo", catalog: "COLPO" },
             { name: "PERFIL MASCULINO PREVENTIVO", price: "1,090.00", desc: "Revisión especializada que incluye Antígeno Prostático Específico (PSA).", prep: "Ayuno especial", time: "Un día hábil", size: "normal", delay: 200, category: "Preventivo", icon: "badge-check", tag: "Recomendado" },
-            { name: "MASTOGRAFÍA", price: "400.00", desc: "Estudio de imagen para apoyo en detección oportuna.", prep: "Sin desodorante", time: "Entrega programada", size: "normal", delay: 300, category: "Imagen", icon: "scan-line", tag: "Imagen", catalog: "Mastografia" }
+            { name: "MASTOGRAFÍA", price: "400.00", desc: "Estudio de imagen para apoyo en detección oportuna.", prep: "Sin desodorante", time: "Entrega programada", size: "normal", delay: 300, category: "Imagen", icon: "scan-line", tag: "Imagen", catalog: "MASTO" }
         ];
 
         const bentoContainer = document.getElementById('bento-container');
@@ -1887,7 +1887,7 @@
             return String(text).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
         }
 
-        // Resultados del catálogo completo (103 estudios) debajo del buscador.
+        // Resultados del catálogo completo debajo del buscador; cada uno abre su página.
         function renderHomeCatalogResults(query) {
             const box = document.getElementById('home-search-results');
             if (!box) return;
@@ -1905,7 +1905,7 @@
                 <p class="text-[11px] uppercase tracking-[0.22em] font-black text-blue-700 mb-2 px-1">${results.length} en ${window.BIOS_BRANCHES && window.BIOS_BRANCHES.selected() ? window.BIOS_BRANCHES.selected().name : 'el catálogo'}${results.every(r => !r.exact) ? ' · parecidos' : ''}</p>
                 <div class="flex flex-col gap-1">
                     ${results.slice(0, 4).map(r => `
-                        <a href="${link(r.item.n)}" class="flex items-center justify-between gap-3 rounded-xl bg-white px-3 py-2.5 border border-white hover:border-blue-200 transition">
+                        <a href="estudios/${r.item.s}/" class="flex items-center justify-between gap-3 rounded-xl bg-white px-3 py-2.5 border border-white hover:border-blue-200 transition">
                             <span class="min-w-0"><strong class="block text-sm text-[#0A1C2E] truncate">${escapeHtml(r.item.n)}</strong><small class="text-xs text-gray-500">${escapeHtml(r.item.catLabel)}</small></span>
                             <span class="text-sm font-black text-blue-600 shrink-0">${r.item.price != null ? '$' + r.item.price.toLocaleString('es-MX') : 'Consultar'}</span>
                         </a>`).join('')}
@@ -1938,7 +1938,7 @@
             const fuzzyHits = normalizedSearch ? featuredSearch(search) : null;
             // Solo los paquetes que se realizan en la sucursal elegida.
             const offers = window.BIOS_BRANCHES ? window.BIOS_BRANCHES.offers : () => true;
-            const catalogItem = s => (s.catalog && window.BIOS_ESTUDIOS) ? window.BIOS_ESTUDIOS.find(item => item.n === s.catalog) : null;
+            const catalogItem = s => (s.catalog && window.BIOS_ESTUDIOS) ? window.BIOS_ESTUDIOS.find(item => item.c === s.catalog) : null;
             const inBranch = servicesData.filter(s => offers(catalogItem(s)));
             renderBranchNote(servicesData.length - inBranch.length);
             const visibleServices = inBranch.filter(s => {

@@ -16,10 +16,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="stylesheet" href="../assets/multipage.css?v=20261007">
     <link rel="stylesheet" href="../assets/compact.css?v=20261007">
-    <script src="../assets/site.js?v=20261007" defer></script>
-    <script src="../assets/estudios-data.js" defer></script>
-    <script src="../assets/bios-search.js?v=3" defer></script>
-    <link rel="stylesheet" href="../assets/polish.css?v=20261007">
+    <script src="../assets/site.js?v=20261103" defer></script>
+    <script src="../assets/estudios-data.js?v=20261103" defer></script>
+    <script src="../assets/bios-search.js?v=4" defer></script>
+    <link rel="stylesheet" href="../assets/polish.css?v=20261103">
 </head>
 <body>
     <div class="page-shell">
@@ -42,6 +42,14 @@
                             <span>
                                 <strong>Campaña de la mujer</strong>
                                 <small>Colposcopías y Papanicolaou por unidad — ver calendario</small>
+                            </span>
+                            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </a>
+                        <a href="../estudios/" class="services-campaign-callout">
+                            <span class="services-campaign-callout-icon"><i data-lucide="list" class="w-4 h-4"></i></span>
+                            <span>
+                                <strong>Directorio completo</strong>
+                                <small>Todos los estudios de la A a la Z, con precio y preparación</small>
                             </span>
                             <i data-lucide="arrow-right" class="w-4 h-4"></i>
                         </a>
@@ -91,7 +99,7 @@
 
     <script>
         let services = [];
-        const CATEGORY_ORDER = ['Laboratorio clínico', 'Rayos X', 'Ultrasonido', 'Tomografía', 'Estudios especiales', 'Salud de la mujer', 'Salud del hombre', 'COVID-19', 'Prueba de embarazo', 'Salud visual', 'Otros estudios', 'Administrativos'];
+        const CATEGORY_ORDER = ['Laboratorio clínico', 'Rayos X', 'Ultrasonido', 'Tomografía', 'Estudios especiales', 'Patología', 'Servicios adicionales', 'Salud de la mujer', 'Salud del hombre', 'COVID-19', 'Prueba de embarazo', 'Salud visual', 'Otros estudios', 'Administrativos'];
         const ALL_BRANCHES = ['Tultepec', 'Cantú', 'Tepalcapa', 'Haciendas', 'Joya', 'Tepojaco'];
         const CATEGORY_KEY = { 'Rayos X': 'xray', 'Ultrasonido': 'usg', 'Tomografía': 'tac' };
 
@@ -184,7 +192,7 @@
             }
             if (sort === 'price-asc') list = [...list].sort((a, b) => (a.price ?? Infinity) - (b.price ?? Infinity));
             else if (sort === 'price-desc') list = [...list].sort((a, b) => (b.price ?? -Infinity) - (a.price ?? -Infinity));
-            else if (sort === 'time') list = [...list].sort((a, b) => a.days - b.days);
+            else if (sort === 'time') list = [...list].sort((a, b) => (a.days ?? Infinity) - (b.days ?? Infinity));
             else if (sort === 'az') list = [...list].sort((a, b) => a.name.localeCompare(b.name, 'es'));
             else list = [...list].sort((a, b) => (b.top - a.top) || (b.alta - a.alta) || a.name.localeCompare(b.name, 'es'));
             return list;
@@ -222,11 +230,13 @@
                         </div>
                     </div>
                     <p class="service-category">${item.category}</p>
-                    <h2 class="brand-type service-title">${item.name}</h2>
+                    <h2 class="brand-type service-title"><a href="../estudios/${item.slug}/">${item.name}</a></h2>
                     <p class="service-prep"><span class="service-prep-label">Preparación</span>${item.prep}</p>
                     <details class="service-detail">
                         <summary>Sucursales disponibles</summary>
                         <div class="service-includes">${item.branches.map(b => `<span>${b}</span>`).join('')}</div>
+                        ${item.unconfirmed ? '<p class="text-xs text-slate-500 mt-2">Confirma disponibilidad con tu sucursal antes de acudir.</p>' : ''}
+                        <a class="underline font-black text-sm text-blue-700 mt-2 inline-block" href="../estudios/${item.slug}/">Ver detalle del estudio</a>
                         ${item.campaign ? `<div class="service-payments"><i data-lucide="calendar-heart" class="w-4 h-4"></i> Estudio de la campaña de la mujer. <a href="../mujer/" class="underline font-black">Ver fechas por unidad</a>.</div>` : ''}
                     </details>
                     <div class="service-card-footer">
@@ -292,7 +302,9 @@
                 price: item.price,
                 priceLabel: item.priceLabel,
                 days: item.days,
-                deliveryLabel: item.days === 0 ? 'Mismo día' : item.days === 1 ? '1 día hábil' : `${item.days} días hábiles`,
+                deliveryLabel: item.dl || 'Consultar entrega',
+                slug: item.s,
+                unconfirmed: !!item.chk,
                 prep: item.prep,
                 branches: item.branches,
                 top: item.top,

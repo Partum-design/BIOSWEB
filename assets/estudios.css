@@ -1,0 +1,56 @@
+/* Páginas generadas de estudios (estudios/ y estudios/<slug>/) */
+.estudio-page { width: min(100% - 2rem, 76rem); margin: 0 auto; padding: 1.5rem 0 3rem; display: grid; gap: 1.25rem; }
+.estudio-crumbs { display: flex; flex-wrap: wrap; gap: .4rem; font-size: .8rem; font-weight: 700; color: #64748b; }
+.estudio-crumbs a { color: #1d4ed8; text-decoration: none; }
+.estudio-crumbs a:hover { text-decoration: underline; }
+
+.estudio-grid { display: grid; gap: 1.25rem; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); align-items: start; }
+.estudio-hero { padding: 2rem; border-radius: 24px; color: #fff; }
+.estudio-hero h1 { font-size: clamp(2rem, 4vw, 3.1rem); font-weight: 900; line-height: 1.02; margin: 1rem 0 .5rem; overflow-wrap: anywhere; }
+.estudio-hero > p { color: #dbeafe; font-size: 1.05rem; line-height: 1.6; max-width: 46rem; }
+.estudio-code { color: #a5f3fc !important; font-size: .8rem !important; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+.estudio-facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; margin: 1.5rem 0; }
+.estudio-facts div { background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.14); border-radius: 16px; padding: 1rem; }
+.estudio-facts small { display: block; font-size: .7rem; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; color: #a5f3fc; }
+.estudio-facts strong { display: block; font-family: Outfit, Inter, sans-serif; font-size: 1.5rem; font-weight: 900; margin-top: .25rem; }
+.estudio-actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 1.25rem; }
+.estudio-actions .primary-button { display: inline-flex; align-items: center; gap: .5rem; }
+
+.estudio-side { display: grid; gap: 1.25rem; }
+.estudio-block { padding: 1.5rem; }
+.estudio-block h2 { font-family: Outfit, Inter, sans-serif; font-weight: 900; font-size: 1.25rem; color: #0A1C2E; margin-bottom: .75rem; display: flex; align-items: center; gap: .5rem; }
+.estudio-block p { color: #475569; line-height: 1.65; }
+.estudio-list { display: grid; gap: .5rem; }
+.estudio-list li { display: flex; gap: .5rem; align-items: flex-start; color: #334155; font-weight: 600; }
+.estudio-list li svg { flex: none; margin-top: .2rem; color: #2563eb; }
+.estudio-branches { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.estudio-note { display: flex; gap: .5rem; align-items: flex-start; margin-top: .9rem; font-size: .85rem; background: #fffbeb; border: 1px solid #fde68a; color: #92400e !important; border-radius: 12px; padding: .65rem .8rem; }
+.estudio-note svg { flex: none; margin-top: .15rem; }
+.estudio-link { display: inline-flex; align-items: center; gap: .35rem; margin-top: 1rem; font-weight: 800; color: #1d4ed8; text-decoration: none; }
+.estudio-link:hover { text-decoration: underline; }
+.estudio-tags { display: flex; flex-wrap: wrap; gap: .4rem; }
+.estudio-tags span { background: #eff6ff; color: #1e3a8a; border-radius: 999px; padding: .3rem .7rem; font-size: .8rem; font-weight: 700; }
+
+.estudio-related ul, .estudio-dir ul { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .25rem 1.25rem; }
+.estudio-related a, .estudio-dir a { display: flex; justify-content: space-between; gap: 1rem; padding: .7rem .25rem; border-bottom: 1px solid #e2e8f0; color: #0A1C2E; font-weight: 700; text-decoration: none; }
+.estudio-related a:hover, .estudio-dir a:hover { color: #1d4ed8; }
+.estudio-related b, .estudio-dir b { flex: none; color: #2563eb; font-weight: 900; }
+.estudio-dir a span { min-width: 0; }
+.estudio-dir small { display: block; font-size: .72rem; font-weight: 600; color: #64748b; margin-top: .1rem; }
+.estudio-dir h2 span { font-size: .8rem; background: #eff6ff; color: #1d4ed8; border-radius: 999px; padding: .1rem .55rem; }
+.estudio-dir { scroll-margin-top: 7rem; }
+.estudio-dir li[hidden], .estudio-dir[hidden] { display: none; }
+.estudio-dir-hero h1 { margin-top: 1rem; }
+.estudio-dir-tools { display: grid; gap: .75rem; }
+
+@media (max-width: 860px) {
+  .estudio-grid { grid-template-columns: 1fr; }
+  .estudio-related ul, .estudio-dir ul { grid-template-columns: 1fr; }
+}
+@media (max-width: 520px) {
+  .estudio-page { width: calc(100% - 2rem); }
+  .estudio-hero { padding: 1.4rem; }
+  .estudio-facts { grid-template-columns: 1fr; }
+  .estudio-branches { grid-template-columns: 1fr; }
+  .estudio-actions .primary-button { width: 100%; justify-content: center; }
+}
