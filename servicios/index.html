@@ -80,7 +80,7 @@
                             <i data-lucide="search-x" class="w-9 h-9 mx-auto text-slate-400 mb-3"></i>
                             <p class="font-black text-[#0A1C2E]">No encontramos ese estudio.</p>
                             <p class="text-slate-500 text-sm mt-1">Pide apoyo por WhatsApp y lo ubicamos contigo.</p>
-                            <a id="empty-whatsapp" class="primary-button !bg-[#25D366] mt-4 inline-flex" target="_blank" rel="noopener" href="https://wa.me/5211234567890?text=Hola%20Laboratorios%20BIOS,%20no%20encuentro%20un%20estudio"><i class="fa-brands fa-whatsapp"></i> Preguntar por WhatsApp</a>
+                            <a id="empty-whatsapp" class="primary-button !bg-[#25D366] mt-4 inline-flex" target="_blank" rel="noopener" href="https://wa.me/525537285981?text=Hola%20Laboratorios%20BIOS,%20no%20encuentro%20un%20estudio"><i class="fa-brands fa-whatsapp"></i> Preguntar por WhatsApp</a>
                         </div>
                         <div class="flex flex-col items-center gap-2 mt-6">
                             <p id="showing-count" class="text-xs font-black uppercase tracking-wide text-slate-400"></p>
@@ -244,7 +244,7 @@
                             <p class="service-price-label">Desde</p>
                             <strong class="brand-type service-price">${priceDisplay(item)}</strong>
                         </div>
-                        <a class="primary-button quote-button !bg-[#25D366]" target="_blank" aria-label="Cotizar ${item.name} por WhatsApp" href="https://wa.me/5211234567890?text=Hola%20Laboratorios%20BIOS,%20quiero%20cotizar%20${encodeURIComponent(item.name)}"><i class="fa-brands fa-whatsapp text-lg"></i></a>
+                        <a class="primary-button quote-button !bg-[#25D366]" target="_blank" aria-label="Cotizar ${item.name} por WhatsApp" href="https://wa.me/525537285981?text=Hola%20Laboratorios%20BIOS,%20quiero%20cotizar%20${encodeURIComponent(item.name)}"><i class="fa-brands fa-whatsapp text-lg"></i></a>
                     </div>
                 </article>
             `;
@@ -262,7 +262,7 @@
             const hint = document.getElementById('search-hint');
             const { query, fuzzy, suggestion } = searchMeta;
             const wa = document.getElementById('empty-whatsapp');
-            if (wa) wa.href = `https://wa.me/5211234567890?text=${encodeURIComponent(`Hola Laboratorios BIOS, no encuentro el estudio: ${query}`)}`;
+            if (wa) wa.href = `https://wa.me/525537285981?text=${encodeURIComponent(`Hola Laboratorios BIOS, no encuentro el estudio: ${query}`)}`;
             if (!query || (!fuzzy && !(count === 0 && suggestion))) {
                 hint.classList.add('hidden');
                 hint.innerHTML = '';

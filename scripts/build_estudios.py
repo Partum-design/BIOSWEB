@@ -25,7 +25,7 @@ import openpyxl
 ROOT = Path(__file__).resolve().parent.parent
 SOURCE = Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / 'data' / 'total-estudios-bios.xlsx'
 SITE = 'https://biosweb.vercel.app'  # cambiar aquí al conectar el dominio propio
-WHATSAPP = '5211234567890'
+WHATSAPP = '525537285981'
 ASSET_V = '20261105'
 
 # Sucursales: A = Tultepec y Cantú · B = Tepalcapa, Haciendas y Joya · C = Tepojaco

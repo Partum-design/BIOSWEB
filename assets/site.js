@@ -367,7 +367,7 @@
 
                 <div class="bios-header-actions">
                     <button type="button" id="bios-search-toggle" class="bios-search-toggle" aria-label="Buscar estudios" aria-expanded="false"><i class="fa-solid fa-magnifying-glass"></i></button>
-                    <a href="https://wa.me/5211234567890?text=Hola%20Laboratorios%20BIOS,%20quiero%20agendar%20una%20cita" target="_blank" class="bios-appointment-button">
+                    <a href="https://wa.me/525537285981?text=Hola%20Laboratorios%20BIOS,%20quiero%20agendar%20una%20cita" target="_blank" class="bios-appointment-button">
                         <i class="fa-brands fa-whatsapp"></i> <span>Agendar cita</span>
                     </a>
                     <button type="button" id="bios-menu-button" class="bios-menu-button" aria-label="Abrir menú">
@@ -397,7 +397,7 @@
                     <button type="button" class="bios-mobile-close" aria-label="Cerrar menú"><i class="fa-solid fa-xmark"></i></button>
                 </div>
                 <div class="bios-mobile-links">${mobileNavMarkup()}</div>
-                <a href="https://wa.me/5211234567890?text=Hola%20Laboratorios%20BIOS,%20quiero%20informes" target="_blank" class="bios-mobile-whatsapp">
+                <a href="https://wa.me/525537285981?text=Hola%20Laboratorios%20BIOS,%20quiero%20informes" target="_blank" class="bios-mobile-whatsapp">
                     <i class="fa-brands fa-whatsapp"></i> WhatsApp Laboratorios BIOS
                 </a>
             </aside>
@@ -563,7 +563,7 @@
                     <b>${service.price}</b>
                 </a>
             `).join('') : `
-                <a class="search-result empty" href="https://wa.me/5211234567890?text=${whatsappText}" target="_blank" rel="noopener">
+                <a class="search-result empty" href="https://wa.me/525537285981?text=${whatsappText}" target="_blank" rel="noopener">
                     <span class="search-result-icon"><i class="fa-brands fa-whatsapp"></i></span>
                     <span><strong>${view.elsewhere ? `No está disponible${where}` : 'No encontramos ese estudio'}</strong><small>Escríbenos y lo ubicamos contigo</small></span>
                 </a>
@@ -705,7 +705,7 @@
                     <p>Un mundo de servicios a tu alcance. Proveedores líderes en análisis clínicos y diagnóstico de alta calidad tecnológica.</p>
                     <div class="footer-socials-main">
                         <a href="https://www.facebook.com/profile.php?id=100083030297472" target="_blank" rel="noopener" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
-                        <a href="https://wa.me/5211234567890" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+                        <a href="https://wa.me/525537285981" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
                         <a href="mailto:bios@bioslaboratorios.com" aria-label="Correo electrónico"><i class="fa-solid fa-envelope"></i></a>
                     </div>
                     <a class="footer-contact-main" href="mailto:bios@bioslaboratorios.com"><i class="fa-solid fa-envelope"></i> bios@bioslaboratorios.com</a>
@@ -715,7 +715,7 @@
                     <a href="${href('servicios/')}">Catálogo de estudios</a>
                     <a href="${href('servicios/')}">Cotizar y agendar</a>
                     <a href="${href('sucursales/')}">Sucursales y horarios</a>
-                    <a href="https://wa.me/5211234567890?text=Hola%20Laboratorios%20BIOS,%20quiero%20agendar%20una%20cita" target="_blank" rel="noopener">Agendar por WhatsApp</a>
+                    <a href="https://wa.me/525537285981?text=Hola%20Laboratorios%20BIOS,%20quiero%20agendar%20una%20cita" target="_blank" rel="noopener">Agendar por WhatsApp</a>
                 </div>
                 <div>
                     <h4>Empresas B2B</h4>
@@ -781,7 +781,7 @@
         document.querySelectorAll('.bios-whatsapp-float').forEach(item => item.remove());
         const button = document.createElement('a');
         button.className = 'bios-whatsapp-float';
-        button.href = 'https://wa.me/5211234567890?text=Hola%20Laboratorios%20BIOS%2C%20me%20interesa%20agendar...';
+        button.href = 'https://wa.me/525537285981?text=Hola%20Laboratorios%20BIOS%2C%20me%20interesa%20agendar...';
         button.target = '_blank';
         button.rel = 'noopener';
         button.setAttribute('aria-label', 'WhatsApp Laboratorios BIOS');

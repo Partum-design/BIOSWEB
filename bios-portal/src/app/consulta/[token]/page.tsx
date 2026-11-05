@@ -169,7 +169,7 @@ function TokenError({ reason }: { reason: "not_found" | "expired" | "revoked" })
           <h1 className="font-outfit text-2xl font-black text-bios-navy mb-3">{config.title}</h1>
           <p className="text-gray-500 text-sm leading-relaxed mb-6">{config.description}</p>
           <a
-            href="https://wa.me/528003100000"
+            href="https://wa.me/525537285981"
             className="bios-btn-secondary text-sm w-full justify-center"
             target="_blank"
             rel="noopener noreferrer"
