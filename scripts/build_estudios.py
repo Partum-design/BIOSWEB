@@ -26,7 +26,7 @@ ROOT = Path(__file__).resolve().parent.parent
 SOURCE = Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / 'data' / 'total-estudios-bios.xlsx'
 SITE = 'https://biosweb.vercel.app'  # cambiar aquí al conectar el dominio propio
 WHATSAPP = '5211234567890'
-ASSET_V = '20261103'
+ASSET_V = '20261105'
 
 # Sucursales: A = Tultepec y Cantú · B = Tepalcapa, Haciendas y Joya · C = Tepojaco
 GROUPS = {'A': ['Tultepec', 'Cantú'], 'B': ['Tepalcapa', 'Haciendas', 'Joya'], 'C': ['Tepojaco']}
@@ -219,7 +219,7 @@ def head(title, description, canonical, prefix, extra=''):
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <link rel="stylesheet" href="{prefix}assets/multipage.css?v=20261007">
+    <link rel="stylesheet" href="{prefix}assets/multipage.css?v=20261105">
     <link rel="stylesheet" href="{prefix}assets/compact.css?v=20261007">
     <script>window.BIOS_BASE = '{prefix}';</script>
     <script src="{prefix}assets/site.js?v={ASSET_V}" defer></script>

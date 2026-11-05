@@ -2632,15 +2632,33 @@ footer a:hover,
     color: white;
 }
 
-.clinic-option b {
-    white-space: nowrap;
+.clinic-tags {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.3rem;
     align-self: start;
     margin-top: 0.15rem;
 }
 
+.clinic-option b {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    white-space: nowrap;
+}
+
+.clinic-option b i { font-size: 0.6rem; }
+
 .clinic-option b.near {
     color: #047857;
     background: #d1fae5;
+}
+
+.clinic-option b.new {
+    color: #fff;
+    background: linear-gradient(135deg, #2563eb, #0ea5e9);
+    box-shadow: 0 4px 12px -4px rgba(37, 99, 235, 0.55);
 }
 
 .clinic-km {
