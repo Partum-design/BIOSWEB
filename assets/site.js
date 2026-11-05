@@ -273,7 +273,7 @@
         if (window.BIOS_BASE) return window.BIOS_BASE;
         const cleanPath = window.location.pathname.replace(/\/+$/, '');
         const current = cleanPath.split('/').pop();
-        return ['servicios', 'sucursales', 'unete', 'conocenos', 'empresas', 'medicos', 'mujer', 'facturacion', 'aviso-privacidad', 'terminos-uso', 'agenda', 'estudios'].includes(current) ? '../' : './';
+        return ['servicios', 'sucursales', 'unete', 'conocenos', 'empresas', 'medicos', 'mujer', 'facturacion', 'aviso-privacidad', 'terminos-uso', 'estudios'].includes(current) ? '../' : './';
     }
 
     function href(path) {

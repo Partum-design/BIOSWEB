@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Agenda tu estudio | Laboratorios BIOS</title>
+    <title>PRUEBA · Asistente de agenda | Laboratorios BIOS</title>
     <link rel="icon" href="../favicon.ico" sizes="any">
     <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon/favicon-32.png">
     <link rel="icon" type="image/png" sizes="192x192" href="../assets/favicon/favicon-192.png">
     <link rel="apple-touch-icon" href="../assets/favicon/apple-touch-icon.png">
-    <meta name="robots" content="noindex, nofollow">
-    <meta name="description" content="Demo del asistente de WhatsApp de Laboratorios BIOS para cotizar y agendar estudios.">
+    <meta name="robots" content="noindex, nofollow, noarchive">
+    <meta name="referrer" content="no-referrer">
+    <meta name="description" content="Herramienta de prueba interna. No agenda citas reales.">
     <meta name="theme-color" content="#0A1C2E">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -561,30 +562,147 @@
             .buttons { width: 88%; }
         }
 
+        /* ---------- Aviso de prueba ---------- */
+        .test-strip {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.45rem 0.75rem;
+            background: repeating-linear-gradient(-45deg, #facc15 0 14px, #fde047 14px 28px);
+            color: #422006;
+            font-size: 0.74rem;
+            font-weight: 900;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        .test-gate {
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            display: grid;
+            place-items: center;
+            padding: 1rem;
+            background: rgba(5, 10, 16, 0.86);
+            backdrop-filter: blur(6px);
+            overflow-y: auto;
+        }
+
+        .test-gate[hidden] { display: none; }
+
+        .test-card {
+            width: min(640px, 100%);
+            border-radius: 28px;
+            overflow: hidden;
+            background: #fff;
+            color: #111b21;
+            box-shadow: 0 40px 120px -20px rgba(0, 0, 0, 0.8);
+        }
+
+        .test-card-top {
+            padding: 2.2rem 1.5rem 1.8rem;
+            text-align: center;
+            background: repeating-linear-gradient(-45deg, #facc15 0 22px, #fde047 22px 44px);
+            color: #422006;
+        }
+
+        .test-card-top i { font-size: 3.2rem; margin-bottom: 0.8rem; }
+
+        .test-card-top strong {
+            display: block;
+            font-family: 'Outfit', sans-serif;
+            font-size: clamp(2.6rem, 9vw, 4.2rem);
+            line-height: 0.95;
+            font-weight: 900;
+            letter-spacing: -0.01em;
+            text-transform: uppercase;
+        }
+
+        .test-card-body { padding: 1.6rem 1.6rem 1.8rem; }
+
+        .test-card-body h2 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.55rem;
+            line-height: 1.15;
+            margin-bottom: 0.9rem;
+            text-wrap: balance;
+        }
+
+        .test-card-body ul { list-style: none; display: grid; gap: 0.65rem; margin-bottom: 1.5rem; }
+
+        .test-card-body li { display: flex; gap: 0.7rem; line-height: 1.45; color: #334155; }
+
+        .test-card-body li i { color: #dc2626; margin-top: 0.25rem; width: 1rem; flex-shrink: 0; }
+
+        .test-card-body li b { color: #111b21; }
+
+        .test-card-actions { display: flex; gap: 0.7rem; flex-wrap: wrap; }
+
+        .test-card-actions button,
+        .test-card-actions a {
+            flex: 1 1 220px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.95rem 1.1rem;
+            border-radius: 14px;
+            font-weight: 800;
+            text-decoration: none;
+        }
+
+        .test-card-actions button { background: #0A1C2E; color: #fff; }
+        .test-card-actions a { background: #25d366; color: #052e16; }
+
         @media (prefers-reduced-motion: reduce) {
             *, *::before, *::after { animation: none !important; transition: none !important; }
         }
     </style>
 </head>
 <body>
+    <div class="test-gate" id="test-gate" role="alertdialog" aria-modal="true" aria-labelledby="test-gate-title" aria-describedby="test-gate-desc">
+        <div class="test-card">
+            <div class="test-card-top">
+                <i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i>
+                <strong>Esto es una prueba</strong>
+            </div>
+            <div class="test-card-body">
+                <h2 id="test-gate-title">Esta herramienta no agenda citas reales</h2>
+                <ul id="test-gate-desc">
+                    <li><i class="fa-solid fa-ban"></i><span><b>No se genera ninguna cita.</b> Nada de lo que hagas aquí llega a una sucursal ni queda registrado.</span></li>
+                    <li><i class="fa-solid fa-ban"></i><span>Los folios, horarios y confirmaciones son <b>simulados</b>.</span></li>
+                    <li><i class="fa-solid fa-ban"></i><span>Es una versión de prueba para revisar cómo funcionaría el asistente.</span></li>
+                </ul>
+                <div class="test-card-actions">
+                    <button type="button" id="test-gate-ok"><i class="fa-solid fa-flask"></i> Entiendo, solo quiero probar</button>
+                    <a href="https://wa.me/5211234567890?text=Hola%20Laboratorios%20BIOS%2C%20quiero%20agendar%20una%20cita" target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp"></i> Agendar de verdad</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <section class="intro">
         <img src="../logos/bios-logo-white.png" alt="Laboratorios BIOS">
-        <span class="demo-pill"><i class="fa-brands fa-whatsapp"></i> Demo interactiva</span>
+        <span class="demo-pill" style="background: rgba(250, 204, 21, 0.16); border-color: rgba(250, 204, 21, 0.45); color: #fde047;"><i class="fa-solid fa-flask"></i> Herramienta de prueba</span>
         <h1>Agenda tu estudio como si fuera WhatsApp</h1>
-        <p>Así se vería el asistente de BIOS: el paciente elige su estudio, ve precio y preparación, escoge sucursal, día y hora, y recibe su confirmación.</p>
+        <p>Así se vería el asistente de BIOS: el paciente elige su estudio, ve precio y preparación, escoge sucursal, día y hora. <strong style="color: #fde047;">Es solo una prueba: no se registra ninguna cita.</strong></p>
         <ul class="tries">
             <li><i class="fa-solid fa-wand-magic-sparkles"></i><span>Escribe con errores: <code>ultrazonido</code>, <code>viometria</code>, <code>tiroydes</code></span></li>
             <li><i class="fa-solid fa-comment-dots"></i><span>O como habla la gente: <code>azúcar</code>, <code>placa de pulmón</code>, <code>embarazo</code></span></li>
             <li><i class="fa-solid fa-list-ol"></i><span>Responde con números (<code>1</code>, <code>2</code>…) o escribe <code>menú</code> en cualquier momento</span></li>
         </ul>
         <div class="intro-actions">
-            <button type="button" id="restart"><i class="fa-solid fa-rotate-right"></i> Reiniciar demo</button>
+            <button type="button" id="restart"><i class="fa-solid fa-rotate-right"></i> Reiniciar prueba</button>
             <a href="../"><i class="fa-solid fa-arrow-left"></i> Ir al sitio</a>
         </div>
     </section>
 
     <div class="phone">
         <div class="screen" id="screen">
+            <div class="test-strip" role="note"><i class="fa-solid fa-flask"></i> Prueba · no se generan citas</div>
             <header class="wa-header">
                 <a class="back" href="../" aria-label="Salir" style="color: inherit;"><i class="fa-solid fa-arrow-left"></i></a>
                 <div class="avatar"><img src="../logos/bios-logo-white.png" alt=""></div>
@@ -815,10 +933,10 @@
             queue = Promise.resolve();
             chat.innerHTML = `
                 <div class="day-chip">Hoy</div>
-                <div class="notice"><i class="fa-solid fa-lock"></i> Demo de agenda BIOS. Las citas no se registran en el sistema; al final puedes enviarla por WhatsApp.</div>
+                <div class="notice"><i class="fa-solid fa-flask"></i> Herramienta de prueba. Ninguna cita se registra ni llega a sucursal.</div>
             `;
             bot('¡Hola! 👋 Soy el asistente de *Laboratorios BIOS*.\nTe ayudo a cotizar y agendar tus estudios en pocos pasos.');
-            // Desde la página de un estudio: /agenda/?estudio=CLAVE lo agrega directo a la cita.
+            // Con ?estudio=CLAVE en el enlace, ese estudio se agrega directo a la cita.
             const preset = session === 1 ? byCode(new URLSearchParams(window.location.search).get('estudio') || '') : null;
             if (preset) return addToCart(preset);
             showMenu('¿Qué te gustaría hacer hoy?');
@@ -1052,22 +1170,22 @@
         }
 
         function confirmBooking() {
-            const folio = `BIOS-${Math.random().toString(36).slice(2, 7).toUpperCase()}`;
+            const folio = `PRUEBA-${Math.random().toString(36).slice(2, 7).toUpperCase()}`;
             const preps = [...new Set(state.cart.map(i => i.prep).filter(Boolean))];
             const text = [
-                'Hola Laboratorios BIOS, quiero confirmar esta cita:',
+                'Hola Laboratorios BIOS, probé el asistente y quiero agendar esta cita de verdad:',
                 `Paciente: ${state.name}`,
                 `Sucursal: ${state.branch.name}`,
                 `Fecha: ${state.day.long} a las ${state.time} hrs`,
                 `Estudios: ${state.cart.map(i => i.n.replace(/\s+/g, ' ').trim()).join(', ')}`,
-                `Folio demo: ${folio}`,
+                `Folio de prueba: ${folio}`,
             ].join('\n');
             state.step = 'done';
-            bot(`🎉 ¡Listo, *${state.name.split(' ')[0]}*! Tu cita quedó apartada.\n\n🔖 Folio: *${folio}*\n📍 ${state.branch.name} · ${state.branch.address}\n📞 ${state.branch.phone}`);
+            bot(`🧪 *Simulación terminada, ${state.name.split(' ')[0]}.*\n⚠️ Esto fue una prueba: *la cita NO quedó registrada* y no llega a la sucursal.\n\n🔖 Folio simulado: *${folio}*\n📍 ${state.branch.name} · ${state.branch.address}\n📞 ${state.branch.phone}`);
             if (preps.length) bot(`📋 *Tu preparación:*\n\n${preps.map(p => `• ${p}`).join('\n\n')}`);
-            bot('Llega 10 minutos antes con una identificación. ¡Te esperamos! 💙', {
+            bot('Si quieres esta cita de verdad, mándala por WhatsApp y un asesor la confirma contigo.', {
                 buttons: [
-                    { id: 'send-wa', label: 'Enviar cita por WhatsApp', icon: 'fa-brands fa-whatsapp', href: `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(text)}` },
+                    { id: 'send-wa', label: 'Agendar de verdad por WhatsApp', icon: 'fa-brands fa-whatsapp', href: `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(text)}` },
                     { id: 'menu', label: 'Volver al menú', icon: 'fa-solid fa-bars' },
                 ],
             });
@@ -1226,7 +1344,17 @@
 
         document.getElementById('restart').addEventListener('click', start);
 
-        window.addEventListener('DOMContentLoaded', start);
+        // Aviso de prueba: aparece en cada visita y hay que aceptarlo para usar el asistente.
+        const gate = document.getElementById('test-gate');
+        const gateOk = document.getElementById('test-gate-ok');
+        gateOk.addEventListener('click', () => {
+            gate.hidden = true;
+        });
+
+        window.addEventListener('DOMContentLoaded', () => {
+            start();
+            gateOk.focus();
+        });
     })();
     </script>
 </body>

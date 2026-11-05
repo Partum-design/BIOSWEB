@@ -2,7 +2,7 @@
 """Genera el catálogo completo de estudios BIOS desde el Excel.
 
 Salida:
-  assets/estudios-data.js     catálogo que usan buscador, /servicios, /agenda y /mujer
+  assets/estudios-data.js     catálogo que usan buscador, /servicios, /mujer y el asistente de prueba
   estudios/index.html         directorio estático de todos los estudios (indexable)
   estudios/<slug>/index.html  una página por estudio (indexable, con datos estructurados)
   sitemap.xml, robots.txt
@@ -280,7 +280,7 @@ def study_page(item, related):
     p = '../../'
     title = f"{item['n']} — precio y preparación | Laboratorios BIOS"
     wa = f"https://wa.me/{WHATSAPP}?text=" + html.escape(
-        quote(f"Hola Laboratorios BIOS, quiero información del estudio: {item['n']} ({item['c']})"))
+        quote(f"Hola Laboratorios BIOS, quiero agendar o cotizar el estudio: {item['n']} ({item['c']})"))
     branches = ''.join(f'<li><i data-lucide="map-pin" class="w-4 h-4"></i>{e(BRANCH_NAMES[b])}</li>' for b in item['branches'])
     chk = '<p class="estudio-note"><i data-lucide="info" class="w-4 h-4"></i> Confirma con tu sucursal que este estudio esté disponible antes de acudir.</p>' if item.get('chk') else ''
     inc = ''
@@ -307,8 +307,7 @@ def study_page(item, related):
                         <div><small>Entrega de resultados</small><strong>{e(item['dl'])}</strong></div>
                     </div>
                     <div class="estudio-actions">
-                        <a class="primary-button" href="{p}agenda/?estudio={e(quote(item['c']))}"><i data-lucide="calendar-check" class="w-5 h-5"></i> Agendar este estudio</a>
-                        <a class="primary-button !bg-[#25D366]" target="_blank" rel="noopener" href="{wa}"><i class="fa-brands fa-whatsapp text-lg"></i> Cotizar por WhatsApp</a>
+                        <a class="primary-button !bg-[#25D366]" target="_blank" rel="noopener" href="{wa}"><i class="fa-brands fa-whatsapp text-lg"></i> Agendar o cotizar por WhatsApp</a>
                     </div>
                 </article>
                 <div class="estudio-side">
@@ -361,7 +360,7 @@ def directory_page(items):
                 <p>{len(items)} estudios y paquetes con precio, tiempo de entrega y preparación. Toca cualquiera para ver el detalle o agendarlo.</p>
                 <div class="estudio-actions">
                     <a class="primary-button" href="{p}servicios/"><i data-lucide="sliders-horizontal" class="w-5 h-5"></i> Filtrar por sucursal y precio</a>
-                    <a class="primary-button !bg-white !text-[#0A1C2E]" href="{p}agenda/"><i data-lucide="calendar-check" class="w-5 h-5"></i> Agendar</a>
+                    <a class="primary-button !bg-white !text-[#0A1C2E]" target="_blank" rel="noopener" href="https://wa.me/{WHATSAPP}?text={quote("Hola Laboratorios BIOS, quiero agendar un estudio")}"><i class="fa-brands fa-whatsapp text-lg"></i> Agendar por WhatsApp</a>
                 </div>
             </div>
             <div class="estudio-dir-tools">
@@ -428,11 +427,11 @@ def main():
         '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
         ''.join(f'  <url><loc>{e(u)}</loc><lastmod>{today}</lastmod></url>\n' for u in urls) + '</urlset>\n', encoding='utf-8')
     (ROOT / 'robots.txt').write_text(
-        f'User-agent: *\nAllow: /\nDisallow: /agenda/\n\nSitemap: {SITE}/sitemap.xml\n', encoding='utf-8')
+        f'User-agent: *\nAllow: /\n\nSitemap: {SITE}/sitemap.xml\n', encoding='utf-8')
 
     # Versión del catálogo en las páginas que lo cargan, para que el navegador no use una copia vieja.
     stamp = date.today().strftime('%Y%m%d')
-    for page in [ROOT / 'index.html', ROOT / 'assets' / 'site.js'] + [ROOT / d / 'index.html' for d in ('servicios', 'agenda', 'mujer')]:
+    for page in [ROOT / 'index.html', ROOT / 'assets' / 'site.js'] + [ROOT / d / 'index.html' for d in ('servicios', 'prueba-asistente-7k3q9x', 'mujer')]:
         text = page.read_text(encoding='utf-8')
         page.write_text(re.sub(r'estudios-data\.js\?v=\d+', f'estudios-data.js?v={stamp}', text), encoding='utf-8')
 
