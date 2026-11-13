@@ -483,7 +483,7 @@
             document.head.appendChild(script);
         });
         searchDepsPromise = Promise.all([
-            window.BIOS_ESTUDIOS ? null : load(href('assets/estudios-data.js?v=20261103')),
+            window.BIOS_ESTUDIOS ? null : load(href('assets/estudios-data.js?v=20261113')),
             window.BiosSearch ? null : load(href('assets/bios-search.js?v=4')),
         ]);
         return searchDepsPromise;
